@@ -1,0 +1,9 @@
+version: "Apple Swift version 4.2 (swiftlang-1000.11.37.1 clang-1000.11.45.1)"
+options: "f00ffb004a2f43414bebc0eac292675e"
+build_time: [1566199604, 799588000]
+inputs:
+  "/Users/ahmed/Desktop/MyProjects/StoreSearch/StoreSearch/SearchViewController.swift": [1564978966, 0]
+  "/Users/ahmed/Desktop/MyProjects/StoreSearch/StoreSearch/SearchResult.swift": [1532792156, 0]
+  "/Users/ahmed/Desktop/MyProjects/StoreSearch/StoreSearch/SearchResultCell.swift": [1532792156, 0]
+  "/Users/ahmed/Desktop/MyProjects/StoreSearch/StoreSearch/AppDelegate.swift": [1532792156, 0]
+  "/Users/ahmed/Desktop/MyProjects/StoreSearch/StoreSearch/UIImageView+DownloadImage.swift": [1532792156, 0]

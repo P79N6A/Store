@@ -1,0 +1,857 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 30: Image Picker</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 30: Image Picker</h1>
+
+<p>Your Tag Locations screen is mostly feature complete — except for the ability to add a photo for a location. Time to fix that!
+</p>
+<p>UIKit comes with a built-in view controller, <code>UIImagePickerController</code>, that lets the user take new photos and videos, or pick them from their Photo Library. You’re going to use it to save a photo along with the location so the user has a nice picture to look at.
+</p>
+<p>This is what your screen will look like when you&apos;re done:
+</p><div class="image-25"><img src="graphics/img465.png"  alt="" title="A photo in the Tag Location screen" /></div>
+<p>In this chapter, you will do the following:
+</p>
+<ul>
+<li>
+<p><em>Add an image picker:</em> Add an image picker to your app to allow you to take photos with the camera or to select existing images from your photo library.
+</p></li>
+
+<li>
+<p><em>Show the image:</em> Show the picked image in a table view cell.
+</p></li>
+
+<li>
+<p><em>UI improvements:</em> Improve the user interface functionality when your app is sent to the background.
+</p></li>
+
+<li>
+<p><em>Save the image:</em> Save the image selected via the image picker on device so that it can be retrieved later.
+</p></li>
+
+<li>
+<p><em>Edit the image:</em> Display the image on the edit screen if the location has an image.
+</p></li>
+
+<li>
+<p><em>Thumbnails:</em> Display thumbnails for locations on the Locations list screen.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Add an image picker</h2>
+
+<p>Just as you need to ask the user for permission before you can get GPS information from the device, you need to ask for permission to access the user’s photo library.
+</p>
+<p>You don’t need to write any code for this, but you do need to declare your intentions in the app’s <em>Info.plist</em>. If you don’t do this, the app will crash (with no visible warnings except for a message in the Xcode Console) as soon as you try to use the <code>UIImagePickerController</code>.
+</p>
+<h3 class="segment-chapter">Info.plist changes</h3>
+
+<p>➤ Open <em>Info.plist</em> and add a new row — either use the plus (+) button on existing rows, or right-click and select <em>Add Row</em>, or use the <em>Editor → Add Item</em> menu option.
+</p>
+<p>For the key, use <em>NSPhotoLibraryUsageDescription</em>, or choose <em>Privacy - Photo Library Usage Description</em> from the dropdown list.
+</p>
+<p>For the value, type: <em>Add photos to your locations.</em>
+</p><div class="image-100"><img src="graphics/img466.png"  alt="" title="Adding a usage description in Info.plist" /></div>
+<p>➤ Also add the key <em>NSCameraUsageDescription</em> (or choose <em>Privacy - Camera Usage Description</em>) and give it the same description.
+</p>
+<p>Now when the app opens the photo picker or the camera for the first time, iOS will tell the user what the app intends to use the photos for, using the description you just added to Info.plist.
+</p>
+<h3 class="segment-chapter">Use camera to add image</h3>
+
+<p>➤ In <em>LocationDetailsViewController.swift</em>, add the following extension to the end of the source file:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">LocationDetailsViewController</span>: 
+    <span class="hljs-title">UIImagePickerControllerDelegate</span>,
+    <span class="hljs-title">UINavigationControllerDelegate</span> </span>{
+
+  <span class="hljs-comment">// MARK:- Image Helper Methods</span>
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">takePhotoWithCamera</span><span class="hljs-params">()</span></span> {
+    <span class="hljs-keyword">let</span> imagePicker = <span class="hljs-type">UIImagePickerController</span>()
+    imagePicker.sourceType = .camera
+    imagePicker.delegate = <span class="hljs-keyword">self</span>
+    imagePicker.allowsEditing = <span class="hljs-literal">true</span>
+    present(imagePicker, animated: <span class="hljs-literal">true</span>, completion: <span class="hljs-literal">nil</span>)
+  }
+}</pre>
+<p>The <code>UIImagePickerController</code> is a view controller like any other, but it is built into UIKit and it takes care of the entire process of taking new photos or picking them from the user’s photo library.
+</p>
+<p>All you need to do is create a <code>UIImagePickerController</code> instance, set its properties to configure the picker, set its <code>delegate</code>, and then present it. When the user closes the image picker screen, the delegate methods will let you know the result of the operation.
+</p>
+<p>That’s exactly how you’ve been designing your own view controllers — except that you don’t need to add the <code>UIImagePickerController</code> to the storyboard.
+</p>
+<div class="note">
+<p><em>Note:</em> You’re doing this in an extension because it allows you to group all the photo-picking related functionality together.
+</p>
+<p>If you wanted to, you could put these methods in the main class body. That would work fine too, but view controllers tend to become very big with many methods that all do different things.
+</p>
+<p>As a way to preserve your sanity, it’s nice to extract conceptually related methods — such as everything that has to do with picking photos — and place them together in their own extension.
+</p>
+<p>You could even move each of these extensions to their own source file, for example “LocationDetailsViewController+PhotoPicking.swift”, but personally, I find having less files to manage to be a good thing :]
+</p></div>
+
+<p>➤ Add the following methods to the extension:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Image Picker Delegates</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">imagePickerController</span><span class="hljs-params">(<span class="hljs-number">_</span> picker: UIImagePickerController, 
+                          didFinishPickingMediaWithInfo info: 
+                   [UIImagePickerController.InfoKey : Any])</span></span> {
+  dismiss(animated: <span class="hljs-literal">true</span>, completion: <span class="hljs-literal">nil</span>)
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">imagePickerControllerDidCancel</span><span class="hljs-params">(<span class="hljs-number">_</span> picker: 
+                      UIImagePickerController)</span></span> {
+  dismiss(animated: <span class="hljs-literal">true</span>, completion: <span class="hljs-literal">nil</span>)
+}</pre>
+<p>Currently these delegate methods simply remove the image picker from the screen. Soon, you’ll take the image the user picked and add it to the <code>Location</code> object, but for now, you just want to make sure the image picker shows up.
+</p>
+<p>Note that the view controller — in this case the extension — must conform to both <code>UIImagePickerControllerDelegate</code> and <code>UINavigationControllerDelegate</code> for this to work, but you don’t have to implement any of the <code>UINavigationControllerDelegate</code> methods.
+</p>
+<p>➤ Now change <code>tableView(_:didSelectRowAt:)</code> in the class as follows:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+           didSelectRowAt indexPath: IndexPath)</span></span> {
+  <span class="hljs-keyword">if</span> indexPath.section == <span class="hljs-number">0</span> &amp;&amp; indexPath.row == <span class="hljs-number">0</span> {
+    . . . 
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.section == <span class="hljs-number">1</span> &amp;&amp; indexPath.row == <span class="hljs-number">0</span> {
+    takePhotoWithCamera()
+  }
+}</pre>
+<p>Add Photo is the first row in the second section. When it’s tapped, you call the <code>takePhotoWithCamera()</code> method that you just added.
+</p>
+<p>➤ Run the app, tag a new location or edit an existing one, and tap <em>Add Photo</em>.
+</p>
+<p>If you’re running the app in the Simulator, bam! It crashes. The error message is this:
+</p><pre class="code-block">*** Terminating app due to uncaught exception &apos;NSInvalidArgumentException&apos;, reason: &apos;Source type 1 not available&apos;</pre>
+<p>The culprit for the crash is the line:
+</p><pre class="code-block">imagePicker.sourceType = .camera</pre>
+<p>Not all devices have a camera, and the Simulator does not. If you try to use the <code>UIImagePickerController</code> with a <code>sourceType</code> that is not supported by the device or the Simulator, the app crashes.
+</p>
+<p>If you run the app on your device — and if it has a camera, which it probably does if it’s a recent model — then you should see something like this:
+</p><div class="image-25"><img src="graphics/img467.png"  alt="" title="The camera interface" /></div>
+<p>That is very similar to what you see when you take pictures using the iPhone’s Camera app. <i>MyLocations</i> doesn’t let you record video, but you can certainly enable this feature in your own apps, if you wanted to.
+</p>
+<h3 class="segment-chapter">Use photo library to add image</h3>
+
+<p>You can still test the image picker on the Simulator, but instead of using the camera, you have to use the photo library.
+</p>
+<p>➤ Add another method to the extension:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">choosePhotoFromLibrary</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> imagePicker = <span class="hljs-type">UIImagePickerController</span>()
+  imagePicker.sourceType = .photoLibrary
+  imagePicker.delegate = <span class="hljs-keyword">self</span>
+  imagePicker.allowsEditing = <span class="hljs-literal">true</span>
+  present(imagePicker, animated: <span class="hljs-literal">true</span>, completion: <span class="hljs-literal">nil</span>)
+}</pre>
+<p>This method does essentially the same thing as <code>takePhotoWithCamera</code>, except now you set the <code>sourceType</code> to <code>.photoLibrary</code>.
+</p>
+<p>➤ Change <code>didSelectRowAt</code> to call <code>choosePhotoFromLibrary()</code> instead of <code>takePhotoWithCamera()</code>.
+</p>
+<p>➤ Run the app in the Simulator and tap <em>Add Photo</em>.
+</p>
+<p>At this point, depending on your iOS version, you may need to give <i>MyLocations</i> permission to access the photo library. If you tap Don’t Allow, the photo picker screen remains empty. If you accidentally do that, you can undo this choice in the Settings app, under <em>Privacy → Photos</em>. Choose <em>OK</em> to allow the app to use the photo library.
+</p>
+<p>However, with iOS 12, you probably won&apos;t get the prompt and so you should be fine and you should see a handful of stock images. On older iOS versions, it was possible that you would not see any images at all.
+</p>
+<p>➤ If you don’t see any images for some reason, stop the app and click on the built-in <em>Photos</em> app in the Simulator. This should display a handful of sample photos. Run the app again and try picking a photo. You may or may not see these sample photos now. If not, you’ll have to add your own.
+</p>
+<p>There are several ways you can add new photos to the Simulator. You can go into <em>Safari</em> (on the Simulator), search the internet for an image, press down on the image until a menu appears, and then choose Save Image:
+</p><div class="image-20"><img src="graphics/img468.png"  alt="" title="Adding images to the Simulator" /></div>
+<p>Instead of surfing the internet for images, you can also simply drag and drop an image file on to the Simulator window. This adds the picture to your library in the Photos app.
+</p>
+<p>Finally, you can use the Terminal and the <code>simctl</code> command. Type the following, all on one line (the last part, <code>~/Desktop/MyPhoto.JPG</code>, should be replaced with an actual path to an image you want to add):
+</p><pre class="code-block">/Applications/Xcode.app/Contents/Developer/usr/bin/simctl addmedia booted ~/Desktop/MyPhoto.JPG</pre>
+<p>The <code>simctl</code> tool can be used to manage your Simulators — type <code>simctl help</code> for a list of options. The command <code>addmedia booted</code> adds the specified media file to the active Simulator.
+</p>
+<p>➤ Run the app again. Now you should be able to choose a photo from the Photo Library:
+</p><div class="image-25"><img src="graphics/img469.png"  alt="" title="The photos in the library" /></div>
+<p>➤ Choose one of the photos. The screen now changes to:
+</p><div class="image-20"><img src="graphics/img470.png"  alt="" title="The user can tweak the photo" /></div>
+<p>This happens because you set the image picker’s <code>allowsEditing</code> property to <code>true</code>. With this setting enabled, the user can do some quick editing of the photo before making their final choice — in the Simulator you can hold down Alt/Option while dragging to rotate and zoom the photo.
+</p>
+<p>So, there are two types of image pickers you can use: the camera and the Photo Library. But the camera won’t work everywhere. It’s a bit limiting to restrict the app to just picking photos from the library, though.
+</p>
+<p>You’ll have to make the app a little smarter and allow the user to choose the camera when it is present.
+</p>
+<h3 class="segment-chapter">Choose between camera and photo library</h3>
+
+<p>First, you check whether the camera is available. When it is, you show an <em>action sheet</em> to let the user choose between the camera and the Photo Library.
+</p>
+<p>➤ Add the following methods to <em>LocationDetailsViewController.swift</em>, in the photo extension:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">pickPhoto</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">if</span> <span class="hljs-type">UIImagePickerController</span>.isSourceTypeAvailable(.camera) {
+    showPhotoMenu()
+  } <span class="hljs-keyword">else</span> {
+    choosePhotoFromLibrary()
+  }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showPhotoMenu</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> alert = <span class="hljs-type">UIAlertController</span>(title: <span class="hljs-literal">nil</span>, message: <span class="hljs-literal">nil</span>, 
+                       preferredStyle: .actionSheet)
+
+  <span class="hljs-keyword">let</span> actCancel = <span class="hljs-type">UIAlertAction</span>(title: <span class="hljs-string">"Cancel"</span>, style: .cancel, 
+                              handler: <span class="hljs-literal">nil</span>)
+  alert.addAction(actCancel)
+
+  <span class="hljs-keyword">let</span> actPhoto = <span class="hljs-type">UIAlertAction</span>(title: <span class="hljs-string">"Take Photo"</span>, 
+                               style: .<span class="hljs-keyword">default</span>, handler: <span class="hljs-literal">nil</span>)
+  alert.addAction(actPhoto)
+
+  <span class="hljs-keyword">let</span> actLibrary = <span class="hljs-type">UIAlertAction</span>(title: <span class="hljs-string">"Choose From Library"</span>, 
+                                 style: .<span class="hljs-keyword">default</span>, handler: <span class="hljs-literal">nil</span>)
+  alert.addAction(actLibrary)
+
+  present(alert, animated: <span class="hljs-literal">true</span>, completion: <span class="hljs-literal">nil</span>)
+}</pre>
+<p>You use <code>UIImagePickerController</code>’s <code>isSourceTypeAvailable()</code> method to check whether there’s a camera present. If not, you call <code>choosePhotoFromLibrary()</code> as that is your only option. But when the device does have a camera, you show a <code>UIAlertController</code> on the screen.
+</p>
+<p>Unlike the alert controllers you’ve used before, this one has the <code>.actionSheet</code> style. An action sheet works very much like an alert view, except that it slides in from the bottom of the screen and offers the user one of several choices.
+</p>
+<p>➤ In <code>didSelectRowAt</code>, change the call to <code>choosePhotoFromLibrary()</code> to <code>pickPhoto()</code> instead. This is the last time you’ll change this line, honest.
+</p>
+<p>➤ Run the app on your device to see the action sheet in action:
+</p><div class="image-30"><img src="graphics/img471.png"  alt="" title="The action sheet that lets you choose between camera and photo library" /></div>
+<p>Tapping any of the buttons in the action sheet simply dismisses the action sheet but doesn’t do anything else yet.
+</p>
+<p>By the way, if you want to test this action sheet in the Simulator, then you can fake the availability of the camera by writing the following in <code>pickPhoto()</code>:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> <span class="hljs-literal">true</span> || <span class="hljs-type">UIImagePickerController</span>.isSourceTypeAvailable(.camera) {</pre>
+<p>That will always show the action sheet because the condition is now always true.
+</p>
+<p>The choices in the action sheet are provided by <code>UIAlertAction</code> objects. The <code>handler:</code> parameter determines what happens when you press the corresponding button in the action sheet.
+</p>
+<p>Right now the handlers for all three choices — Take Photo, Choose From Library, Cancel — are <code>nil</code>, so nothing will happen.
+</p>
+<p>➤ Change these lines to the following:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> actPhoto = <span class="hljs-type">UIAlertAction</span>(title: <span class="hljs-string">"Take Photo"</span>, 
+      style: .<span class="hljs-keyword">default</span>, handler: { <span class="hljs-number">_</span> <span class="hljs-keyword">in</span> 
+        <span class="hljs-keyword">self</span>.takePhotoWithCamera() 
+      })</pre><pre class="code-block"><span class="hljs-keyword">let</span> actLibrary = <span class="hljs-type">UIAlertAction</span>(title: <span class="hljs-string">"Choose From Library"</span>, 
+      style: .<span class="hljs-keyword">default</span>, handler: { <span class="hljs-number">_</span> <span class="hljs-keyword">in</span> 
+        <span class="hljs-keyword">self</span>.choosePhotoFromLibrary() 
+      })</pre>
+<p>This gives <code>handler:</code> a closure that calls the corresponding method from the extension. You use the <code>_</code> wildcard to ignore the parameter that is passed to this closure — a reference to the <code>UIAlertAction</code> itself.
+</p>
+<p>➤ Run the app and make sure the buttons from the action sheet work properly.
+</p>
+<p>There may be a small delay between pressing any of these buttons before the image picker appears, but that’s because it’s a big component and iOS needs a few seconds to load it up.
+</p>
+<p>Notice that the Add Photo cell remains selected (dark gray background) when you cancel the action sheet. That doesn’t look so good.
+</p>
+<p>➤ In <code>tableView(_:didSelectRowAt)</code>, add the following line before the call to <code>pickPhoto()</code>:
+</p><pre class="code-block">tableView.deselectRow(at: indexPath, animated: <span class="hljs-literal">true</span>)</pre>
+<p>This first deselects the Add Photo row. Try it out, it looks better this way. The cell background quickly fades from gray back to white as the action sheet slides into the screen.
+</p>
+<h2 class="segment-chapter">Show the image</h2>
+
+<p>Now that the user can pick a photo, you should display it somewhere — what’s the point otherwise, right? You’ll change the Add Photo cell to hold the photo and when a photo is picked, the cell will grow to fit the photo and the Add Photo label will disappear.
+</p>
+<p>➤ Add two new outlets to the class in <em>LocationDetailsViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> imageView: <span class="hljs-type">UIImageView</span>!
+<span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> addPhotoLabel: <span class="hljs-type">UILabel</span>!</pre>
+<p>➤ In the storyboard, drag an Image View into the Add Photo cell. It doesn’t really matter how big it is or where you put it. You’ll programmatically move it to the proper place later. (This is the reason you made this a custom cell way back when, so you could add this image view to it.)
+</p><div class="image-30"><img src="graphics/img472.png"  alt="" title="Adding an Image View to the Add Photo cell" /></div>
+<p>➤ Connect the Image View to the view controller’s <code>imageView</code> outlet. Also connect the Add Photo label to the <code>addPhotoLabel</code> outlet.
+</p>
+<p>➤ Select the Image View. In the <em>Attributes inspector</em>, check its <em>Hidden</em> attribute (in the Drawing section). This makes the image view initially invisible, until you have a photo to give it.
+</p>
+<p>➤ Add <em>left</em>, <em>top</em>, <em>right</em>, <em>bottom</em>, and <em>height</em> Auto Layout constraints to the Image View:
+</p><div class="image-30"><img src="graphics/img473.png"  alt="" title="Image View Auto Layout constraints" /></div>
+<p>We will use some of these Auto Layout constraints to move things out of the way, or to expand the image view to fill the cell when we are displaying an image. But first, we need a variable to hold the picked image.
+</p>
+<p>➤ Add a new instance variable to <em>LocationDetailsViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> image: <span class="hljs-type">UIImage</span>?</pre>
+<p>If no photo is picked yet, <code>image</code> will be <code>nil</code>, so the variable has to be an optional.
+</p>
+<p>➤ Add a new method to the class:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">show</span><span class="hljs-params">(image: UIImage)</span></span> {
+  imageView.image = image
+  imageView.isHidden = <span class="hljs-literal">false</span>
+  addPhotoLabel.text = <span class="hljs-string">""</span>
+}</pre>
+<p>This puts the image from the parameter into the image view, makes the image view visible, and removes the title from the Add Photo label so that the Auto Layout constraints would move the image over into the space occupied by the label.
+</p>
+<p>➤ Change the <code>imagePickerController(_:didFinishPickingMediaWithInfo:)</code> method from the photo picking extension to the following:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">imagePickerController</span><span class="hljs-params">(<span class="hljs-number">_</span> picker: UIImagePickerController, 
+     didFinishPickingMediaWithInfo info: 
+                   [UIImagePickerController.InfoKey : Any])</span></span> {
+
+  image = info[<span class="hljs-type">UIImagePickerController</span>.<span class="hljs-type">InfoKey</span>.editedImage] 
+                                                <span class="hljs-keyword">as</span>? <span class="hljs-type">UIImage</span>
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> theImage = image {
+    show(image: theImage)
+  }
+
+  dismiss(animated: <span class="hljs-literal">true</span>, completion: <span class="hljs-literal">nil</span>)
+}</pre>
+<p>This is the method that gets called when the user has selected a photo in the image picker.
+</p>
+<p>You can tell by the notation <code>[UIImagePickerController.InfoKey : Any]</code> that the <code>info</code> parameter is a dictionary. Whenever you see <code>[ A : B ]</code> you’re dealing with a dictionary that has keys of type “A” and values of type “B”.
+</p>
+<p>The <code>info</code> dictionary contains data describing the image that the user picked. You use the <code>UIImagePickerController.InfoKey.editedImage</code> key to retrieve a <code>UIImage</code> object that contains the final image after the user moved and/or scaled it — you can also get the original image if you wish, using a different key.
+</p>
+<p>Once you have the photo, you store it in the <code>image</code> instance variable so you can use it later.
+</p>
+<p>Dictionaries always return optionals, because there is a theoretical possibility that the key you asked for — <code>UIImagePickerController.InfoKey.editedImage</code> in this case — doesn’t actually exist in the dictionary.
+</p>
+<p>Since the <code>image</code> instance variable is an optional, you simply assign the value from the dictionary.
+</p>
+<p>If <code>info[UIImagePickerController.InfoKey.editedImage]</code> is <code>nil</code>, then <code>image</code> will be <code>nil</code> too. You do need to cast the value from the meaningless <code>Any</code> to <code>UIImage</code> using the <code>as?</code> operator. In this case you need to use the optional cast, <code>as?</code> instead of <code>as!</code>, because <code>image</code> is an optional instance variable.
+</p>
+<p>Once you have the image and it is not <code>nil</code>, the call to <code>show(image:)</code> puts it in the Add Photo cell.
+</p>
+<div class="note">
+<p><em>Exercise.</em> See if you can rewrite the above logic to use a <code>didSet</code> property observer on the <code>image</code> instance variable. If you succeed, then placing the photo into image will automatically update the <code>UIImageView</code>, without needing to call <code>show(image:)</code>.
+</p></div>
+
+<p>➤ Run the app and choose a photo. Whoops, it looks like you have a small problem here:
+</p><div class="image-30"><img src="graphics/img474.png"  alt="" title="The photo is stretched" /></div>
+<p>If you recall, we set the height for the Image View to something like 22 points when we set the Auto Layout constraints earlier because that&apos;s how tall the image needed to be to fit the original row. However, when we&apos;re displaying the image, we need a larger value — something like 260 points.
+</p>
+<p>But of course, if we set the Image View height to 260 at the outset, the image picker cell would start out too tall. So how do we fix this?
+</p>
+<p>Simple enough — you can actually set up connections for Auto Layout constraints too and change the constraint values via code during runtime!
+</p>
+<h3 class="segment-chapter">Resize table view cell to show image</h3>
+
+<p>➤ Add a new outlet for the image height constraint to <em>LocationDetailsViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> imageHeight: <span class="hljs-type">NSLayoutConstraint</span>!</pre>
+<p>➤ Switch to the storyboard and then connect the new outlet to the height constraint for the image — the easiest way to do this is via the Document Outline since you can pick the exact constraint you want from there. Simply Control-drag from the circle for the view controller to the correct constraint in the Document Outline and then pick the outlet name, <em>imageHeight</em>, from the popup menu:
+</p><div class="image-30"><img src="graphics/img475.png"  alt="" title="Connect the outlet for the constraint" /></div>
+<p>Now, all you have to do is change the Image View&apos;s height constraint to 260 when you display an image!
+</p>
+<p>➤ Change the <code>show(image:)</code> method:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">show</span><span class="hljs-params">(image: UIImage)</span></span> {
+  ...
+  <span class="hljs-comment">// Add the following lines</span>
+  imageHeight.constant = <span class="hljs-number">260</span>
+  tableView.reloadData()
+}</pre>
+<p>You simply change the height of the image to 260 points and then refresh the table view to set the photo row to the proper height.
+</p>
+<p>➤ Try it out. The cell now resizes and is big enough for the whole photo.
+</p><div class="image-30"><img src="graphics/img476.png"  alt="" title="The photo displays correctly" /></div>
+<p>There&apos;s one small tweak that you can make. By default, an image view will stretch the image to fit the entire content area. That’s probably not what you want for this app.
+</p>
+<h3 class="segment-chapter">Set image to display correctly</h3>
+
+<p>➤ Go to the storyboard and select the Image View (it may be hard to see on account of it being hidden, but you can still find it in the Document Outline). In the <em>Attributes inspector</em>, set its <em>Content Mode</em> to <em>Aspect Fit</em>.
+</p><div class="image-30"><img src="graphics/img477.png"  alt="" title="Changing the image view’s content mode" /></div>
+<p>This will keep the image’s aspect ratio intact as it is resized to fit within the image view. Play a bit with the other content modes to see what they do. (Aspect Fill is similar to Aspect Fit, except that it tries to fill up the entire view.)
+</p><div class="image-30"><img src="graphics/img478.png"  alt="" title="The aspect ratio of the photo is kept intact" /></div>
+<p>That looks a bit better, but there are now larger margins at the top and bottom of the image.
+</p>
+<div class="note">
+<p><em>Exercise.</em> Make the height of the photo table view cell dynamic, depending on the aspect ratio of the image. This is a tough one! You can keep the width of the image view at 260 points. This should correspond to the width of the <code>UIImage</code> object. You get the aspect ratio by doing <code>image.size.width / image.size.height</code>. With this ratio you can calculate what the height of the image view and the cell should be. Good luck! You can find solutions from other readers at <a href="https://forums.raywenderlich.com">forums.raywenderlich.com</a>
+</p></div>
+
+<h2 class="segment-chapter">UI improvements</h2>
+
+<p>The user can take a photo — or pick one — now but the app doesn’t save it to the data store yet. Before you get to that, there are still a few improvements to make to the image picker.
+</p>
+<p>Apple recommends that apps remove any alert or action sheet from the screen when the user presses the Home button to move the app to the background.
+</p>
+<p>The user may return to the app hours or days later and they will have forgotten what they were going to do. The presence of the alert or action sheet is confusing and the user might think, “What’s that thing doing here?!”
+</p>
+<p>To prevent this from happening, you’ll make the Tag Location screen a little more attentive. When the app goes to the background, it will dismiss the action sheet if that is currently showing. You’ll do the same for the image picker.
+</p>
+<h3 class="segment-chapter">Handle background mode</h3>
+
+<p>You saw in the <i>Checklists</i> app that the <code>AppDelegate</code> is notified by the operating system when the app is about to go to the background through its <code>applicationDidEnterBackground(_:)</code> method.
+</p>
+<p>View controllers don’t have such a method, but fortunately, iOS sends out “going to the background” notifications through <code>NotificationCenter</code> that you can configure the view controller to listen to.
+</p>
+<p>Earlier you used the notification center to observe notifications from Core Data. This time you’ll listen for the <code>UIApplicationDidEnterBackground</code> notification.
+</p>
+<p>➤ In <em>LocationDetailsViewController.swift</em>, add a new method:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">listenForBackgroundNotification</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-type">NotificationCenter</span>.<span class="hljs-keyword">default</span>.addObserver(forName: 
+      <span class="hljs-type">UIApplication</span>.didEnterBackgroundNotification, 
+      object: <span class="hljs-literal">nil</span>, queue: <span class="hljs-type">OperationQueue</span>.main) { <span class="hljs-number">_</span> <span class="hljs-keyword">in</span>
+
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.presentedViewController != <span class="hljs-literal">nil</span> {
+      <span class="hljs-keyword">self</span>.dismiss(animated: <span class="hljs-literal">false</span>, completion: <span class="hljs-literal">nil</span>)
+    }
+
+    <span class="hljs-keyword">self</span>.descriptionTextView.resignFirstResponder()
+  }
+}</pre>
+<p>This adds an observer for <code>UIApplication.didEnterBackgroundNotification</code>. When this notification is received, <code>NotificationCenter</code> will call the closure.
+</p>
+<p>Notice that you’re using the “trailing” closure syntax here; the closure is not a parameter to <code>addObserver(forName, …)</code> but immediately follows the method call.
+</p>
+<p>If there is an active image picker or action sheet, you dismiss it. You also hide the keyboard if the text view is active.
+</p>
+<p>The image picker and action sheet are both presented as modal view controllers that appear above everything else. If such a modal view controller is active, <code>UIViewController</code>’s <code>presentedViewController</code> property has a reference to that modal view controller.
+</p>
+<p>So, if <code>presentedViewController</code> is not <code>nil</code> you call <code>dismiss()</code> to close the modal screen. (By the way, this has no effect on the category picker; that does not use a modal segue but a push segue.)
+</p>
+<p>➤ Call the <code>listenForBackgroundNotification()</code> method from within <code>viewDidLoad()</code>.
+</p>
+<p>➤ Try it out. Open the image picker (or the action sheet if you’re on a device that has a camera) and exit to the home screen to put the app to sleep.
+</p>
+<p>Then tap the app’s icon to activate the app again. You should now be back on the Tag Location screen — or Edit Location screen if you opted to edit an existing one. The image picker — or action sheet — has automatically closed.
+</p>
+<p>That seems to work, cool!
+</p>
+<h3 class="segment-chapter">Remove notification observers</h3>
+
+<p>At this point, with iOS versions up to iOS 9.0, there’s one more thing you needed to do — you should tell the <code>NotificationCenter</code> to stop sending these background notifications when the Tag/Edit Location screen closes. You didn’t want <code>NotificationCenter</code> to send notifications to an object that no longer existed, that was just asking for trouble!
+</p>
+<p>However, as of iOS 9.0, this is no longer necesary since the system handles all of this for you. But, we&apos;ll go ahead and unregister the observer just so that you can see how that works — and also to illustrate another issue that we&apos;ll get to soon :]
+</p>
+<p>The <code>deinit</code> method is a good place to unregister observers.
+</p>
+<p>➤ First, add a new instance variable:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> observer: <span class="hljs-type">Any</span>!</pre>
+<p>This will hold a reference to the observer, which is necessary to unregister it later.
+</p>
+<p>The type of this variable is <code>Any!</code>, meaning that you don’t really care what sort of object this is.
+</p>
+<p>➤ In <code>listenForBackgroundNotification()</code>, change the first line so that it stores the return value of the call to <code>addObserver()</code> into this new instance variable:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">listenForBackgroundNotification</span><span class="hljs-params">()</span></span> {
+  observer = <span class="hljs-type">NotificationCenter</span>.<span class="hljs-keyword">default</span>.addObserver(forName: . . .</pre>
+<p>➤ Finally, add the <code>deinit</code> method:
+</p><pre class="code-block"><span class="hljs-keyword">deinit</span> {
+  <span class="hljs-built_in">print</span>(<span class="hljs-string">"*** deinit <span class="hljs-subst">\(<span class="hljs-keyword">self</span>)</span>"</span>)
+  <span class="hljs-type">NotificationCenter</span>.<span class="hljs-keyword">default</span>.removeObserver(observer)
+}</pre>
+<p>You add a <code>print()</code> here so you have proof that the view controller really does get destroyed when you close the Tag/Edit Location screen.
+</p>
+<p>➤ Run the app, edit an existing location, and tap Done to close the screen.
+</p>
+<p>I don’t know about you, but I don’t see the <code>*** deinit</code> message anywhere in the Xcode Console.
+</p>
+<p>Guess what? The <code>LocationDetailsViewController</code> doesn’t get destroyed for some reason. That means the app is leaking memory… Of course, this was all a big setup on my part so I can tell you about closures and capturing :]
+</p>
+<p>Remember how in closures you always have to specify <code>self</code> when you want to access an instance variable or call a method? That is because closures capture any variables that are used inside the closure.
+</p>
+<p>When it captures a variable, the closure simply stores a reference to that variable. This allows it to use the variable at some later point when the closure is actually performed.
+</p>
+<p>Why is this important? If the code inside the closure uses a local variable, the method that created this variable may no longer be active by the time the closure is performed. After all, when a method ends all locals are destroyed. But when such a local is captured by a closure, it stays alive until the closure is also done with it.
+</p>
+<p>Because the closure needs to keep the objects from those captured variables alive in the time between capturing and actually performing the closure, it stores a <i>strong</i> reference to those objects. In other words, capturing means the closure becomes a shared owner of the captured objects.
+</p>
+<p>What may not be immediately obvious is that <code>self</code> is also one of those variables and therefore gets captured by the closure. Sneaky! That’s why Swift requires you to explicitly write out <code>self</code> inside closures, so you won’t forget this value is being captured.
+</p>
+<p>In the context of <code>LocationDetailsViewController</code>,  <code>self</code> referrs to the view controller itself. So, as the closure captures <code>self</code>, it creates a strong reference to the <code>LocationDetailsViewController</code> object, and the closure becomes a co-owner of this view controller. I bet you didn’t expect that!
+</p>
+<p>Remember, as long as an object has owners, it is kept alive. So this closure is keeping the view controller alive, even after you closed it!
+</p>
+<p>This is known as an <i>ownership cycle</i>, because the view controller itself has a strong reference back to the closure through the <code>observer</code> variable.
+</p><div class="image-80"><img src="graphics/img479.png"  alt="" title="The relationship between the view controller and the closure" /></div>
+<p>In case you’re wondering, the view controller’s other owner is UIKit. The observer is also being kept alive by <code>NotificationCenter</code>.
+</p>
+<p>This sounds like a classic catch-22 problem! Fortunately, there is a way to break the ownership cycle. You can give the closure a <i>capture list</i>. What&apos;s <i>that</i> you ask? All will be explained soon!
+</p>
+<p>➤ Change <code>listenForBackgroundNotification()</code> to the following:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">listenForBackgroundNotification</span><span class="hljs-params">()</span></span> {
+  observer = <span class="hljs-type">NotificationCenter</span>.<span class="hljs-keyword">default</span>.addObserver(
+    forName: <span class="hljs-type">UIApplication</span>.didEnterBackgroundNotification, 
+    object: <span class="hljs-literal">nil</span>, queue: <span class="hljs-type">OperationQueue</span>.main) { [<span class="hljs-keyword">weak</span> <span class="hljs-keyword">self</span>] <span class="hljs-number">_</span> <span class="hljs-keyword">in</span>
+    
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> weakSelf = <span class="hljs-keyword">self</span> {
+      <span class="hljs-keyword">if</span> weakSelf.presentedViewController != <span class="hljs-literal">nil</span> {
+        weakSelf.dismiss(animated: <span class="hljs-literal">false</span>, completion: <span class="hljs-literal">nil</span>)
+      }
+      weakSelf.descriptionTextView.resignFirstResponder()
+    }
+  }
+}</pre>
+<p>There are a couple of new things here. Let’s look at the first part of the closure:
+</p><pre class="code-block">{ [<span class="hljs-keyword">weak</span> <span class="hljs-keyword">self</span>] <span class="hljs-number">_</span> <span class="hljs-keyword">in</span>
+  . . . 
+}</pre>
+<p>The <code>[weak self]</code> bit is the capture list for the closure. It tells the closure that the variable <code>self</code> will still be captured, but as a weak reference. As a result, the closure no longer keeps the view controller alive.
+</p>
+<p>Weak references are allowed to become <code>nil</code>, which means the captured <code>self</code> is now an optional inside the closure. You need to unwrap it with <code>if let</code> before you can send messages to the view controller.
+</p>
+<p>Other than that, the closure still does the exact same things as before.
+</p>
+<p>➤ Try it out. Open the Tag/Edit Location screen and close it again. You should now see the <code>print()</code> from <code>deinit</code> in the Xcode Console.
+</p>
+<p>That means the view controller gets destroyed properly and the notification observer is removed from <code>NotificationCenter</code>. Good riddance!
+</p>
+<p>Do note that as of iOS 9.0 and above, even if you do not remove the observer explicitly, the system would handle this for you and automatically remove the observer when the view controller is deallocated. So you don&apos;t have to worry about any side effects from an errant observer any longer.
+</p>
+<p>But it’s always a good idea to clean up after yourself. Use <code>print()</code>’s to make sure your objects really get deallocated! Xcode also comes with Instruments, a handy tool that you can use to detect such issues.
+</p>
+<h2 class="segment-chapter">Save the image</h2>
+
+<p>The ability to pick photos is rather useless if the app doesn’t also save them. So, that’s what you’ll do here.
+</p>
+<p>It is possible to store images in the Core Data store as BLOBs (<em>B</em>inary <em>L</em>arge <em>OB</em>jects), but that is not recommended. Large blocks of data are better off stored as regular files in the app’s Documents directory.
+</p>
+<div class="note">
+<p><em>Note:</em> Core Data has an “Allows external storage” feature that is designed to make this process completely transparent for the developer. In theory, you can put data of any size into your entities and Core Data automatically decides whether to put the data into the SQLite database or store it as an external file.
+</p>
+<p>Unfortunately, this feature doesn’t work very well in practice. Last time I checked, it had too many bugs to be useful. So, until this part of Core Data becomes rock solid, we’ll be doing it by hand.
+</p></div>
+
+<p>When the image picker gives you a <code>UIImage</code> object for a photo, that image only lives in the iPhone’s working memory.
+</p>
+<p>The image may also be stored as a file somewhere if the user picked it from the photo library, but that’s not the case if they just snapped a new picture. Besides, the user may have resized or cropped the image.
+</p>
+<p>So you have to save that <code>UIImage</code> to a file of your own if you want to keep it. The photos in <i>MyLocations</i> will be saved in JPEG format.
+</p>
+<p>You need a way to associate that JPEG file with your <code>Location</code> object. The obvious solution is to store the filename in the <code>Location</code> object. You won’t store the entire filename, just an ID, which is a positive number. The image file itself will be named <em>Photo-XXX.jpg</em>, where XXX is the numeric ID.
+</p>
+<h3 class="segment-chapter">Data model changes</h3>
+
+<p>➤ Open the Data Model editor. Add a <em>photoID</em> attribute to the Location entity and give it the type <em>Integer 32</em>. This is an optional value — not all Locations will have photos — so make sure the <em>Optional</em> box is checked in the Data Model inspector.
+</p>
+<p>➤ Add a property for this new attribute to <em>Location+CoreDataProperties.swift</em>:
+</p><pre class="code-block"><span class="hljs-meta">@NSManaged</span> <span class="hljs-keyword">public</span> <span class="hljs-keyword">var</span> photoID: <span class="hljs-type">NSNumber</span>?</pre>
+<p>Remember that for an object that is managed by Core Data, you have to declare the property as <code>@NSManaged</code>.
+</p>
+<p>You may be wondering why you’re declaring the type of <code>photoID</code> as <code>NSNumber</code> and not as <code>Int</code> or, more precisely, <code>Int32</code>. Remember that Core Data is an Objective-C framework, so you’re limited by the possibilities of that language. <code>NSNumber</code> is how number objects are handled in Objective-C.
+</p>
+<p>For various reasons, you can’t represent an <code>Int</code> value as an optional in Objective-C. Instead, you’ll use the <code>NSNumber</code> class. Swift will automatically convert between <code>Int</code> values and this <code>NSNumber</code>, so it’s no big deal.
+</p>
+<p>You’ll now add some other properties to the <code>Location</code> object to make working with photos a little easier.
+</p>
+<p>➤ Add the <code>hasPhoto</code> computed property to <em>Location+CoreDataClass.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> hasPhoto: <span class="hljs-type">Bool</span> {
+  <span class="hljs-keyword">return</span> photoID != <span class="hljs-literal">nil</span>
+}</pre>
+<p>This determines whether the <code>Location</code> object has a photo associated with it or not. Swift’s optionals make this easy.
+</p>
+<p>➤ Also add the <code>photoURL</code> property:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> photoURL: <span class="hljs-type">URL</span> {
+  <span class="hljs-built_in">assert</span>(photoID != <span class="hljs-literal">nil</span>, <span class="hljs-string">"No photo ID set"</span>)
+  <span class="hljs-keyword">let</span> filename = <span class="hljs-string">"Photo-<span class="hljs-subst">\(photoID!.intValue)</span>.jpg"</span>
+  <span class="hljs-keyword">return</span> applicationDocumentsDirectory.appendingPathComponent(
+                                                     filename)
+}</pre>
+<p>This property computes the full URL for the JPEG file for the photo. Note that iOS uses URLs to refer to files, even those saved on the local device.
+</p>
+<p>You’ll save these JPEG files in the app’s Documents directory. To get the URL to that directory, you use the global variable <code>applicationDocumentsDirectory</code> that you added to Functions.swift earlier.
+</p>
+<p>Notice the use of <code>assert()</code> to make sure the <code>photoID</code> is not <code>nil</code>. An <i>assertion</i> is a special debugging tool that is used to check that your code always does something valid. If not, the app will crash with a helpful error message. You’ll see more of this later when we talk about finding bugs — and squashing them.
+</p>
+<p>Assertions are a form of defensive programming. Most of the crashes you’ve seen so far were actually caused by assertions in UIKit. They allow the app to crash in a controlled manner. Without these assertions, programming mistakes could crash the app at random moments, making it very hard to find out what went wrong.
+</p>
+<p>If the app were to ask a <code>Location</code> object for its <code>photoURL</code> without having given it a valid <code>photoID</code> earlier, the app will crash with the message “No photo ID set”. If so, there is a bug in the code somewhere because this is not supposed to happen. Internal consistency checks like this can be very useful.
+</p>
+<p>Assertions are usually enabled only while you’re developing and testing your app and disabled when you upload the final build of your app to the App Store. By then, there should be no more bugs in your app — or so you would hope! It’s a good idea to use <code>assert()</code> in strategic places to catch yourself making programming errors.
+</p>
+<p>➤ Add a <code>photoImage</code> property:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> photoImage: <span class="hljs-type">UIImage</span>? {
+  <span class="hljs-keyword">return</span> <span class="hljs-type">UIImage</span>(contentsOfFile: photoURL.path)
+}</pre>
+<p>This returns a <code>UIImage</code> object by loading the image file. You’ll need this later to show the photos for existing <code>Location</code> objects.
+</p>
+<p>Note that this property has the optional type <code>UIImage?</code> — that’s because loading the image may fail if the file is damaged or removed. Of course, that <i>shouldn’t</i> happen, but no doubt you’ve heard of Murphy’s Law… As I&apos;ve repeatedly said, it’s good to get into the habit of defensive programming.
+</p>
+<p>There is one more thing to add, a <code>nextPhotoID()</code> method. This is a class method, meaning that you don’t need to have a <code>Location</code> instance to call it. You can call this method anytime from anywhere.
+</p>
+<p>➤ Add the method:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">func</span> <span class="hljs-title">nextPhotoID</span>() -&gt; <span class="hljs-title">Int</span> </span>{
+  <span class="hljs-keyword">let</span> userDefaults = <span class="hljs-type">UserDefaults</span>.standard
+  <span class="hljs-keyword">let</span> currentID = userDefaults.integer(forKey: <span class="hljs-string">"PhotoID"</span>) + <span class="hljs-number">1</span>
+  userDefaults.<span class="hljs-keyword">set</span>(currentID, forKey: <span class="hljs-string">"PhotoID"</span>)
+  userDefaults.synchronize()
+  <span class="hljs-keyword">return</span> currentID
+}</pre>
+<p>You need to have some way to generate a unique ID for each <code>Location</code> object. All <code>NSManagedObjects</code> have an <code>objectID</code> method, but that returns something unreadable such as:
+</p><pre class="code-block">&lt;x-coredata://C26CC559-959C-49F6-BEF0-F221D6F3F04A/Location/p1&gt;</pre>
+<p>You can’t really use that in a filename. So instead, you’re going to put a simple integer in <code>UserDefaults</code> and update it every time the app asks for a new ID — this is similar to what you did in the last app to make <code>ChecklistItem</code> IDs for use with local notifications.
+</p>
+<p>It may seem a little silly to use <code>UserDefaults</code> for this when you’re already using Core Data as the data store, but with <code>UserDefaults</code>, the <code>nextPhotoID()</code> method is only five lines. You’ve seen how verbose the code is for fetching something from Core Data and then saving it again. This is just as easy. Of course, if you wanted to, as an exercise, you could try to implement these IDs using Core Data...
+</p>
+<p>That does it for <code>Location</code>. Now you have to save the image and fill in the <code>Location</code> object’s <code>photoID</code> field. This happens in the Location Details View Controller’s <code>done()</code> action.
+</p>
+<h3 class="segment-chapter">Save the image to a file</h3>
+
+<p>➤ In <em>LocationDetailsViewController.swift</em>, in the <code>done()</code> method, add the following in between where you set the properties of the <code>Location</code> object and where you save the managed object context:
+</p><pre class="code-block"><span class="hljs-comment">// Save image</span>
+<span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> image = image {
+  <span class="hljs-comment">// 1</span>
+  <span class="hljs-keyword">if</span> !location.hasPhoto {
+    location.photoID = <span class="hljs-type">Location</span>.nextPhotoID() <span class="hljs-keyword">as</span> <span class="hljs-type">NSNumber</span>
+  }
+  <span class="hljs-comment">// 2</span>
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> data = image.jpegData(compressionQuality: <span class="hljs-number">0.5</span>) {
+    <span class="hljs-comment">// 3</span>
+    <span class="hljs-keyword">do</span> {
+      <span class="hljs-keyword">try</span> data.write(to: location.photoURL, options: .atomic)
+    } <span class="hljs-keyword">catch</span> {
+      <span class="hljs-built_in">print</span>(<span class="hljs-string">"Error writing file: <span class="hljs-subst">\(error)</span>"</span>)
+    }
+  }
+}</pre>
+<p>This code is only performed if <code>image</code> is not <code>nil</code> — in other words, when the user has picked a photo.
+</p>
+<ol>
+<li>
+<p>You need to get a new ID and assign it to the <code>Location</code>’s <code>photoID</code> property, but only if you’re adding a photo to a <code>Location</code> that didn’t already have one. If a photo existed, you simply keep the same ID and overwrite the existing JPEG file.
+</p></li>
+
+<li>
+<p>The <code>image.jpegData(compressionQuality: 0.5)</code> call converts the <code>UIImage</code> to JPEG format and returns a <code>Data</code> object. <code>Data</code> is an object that represents a blob of binary data, usually the contents of a file.
+</p></li>
+
+<li>
+<p>You save the <code>Data</code> object to the path given by the <code>photoURL</code> property. Also notice the use of a <code>do-try-catch</code> block again.
+</p></li>
+</ol>
+
+<p>➤ Run the app, tag a location, choose a photo, and press Done to exit the screen. Now the photo you picked should be saved in the app’s Documents directory as a regular JPEG file.
+</p><div class="image-50"><img src="graphics/img480.png"  alt="" title="The photo is saved in the app’s Documents folder" /></div>
+<div class="note">
+<p><em>Note:</em> The first time you run the app after adding a new attribute to the data model (photoID), the <code>NSPersistentContainer</code> performs a migration of the data store behind the scenes to make sure the data store is in sync again with the data model. If this doesn’t work for you for some reason, then remove the old DataModel.sqlite file from the Library/Application Support folder and try again — or, simply reset the Simulator or remove the app from your test device.
+</p></div>
+
+<p>➤ Tag another location and add a photo to it. Hmm… if you look into the app’s Documents directory, this seems to have overwritten the previous photo.
+</p>
+<div class="note">
+<p><em>Exercise.</em> Try to debug this one on your own. What is going wrong here? This is a tough one!
+</p></div>
+
+<p>Answer: When you create a new <code>Location</code> object, its <code>photoID</code> property gets a default value of 0. That means each <code>Location</code> initially has a <code>photoID</code> of 0. That should really be <code>nil</code>, which means “no photo”.
+</p>
+<p>➤ In <em>LocationDetailsViewController.swift</em>, add the following line near the top of <code>done()</code>:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">done</span><span class="hljs-params">()</span></span> {
+  . . .
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> temp = locationToEdit {
+    . . .
+  } <span class="hljs-keyword">else</span> {
+    . . .
+    location.photoID = <span class="hljs-literal">nil</span>           <span class="hljs-comment">// add this</span>
+  }
+  . . .</pre>
+<p>You now set the <code>photoID</code> of a new <code>Location</code> object to <code>nil</code> so that the <code>hasPhoto</code> property correctly recognizes that these <code>Locations</code> as not having a photo yet.
+</p>
+<p>➤ Run the app again and tag multiple locations with photos. Verify that now each photo is saved individually.
+</p>
+<h3 class="segment-chapter">Verify photoID in SQLite</h3>
+
+<p>If you have Liya or another SQLite inspection tool, you can verify that each Location object has been given a unique photoID value (in the ZPHOTOID column):
+</p><div class="image-70"><img src="graphics/img481.png"  alt="" title="The Location objects with unique photoId values in Liya" /></div>
+<h2 class="segment-chapter">Edit the image</h2>
+
+<p>So far, all the changes you’ve made were for the Tag Location screen and adding new locations. Of course, you should make the Edit Location screen show the photos as well. The change to <code>LocationDetailsViewController</code> is quite simple.
+</p>
+<p>➤ Change <code>viewDidLoad()</code> in <em>LocationDetailsViewController.swift</em> to:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">super</span>.viewDidLoad()
+
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> location = locationToEdit {
+    title = <span class="hljs-string">"Edit Location"</span>
+    <span class="hljs-comment">// New code block</span>
+    <span class="hljs-keyword">if</span> location.hasPhoto {
+      <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> theImage = location.photoImage {
+        show(image: theImage)
+      }
+    }
+    <span class="hljs-comment">// End of new code</span>
+  }
+  . . .</pre>
+<p>If the <code>Location</code> that you’re editing has a photo, this calls <code>show(image:)</code> to display it in the photo cell.
+</p>
+<p>Recall that the <code>photoImage</code> property returns an optional, <code>UIImage?</code>, so you use <code>if let</code> to unwrap it. This is another bit of defensive programming.
+</p>
+<p>Sure, if <code>hasPhoto</code> is <code>true</code> there should always be a valid image file present. But it’s possible to imagine a scenario where there isn’t — the JPEG file could have been erased or corrupted — even though that “should” never happen. I’m sure you’ve had your own share of computer gremlins eating important files.
+</p>
+<p>Note also what you <em>don’t</em> do here: the <code>Location</code>’s image is <i>not</i> assigned to the <code>image</code> instance variable. If the user doesn’t change the photo, then you don’t need to write it out to a file again — it’s already in that file and doing perfectly fine, thank you.
+</p>
+<p>If you were to put the photo in the <code>image</code> variable, then <code>done()</code> would overwrite the existing file with the exact same data, which is a little silly. Therefore, the <code>image</code> instance variable will only be set when the user picks a new photo.
+</p>
+<p>➤ Run the app and take a peek at the existing locations from the Locations or Map tabs. The Edit Location screen should now show the photos for the locations you’re editing.
+</p>
+<p>➤ Verify that you can also change the photo and that the JPEG file in the app’s Documents directory gets overwritten when you press the Done button.
+</p>
+<p>There’s another editing operation the user can perform on a location: deletion. What happens to the image file when a location is deleted? At the moment nothing. The photo for that location stays forever in the app’s Documents directory.
+</p>
+<h3 class="segment-chapter">Clean up on location deletion</h3>
+
+<p>Let’s add some code to remove the photo file, if it exists, when a <code>Location</code> object is deleted.
+</p>
+<p>➤ First add a new method to <em>Location+CoreDataClass.swift</em>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">removePhotoFile</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">if</span> hasPhoto {
+    <span class="hljs-keyword">do</span> {
+      <span class="hljs-keyword">try</span> <span class="hljs-type">FileManager</span>.<span class="hljs-keyword">default</span>.removeItem(at: photoURL)
+    } <span class="hljs-keyword">catch</span> {
+      <span class="hljs-built_in">print</span>(<span class="hljs-string">"Error removing file: <span class="hljs-subst">\(error)</span>"</span>)
+    }
+  }
+}</pre>
+<p>This code snippet can be used to remove any file or folder. The <code>FileManager</code> class has all kinds of useful methods for dealing with the file system.
+</p>
+<p>➤ Deleting locations happens in <em>LocationsViewController.swift</em>. Add the following line to <code>tableView(_:commit:forRowAt:)</code>:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+              commit editingStyle: UITableViewCell.EditingStyle, 
+              forRowAt indexPath: IndexPath)</span></span> {
+  <span class="hljs-keyword">if</span> editingStyle == .delete {
+    <span class="hljs-keyword">let</span> location = fetchedResultsController.object(at: 
+                                            indexPath)
+    
+    location.removePhotoFile()              <span class="hljs-comment">// add this line   </span>
+    managedObjectContext.delete(location)
+    . . .</pre>
+<p>The new line calls <code>removePhotoFile()</code> on the <code>Location</code> object just before it is deleted from the Core Data context.
+</p>
+<p>➤ Try it out. Add a new location and give it a photo. You should see the JPEG file in the Documents directory.
+</p>
+<p>From the Locations screen, delete the location you just added and look in the Documents directory to make sure the JPEG file truly is a goner.
+</p>
+<h2 class="segment-chapter">Thumbnails</h2>
+
+<p>Now that locations can have photos, it’s a good idea to show thumbnails for these photos in the Locations tab. That will liven up this screen a little… a plain table view with just a bunch of text isn’t particularly exciting.
+</p>
+<h3 class="segment-chapter">Storyboard changes</h3>
+
+<p>➤ Go to the storyboard editor. In the prototype cell for the <em>Locations</em> scene, remove the leading Auto Layout constraint from each of the two labels, and set <em>X = 76</em> in the <em>View</em> section of the <em>Size inspector</em>.
+</p>
+<p>➤ Drag a new <em>Image View</em> into the cell. Place it at the top-left corner of the cell. Give it the following position: X = 16, Y = 2. Make it 52 by 52 points big.
+</p><div class="image-30"><img src="graphics/img482.png"  alt="" title="The table view cell has an image view" /></div>
+<p>➤ Add <em>top</em>, <em>left</em>, <em>height</em>, and <em>width</em> Auto Layout constraints for the currently set values for the new Image View.
+</p>
+<p>➤ Select each of the labels and set their left constraint again so that each one is positioned releative to the image view — the spacing should be 8 points if you set all the positions and sizes above correctly.
+</p>
+<p>➤ Connect the image view to a new <code>UIImageView</code> outlet on <code>LocationCell</code>, named <em>photoImageView</em>.
+</p>
+<div class="note">
+<p><em>Exercise.</em> Make this connection with the Assistant editor. Tip: you should connect the image view to the cell, not to the view controller.
+</p></div>
+
+<p>Now you can put any image into the table view cell simply by passing it to the <code>LocationCell</code>’s <code>photoImageView</code> property.
+</p>
+<h3 class="segment-chapter">Code changes</h3>
+
+<p>➤ Go to <em>LocationCell.swift</em> and add the following method:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">thumbnail</span><span class="hljs-params">(<span class="hljs-keyword">for</span> location: Location)</span></span> -&gt; <span class="hljs-type">UIImage</span> {
+  <span class="hljs-keyword">if</span> location.hasPhoto, <span class="hljs-keyword">let</span> image = location.photoImage {
+    <span class="hljs-keyword">return</span> image
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-type">UIImage</span>()
+}</pre>
+<p>This returns either the image from the <code>Location</code> or an empty placeholder image.
+</p>
+<p>You should read this <code>if</code> statement as, “if the location has a photo, and I can unwrap <code>location.photoImage</code>, then return the unwrapped image.”
+</p>
+<p>You have previously seen the <code>&amp;&amp;</code> (logical and) used to combine two conditions, but you cannot write the above like this:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> location.hasPhoto &amp;&amp; <span class="hljs-keyword">let</span> image = location.photoImage</pre>
+<p>The <code>&amp;&amp;</code> only works if both conditions are booleans, but here you’re unwrapping an optional as well. In that case you must combine the two conditions with a comma.
+</p>
+<p>➤ Call this new method from the end of <code>configure(for:)</code>:
+</p><pre class="code-block">photoImageView.image = thumbnail(<span class="hljs-keyword">for</span>: location)</pre>
+<p>➤ Try it out. The Locations tab should now look something like this:
+</p><div class="image-50"><img src="graphics/img483.png"  alt="" title="Images in the Locations table view" /></div>
+<p>You’ve got thumbnails, all right!
+</p>
+<p>But look closely and you’ll see that the images are a little squashed again. That’s because you didn’t set the Aspect Fit content mode on the image view — but there’s a bigger problem here. Literally.
+</p>
+<p>These photos are potentially huge — 2592 by 1936 pixels or more — even though the image view is only 52 pixels square. To make them fit, the image view needs to scale down the images by a lot — which is also why they look a little “gritty”.
+</p>
+<p>What if you have tens or even hundreds of locations? That is going to require a ton of memory and processing speed just to display these tiny thumbnails. A better solution is to scale down the images before you put them into the table view cell.
+</p>
+<p>And what better way to do that than using an extension?
+</p>
+<h4 class="segment-chapter">Extensions</h4>
+
+<p>So far you’ve used extensions on your view controllers to group related functionality together, such as delegate methods. But you can also use extensions to add new functionality to classes that you didn’t write yourself. That includes classes such as <code>UIImage</code> from the iOS frameworks.
+</p>
+<p>If you ever catch yourself thinking, “Gee, I wish object X had such-and-such a method”, then you can probably add that method by using an extension.
+</p>
+<p>Suppose you want <code>String</code> to have a method for adding random words to a string. You could add the <code>addRandomWord()</code> method to <code>String</code> as follows.
+</p>
+<p>First you create a new source file, for example <em>String+RandomWord.swift</em>. It would look like this:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> Foundation
+
+<span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">String</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">addRandomWord</span><span class="hljs-params">()</span></span> -&gt; <span class="hljs-type">String</span> {
+    <span class="hljs-keyword">let</span> words = [<span class="hljs-string">"rabbit"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"boat"</span>]
+    <span class="hljs-keyword">let</span> value = <span class="hljs-type">Int</span>.random(<span class="hljs-keyword">in</span>: <span class="hljs-number">0</span> ..&lt; words.<span class="hljs-built_in">count</span>)
+    <span class="hljs-keyword">let</span> word = words[value]
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span> + word
+  }
+}</pre>
+<p>You can now call <code>addRandomWord()</code> on any <code>String</code> value in your code:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> someString = <span class="hljs-string">"Hello, "</span>
+<span class="hljs-keyword">let</span> result = someString.addRandomWord()
+<span class="hljs-built_in">print</span>(<span class="hljs-string">"The queen says: <span class="hljs-subst">\(result)</span>"</span>)</pre>
+<p>Extensions are pretty cool because they make it simple to add new functionality to an existing class. In other programming languages you would have to make a subclass and put your new methods in there, but extensions are often a cleaner solution.
+</p>
+<p>Besides new methods, you can also add new computed properties, but you can’t add regular instance variables. You can also use extensions on types that don’t even allow inheritance, such as <code>struct</code>s and <code>enum</code>s.
+</p>
+<h3 class="segment-chapter">Thumbnails via UIImage extension</h3>
+
+<p>You are going to add an extension to <code>UIImage</code> that lets you resize the image. You’ll use it as follows:
+</p><pre class="code-block"><span class="hljs-keyword">return</span> image.resized(withBounds: <span class="hljs-type">CGSize</span>(width: <span class="hljs-number">52</span>, height: <span class="hljs-number">52</span>))</pre>
+<p>The <code>resized(withBounds:)</code> method is new. The “bounds” is the size of the rectangle (or square in this case) that encloses the image. If the image itself is not square, then the resized image may actually be smaller than the bounds.
+</p>
+<p>Let’s write the extension.
+</p>
+<p>➤ Add a new file to the project and choose the <em>Swift File</em> template. Name the file <em>UIImage+Resize.swift</em>.
+</p>
+<p>➤ Replace the contents of this new file with:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> UIKit
+
+<span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">UIImage</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">resized</span><span class="hljs-params">(withBounds bounds: CGSize)</span></span> -&gt; <span class="hljs-type">UIImage</span> {
+    <span class="hljs-keyword">let</span> horizontalRatio = bounds.width / size.width
+    <span class="hljs-keyword">let</span> verticalRatio = bounds.height / size.height
+    <span class="hljs-keyword">let</span> ratio = <span class="hljs-built_in">min</span>(horizontalRatio, verticalRatio)
+    <span class="hljs-keyword">let</span> newSize = <span class="hljs-type">CGSize</span>(width: size.width * ratio,
+                         height: size.height * ratio)
+    
+    <span class="hljs-type">UIGraphicsBeginImageContextWithOptions</span>(newSize, <span class="hljs-literal">true</span>, <span class="hljs-number">0</span>)
+    draw(<span class="hljs-keyword">in</span>: <span class="hljs-type">CGRect</span>(origin: <span class="hljs-type">CGPoint</span>.zero, size: newSize))
+    <span class="hljs-keyword">let</span> newImage = <span class="hljs-type">UIGraphicsGetImageFromCurrentImageContext</span>()
+    <span class="hljs-type">UIGraphicsEndImageContext</span>()
+    
+    <span class="hljs-keyword">return</span> newImage!
+  }
+}</pre>
+<p>This method first calculates how big the image should be in order to fit inside the bounds rectangle. It uses the “aspect fit” approach to keep the aspect ratio intact.
+</p>
+<p>Then it creates a new image context and draws the image into that. We haven’t really dealt with graphics contexts before, but they are an important concept in Core Graphics — in case you&apos;re wondering, it has nothing to do with the managed object context from Core Data, even though they both use the term “context”.
+</p>
+<p>Let’s put this extension to work.
+</p>
+<p>➤ Switch to <em>LocationCell.swift</em>. Update the <code>thumbnail(for:)</code> method:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">thumbnail</span><span class="hljs-params">(<span class="hljs-keyword">for</span> location: Location)</span></span> -&gt; <span class="hljs-type">UIImage</span> {
+  <span class="hljs-keyword">if</span> location.hasPhoto, <span class="hljs-keyword">let</span> image = location.photoImage {
+    <span class="hljs-keyword">return</span> image.resized(withBounds: <span class="hljs-type">CGSize</span>(width: <span class="hljs-number">52</span>, 
+                                           height: <span class="hljs-number">52</span>))
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-type">UIImage</span>()
+}</pre>
+<p>➤ Run the app. The thumbnails should look like this:
+</p><div class="image-80"><img src="graphics/img484.png"  alt="" title="The photos are shrunk to the size of the thumbnails" /></div>
+<p>The images are a little blurry and they still seem to be stretched out. This is because the content mode on the image view is still wrong.
+</p>
+<p>Previously it shrunk the big photos to 52 by 52 points, but now the thumbnails may actually be smaller than 52 points (unless the photo was perfectly square) and they get scaled up to fill the entire image view rectangle.
+</p>
+<p>➤ Go to the storyboard and set the <em>Content Mode</em> of the image view to <em>Center</em>.
+</p>
+<p>➤ Run the app again and now the photos look A-OK:
+</p><div class="image-80"><img src="graphics/img485.png"  alt="" title="The thumbnails now have the correct aspect ratio" /></div>
+<div class="note">
+<p><em>Exercise.</em> Change the resizing function in the <code>UIImage</code> extension to resize using the “Aspect Fill” rules instead of the “Aspect Fit” rules. Both keep the aspect ratio intact but Aspect Fit keeps the entire image visible while Aspect Fill fills up the entire rectangle and may cut off parts on the sides. In other words, Aspect Fit scales to the longest side but Aspect Fill scales to the shortest side.
+</p></div>
+<div class="image-60"><img src="graphics/img486.png"  alt="" title="Aspect Fit vs. Aspect Fill" /></div>
+<h4 class="segment-chapter">Handling low-memory situations</h4>
+
+<p>The <code>UIImagePickerController</code> is very memory-hungry. Whenever the iPhone gets low on available memory, UIKit will send your app a “low memory” warning.
+</p>
+<p>When that happens, you should reclaim as much memory as possible, or iOS might be forced to terminate the app. And that’s something to avoid — users generally don’t like apps that suddenly quit on them!
+</p>
+<p>Chances are that your app gets one or more low-memory warnings while the image picker is open, especially when you run it on a device that has other apps suspended in the background. Photos take up a lot of space — especially when your camera is 5 or more megapixels — so it’s no wonder that memory fills up quickly.
+</p>
+<p>You can respond to memory warnings by overriding the <code>didReceiveMemoryWarning()</code> method in your view controllers to free up any memory you no longer need. This is often done for things that can easily be recalculated or recreated later, such as thumbnails or other cached objects.
+</p>
+<p>UIKit is already pretty smart about low memory situations and it will do everything it can to release memory, including the thumbnail images of rows that are not (or no longer) visible in your table view.
+</p>
+<p>For <i>MyLocations</i> there’s not much that you need to do to free up additional memory, you can rely on UIKit to automatically take care of it. But in your own apps you might want to take extra measures, depending on the sort of cached data that you have.
+</p>
+<p>By the way, on the Simulator you can trigger a low memory warning using the <em>Debug → Simulate Memory Warning</em> menu item. It’s smart to test your apps under low memory conditions, because they are likely to encounter such situations out in the wild once they’re running on user devices.
+</p>
+<p>Great! That concludes all the functionality for this app. Now it’s time to fine-tune its looks.
+</p>
+<p>You can find the project files for this chapter under <em>30 – Image Picker</em> in the Source Code folder.
+</p></body></html>

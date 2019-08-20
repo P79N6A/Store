@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 11: Navigation Controllers</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 11: Navigation Controllers</h1>
+
+<p>At this point, <i>Checklists</i> contains a table view displaying a handful of fixed data rows. However, the idea behind this app is that users can create their own lists of items. Therefore, you need to give the user the ability to add to-do items.
+</p>
+<p>In this chapter you’ll expand the app to have a <em>navigation bar</em> at the top. This bar has an Add button (the big blue <em>+</em>) that opens a new screen that lets you enter a name for the new to-do item.
+</p>
+<p>When you tap Done, the new item will be added to the list.
+</p><div class="image-50"><img src="graphics/img212.png"  alt="" title="The + button in the navigation bar opens the Add Item screen" /></div>
+<p>Presenting a new screen to add items is a common pattern in a lot of apps. Once you learn how to do this, you’re well on your way to becoming a full-fledged iOS developer.
+</p>
+<p>This chapter covers the following:
+</p>
+<ul>
+<li>
+<p><em>Navigation controller:</em> Add a navigation controller to <i>Checklists</i> to allow navigation between screens and add a button to the navigation bar to allow adding new items.
+</p></li>
+
+<li>
+<p><em>Delete rows:</em> Add the ability to delete rows from a list of items presented via a table view.
+</p></li>
+
+<li>
+<p><em>The Add Item screen:</em> Create a new screen from which you can (eventually) add new to-do items.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Navigation controller</h2>
+
+<p>First, let’s add the navigation bar. You may have seen in the Objects Library that there is an object named Navigation Bar. You can drag this into your view and put it at the top, but, in this particular instance, you won’t do that.
+</p>
+<p>Instead, you will embed your view controller in a <em>navigation controller</em>.
+</p>
+<p>Next to the table view, the navigation controller is probably the second most used iOS user interface component. It is the thing that lets you go from one screen to another:
+</p><div class="image-25"><img src="graphics/img213.png"  alt="" title="A navigation controller in action" /></div>
+<p>The <code>UINavigationController</code> object takes care of most of this navigation stuff for you, which saves a lot of programming effort. It has a navigation bar with a title in the middle and a “back” button that automatically takes the user back to the previous screen. You can put a button (or several buttons) of your own on the right.
+</p>
+<h3 class="segment-chapter">Add a navigation controller</h3>
+
+<p>Adding a navigation controller is really easy.
+</p>
+<p>➤ Open <em>Main.storyboard</em> and select the <em>Checklist View Controller</em>.
+</p>
+<p>➤ From the menu bar at the top of the screen, choose <em>Editor → Embed In → Navigation Controller</em>.
+</p><div class="image-60"><img src="graphics/img214.png"  alt="" title="Putting the view controller inside a navigation controller" /></div>
+<p>That’s it. Interface Builder has now added a new Navigation Controller scene and made a relationship between it and your view controller.
+</p><div class="image-60"><img src="graphics/img215.png"  alt="" title="The navigation controller is now linked with your view controller" /></div>
+<p>When the app starts up, the Checklist View Controller is automatically put inside a navigation controller.
+</p>
+<p>➤ Run the app and try it out.
+</p><div class="image-20"><img src="graphics/img216.png"  alt="" title="The app now has a navigation bar at the top" /></div>
+<p>The only thing different (visually) is that the app now has a navigation bar at the top.
+</p>
+<h3 class="segment-chapter">Set the navigation bar title</h3>
+
+<p>➤ Go back to the storyboard, select <em>Navigation Item</em> under Checklist View Controller in the Document Outline, switch to the Attributes Inspector on the right-hand pane, and set the value of <em>Title</em> to <em>Checklists</em>.
+</p><div class="image-90"><img src="graphics/img217.png"  alt="" title="Changing the title in the navigation bar" /></div>
+<p>What you’re doing here is changing a <em>Navigation Item</em> object that was automatically added to the view controller when you chose the Embed In command.
+</p>
+<p>The Navigation Item object contains the title and buttons that appear in the navigation bar when this view controller becomes active. Each embedded view controller has its own Navigation Item that it uses to configure what shows up in the navigation bar.
+</p>
+<p>When the navigation controller slides a new view controller in, it replaces the contents of the navigation bar with the new view controller’s Navigation Item.
+</p>
+<p>Run your app and your screen should look something like this:
+</p><div class="image-20"><img src="graphics/img218.png"  alt="" title="Navigation bar with title" /></div>
+<h3 class="segment-chapter">Display large titles</h3>
+
+<p>Before iOS 11, the above was all you could do in terms of setting up the navigation bar title. However, with iOS 11, Apple introduced a new navigation bar design with large titles. Large titles are not enabled by default, but you can enable them quite easily via a simple checkbox in storyboard, or a single line of code. So, let&apos;s do that!
+</p>
+<p>➤ Switch to <em>ChecklistViewController.swift</em> and add the following line to <code>viewDidLoad</code>, right after the existing <code>super.viewDidLoad()</code> line:
+</p><pre class="code-block">navigationController?.navigationBar.prefersLargeTitles = <span class="hljs-literal">true</span></pre>
+<p>There are a few interesting things in that bit of code but we don&apos;t want to get into all of it now. For now, the important things to remember are these:
+</p>
+<ol>
+<li>
+<p>Generally, there is a single navigation controller for a given navigation flow.
+</p></li>
+
+<li>
+<p>A single navigation controller could present multiple view controllers as part of its navigation flow.
+</p></li>
+
+<li>
+<p>Each view controller in a navigation hierarchy has a reference to the navigation controller which presented it.
+</p></li>
+</ol>
+
+<p>Given the above information, the previous code snippet simply uses the view controller&apos;s reference to the navigation controller to access the navigation bar for the app. Then, it sets the <code>prefersLargeTitles</code> property on the navigation bar to <code>true</code>. And it is this property, as the name implies, which enables large titles on iOS 11.
+</p>
+<div class="note">
+<p><em>Note:</em> If you wanted to make the same change via storyboard instead of code, you&apos;d select the Navigation Bar under your Navigation Controller in your storyboard and set the <em>Prefers Large Titles</em> checkbox in the <em>Attributes inspector</em>.
+</p></div>
+
+<p>Run your app again. Do you see a difference?
+</p><div class="image-25"><img src="graphics/img219.png"  alt="" title="Navigation bar with large title" /></div>
+<div class="note">
+<p><em>Note:</em> Apple does not recommend using large titles for all of your screens. Rather, their recommendation is to use large titles on your main screen and any other subsequent screens where it might make sense to have a prominent title. You will learn how to turn off large titles for secondary views later on.
+</p></div>
+
+<p>Interesting, huh? Of course, you might wonder why there is so much space above the title - that seems like a waste of space, right? That space will be utilized by the navigation items - the back button on the left (if you are in a secondary screen), and any other button(s) you assign to the right.
+</p>
+<h3 class="segment-chapter">Add a navigation button to add items</h3>
+
+<p>Let&apos;s add a button to the right of the navigation bar to add new checklist items and see how it looks.
+</p>
+<p>➤ Open your main storyboard.
+</p>
+<p>➤ Go to the Objects Library and look for <em>Bar Button Item</em>. Drag it into the right-side slot of the navigation bar. (Be sure to use the navigation bar on the Checklist View Controller, not the one from the navigation controller!)
+</p><div class="image-60"><img src="graphics/img220.png"  alt="" title="Dragging a Bar Button Item into the navigation bar" /></div>
+<div class="note">
+<p><em>Note:</em> You will see large titles on the navigation bar as in the above screenshot only if you enabled large titles via the storyboard. If you enable large titles via code, you will only see the small text title on the navigation bar.
+</p></div>
+
+<p>By default, this new button is named “Item” but for this app you want it to have a big + sign.
+</p>
+<p>➤ In the <em>Attributes inspector</em> for the bar button item, choose <em>System Item: Add</em>.
+</p><div class="image-30"><img src="graphics/img221.png"  alt="" title="Bar Button Item attributes" /></div>
+<p>If you look through the list for the System Item dropdown, you’ll see a lot of predefined bar button types: Add, Compose, Reply, Camera, and so on. You can use these in your own apps, but be sure to use them only for their intended purpose - you shouldn’t use the camera icon on a button that sends an email, for example. Improper use of these icons may lead Apple to reject your app from the App Store. And that sucks.
+</p>
+<p>OK, that gives us a button. If you run the app, it should look like this:
+</p><div class="image-30"><img src="graphics/img222.png"  alt="" title="The app with the Add button" /></div>
+<p>Now it looks a little less bare, right? If you&apos;re still not happy with the amount of space taken up by large titles, you can always turn off large titles, but do note that when you have a screenful of items and you need to scroll to see more information, the large title will retract into the top navigation bar and give you the &quot;classic&quot;-look navigation bar. So you might want to try this out a bit before deciding to disable it.
+</p>
+<h3 class="segment-chapter">Make the navigation button do something</h3>
+
+<p>If you tap on your new add button, it doesn’t actually do anything. That&apos;s because you haven’t hooked it up to an action. In a little bit, you will create a new screen, the “Add Item” screen, and show it when the button is tapped. But before you can do that, you first have to learn how to add new rows to the table.
+</p>
+<p>Let’s hook up the Add button to an action. You got plenty of exercise with this for <i>Bull&apos;s Eye</i>, so it should be child&apos;s play for you by now.
+</p>
+<p>➤ Add a new action method to <em>ChecklistViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Actions</span>
+<span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">addItem</span><span class="hljs-params">()</span></span> {
+}</pre>
+<p>You’re leaving the method empty for the moment, but it needs to be there so you have something to connect the button to.
+</p>
+<div class="note">
+<p><em>Note:</em> As you might have noticed, I have added a new jumpbar section called Actions alongwith the above action. I usually put all my action methods in one place. You don&apos;t really have to follow what I&apos;ve done, but it&apos;s always a good idea to organize your code in some way to make finding a particular method easy.
+</p></div>
+
+<p>➤ Open the storyboard and connect the Add button to this action. To do this, <em>Control-drag</em> from the <em>+</em> button to the yellow circle in the bar above the view (this circle represents the Checklist View Controller):
+</p><div class="image-40"><img src="graphics/img223.png"  alt="" title="Control-drag from Add button to Checklist View Controller" /></div>
+<p>Actually, you can Control-drag from the Add button to almost anywhere in the same scene to make the connection.
+</p>
+<p>➤ After dragging, pick <em>addItem</em> from the popup (under <em>Sent Actions</em>):
+</p><div class="image-20"><img src="graphics/img224.png"  alt="" title="Connecting to the addItem action" /></div>
+<p>➤ Let’s give <code>addItem()</code> something to do. Back in <em>ChecklistViewController.swift</em>, add some code to the method as follows:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">addItem</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> newRowIndex = items.<span class="hljs-built_in">count</span>
+
+  <span class="hljs-keyword">let</span> item = <span class="hljs-type">ChecklistItem</span>()
+  item.text = <span class="hljs-string">"I am a new row"</span>
+  items.append(item)
+
+  <span class="hljs-keyword">let</span> indexPath = <span class="hljs-type">IndexPath</span>(row: newRowIndex, section: <span class="hljs-number">0</span>)
+  <span class="hljs-keyword">let</span> indexPaths = [indexPath]
+  tableView.insertRows(at: indexPaths, with: .automatic)
+}</pre>
+<p>The new code creates a new <code>ChecklistItem</code> object and adds it to the data model (the <code>items</code> array). You also have to tell the table view, “I’ve inserted a row at this index, please update yourself.”
+</p>
+<p>Let’s review the code section-by-section:
+</p><pre class="code-block">  <span class="hljs-keyword">let</span> newRowIndex = items.<span class="hljs-built_in">count</span></pre>
+<p>You need to know what the index of the new row in your array would be. This is necessary in order to properly update the table view later.
+</p>
+<p>When you start the app there are 5 items in the array and 5 rows on the screen. Computers start counting at 0, so the existing rows have indexes 0, 1, 2, 3 and 4. To add the new row to the end of the array, the index for that new row must be 5.
+</p>
+<p>In other words, when you add a row to the end of an array, the index for the new row is always equal to the number of items currently in the array. Let that sink in for a second.
+</p>
+<p>You store the index for the new row in the local constant <code>newRowIndex</code>. This can be a constant instead of a variable because it never has to change.
+</p>
+<p>The following few lines should look familiar:
+</p><pre class="code-block">  <span class="hljs-keyword">let</span> item = <span class="hljs-type">ChecklistItem</span>()
+  item.text = <span class="hljs-string">"I am a new row"</span>
+  items.append(item)</pre>
+<p>You have seen this code before in <code>viewDidLoad</code>. It creates a new <code>ChecklistItem</code> object and adds it to the end of the array.
+</p>
+<p>The data model now consists of 6 <code>ChecklistItem</code> objects inside the <code>items</code> array. Note that at this point <code>newRowIndex</code> is still 5 even though <code>items.count</code> is now 6. That’s why you read the item count and stored this value in <code>newRowIndex</code> <i>before</i> you added the new item to the array.
+</p>
+<p>Just adding the new <code>ChecklistItem</code> object to the data model’s array isn’t enough. You have to tell the table view about this new row so it can add a new cell for that row.
+</p><pre class="code-block">  <span class="hljs-keyword">let</span> indexPath = <span class="hljs-type">IndexPath</span>(row: newRowIndex, section: <span class="hljs-number">0</span>)</pre>
+<p>As you know by now, table views use index-paths to identify rows. So, you first make an <code>IndexPath</code> object that points to the new row, using the row number from the <code>newRowIndex</code> variable. This index-path object now points to row 5 (in section 0).
+</p>
+<p>The next line creates a new, temporary array holding just the one index-path item:
+</p><pre class="code-block">  <span class="hljs-keyword">let</span> indexPaths = [indexPath]</pre>
+<p>You use the table view method <code>insertRows(at:with:)</code> to tell the table view about the new row. While you only have one inserted row here, as its name implies, this method actually lets you insert multiple rows at the same time, if you wanted to.
+</p>
+<p>So, instead of a single <code>IndexPath</code> object, you need to pass an array of index-paths to the method. Fortunately, it is easy to create an array that contains a single index-path object by writing <code>[indexPath]</code>. The notation <code>[]</code> creates a new <code>Array</code> object that contains the objects between the brackets. (Of course, if the array has more than one item, you have to separate the items with commas.)
+</p>
+<p>Finally, you tell the table view to insert this new row. The <code>with: .automatic</code> parameter makes the table view use a nice animation when it inserts the row:
+</p><pre class="code-block">  tableView.insertRows(at: indexPaths, with: .automatic)</pre>
+<p>To recap, you:
+</p>
+<ol>
+<li>
+<p>Created a new <code>ChecklistItem</code> object.
+</p></li>
+
+<li>
+<p>Added it to the data model.
+</p></li>
+
+<li>
+<p>Inserted a new row for it in the table view.
+</p></li>
+</ol>
+
+<p>When you call <code>tableView.insertRows(at:with:)</code> to insert a new row, the table view makes a cell for this new row by calling your <code>tableView(_:cellForRowAt:)</code> data source method. (But it only does this if the new row is actually in the visible portion of the table view.)
+</p>
+<p>➤ Try it out. You can now add many new rows to the table. You can also tap these new rows to turn their checkmarks on and off again. When you scroll the table up and down, the checkmarks stay with the proper rows.
+</p><div class="image-25"><img src="graphics/img225.png"  alt="" title="After adding new rows with the + button" /></div>
+<div class="note">
+<p><em>Note:</em> If you were concerned by the change to large titles, also notice how the large title becomes a smaller title (and vice versa) when you scroll up and down.
+</p></div>
+
+<p>Remember, the rows always have to be added to both your data model and the table view. When you send the <code>insertRows(at:with:)</code> message to the table view, you say: “Hey table, my data model has a bunch of new items added to it.”
+</p>
+<p>This is important! If you forget to tell the table view about your new items or if you tell the table view there are new items, but you don’t actually add them to your data model, then your app will crash. The data model and the table view always have to be in sync.
+</p>
+<div class="note">
+<p><em>Exercise:</em> Give the new items checkmarks by default.
+</p></div>
+
+<h2 class="segment-chapter">Delete rows</h2>
+
+<p>While you’re at it, you might as well give users the ability to delete rows.
+</p>
+<p>A common way to do this in iOS apps is “swipe-to-delete”. You swipe your finger over a row and a Delete button slides into view. A tap on the Delete button confirms the removal, tapping anywhere else will cancel.
+</p><div class="image-30"><img src="graphics/img226.png"  alt="" title="Swipe-to-delete in action" /></div>
+<h3 class="segment-chapter">Swipe-to-delete</h3>
+
+<p>Swipe-to-delete is very easy to implement.
+</p>
+<p>➤ Add the following method to <em>ChecklistViewController.swift</em>. Just to keep things organized, I suggest you put this with the other table view delegate methods.
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(
+                <span class="hljs-number">_</span> tableView: UITableView, 
+        commit editingStyle: UITableViewCell.EditingStyle,
+         forRowAt indexPath: IndexPath)</span></span> {
+  <span class="hljs-comment">// 1</span>
+  items.remove(at: indexPath.row)
+  
+  <span class="hljs-comment">// 2  </span>
+  <span class="hljs-keyword">let</span> indexPaths = [indexPath]
+  tableView.deleteRows(at: indexPaths, with: .automatic)
+}</pre>
+<p>When the <code>commitEditingStyle</code> method is present in your view controller (it is a method defined by the table view data source protocol), the table view will automatically enable swipe-to-delete. All you have to do is:
+</p>
+<ol>
+<li>
+<p>Remove the item from the data model.
+</p></li>
+
+<li>
+<p>Delete the corresponding row from the table view.
+</p></li>
+</ol>
+
+<p>This mirrors what you did in <code>addItem()</code>. Again, you make a temporary array with the index-path object and then tell the table view to remove the rows with an animation.
+</p>
+<p>➤ Run the app to try it out!
+</p>
+<h4 class="segment-chapter">Destroying objects</h4>
+
+<p>When you call <code>items.remove(at:)</code>, that not only takes the <code>ChecklistItem</code> out of the array but also permanently destroys it.
+</p>
+<p>We’ll talk more about this later on, but if there are no more references to an object, it is automatically destroyed. As long as a <code>ChecklistItem</code> object sits inside an array, that array has a reference to it.
+</p>
+<p>But when you pull that <code>ChecklistItem</code> out of the array, the reference goes away and the object is destroyed. Or in computer-speak, it is <i>deallocated</i>.
+</p>
+<p>What does it mean for an object to be destroyed? Each object occupies a small section of the computer’s memory. When you create an object instance, a chunk of memory is reserved to hold the object’s data.
+</p>
+<p>If the object is deallocated, that memory becomes available again and will eventually be occupied by new objects. After it has been deleted, the object does not exist in memory any more and you can no longer use it.
+</p>
+<p>On older versions of iOS, you had to take care of this memory management by hand. Fortunately times have changed for the better. Swift uses a mechanism called <em>A</em>utomatic <em>R</em>eference <em>C</em>ounting, or ARC, to manage the lifetime of the objects in your app, freeing you from having to worry about it. I like not having to worry about things!
+</p>
+<h2 class="segment-chapter">The Add Item screen</h2>
+
+<p>You’ve learned how to add new rows to the table, but all of these rows contain the same text. You will now change the <code>addItem()</code> action to open a new screen that lets the user enter custom text for new <code>ChecklistItem</code>s.
+</p><div class="image-25"><img src="graphics/img227.png"  alt="" title="The Add Item screen" /></div>
+<h3 class="segment-chapter">Add a new view controller to the storyboard</h3>
+
+<p>A new screen means a new view controller, so you begin by adding a new view controller to the storyboard.
+</p>
+<p>➤ Go to the Objects Library and drag a new <em>Table View Controller</em> (not a regular view controller) on to the storyboard canvas.
+</p><div class="image-70"><img src="graphics/img228.png"  alt="" title="Dragging a new Table View Controller into the canvas" /></div>
+<p>You may need to zoom out to fit everything properly. Right-click on the canvas to get a popup with zoom options, or use the <em>-</em><em> 100% +</em> controls at the bottom of the Interface Builder canvas. (You can also double-click on an empty spot in the canvas to zoom in or out. Or, if you have a Trackpad, simply pinch with two fingers to zoom in or out.)
+</p>
+<p>➤ With the new view controller in place, select the <em>Add button</em> from the Checklist View Controller. <em>Control-drag</em> to the new view controller.
+</p><div class="image-60"><img src="graphics/img229.png"  alt="" title="Control-drag from the Add button to the new table view controller" /></div>
+<p>Let go of the mouse and a list of options pops up.
+</p><div class="image-20"><img src="graphics/img230.png"  alt="" title="The Action Segue popup" /></div>
+<p>The options in this menu are the different types of connections you can make between the Add button and the new screen.
+</p>
+<p>➤ Choose <em>Show</em> from the menu.
+</p>
+<p>As I mentioned when adding the About screen for <i>Bull&apos;s Eye</i>, this type of connection is named a segue.
+</p>
+<p>The segue is represented by the arrow between the two view controllers:
+</p><div class="image-90"><img src="graphics/img231.png"  alt="" title="A new segue is added between the two view controllers" /></div>
+<p>➤ Run the app to see what it does.
+</p>
+<p>When you press the Add button, a new empty table view slides in from the right. You can press the back button – the one that says “Checklists” – at the top to go back to the previous screen.
+</p><div class="image-30"><img src="graphics/img232.png"  alt="" title="The screen that shows up after you press the Add button" /></div>
+<p>You didn’t even have to write much code and you now have yourself a working navigation controller where you can go from one screen to another!
+</p>
+<div class="note">
+<p><em>Note:</em> Xcode may be giving you the warning, “Prototype table cells must have reuse identifiers”. You might remember this issue from before - you will fix this issue soon.
+</p></div>
+
+<p>Note that the Add button no longer adds a new row to the table. That connection has been broken and is replaced by the segue. Just in case, you should remove the button’s connection with the <code>addItem</code> action.
+</p>
+<p>➤ Select the Add button, go to the <em>Connections inspector</em> and press <em>X</em> next to <code>addItem</code>.
+</p><div class="image-30"><img src="graphics/img233.tiff"  alt="" title="Removing the addItem action from the Add button" /></div>
+<p>Notice that this inspector also shows the connection with the segue that you’ve just made (under <em>Triggered Segues</em>).
+</p>
+<h4 class="segment-chapter">Segue Types</h4>
+
+<p>When showing the new view controller above, you opted for a Show segue. But what does it mean? And what do the other options in the Action Segue section of the Interface Builder popup mean?
+</p>
+<p>Here is a brief explanation of each type of segue:
+</p>
+<ul>
+<li>
+<p><em>Show:</em> Pushes the new view controller onto the navigation stack so that the new view controller is at the top of the navigation stack. It also provides a back button to return to  the previous view controller. If the view controllers are not embedded in a navigation controller, then the new view controller will be presented modally (see Present Modally in the list below as to what this means).
+</p>
+<p><i>Example:</i> Navigating folders in the <i>Mail</i> app
+</p></li>
+
+<li>
+<p><em>Show Detail:</em> For use in a split view controller (you&apos;ll learn more about those when developing the last app in this book). The new view controller replaces the detail view controller of the split view when in an expanded two-column interface. Otherwise, if in single-column mode, it will push in a navigation controller.
+</p>
+<p><i>Example:</i> In <i>Messages</i>, tapping a conversation will show the conversation details - replacing the view controller on the right when in a two-column layout, or push the conversation when in a single column layout
+</p></li>
+
+<li>
+<p><em>Present Modally:</em> Presents the new view controller to cover the previous view controller - most commonly used to present a view controller that covers the entire screen on iPhone, or on iPad it&apos;s common to  present it as a centered box that darkens the presenting view controller. Usually, if you had a navigation bar at the top or a tab bar at the bottom, those are covered by the modal view controller too.
+</p>
+<p><i>Example:</i> Selecting Touch ID &amp; Passcode in <i>Settings</i>
+</p></li>
+
+<li>
+<p><em>Present as Popover:</em> When run on an iPad, the new view controller appears in a popover, and tapping anywhere outside of this popover will dismiss it. On an iPhone, will present the new view controller modally over the full screen.
+</p>
+<p><i>Example:</i> Tapping the + button in <i>Calendar</i>
+</p></li>
+
+<li>
+<p><em>Custom:</em> Allows you to implement your own custom segue and have control over its behavior. (You will learn more about this in a later chapter.)
+</p></li>
+</ul>
+
+<h3 class="segment-chapter">Customize the navigation bar</h3>
+
+<p>So now you have a new table view controller that slides into the screen when you press the Add button. However, this is not quite what you want.
+</p>
+<p>Data input screens usually have a navigation bar with a Cancel button on the left and a Done button on the right. (In some apps the button on the right is called Save or Send.) Pressing either of these buttons will close the screen, but only Done will save your changes.
+</p>
+<p>➤ First, drag a <em>Navigation Item</em> from the Objects Library on to the new scene.
+</p><div class="image-90"><img src="graphics/img234.png"  alt="" title="Add a navigation item to the view controller" /></div>
+<p>If you check the Document Outline before you drag the Navigation Item on, you will notice that the new table view controller scene does not have a Navigation Item. So, we are not able to customize the navigation elements — such as the navigation buttons, or the title — for this table view controller, without the Navigation Item. Which is the reason for adding one.
+</p>
+<p>➤ Next, drag two <em>Bar Button Items</em> on to the navigation bar, one to the left slot (removing the existing back button) and one to the right slot.
+</p><div class="image-40"><img src="graphics/img235.png"  alt="" title="The navigation bar items for the new screen" /></div>
+<p>➤ In the <em>Attributes inspector</em> for the left button choose <em>System Item</em>: <em>Cancel</em>.
+</p>
+<p>➤ For the right button choose <em>Done</em> for both <em>System Item</em> and <em>Style</em> attributes.
+</p>
+<p>Don’t type anything into the button’s Title field. The Cancel and Done buttons are built-in button types that automatically use the proper text. If your app runs on an iPhone where the language is set to something other than English, these predefined buttons are automatically translated into the device’s language.
+</p>
+<p>➤ Double-click the navigation bar for the new table view controller to edit its title and change it to <em>Add Item</em>. (You can also change this via the Attributes inspector as you did before.)
+</p>
+<p>➤ Run the app, tap the Add button on the main screen, and you’ll see that your new screen has Cancel and Done buttons.
+</p><div class="image-30"><img src="graphics/img236.png"  alt="" title="The Cancel and Done buttons in the app" /></div>
+<p>The new buttons look good, but (as you would have noticed from the storyboard if you had enabled large titles from the storyboard) the title is huge! If Apple recommends using large titles only on main screens, we probably should change this screen to have smaller titles. But how do we do that?
+</p>
+<p>While some view controller (or table view controller) customizations can be done via storyboard (and this one can too), some require writing some code. Our new view controller does not have a matching source file. So, in the next section we&apos;ll create the source file and add the custom code instead of doing the changes via storyboard just so you know how to do it via code.
+</p>
+<div class="note">
+<p><em>Note:</em> If you&apos;d prefer to make the change via storyboard, then simply select the Navigation Item for the new view controller, go to the <em>Attributes inspector</em> and select <em>Never</em> from the <em>Large Title</em> dropdown.
+</p></div>
+
+<h3 class="segment-chapter">Make your own view controller class</h3>
+
+<p>You created a custom view controller in <i>Bull&apos;s Eye</i> for the About screen. Do you remember how to do it on your own? If not, here are the steps:
+</p>
+<p>➤ Right-click on the Checklists group (the yellow folder) in the project navigator and choose <em>New File…</em> Choose the <em>Cocoa Touch Class</em> template.
+</p>
+<p>➤ In the next dialog, set the Class to <em>AddItemViewController</em> and Subclass to <em>UITableViewController</em> (when you change the subclass, the class name will automatically change - so either set the subclass first or change the class name back after the change). Leave the language at <em>Swift</em> (or change it back if it is not set to Swift).
+</p>
+<p>➤ Save the file to your project folder, which should be the default location.
+</p>
+<p>➤ The file should have a lot of source and commented code - this is known as <i>boilerplate code</i>, or code that is generally always needed. In this particular case, you don&apos;t need most of it. So remove everything except for <code>viewDidLoad</code> (and remove the comments from inside <code>viewDidLoad</code> as well) so that your code looks like this:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> UIKit
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AddItemViewController</span>: <span class="hljs-title">UITableViewController</span> </span>{
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+    <span class="hljs-keyword">super</span>.viewDidLoad()
+  }
+}</pre>
+<p>This tells Swift that you have a new object for a table view controller that goes by the name of <code>AddItemViewController</code>. You’ll add the rest of the code soon. First, you have to let the storyboard know about this new view controller.
+</p>
+<p>➤ In the storyboard, select the Add Item table view controller and go to the <em>Identity inspector</em>. Under <em>Custom Class</em>, type <em>AddItemViewController</em>.
+</p>
+<p>This tells the storyboard that the view controller from this scene is actually your new <code>AddItemViewController</code> object.
+</p><div class="image-70"><img src="graphics/img237.png"  alt="" title="Changing the class name of the AddItemViewController" /></div>
+<p>Don’t forget this step! Without it, the Add Item screen will simply not work.
+</p>
+<p>Make sure that it is really the view controller that is selected before you change the fields in the Identity inspector (the scene needs to have a blue border). A common mistake is to select the table view and change that.
+</p>
+<h3 class="segment-chapter">Turn off large titles</h3>
+
+<p>Now, you can make the necessary code changes to turn off large titles for just this screen (if you want to do this change via code instead of storyboard, of course).
+</p>
+<p>➤ Add the following line to the end of <code>viewDidLoad</code> in <em>AddItemViewController.swift</em>:
+</p><pre class="code-block">navigationItem.largeTitleDisplayMode = .never</pre>
+<p>The above code customizes the Navigation Item for the Add Item screen to never show large titles. Try running the app now.
+</p><div class="image-30"><img src="graphics/img238.png"  alt="" title="Large titles begone!" /></div>
+<h3 class="segment-chapter">Make the navigation buttons work</h3>
+
+<p>Much better, right? But there&apos;s still one issue - the Cancel and Done buttons ought to close the Add Item screen and return the app to the main screen, but tapping them has no effect yet.
+</p>
+<div class="note">
+<p><em>Exercise:</em> Do you know why the Cancel and Done buttons do not return you to the main screen?
+</p></div>
+
+<p>Answer: Because those buttons have not yet been hooked up to any actions!
+</p>
+<p>You will now implement the necessary action methods in <em>AddItemViewController.swift</em>.
+</p>
+<p>➤ Add these new <code>cancel()</code> and <code>done()</code> action methods:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Actions</span>
+<span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">cancel</span><span class="hljs-params">()</span></span> {
+  navigationController?.popViewController(animated: <span class="hljs-literal">true</span>)
+}
+
+<span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">done</span><span class="hljs-params">()</span></span> {
+  navigationController?.popViewController(animated: <span class="hljs-literal">true</span>)
+}</pre>
+<p>This tells the navigation controller to close the Add Item screen with an animation and to go back to the previous screen, which in this case is the main screen.
+</p>
+<p>You still need to hook up the Cancel button to the <code>cancel()</code> action and the Done button to the <code>done()</code> action.
+</p>
+<p>➤ Open the storyboard and find the Add Item View Controller. <em>Control-drag</em> from the bar buttons to the yellow circle icon and pick the proper action from the popup menu.
+</p><div class="image-50"><img src="graphics/img239.png"  alt="" title="Control-dragging from the bar button to the view controller" /></div>
+<p>➤ Run the app to try it out. The Cancel and Done buttons now return the app to the main screen.
+</p>
+<p>What do you think happens to the <code>AddItemViewController</code> object when you dismiss it? After the view controller disappears from the screen, its object is destroyed and the memory it was using is reclaimed by the system.
+</p>
+<p>Every time the user opens the Add Item screen, the app makes a new instance of it. This means a view controller object is only alive for the duration that the user is interacting with it; there is no point in keeping it around afterwards.
+</p>
+<h4 class="segment-chapter">Container view controllers</h4>
+
+<p>I’ve been saying that one view controller represents one screen, but here you actually have two view controllers for each screen: a Table View Controller that sits inside a Navigation Controller.
+</p>
+<p>The Navigation Controller is a special type of view controller that acts as a container for other view controllers. It comes with a navigation bar and has the ability to easily go from one screen to another, by sliding them in and out of sight. The container essentially “wraps around” these screens.
+</p>
+<p>The Navigation Controller is just the frame that contains the view controllers that do the real work, which are known as the “content” controllers. Here, the <code>ChecklistViewController</code> provides the content for the first screen; the content for the second screen comes from the <code>AddItemViewController</code>.
+</p>
+<p>Another often-used container is the Tab Bar Controller, which you’ll see in the next app.
+</p>
+<p>On the iPad, container view controllers are even more commonplace. View controllers on the iPhone are full-screen but on the iPad they often occupy only a portion of the screen, such as the content of a popover or one of the panes in a split-view.
+</p>
+<p>This completes the implementation of the navigation functionality for your app&apos;s two screens. If at any point you got stuck, you can refer to the project files for the app from the <em>11 - Navigation Controllers</em> folder in the Source Code folder.
+</p></body></html>

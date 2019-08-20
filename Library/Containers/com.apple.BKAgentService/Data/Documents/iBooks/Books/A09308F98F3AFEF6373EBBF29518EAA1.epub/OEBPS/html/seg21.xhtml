@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 15: Saving and Loading</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 15: Saving and Loading</h1>
+
+<p>You now have full to-do item management functionality working for <i>Checklists</i> - you can add items, edit them, and even delete them. However, any new to-do items that you add to the list cease to exist when you terminate the app (by pressing the Stop button in Xcode, for example). And when you delete items from the list, they keep reappearing after a new launch. That’s not how a real app should behave!
+</p>
+<p>So, it&apos;s time to consdider <i>data persistence</i> - or, to put it simply, saving and loading items ...
+</p>
+<p>In this chapter you wil cover the following:
+</p>
+<ul>
+<li>
+<p><em>The need for data persistence:</em> A quick look at why you need data persistence.
+</p></li>
+
+<li>
+<p><em>The documents folder:</em> Determine where in the file system you can place the file that will store the to-do list items.
+</p></li>
+
+<li>
+<p><em>Save checklist items:</em> Save the to-do items to a file whenever the user makes a change such as: add a new item, toggle a checkmark, delete an item, etc.
+</p></li>
+
+<li>
+<p><em>Load the file:</em> Load the to-do items from the saved file when the app starts up again after termination.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">The need for data persistence</h2>
+
+<p>Thanks to the multitasking nature of iOS, an app stays in memory when you close it and go back to the home screen or switch to another app. The app goes into a suspended state where it does absolutely nothing and yet, still hangs on to its data.
+</p>
+<p>During normal usage, users will never truly terminate an app, just suspend it. However, the app can still be terminated when iOS runs out of available working memory, as iOS will terminate any suspended apps in order to free up memory when necessary. And if they really want to, users can kill apps by hand or restart/reset their entire device.
+</p>
+<p>Just keeping the list of items in memory is not good enough because there is no guarantee that the app will remain in memory forever, whether active or suspended.
+</p>
+<p>Instead, you will need to persist this data in a file on the device’s long-term flash storage. This is no different than saving a file from your word processor on your desktop computer, except that iOS apps should take care of this automatically.
+</p>
+<p>The user shouldn’t have to press a Save button just to make sure unsaved data is safely placed in long-term storage.
+</p><div class="image-80"><img src="graphics/img291.png"  alt="" title="Apps need to persist data just in case the app is terminated" /></div>
+<p>So let’s get crackin’ on that data persistence functionality!
+</p>
+<h2 class="segment-chapter">The documents folder</h2>
+
+<p>iOS apps live in a sheltered environment known as the <i>sandbox</i>. Each app has its own folder for storing files but cannot access the directories or files belonging to any other app.
+</p>
+<p>This is a security measure, designed to prevent malicious software such as viruses from doing any damage. If an app can only change its own files, it cannot modify (or affect) any other part of the system.
+</p>
+<p>Your apps can store files in the “Documents” folder in the app’s sandbox.
+</p>
+<p>The contents of the Documents folder are backed up when the user syncs their device with iTunes or iCloud.
+</p>
+<p>When you release a new version of your app and users install the update, the Documents folder is left untouched. Any data the app has saved into this folder stays there when the app is updated.
+</p>
+<p>In other words, the Documents folder is the perfect place for storing your user’s data files.
+</p>
+<h3 class="segment-chapter">Get the save file path</h3>
+
+<p>Let’s look at how this works in code.
+</p>
+<p>➤ Add the following methods to <em>ChecklistViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">documentsDirectory</span><span class="hljs-params">()</span></span> -&gt; <span class="hljs-type">URL</span> {
+  <span class="hljs-keyword">let</span> paths = <span class="hljs-type">FileManager</span>.<span class="hljs-keyword">default</span>.urls(<span class="hljs-keyword">for</span>: .documentDirectory, 
+                                        <span class="hljs-keyword">in</span>: .userDomainMask)
+  <span class="hljs-keyword">return</span> paths[<span class="hljs-number">0</span>]
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">dataFilePath</span><span class="hljs-params">()</span></span> -&gt; <span class="hljs-type">URL</span> {
+  <span class="hljs-keyword">return</span> documentsDirectory().appendingPathComponent(
+                                  <span class="hljs-string">"Checklists.plist"</span>)
+}</pre>
+<p>The <code>documentsDirectory()</code> method is something I’ve added for convenience. There is no standard method you can call to get the full path to the Documents folder, so I rolled my own.
+</p>
+<p>The <code>dataFilePath()</code> method uses <code>documentsDirectory()</code> to construct the full path to the file that will store the checklist items. This file is named <em>Checklists.plist</em> and it lives inside the Documents folder.
+</p>
+<p>Notice that both methods return a <code>URL</code> object. iOS uses URLs to refer to files in its filesystem. Where websites use <code>http://</code> or <code>https://</code> URLs, to refer to a file you use a <code>file://</code> URL.
+</p>
+<div class="note">
+<p><em>Note:</em> Double check to make sure your code says <code>.documentDirectory</code> and not <code>.documentationDirectory</code>. Xcode’s autocomplete can easily trip you up here!
+</p></div>
+
+<p>➤ Still in <em>ChecklistViewController.swift</em>, add the following two <code>print</code> statements to the bottom of <code>viewDidLoad</code>:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  . . . 
+  items.append(item5)
+  <span class="hljs-comment">// Add the following</span>
+  <span class="hljs-built_in">print</span>(<span class="hljs-string">"Documents folder is <span class="hljs-subst">\(documentsDirectory()</span>)"</span>)
+  <span class="hljs-built_in">print</span>(<span class="hljs-string">"Data file path is <span class="hljs-subst">\(dataFilePath()</span>)"</span>)
+}</pre>
+<p>➤ Run the app. Xcode’s Console will now show you where your app’s Documents folder is actually located.
+</p>
+<p>If I run the app from the Simulator, on my system it shows something like this:
+</p><div class="image-80"><img src="graphics/img292.png"  alt="" title="Console output showing Documents folder and data file locations" /></div>
+<p>If you run it on your iPhone, the path will look somewhat different. Here’s what mine says:
+</p><pre class="code-block">Documents folder is file:///var/mobile/Applications/FDD50B54-9383-4DCC-9C19-C3DEBC1A96FE/Documents
+
+Data file path is file:///var/mobile/Applications/FDD50B54-9383-4DCC-9C19-C3DEBC1A96FE/Documents/Checklists.plist</pre>
+<p>As you&apos;ll notice, the folder name is a random 32-character ID. Xcode picks this ID when it installs the app on the Simulator or the device. Anything inside that folder is part of the app’s sandbox.
+</p>
+<h3 class="segment-chapter">Browse the documents folder</h3>
+
+<p>For the rest of this app, run the app on the Simulator instead of a device. That makes it easier to look at the files you’ll be writing into the Documents folder. Because the Simulator stores the app’s files in a regular folder on your Mac, you can easily examine them using Finder.
+</p>
+<p>➤ Open a new Finder window by clicking on the Desktop and typing <em>⌘+N</em> (or, by clicking the Finder icon in your dock, if you have one.). Then press <em>⌘+Shift+G</em> (or, select <em>Go → Go to Folder…</em> from the menu), copy the Documents folder path from Xcode Console, and paste the full path to the Documents folder in the dialog. (Don’t include the <em>file://</em> bit. The path starts with <em>/Users/yourname/…</em>)
+</p>
+<p>The Finder window will go to that folder. Keep this window open so you can verify that the Checklists.plist file is actually created when you get to that part.
+</p><div class="image-90"><img src="graphics/img293.png"  alt="" title="The app’s directory structure in the Simulator" /></div>
+<div class="note">
+<p><em>Tip:</em> If you want to navigate to the Simulator’s app directory by traversing your folder structure, then you should know that the Library folder, which is in your home folder, is normally hidden. (This may have changed with recent releases of macOS though.) If you can&apos;t see the Library folder, hold down the Alt/Option key and click on Finder’s Go menu (or hold down the Alt key while the Go menu is open). This should reveal a shortcut to the Library folder on the Go menu, if it wasn&apos;t visible previously.
+</p></div>
+
+<p>You can see several folders inside the app’s sandbox folder:
+</p>
+<ul>
+<li>
+<p>The Documents folder where the app will put its data files. Currently the Documents folder is empty.
+</p></li>
+
+<li>
+<p>The Library folder has cache files and preferences files. The contents of this folder are managed by the operating system.
+</p></li>
+
+<li>
+<p>The SystemData folder, as the name implies, is for use by the operating system to store any system level information relevant to the app.
+</p></li>
+
+<li>
+<p>The tmp folder is for temporary files. Sometimes apps need to create files for temporary usage. You don’t want these to clutter up your Documents folder, so tmp is a good place to put them. iOS will clear out this folder from time to time.
+</p></li>
+</ul>
+
+<p>It is also possible to get an overview of the Documents folder of apps on your device.
+</p>
+<p>➤ On your device, go to <em>Settings → General → iPhone Storage</em>, scroll down to the list of installed apps (you might have to wait for the list to load)  and tap the name of an app.
+</p>
+<p>You’ll now see the size of the contents of its Documents folder (but not the actual content):
+</p><div class="image-30"><img src="graphics/img294.png"  alt="" title="Viewing the Documents folder info on the device" /></div>
+<h2 class="segment-chapter">Save checklist items</h2>
+
+<p>In this section you are going to write code that saves the list of to-do items to a file named Checklists.plist when the user adds a new item or edits an existing item. Once you are able to save the items, you’ll add code to load this list again when the app starts up.
+</p>
+<h3 class="segment-chapter">Plist files</h3>
+
+<p>So what is a <em>.</em><em>plist</em> file?
+</p>
+<p>You’ve already seen a file named Info.plist in the <i>Bull’s Eye</i> lesson. All apps have one, including the <i>Checklists</i> app — see the project navigator. Info.plist contains several configuration options that give iOS additional information about the app, such as what name to display under the app’s icon on the home screen.
+</p>
+<p>“plist” stands for Property List and it is an XML file format that stores structured data, usually in the form of a list of settings and their values. Property List files are very common in iOS. They are suitable for many types of data storage, and best of all, they are simple to use. What’s not to like?
+</p>
+<p>To save the checklist items, you’ll use Swift&apos;s <code>Codable</code> protocol, which lets objects which support the <code>Codable</code> protocol to store themselves in a structured file format.
+</p>
+<p>You actually don’t have to care much about the format used by <code>Codable</code>. In this case it happens to be a .plist file, but you’re not going to mess with that file directly. All you care about is that the data gets stored in some kind of file in the app’s Documents folder, and you’ll leave the technical details to <code>Codable</code>.
+</p>
+<p>While <code>Codable</code> is a new protocol introduced in Swift 4, you have already used its Objective-C cousin, <code>NSCoder</code>, behind the scenes because that’s exactly how storyboards work. When you add a view controller to a storyboard, Xcode uses the <code>NSCoder</code> system to write this object to a file (encoding). Then when your application starts up, it uses <code>NSCoder</code> again to read the objects from the storyboard file (decoding). The <code>Codable</code> protocol works similarly.
+</p>
+<p>The process of converting objects to files and back again is also known as <em>serialization</em>. It’s a big topic in software engineering.
+</p>
+<p>I like to think of this whole process as freezing objects. You take a living object and freeze it so that it is suspended in time. You store that frozen object into a file on the device’s flash drive where it will spend some time in cryostasis. Later, you can read that file into memory and defrost the object to bring it back to life again.
+</p><div class="image-80"><img src="graphics/img295.png"  alt="" title="The process of freezing (saving) and unfreezing (loading) objects" /></div>
+<h3 class="segment-chapter">Save data to a file</h3>
+
+<p>➤ Add the following method to <em>ChecklistViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">saveChecklistItems</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-comment">// 1</span>
+  <span class="hljs-keyword">let</span> encoder = <span class="hljs-type">PropertyListEncoder</span>()
+  <span class="hljs-comment">// 2</span>
+  <span class="hljs-keyword">do</span> {
+    <span class="hljs-comment">// 3</span>
+    <span class="hljs-keyword">let</span> data = <span class="hljs-keyword">try</span> encoder.encode(items)
+    <span class="hljs-comment">// 4</span>
+    <span class="hljs-keyword">try</span> data.write(to: dataFilePath(), 
+              options: <span class="hljs-type">Data</span>.<span class="hljs-type">WritingOptions</span>.atomic)
+    <span class="hljs-comment">// 5</span>
+  } <span class="hljs-keyword">catch</span> {
+    <span class="hljs-comment">// 6</span>
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"Error encoding item array: <span class="hljs-subst">\(error.localizedDescription)</span>"</span>)
+  }
+}</pre>
+<p>This method takes the contents of the <code>items</code> array, converts it to a block of binary data, and then writes this data to a file. Let&apos;s take the commented lines step-by-step to understand the code:
+</p>
+<ol>
+<li>
+<p>First, create an instance of <code>PropertyListEncoder</code> which will encode the <code>items</code> array, and all the <code>ChecklistItem</code>s in it, into some sort of binary data format that can be written to a file.
+</p></li>
+
+<li>
+<p>The <code>do</code> keyword, which you have not encountered before, sets up a block of code to catch Swift errors. Swift handles errors under certain conditions by <i>throwing</i> an error. In such cases, you need a block of code to catch the error and to handle it. The <code>do</code> keyword indicates the start of such a block. You will see the error catching code after comment #5, where the <code>catch</code> keyword can be seen.
+</p></li>
+
+<li>
+<p>The encoder you created earlier is used to try to encode the <code>items</code> array. The <code>encode</code> method throws a Swift error if it is unable to encode the data for some reason - for example, the data is not in the expected format, or it is corrupted etc. The <code>try</code> keyword indicates that the call to <code>encode</code> can fail and if that happens, that it will throw an error. (If you do not have the <code>try</code> keyword before a call to a method which throws an error, you will get an Xcode error. Try it and see.)If the call to <code>encode</code> fails, execution will immediately jump to the <code>catch</code> block instead of proceeding on to the next line.
+</p></li>
+
+<li>
+<p>If the <code>data</code> constant was successfully created by the call to <code>encode</code> in the previous line, then you write the data to a file using the file path returned by a call to <code>dataFilePath()</code>. Note that the <code>write</code> method also can throw an error. So again, you have to precede the method call with another <code>try</code> statement.
+</p></li>
+
+<li>
+<p>The <code>catch</code> statement indicates the block of code to be executed if an error was thrown by any line of code in the enclosing <code>do</code> block.
+</p></li>
+
+<li>
+<p>Handle the caught error. Here, you simply print out an error mesage to the Xcode Console, but you might notice that the print statement references an <code>error</code> variable. Where did that come from?
+</p>
+<p>When you create a <code>do</code> - <code>catch</code> block of code, you can explicitly check for specific types of errors. We won&apos;t get into that at this point, but what you need to know is that if you simply have a <code>catch</code> block, Swift will automatically populate a local variable named <code>error</code> which will contain the error thrown by one of the statements within the <code>do</code> block.
+</p>
+<p>So, you can simply refer to that <code>error</code> variable in any code you write in the <code>catch</code> block. This can be handy for outputing a descriptive error message which indicates what the source of the error/failure was.
+</p></li>
+</ol>
+
+<p>You will notice that Xcode shows an error at this point saying: Generic parameter &apos;Value&apos; could not be inferred. (Or, depending on your version of Xcode, the error message might be slightly different.)
+</p>
+<p>This is because any object encoded (or decoded) by a <code>PropertyListEncoder</code> — or for that matter, any of the other encoders/decoders compatible with the <code>Codable</code> protocol — must support the <code>Codable</code> protocol.
+</p>
+<h3 class="segment-chapter">The Codable protocol</h3>
+
+<p>Swift arrays — as well as most other standard Swift objects and structures — conform to the <code>Codable</code> protocol. However, in the case of array, the objects contained in the array should also support <code>Codable</code> if you want to serialize the array. So is our <code>ChecklistItem</code> class <code>Codable</code> compliant? I don&apos;t believe so ...
+</p>
+<div class="note">
+<p><em>Note:</em> Sometimes when working with code dealing with <code>Codable</code> support, you will see error messages or references to <code>Encodable</code> or <code>Decodable</code> protocols. So, it might be good to know that <code>Codable</code> is actually a protocol which combines these two other protocols, <code>Encodable</code> and <code>Decodable</code> — one for each side of the serialization process.
+</p></div>
+
+<p>➤ Switch to <em>ChecklistItem.swift</em> and modify the <code>class</code> line as follows:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ChecklistItem</span>: <span class="hljs-title">NSObject</span>, <span class="hljs-title">Codable</span> </span>{</pre>
+<p>In the above, you tell the compiler that <code>ChecklistItem</code> will conform to the <code>Codable</code> protocol. That&apos;s all you need to do!
+</p>
+<p>&quot;Now, hold on,&quot; I hear you say. &quot;We had to implement methods to support a protocol before. How come we don&apos;t have to do that here?&quot;
+</p>
+<p>Remember how I mentioned in a previous chapter that protocols can have default implementations? No? OK, it was in the <em>Delegates and Protocols</em> chapter in the section about protocols :] Sometimes, it is useful to have a default implementation for a protocol to provide functionality that would make things easier - or would cover a lot of standard scenarios.
+</p>
+<p>In our case, all of the properties of <code>ChecklistItem</code> are standard Swift types, and Swift already knows how to encode/decode those types. So, we can simply piggyback on existing functionality without having to write any code of our own to implement encoding/decoding in <code>ChecklistItem</code>. Handy, eh?
+</p>
+<h3 class="segment-chapter">Using the new method</h3>
+
+<p>You have to call the new <code>saveChecklistItems()</code> method whenever the list of items is modified.
+</p>
+<div class="note">
+<p><em>Exercise:</em> Where in the source code would you call this method?
+</p></div>
+
+<p>Answer: Look at where the <code>items</code> array is modified. This happens inside the <code>ItemDetailViewControllerDelegate</code> methods. That’s where the party’s at!
+</p>
+<p>➤ Add a call to <code>saveChecklistItems()</code> to the end of these methods in <em>ChecklistViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">itemDetailViewController</span><span class="hljs-params">(
+                 <span class="hljs-number">_</span> controller: ItemDetailViewController, 
+         didFinishAdding item: ChecklistItem)</span></span> {
+  . . .
+  saveChecklistItems()
+}</pre><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">itemDetailViewController</span><span class="hljs-params">(
+                 <span class="hljs-number">_</span> controller: ItemDetailViewController, 
+        didFinishEditing item: ChecklistItem)</span></span> {
+  . . .
+  saveChecklistItems()
+}</pre>
+<p>➤ Let’s not forget the swipe-to-delete function:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(
+                  <span class="hljs-number">_</span> tableView: UITableView,
+          commit editingStyle: UITableViewCellEditingStyle,
+           forRowAt indexPath: IndexPath)</span></span> {
+  . . .
+  saveChecklistItems()
+}</pre>
+<p>➤ And toggling the checkmark on a row:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+           didSelectRowAt indexPath: IndexPath)</span></span> {
+  . . .
+  saveChecklistItems()
+}</pre>
+<h3 class="segment-chapter">Verify the saved file</h3>
+
+<p>➤ Run the app now and do something that results in a save, such as tapping a row to flip the checkmark, or deleting/adding an item.
+</p>
+<p>➤ Go to the Finder window that has the app’s Documents directory open:
+</p><div class="image-90"><img src="graphics/img296.png"  alt="" title="The Documents directory now contains a Checklists.plist file" /></div>
+<p>There is now a <em>Checklists.plist</em> file in the Documents folder, which contains the items from the list.
+</p>
+<p>You can look inside this file if you want, but the contents won’t make much sense. Even though it is XML, this file wasn’t intended to be read by humans, only by something like <code>PropertyListDecoder</code>, the counterpart to the <code>PropertyListEncoder</code> that we already used.
+</p>
+<p>If you’re having trouble viewing the XML, it may be because the plist file isn’t stored as text but as a binary format. Some text editors support this file format and can read it as if it were text — TextWrangler is a good option and is a free download on the Mac App Store.
+</p>
+<p>You can also use Finder’s Quick Look feature to view the file. Simply select the file in Finder and press the space bar.
+</p>
+<p>Naturally, you can also open the plist file with Xcode.
+</p>
+<p>➤ Right-click the Checklists.plist file and choose <em>Open With → Xcode</em>.
+</p><div class="image-50"><img src="graphics/img297.png"  alt="" title="Checklist.plist in Xcode" /></div>
+<p>It still won’t make much sense but it’s fun to look at anyway.
+</p>
+<p>Expand some of the rows and you’ll see that the names of the <code>ChecklistItem</code>s are in there as well as their checked/unchecked state. But exactly how all these data items fit together, might not make much sense to you just yet.
+</p>
+<h4 class="segment-chapter">&quot;NS&quot; objects</h4>
+
+<p>Objects whose name start with the “NS” prefix, like <code>NSObject</code>, <code>NSString</code>, or <code>NSCoder</code>, are provided by the Foundation framework. NS stands for <em>N</em>ext<em>S</em>tep, the operating system from the 1990’s that later became Mac OS X and which also forms the basis of iOS.
+</p>
+<p>If you are curious about exactly how objects such as <code>NSObbject</code> and <code>NSString</code> work, you can Alt/Option-click any item in your source code to bring up a popup with a brief description. And this works for non-NS prefixed objects too :] In fact, you can look up details about any class, object, variable, or method this way in Xcode.
+</p><div class="image-50"><img src="graphics/img298.png"  alt="" title="" /></div>
+<p>I use this all the time to remind myself of how to use framework objects and their methods. You can click on any blue color items on the popup since they are links to detailed documentation that will take you to the Developer Documenation app which lets you read up further on the selected subject.
+</p>
+<p>It’s good to have a general idea of what objects are available in the frameworks, but no one can remember all the specifics. So get into the habit of looking up the documentation for any new objects and methods that you encounter. It’ll help you learn the iOS frameworks that much quicker!
+</p>
+<h2 class="segment-chapter">Load the file</h2>
+
+<p>Saving is all well and good, but pretty useless by itself. So, let’s also implement the loading of the Checklists.plist file. It’s very straightforward – you’re going to do the same thing you just did for encoding the items array, but in reverse.
+</p>
+<h3 class="segment-chapter">Read data from a file</h3>
+
+<p>➤ Switch to <em>ChecklistViewController.swift</em> and add the following new method:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">loadChecklistItems</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-comment">// 1</span>
+  <span class="hljs-keyword">let</span> path = dataFilePath()
+  <span class="hljs-comment">// 2</span>
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> data = <span class="hljs-keyword">try</span>? <span class="hljs-type">Data</span>(contentsOf: path) {
+    <span class="hljs-comment">// 3</span>
+    <span class="hljs-keyword">let</span> decoder = <span class="hljs-type">PropertyListDecoder</span>()
+    <span class="hljs-keyword">do</span> {
+      <span class="hljs-comment">// 4</span>
+      items = <span class="hljs-keyword">try</span> decoder.decode([<span class="hljs-type">ChecklistItem</span>].<span class="hljs-keyword">self</span>, 
+                                 from: data)
+    } <span class="hljs-keyword">catch</span> {
+      <span class="hljs-built_in">print</span>(<span class="hljs-string">"Error decoding item array: <span class="hljs-subst">\(error.localizedDescription)</span>"</span>)
+    }
+  }
+}</pre>
+<p>Let’s go through this step-by-step:
+</p>
+<ol>
+<li>
+<p>First, you put the results of <code>dataFilePath()</code> in a temporary constant named <code>path</code>.
+</p></li>
+
+<li>
+<p>Try to load the contents of Checklists.plist into a new <code>Data</code> object. The <code>try?</code> command attempts to create the <code>Data</code> object, but returns <code>nil</code> if it fails. That’s why you put it in an <code>if let</code> statement.
+</p>
+<p>Why would it fail? If there is no Checklists.plist file, then there are obviously no <code>ChecklistItem</code> objects to load. This is what happens when the app is started up for the very first time. In that case, you’ll skip the rest of this method.
+</p>
+<p>Also, do notice that this is another way to use the <code>try</code> statement - instead of enclosing the <code>try</code> statement within a <code>do</code> block, like you did previously, you can have a <code>try?</code> statement which indicates that the <code>try</code> could fail and if it does, that it will return <code>nil</code>. Whether you use the <code>do</code> block approach or this one, is completely up to you.
+</p></li>
+</ol>
+
+<ol>
+<li>
+<p>When the app does find a Checklists.plist file, you’ll load the entire array and its contents from the file using a <code>PropertyListDecoder</code>. So, create the decoder instance.
+</p></li>
+
+<li>
+<p>Load the saved data back into <code>items</code> using the decoder&apos;s <code>decode</code> method. The only item of interest here would be the first parameter passed to <code>decode</code> . The decoder needs to know what type of data will be the result of the decode operation and you let it know by indicating that it will be an array of <code>ChecklistItem</code> objects.
+</p></li>
+</ol>
+
+<p>This populates the array with exact copies of the <code>ChecklistItem</code> objects that were frozen into the Checklists.plist file.
+</p>
+<p>You now have your <code>loadChecklistItems()</code> method, but it needs to be called from somewhere in order for this to work. There are several places from which you can do this.
+</p>
+<p>Take a look at the current code in <em>ChecklistViewController.swift</em> — it would seem that using  <code>viewDidLoad()</code> is the obvius choice since that&apos;s where we currently load the static data for the app. So let&apos;s clear out the static data items and simply load the saved data from <code>viewDidLoad</code>!
+</p>
+<h3 class="segment-chapter">Load the saved data on app start</h3>
+
+<p>Here&apos;s what you need to do:
+</p>
+<p>➤ Remove the existing lines for creating the five static <code>ChecklistItem</code> instances and the print statements from <code>viewDidLoad</code> and replace that with a call to <code>loadChecklistItems</code> as follows:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">super</span>.viewDidLoad()
+  <span class="hljs-comment">// Load items</span>
+  loadChecklistItems()
+}</pre>
+<p>You don&apos;t need to add the comments in there but its always good to have some comments in your source so that you can understand your own code a month or two (or a few years) down the line :] (But as I mentioned before, if you have good method names, comments are really unnecessary most of the time.)
+</p>
+<p>All that&apos;s new in the above (apart from the deleted code) is the addition of a call to <code>loadChecklistItems()</code> to ensure that the saved item data is loaded back when the view controller is first loaded.
+</p>
+<p>➤ Run the app and make some changes to the to-do items. Press Stop to terminate the app. Start it again and notice that your changes are still there.
+</p>
+<p>➤ Stop the app again. Go to the Finder window with the Documents folder and remove the Checklists.plist file. Run the app once more. You should now have an empty list of items.
+</p>
+<p>➤ Add an item and notice that the Checklists.plist file re-appears.
+</p>
+<p>Awesome! You’ve written an app that not only lets you add and edit data, but which also persists the data between sessions. These techniques form the basis of many, many apps.
+</p>
+<p>Being able to use a navigation controller, show secondary screens, and pass data around through delegates are also essential iOS development skills.
+</p>
+<h4 class="segment-chapter">Initializers</h4>
+
+<p>Methods named <code>init</code> are special in Swift. They are only used when you’re creating new objects, to make those new objects ready for use.
+</p>
+<p>Think of it as having bought new clothes. The clothes are in your possession (the memory for the object is allocated) but they’re still in the bag. You need to go change and put the new clothes on (initialization) before you’re ready to go out and party.
+</p>
+<p>When you write the following to create a new object,
+</p><pre class="code-block"><span class="hljs-keyword">let</span> item = <span class="hljs-type">ChecklistItem</span>()</pre>
+<p>Swift first allocates a chunk of memory big enough to hold the new object and then calls <code>ChecklistItem</code>’s <code>init()</code> method with no parameters.
+</p>
+<p>It is pretty common for objects to have more than one init method. Which one is used depends on the circumstances.
+</p>
+<p>For example, amongst the <code>init</code> methods for <code>UITableViewController</code> you&apos;ll find - <code>init(nibName:bundle:)</code>, <code>init(style:)</code>  and <code>init?(coder:)</code>.  <code>init?(coder:)</code> is used when the view controller is instantiated from a storyboard. But you can also create a <code>UITableViewController</code> instance directly by calling either <code>init(nibName:bundle:)</code> or <code>init(style:)</code> . So, how you initialize an object depends on the circumstances.
+</p>
+<p>The implementations of these <code>init</code> methods, whether they’re just called <code>init()</code> or <code>init?(coder:)</code> or something else, always follow the same series of steps. When you write your own <code>init</code> methods, you need to stick to those steps as well.
+</p>
+<p>This is the standard way to write an <code>init</code> method:
+</p><pre class="code-block"><span class="hljs-keyword">init</span>() {
+  <span class="hljs-comment">// Put values into your instance variables and constants.</span>
+  
+  <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>()
+
+  <span class="hljs-comment">// Other initialization code, such as calling methods, goes here.</span>
+}</pre>
+<p>Note that unlike other methods, <code>init</code> does not have the <code>func</code> keyword.
+</p>
+<p>Sometimes you’ll see it written as <code>override init</code> or <code>required init?</code>. That is necessary when you’re adding the <code>init</code> method to an object that is a subclass of some other object. Much more about that later.
+</p>
+<p>The question mark is for when <code>init?</code> can potentially fail and return a <code>nil</code> value instead of a real object. You can imagine that decoding an object can fail if not enough information is present in the plist file.
+</p>
+<p>Inside the <code>init</code> method, you first need to make sure that all your instance variables and constants have a value. Recall that in Swift all variables must always have a value, except for optionals.
+</p>
+<p>When you declare an instance variable you can give it an initial value (or initialize it), like so:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> checked = <span class="hljs-literal">false</span></pre>
+<p>It’s also possible to write just the variable name and its type (or declare the variable), but not give the variable a value yet:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> checked: <span class="hljs-type">Bool</span></pre>
+<p>In the latter case, you have to give this variable a value in your <code>init</code> method:
+</p><pre class="code-block"><span class="hljs-keyword">init</span>() {
+  checked = <span class="hljs-literal">false</span>
+  <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>()
+}</pre>
+<p>You must use either one of these approaches; if you don’t give the variable a value at all, Swift considers this an error. The only exception is optionals, they do not need to have a value (in which case they are <code>nil</code>).
+</p>
+<p>Once you’ve given all your instance variables and constants values, you call <code>super.init()</code> to initialize the object’s superclass. If you haven’t done any object-oriented programming at all, you may not know what a <i>superclass</i> is. That’s fine; we’ll completely ignore this topic till later.
+</p>
+<p>Just remember that sometimes objects need to send messages to something called <code>super</code> and if you forget to do this, bad things are likely to happen.
+</p>
+<p>After calling <code>super.init()</code>, you can do additional initialization, such as calling the object’s own methods. You’re not allowed to do that before the call to <code>super.init()</code> because Swift has no guarantee that your object’s variables all have proper values until then.
+</p>
+<p>You don’t always need to provide an <code>init</code> method. If your <code>init</code> method doesn’t need to do anything — if there are no instance variables to fill in —ß then you can leave it out completely and the compiler will provide one for you. As an example, take a look at <code>ChecklistItem</code> — it doesn’t have an <code>init()</code> method since all its variables are initialized when they are declared.
+</p>
+<p>Swift’s rules for initializers can be a bit complicated, but fortunately, the compiler will remind you when you forget to provide an <code>init</code> method.
+</p>
+<h2 class="segment-chapter">What next?</h2>
+
+<p><i>Checklists</i> is currently at a good spot - you have a major bit of functionality completed and there are no bugs. This is a good time to take a break, put your feet up, and daydream about all the cool apps you’ll soon be writing :]
+</p>
+<p>It’s also smart to go back and repeat those parts you’re still a bit fuzzy about. Don’t rush through these chapters — there are no prizes for finishing first. Rather than going fast, take your time to truly understand what you’ve been doing.
+</p>
+<p>As always, feel free to change the app and experiment. Breaking things is allowed — even encouraged — here at iOS Apprentice Academy!
+</p>
+<p>You can find the project files for the app up to this point under <em>15 - Saving and Loading</em> in the Source Code folder.
+</p></body></html>

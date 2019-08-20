@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 22: Get Location Data</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 22: Get Location Data</h1>
+
+<p>You are going to build <i>MyLocations</i>, an app that uses the Core Location framework to obtain GPS coordinates for the user’s whereabouts, Map Kit to show the user’s favorite locations on a map, the iPhone’s camera and photo library to attach photos to these locations, and finally, Core Data to store everything in a database. Phew, that’s a lot of stuff!
+</p>
+<p>The finished app looks like this:
+</p><div class="image-100"><img src="graphics/img362.png"  alt="" title="The MyLocations app" /></div>
+<p><i>MyLocations</i> lets you keep a list of spots that you find interesting. Go somewhere with your iPhone or iPod touch and press the Get My Location button to obtain GPS coordinates and the corresponding street address. Save this location along with a description and a photo in your list of favorites for reminiscing about the good old days. Think of this app as a “location album” instead of a photo album.
+</p>
+<p>To make the workload easier to handle, you’ll split the project up into smaller chunks:
+</p>
+<ol>
+<li>
+<p>You will first figure out how to obtain GPS coordinates from the Core Location framework and how to convert these coordinates into an address, a process known as <em>reverse geocoding</em>. Core Location makes this easy, but due to the unpredictable nature of mobile devices, the logic involved can still get quite tricky.
+</p></li>
+
+<li>
+<p>Once you have the coordinates, you’ll create the Tag Location screen that lets users enter the details for the new location. This is a table view controller with static cells, very similar to what you’ve done previously for <i>Checklists</i>.
+</p></li>
+
+<li>
+<p>You’ll store the location data into a Core Data store. For the last app you saved app data into a .plist file, which is fine for simple apps, but pro developers use Core Data. It’s not as scary as it sounds!
+</p></li>
+
+<li>
+<p>Next, you’ll show the locations as pins on a map using the Map Kit framework.
+</p></li>
+
+<li>
+<p>The Tag Location screen has an Add Photo button that you will connect to the iPhone’s camera and photo library so users can add snapshots to their locations.
+</p></li>
+
+<li>
+<p>Finally, you’ll make the app look good using custom graphics. You will also add sound effects and some animations to the mix.
+</p></li>
+</ol>
+
+<p>Of course, you are not going to do all of that at once :] In this chatper, you will do the following:
+</p>
+<ul>
+<li>
+<p><em>Get GPS Coordinates:</em> Create a tab bar-based app and set up the UI for the first tab.
+</p></li>
+
+<li>
+<p><em>CoreLocation:</em> Use the CoreLocation framework to get the user&apos;s current location.
+</p></li>
+
+<li>
+<p><em>Display coordinates:</em> Display location information on screen.
+</p></li>
+</ul>
+
+<p>When you’re done with this chapter, the app will look like this:
+</p><div class="image-25"><img src="graphics/img363.png"  alt="" title="The first screen of the app" /></div>
+<h2 class="segment-chapter">Get GPS coordinates</h2>
+
+<p>First, you’ll create the <i>MyLocations</i> project in Xcode and then use the Core Location framework to find the latitude and longitude of the user’s location.
+</p>
+<h3 class="segment-chapter">Create project</h3>
+
+<p>➤ Fire up Xcode and make a new project. Choose the <em>Tabbed Application</em> template.
+</p><div class="image-50"><img src="graphics/img364.png"  alt="" title="Choosing the Tabbed Application template" /></div>
+<p>➤ Fill in the options as follows:
+</p>
+<ul>
+<li>
+<p>Product Name: <em>MyLocations</em>
+</p></li>
+
+<li>
+<p>Organization Name: Your name or the name of your company
+</p></li>
+
+<li>
+<p>Organization Identifier: Your own identifier in reverse domain notation
+</p></li>
+
+<li>
+<p>Language: <em>Swift</em>
+</p></li>
+
+<li>
+<p>Include Unit Tests and Include UI Tests: unchecked
+</p></li>
+</ul>
+
+<p>➤ Save the project.
+</p>
+<p>If you run the app, it looks like this:
+</p><div class="image-25"><img src="graphics/img365.png"  alt="" title="The app from the Tabbed Application template" /></div>
+<p>The app has a tab bar along the bottom with two tabs: First and Second.
+</p>
+<p>Even though it doesn’t do much yet, the app already employs three view controllers:
+</p>
+<ol>
+<li>
+<p>The <i>root controller</i> is a <code>UITabBarController</code> that contains the tab bar and performs the switching between the different screens.
+</p></li>
+
+<li>
+<p>A view controller for the First tab.
+</p></li>
+
+<li>
+<p>A view controller for the Second tab.
+</p></li>
+</ol>
+
+<p>The two tabs each have their own view controller. By default, the Xcode template names them <code>FirstViewController</code> and <code>SecondViewController</code>.
+</p>
+<p>At this point, the storyboard looks like this:
+</p><div class="image-50"><img src="graphics/img366.png"  alt="" title="The storyboard from the Tabbed Application template" /></div>
+<p>I already had to zoom it out to fit the whole thing on my screen. Storyboards are great, but they sure take up a lot of space!
+</p>
+<p>As before, you’ll be editing the storyboard using the iPhone SE dimensions. Later, if necessary, you’ll make some adjustments to get the app to work on other screen sizes as well.
+</p>
+<p>➤ In the <em>View as:</em> pane at the bottom, choose <em>iPhone SE</em>.
+</p>
+<h3 class="segment-chapter">The first tab</h3>
+
+<p>In this chapter, you’ll be working with the first tab only. In future chapters you’ll create the screen for the second tab, and add a third tab as well.
+</p>
+<p>Let’s give <code>FirstViewController</code> a better name.
+</p>
+<p>Remember the refactoring trick you learnt previously? That&apos;s what you&apos;ll use here since that renames both the file and any references to it anywhere in the project.
+</p>
+<p>➤ Open <em>FirstViewController.swift</em>, hover your mouse cursor over the word <code>FirstViewController</code> in the <code>class</code> line, right-click (or Control-click) and select <em>Refactor &gt; Rename…</em> from the context menu.
+</p>
+<p>➤ Change the name to <em>CurrentLocationViewController</em>. This changes the file name, the class name, and the reference to the class in the storyboard, all at once! Nifty, eh?
+</p>
+<p>➤ Go to the <em>Project Settings</em> screen and de-select the Landscape Left and Landscape Right settings under <em>Deployment Info - Device Orientation</em>. Now the app is portrait-only. (You can enable <em>Upside Down</em> at the same time if you like, since this would enable both portrait modes on iPad.)
+</p><div class="image-70"><img src="graphics/img367.png"  alt="" title="The app only works in portrait" /></div>
+<p>➤ Run the app again just to make sure everything still works.
+</p>
+<p>Whenever I change how things are hooked up in the storyboard, I find it useful to run the app and verify that the change was successful — it’s way too easy to forget a step and you want to catch such mistakes right away.
+</p>
+<p>And if you are wondering where you changed things in the storyboard, remember how you renamed the <code>FirstViewController</code>? That change modified the storybaord too :]
+</p>
+<p>As you saw in <i>Checklists</i>, a view controller that sits inside a navigation controller has a Navigation Item object that allows it to configure the navigation bar. Tab bars work the same way. Each view controller that represents a tab has a Tab Bar Item object.
+</p>
+<p>➤ Open the storyboard, select the <em>Tab Bar Item</em> object from the <em>First Scene</em> (this is the Current Location View Controller) and go to the <em>Attributes inspector</em>. Change the <em>Title</em> to <em>Tag</em>.
+</p><div class="image-90"><img src="graphics/img368.png"  alt="" title="Changing the title of the Tab Bar Item" /></div>
+<p>Later on, you’ll also set a new image for the Tab Bar Item too; it currently uses the default image from the template.
+</p>
+<h3 class="segment-chapter">First tab UI</h3>
+
+<p>You will now design the screen for this first tab. It gets two buttons and a few labels that show the user&apos;s GPS coordinates and the street address. To save you some time, you’ll add all the outlets in one go.
+</p>
+<p>➤ Add the following to the class in <em>CurrentLocationViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> messageLabel: <span class="hljs-type">UILabel</span>!
+<span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> latitudeLabel: <span class="hljs-type">UILabel</span>!
+<span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> longitudeLabel: <span class="hljs-type">UILabel</span>!
+<span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> addressLabel: <span class="hljs-type">UILabel</span>!
+<span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> tagButton: <span class="hljs-type">UIButton</span>!
+<span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> getButton: <span class="hljs-type">UIButton</span>!
+
+<span class="hljs-comment">// MARK:- Actions</span>
+<span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">getLocation</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-comment">// do nothing yet</span>
+}</pre>
+<p>Design the UI to look something like this — always make use of the positioning guides that Interface Builder provides to place controls since this gives you nice, even spacing:
+</p><div class="image-25"><img src="graphics/img369.png"  alt="" title="The design of the Current Location screen" /></div>
+<p>➤ The <em>(Message Label)</em> at the top should span the whole width of the screen. You’ll use this label for status messages while the app is obtaining the GPS coordinates. Set the <em>Alignment</em> attribute to centered and connect the label to the <code>messageLabel</code> outlet.
+</p>
+<p>➤ Once you&apos;ve positioned the <em>(Message Label)</em>, set its Auto Layout constraints for left, top, and right so that it aligns with the Safe Area. In case you&apos;re wondering, you don&apos;t have to explicitly select the Safe Area - if you set up the constraints as below, most of the time the constraints should be set correctly for you.
+</p><div class="image-25"><img src="graphics/img370.png"  alt="" title="The (Message Label) constraints" /></div>
+<p>➤ Make the <em>(Latitude goes here)</em> and <em>(Longitude goes here)</em> labels right-aligned and connect them to the <code>latitudeLabel</code> and <code>longitudeLabel</code> outlets respectively.
+</p>
+<p>➤ Set up <em>left</em>, <em>top</em>, <em>right</em>, and <em>bottom</em> Auto Layout constraints for the <em>Latitude:</em> label. You can use your judgement with regards to the top spacing — I used 24 points — or you can use the suggested spacing of 8 points. It&apos;s totally up to you, but I felt that there should be a bit more spacing between the message and the latitude, longitude grouping.
+</p>
+<p>➤ Then, set up <em>left</em>, <em>right</em>, and <em>bottom</em> constraints for the <em>Longitude:</em> label — you don&apos;t need a top constraint since the bottom constraint of the <em>Latitude:</em> label acts as the top constraint for this one.
+</p>
+<p>Again, you can use your judgement with regards to the bottom spacing since that determines how far away the <em>(Address goes here)</em> label is from the <em>Longitude:</em> label. I felt that it should have the same amount of spacing as there was at the top to the <em>(Message Label)</em> and so, went with 24 points.
+</p>
+<p>➤ Add <em>top</em>, <em>right</em>, and <em>bottom</em> constraints for <em>(Latitude goes here)</em> and <em>right</em> and <em>bottom</em> constraints for <em>(Longitude goes here)</em>.
+</p>
+<p>Do note that as you add constraints, the positions of some of the labels might shift. So you might need to adjust positioning again — for example, position the <em>(Longitude goes here)</em> label so that it stretches to the right edge of the screen — to set things up as they originally were.
+</p>
+<p>➤ You will get some Auto Layout constraint issues at this point. This is due to none of the labels in the latitude and longitude grouping having specific widths or heights. It&apos;s hard for Xcode to determine what the actual sizes should be.
+</p>
+<p>We know that the longer of the two left labels is <em>Longitude:</em>. So let&apos;s try setting both labels on the left to be the same size as the <em>Longitude:</em> label — Control-drag from the <em>Longitude:</em> label to the <em>Latitude:</em> label and select <em>Equal Widths</em> from the popup.
+</p>
+<p>Hmm ... that made things worse! Why?
+</p>
+<p>Because you had an existing trailing space from the <em>Latitude:</em> label to the <em>(Latitude goes here)</em> label and that spacing is now incorrect. Select the <em>(Latitude goes here)</em> label, switch to the <em>Size inspector</em>, and remove the leading constraint to the <em>Latitude:</em> label.
+</p>
+<p>➤ The <em>(Latitude goes here)</em> label will resize to fit its contents again. Add a leading constraint between it and the <em>Latitude:</em> label, but make the spacing greater than or equal to 8 points to match what&apos;s there for the longitude label set.
+</p>
+<p>Why greater than or equal to when all the other constraints are set to equal to? Because if you set it to equal to, you&apos;ll get another set of red constraints :]
+</p>
+<p>➤ The <em>(Address goes here)</em> label spans the whole width of the screen and should be <em>50</em> points high so it can fit two lines of text. Set its <em>Lines</em> attribute to <em>0</em> (that means it can display a variable number of lines). Connect this label to the <code>addressLabel</code> outlet.
+</p>
+<p>➤ Set <em>left</em>, <em>right</em>, and <em>bottom</em> constraints on the <em>(Address goes here)</em> label. Make the bottom constraint be 24 points to match the top spacing previously set, or, whatever value you set/like. It&apos;s your choice.
+</p>
+<p>➤ The <em>Tag Location</em> button doesn’t do anything yet, but should be connected to the <code>tagButton</code> outlet.
+</p>
+<p>➤ Set <em>left</em> and <em>right</em> constraints of 16 points on the <em>Tag Location</em> button so that it stretches from side to side.
+</p>
+<p>➤ Connect the <em>Get My Location</em> button to the <code>getButton</code> outlet, and its Touch Up Inside event to the <code>getLocation</code> action.
+</p>
+<p>➤ Set <em>left</em>, <em>right</em>, and <em>bottom</em> constraints on the <em>Get My Location</em> button so that it stretches from side to side and is at least 16 points from the bottom of the screen — you can use your judgement as to the actual positioning you think is good.
+</p>
+<p>➤ Run the app to see the new design in action.
+</p>
+<p>If you think the positioning of some element is off, feel free to adjust the Auto Layout constraints till the layout looks right. There is no right or wrong here, it&apos;s all a matter of how it looks to you :]
+</p>
+<p>So far, nothing special. With the exception of the tab bar, this is stuff you’ve seen and done before. Time to add something new: let’s play with Core Location!
+</p>
+<h2 class="segment-chapter">Core Location</h2>
+
+<p>Most iOS devices have a way to let you know exactly where you are on the globe, either through communication with GPS satellites, or Wi-Fi and cell tower triangulation. The Core Location framework puts that power in your own hands.
+</p>
+<p>An app can ask Core Location for the user’s current latitude and longitude. For devices with a compass, it can also give the heading — you won’t be using that for this app. Core Location can also provide continuous location updates while you’re on the move.
+</p>
+<h3 class="segment-chapter">Get your current location</h3>
+
+<p>Getting a location from Core Location is pretty easy, but there are some pitfalls that you need to avoid. Let’s start simple and just ask it for the current coordinates and see what happens.
+</p>
+<p>➤ At the top of <em>CurrentLocationViewController.swift</em>, add an import statement:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> CoreLocation</pre>
+<p>That is all you have to do to add the Core Location framework to your project.
+</p>
+<p>Core Location, like so many other parts of the iOS SDK, works via a delegate, so you should make the view controller conform to the <code>CLLocationManagerDelegate</code> protocol.
+</p>
+<p>➤ Add <code>CLLocationManagerDelegate</code> to the view controller’s <code>class</code> line:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CurrentLocationViewController</span>: <span class="hljs-title">UIViewController</span>, 
+                                     <span class="hljs-title">CLLocationManagerDelegate</span> </span>{</pre>
+<p>➤ Also add a new property:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> locationManager = <span class="hljs-type">CLLocationManager</span>()</pre>
+<p>The <code>CLLocationManager</code> is the object that will give you GPS coordinates. You’re putting the reference to this object in a constant — using <code>let</code>, not a variable (<code>var</code>). Once you have created the location manager object, the value of <code>locationManager</code> will never have to change.
+</p>
+<p>The new <code>CLLocationManager</code> object doesn’t give you GPS coordinates right away. To begin receiving coordinates, you have to call its <code>startUpdatingLocation()</code> method first.
+</p>
+<p>Unless you’re doing turn-by-turn navigation, you don’t want your app to continuously receive GPS coordinates. That requires a lot of power and will quickly drain the battery. For this app, you only turn on the location manager when you want a location fix and turn it off again when you’ve received a usable location.
+</p>
+<p>You’ll implement that logic in a minute — it’s more complex than you&apos;d think. For now, you’re only interested in receiving something from Core Location, just so you know that it works.
+</p>
+<p>➤ Change the <code>getLocation()</code> action method to the following:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">getLocation</span><span class="hljs-params">()</span></span> {
+  locationManager.delegate = <span class="hljs-keyword">self</span>
+  locationManager.desiredAccuracy = 
+                  kCLLocationAccuracyNearestTenMeters
+  locationManager.startUpdatingLocation()
+}</pre>
+<p>This method is hooked up to the <em>Get My Location</em> button. It tells the location manager that the view controller is its delegate and that you want to receive locations with an accuracy of up to ten meters. Then you start the location manager. From that moment on, the <code>CLLocationManager</code> object will send location updates to its delegate, i.e. the view controller.
+</p>
+<p>➤ Speaking of the delegate, add the following code too:
+</p><pre class="code-block"><span class="hljs-comment">// MARK: - CLLocationManagerDelegate</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">locationManager</span><span class="hljs-params">(<span class="hljs-number">_</span> manager: CLLocationManager, 
+        didFailWithError error: Error)</span></span> {
+  <span class="hljs-built_in">print</span>(<span class="hljs-string">"didFailWithError <span class="hljs-subst">\(error.localizedDescription)</span>"</span>)
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">locationManager</span><span class="hljs-params">(<span class="hljs-number">_</span> manager: CLLocationManager, 
+  didUpdateLocations locations: [CLLocation])</span></span> {
+  <span class="hljs-keyword">let</span> newLocation = locations.last!
+  <span class="hljs-built_in">print</span>(<span class="hljs-string">"didUpdateLocations <span class="hljs-subst">\(newLocation)</span>"</span>)
+}</pre>
+<p>These are the delegate methods for the location manager. For the time being, you’ll simply output a <code>print()</code> message to the Console. Also, do note the <code>error.localizedDescription</code> bit which, instead of simply printing out the contents of the <code>error</code> variable, outputs a human understandable version of the error (if possible) based on the device&apos;s current locale (or language setting).
+</p>
+<p>➤ Run the app in the Simulator and press the <em>Get My Location</em> button.
+</p>
+<p>Hmm... nothing seems to happen. That’s because you need to ask for permission before accessing location information.
+</p>
+<h3 class="segment-chapter">Ask for permission</h3>
+
+<p>➤ Add the following lines to the top of <code>getLocation()</code>:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> authStatus = <span class="hljs-type">CLLocationManager</span>.authorizationStatus()
+<span class="hljs-keyword">if</span> authStatus == .notDetermined {
+  locationManager.requestWhenInUseAuthorization()
+  <span class="hljs-keyword">return</span>
+}</pre>
+<p>This checks the current authorization status. If it is <code>.notDetermined</code> — meaning that this app has not asked for permission yet — then the app will request “When In Use” authorization. That allows the app to get location updates while it is open and the user is interacting with it.
+</p>
+<p>There is also “Always” authorization, which permits the app to check the user’s location even when it is not active. That’s useful for a navigation app, for example. For most apps, including <i>MyLocations</i>, when-in-use is what you want to ask for.
+</p>
+<p>Just adding these lines of code is not enough. You also have to add a special key to the app’s Info.plist.
+</p>
+<p>➤ Open <em>Info.plist</em> file. Right-click somewhere inside Info.plist and choose <em>Add Row</em> from the menu.
+</p><div class="image-70"><img src="graphics/img371.png"  alt="" title="Adding a new row to Info.plist" /></div>
+<p>➤ For the key, type <em>NSLocationWhenInUseUsageDescription</em> (or choose <em>Privacy - Location When In Use Usage Description</em> from the list).
+</p>
+<p>➤ Type the following text in the Value column:
+</p>
+<p><em>This app lets you keep track of interesting places. It needs access to the GPS coordinates for your location.</em>
+</p>
+<p>This description tells the user what the app wants to use the location data for.
+</p><div class="image-100"><img src="graphics/img372.png"  alt="" title="Adding the new item to Info.plist" /></div>
+<p>➤ Run the app again and press the <em>Get My Location</em> button.
+</p>
+<p>Core Location will pop up the following alert, asking the user for permission:
+</p><div class="image-30"><img src="graphics/img373.png"  alt="" title="Users have to allow your app to use their location" /></div>
+<p>If a user denies the request with the Don’t Allow button, then Core Location will never give your app location coordinates.
+</p>
+<p>➤ Press the <em>Don’t Allow</em> button. Now press Get My Location again.
+</p>
+<p>Xcode’s debug area should now show the following message (or something similar):
+</p><pre class="code-block">didFailWithError The operation couldn’t be completed. (kCLErrorDomain error 1.)</pre>
+<p>This comes from the <code>locationManager(_:didFailWithError:)</code> delegate method. It’s telling you that the location manager wasn’t able to obtain a location.
+</p>
+<p>The reason why is described by an <code>Error</code> object, which is the standard object that the iOS SDK uses to convey error information. You’ll see it in many other places in the SDK since there are plenty of places where things can go wrong!
+</p>
+<p>This <code>Error</code> object has a <i>domain</i> and a <i>code</i>. The domain in this case is <code>kCLErrorDomain</code> meaning the error came from Core Location (CL). The code is 1, also identified by the symbolic name <code>CLError.denied</code>, which means the user did not allow the app to obtain location information.
+</p>
+<div class="note">
+<p><em>Note:</em> The <code>k</code> prefix is often used by the iOS frameworks to signify that a name represents a constant value — I guess whoever came up with this prefix thought it was spelled “konstant”. This is an old convention and you won’t see it used much in new frameworks or in Swift code, but it still pops up here and there.
+</p></div>
+
+<p>➤ Stop the app from within Xcode and run it again.
+</p>
+<p>When you press the Get My Location button, the app does not ask for permission anymore but immediately gives you the same error message.
+</p>
+<p>Let’s make this a bit more user-friendly, because a normal user would never see that <code>print()</code> output.
+</p>
+<h3 class="segment-chapter">Handle permission errors</h3>
+
+<p>➤ Add the following method to <em>CurrentLocationViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Helper Methods</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showLocationServicesDeniedAlert</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> alert = <span class="hljs-type">UIAlertController</span>(
+    title: <span class="hljs-string">"Location Services Disabled"</span>,
+    message: <span class="hljs-string">"Please enable location services for this app in Settings."</span>,
+    preferredStyle: .alert)
+
+  <span class="hljs-keyword">let</span> okAction = <span class="hljs-type">UIAlertAction</span>(title: <span class="hljs-string">"OK"</span>, style: .<span class="hljs-keyword">default</span>, 
+                             handler: <span class="hljs-literal">nil</span>)
+  alert.addAction(okAction)
+
+  present(alert, animated: <span class="hljs-literal">true</span>, completion: <span class="hljs-literal">nil</span>)
+}</pre>
+<p>This pops up an alert with a helpful hint. This app is pretty useless without access to the user’s location, so it should encourage the user to enable location services. (It’s not necessarily the user of the app who has denied access to the location data; a systems administrator or parent could also have restricted location access.)
+</p>
+<p>➤ To show this alert, add the following lines to <code>getLocation()</code>, just before you set the <code>locationManager</code>’s delegate:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> authStatus == .denied || authStatus == .restricted {
+  showLocationServicesDeniedAlert()
+  <span class="hljs-keyword">return</span>
+}</pre>
+<p>This shows the alert if the authorization status is denied or restricted. Notice the use of <code>||</code> here, the “logical or” operator. <code>showLocationServicesDeniedAlert()</code> will be called if either of those two conditions is true.
+</p>
+<p>➤ Try it out. Run the app and tap <em>Get My Location</em>. You should now get the Location Services Disabled alert:
+</p><div class="image-30"><img src="graphics/img374.png"  alt="" title="The alert that pops up when location services are not available" /></div>
+<p>Fortunately, users can change their minds and enable location services for your app again. This is done from the iPhone’s Settings app.
+</p>
+<p>➤ Open the <em>Settings</em> app in the Simulator and go to <em>Privacy → Location Services</em>.
+</p><div class="image-25"><img src="graphics/img375.png"  alt="" title="Location Services in the Settings app" /></div>
+<p>➤ Click <em>MyLocations</em> and then <em>While Using the App</em> to enable location services again. Switch back to the app (or run it again from Xcode) and press the <em>Get My Location</em> button.
+</p>
+<p>When I tried this, the following message appeared in Xcode’s debug area:
+</p><pre class="code-block">didFailWithError The operation couldn’t be completed. (kCLErrorDomain error 0.)</pre>
+<p>Again there is an error message but with a different code, 0. This is “location unknown” which means Core Location was unable to obtain a location for some reason.
+</p>
+<p>That is not so strange, as you’re running this from the Simulator, which obviously does not have a real GPS. Your Mac may have a way to obtain location information through Wi-Fi but this is not built into the Simulator. Fortunately, there is a way to fake it!
+</p>
+<h3 class="segment-chapter">Fake location on the simulator</h3>
+
+<p>➤ With the app running, from the Simulator’s menu bar at the top of the screen, choose <em>Debug → Location → Apple</em>.
+</p><div class="image-70"><img src="graphics/img376.png"  alt="" title="The Simulator’s Location menu" /></div>
+<p>You should now see messages like these in the debug area:
+</p><pre class="code-block">didUpdateLocations &lt;+37.33259552,-122.03031802&gt; +/- 500.00m (speed -1.00 mps / course -1.00) @ 6/30/17, 8:19:11 AM India Standard Time
+didUpdateLocations &lt;+37.33241211,-122.03050893&gt; +/- 65.00m (speed -1.00 mps / course -1.00) @ 6/30/17, 8:19:13 AM India Standard Time
+didUpdateLocations &lt;+37.33240901,-122.03048800&gt; +/- 65.00m (speed -1.00 mps / course -1.00) @ 6/30/17, 8:19:14 AM India Standard Time</pre>
+<p>It keeps going on and on, giving the app a new location every second or so. After a short while, the latitude and longitude readings will not change anymore. These particular coordinates point at the Apple headquarters in Cupertino, California.
+</p>
+<p>Look carefully at the coordinates the app is receiving. The first one says “+/- 500.00m”, the second one “+/- 65.00m”, a little further on “+/- 50.00m” etc. This number keeps getting smaller and smaller until it stops at about “+/- 5.00m”.
+</p>
+<p>This is the accuracy of the measurement, expressed in meters. What you see is the Simulator imitating what happens when you ask for a location on a real device.
+</p>
+<p>If you go out with an iPhone and try to obtain location information, the iPhone uses three different ways to find your coordinates. It has onboard cellular, Wi-Fi, and GPS radios that each give it location information at different levels of detail:
+</p>
+<ul>
+<li>
+<p>Cell tower triangulation will always work if there is a signal but it’s not very precise.
+</p></li>
+
+<li>
+<p>Wi-Fi positioning works better, but that is only available if there are known Wi-Fi routers nearby. This system uses a big database that contains the locations of wireless networking equipment.
+</p></li>
+
+<li>
+<p>The very best results come from the GPS (<em>G</em>lobal <em>P</em>ositioning <em>S</em>ystem), but that needs satellite communication and is therefore is the slowest of the three. It also won’t work very well indoors.
+</p></li>
+</ul>
+
+<p>So, your device has several ways of obtaining location data, ranging from fast but inaccurate (cell towers, Wi-Fi) to accurate but slow (GPS). And none of these are guaranteed to work. Some devices don’t even have a GPS or cellular radio at all and have to rely on just Wi-Fi. Suddenly obtaining a location seems a lot trickier.
+</p>
+<p>Fortunately for us, Core Location does all of the hard work of turning the location readings from its various sources into a useful number. Instead of making you wait for the definitive results from the GPS — which may never come — Core Location sends location data to the app as soon as it gets it, and then follows up with more and more accurate readings.
+</p>
+<div class="note">
+<p><em>Exercise.</em> If you have an iPhone, iPod touch or iPad nearby, try the app on your device and see what kind of readings it gives you. If you have more than one device, try the app on all of them and note the differences.
+</p></div>
+
+<h4 class="segment-chapter">Asynchronous operations</h4>
+
+<p>Obtaining a location is an example of an <em>asynchronous</em> process.
+</p>
+<p>Sometimes apps need to do things that may take a while. After you start an operation, you have to wait until it gives you the results. If you’re unlucky, those results may never come at all!
+</p>
+<p>In the case of Core Location, it can take a second or two before you get the first location reading and then quite a few seconds more to get coordinates that are accurate enough for your app to use.
+</p>
+<p>Asynchronous means that after you start such an operation, your app will continue on its merry way. The user interface is still responsive, new events are being sent and handled, and the user can still tap on things.
+</p>
+<p>The asynchronous process is said to be operating “in the background”. As soon as the operation is done, the app is notified through a delegate so that it can process the results.
+</p>
+<p>The opposite is <em>synchronous</em> (without the a). If you start an operation that is synchronous, the app won’t continue until that operation is done. In effect, the app freezes up.
+</p>
+<p>In the case of <code>CLLocationManager</code> that would cause a big problem: your app would be totally unresponsive for the couple of seconds that it takes to get a location fix. Those kinds of “blocking” operations are often a bad experience for the user.
+</p>
+<p>For example, <i>MyLocations</i> has a tab bar at the bottom. If the app blocked while getting the location, switching to another tab during that time would have no effect. The user expects to always be able to change tabs, but now it appears that the app is frozen, or worse, has crashed.
+</p>
+<p>The designers of iOS decided that such behavior is unacceptable and therefore operations that take longer than a fraction of a second should be performed in an asynchronous manner.
+</p>
+<p>For the next app, you’ll see more asynchronous processing in action when we talk about network connections and downloading stuff from the Internet.
+</p>
+<p>By the way, iOS has something called a <i>watchdog timer</i>. If your app is unresponsive for too long, then under certain circumstances, the watchdog timer will kill your app without mercy — so don’t do anything that freezes your UI!
+</p>
+<p>The take-away is this: any operation that takes long enough to be noticeable by the user should be done asynchronously, in the background.
+</p>
+<h2 class="segment-chapter">Display coordinates</h2>
+
+<p>The <code>locationManager(_:didUpdateLocations:)</code> delegate method gives you an array of <code>CLLocation</code> objects that contain the current latitude and longitude coordinates of the user. (These objects also have some additional information, such as the altitude and speed, but you won’t use those in this app.)
+</p>
+<p>You’ll take the last <code>CLLocation</code> object from the array — because that is the most recent update — and display its coordinates in the labels that you added to the screen earlier.
+</p>
+<p>➤ Add a new instance variable to <em>CurrentLocationViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> location: <span class="hljs-type">CLLocation</span>?</pre>
+<p>You will store the user’s current location in this variable.
+</p>
+<p>This needs to be an optional, because it is possible to <i>not</i> have a location, for example, when you’re stranded out in the Sahara desert somewhere and there are no cell towers or GPS satellites in sight (it happens).
+</p>
+<p>But even when everything works as it should, the value of <code>location</code> will still be <code>nil</code> until Core Location reports back with a valid <code>CLLocation</code> object, which as you’ve seen, may take a few seconds. So an optional it is.
+</p>
+<p>➤ Change <code>locationManager(_:didUpdateLocations:)</code> to:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">locationManager</span><span class="hljs-params">(<span class="hljs-number">_</span> manager: CLLocationManager, 
+  didUpdateLocations locations: [CLLocation])</span></span> {
+  <span class="hljs-keyword">let</span> newLocation = locations.last!
+  <span class="hljs-built_in">print</span>(<span class="hljs-string">"didUpdateLocations <span class="hljs-subst">\(newLocation)</span>"</span>)
+
+  location = newLocation    <span class="hljs-comment">// Add this</span>
+  updateLabels()            <span class="hljs-comment">// Add this</span>
+}</pre>
+<p>You store the <code>CLLocation</code> object that you get from the location manager into the instance variable and call a new <code>updateLabels()</code> method.
+</p>
+<p>Keep the <code>print()</code> in there because it’s handy for debugging.
+</p>
+<p>➤ Add the <code>updateLabels()</code> method:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">updateLabels</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> location = location {
+    latitudeLabel.text = <span class="hljs-type">String</span>(format: <span class="hljs-string">"%.8f"</span>, 
+                                location.coordinate.latitude)
+    longitudeLabel.text = <span class="hljs-type">String</span>(format: <span class="hljs-string">"%.8f"</span>, 
+                                 location.coordinate.longitude)
+    tagButton.isHidden = <span class="hljs-literal">false</span>
+    messageLabel.text = <span class="hljs-string">""</span>
+  } <span class="hljs-keyword">else</span> {
+    latitudeLabel.text = <span class="hljs-string">""</span>
+    longitudeLabel.text = <span class="hljs-string">""</span>
+    addressLabel.text = <span class="hljs-string">""</span>
+    tagButton.isHidden = <span class="hljs-literal">true</span>
+    messageLabel.text = <span class="hljs-string">"Tap 'Get My Location' to Start"</span>
+  }
+}</pre>
+<p>Because the <code>location</code> instance variable is an optional, you use the <code>if let</code> syntax to unwrap it.
+</p>
+<p>Note the <i>shadowing</i> of the original <code>location</code> variable by the unwrapped variable. Inside the <code>if</code> statement, <code>location</code> now refers to an actual <code>CLLocation</code> object that is not <code>nil</code>.
+</p>
+<p>If there is a valid location object, you convert the latitude and longitude, which are values with type <code>Double</code>, into strings and put them into the labels.
+</p>
+<p>You’ve seen <i>string interpolation</i> before to put values into strings, so why doesn’t this code simply do the following?
+</p><pre class="code-block">latitudeLabel.text = <span class="hljs-string">"<span class="hljs-subst">\(location.coordinate.latitude)</span>"</span></pre>
+<p>That would certainly work, but it doesn’t give you any control over how the latitude value appears. For this app, you want both latitude and longitude to be shown with 8 digits behind the decimal point.
+</p>
+<p>For that sort of control, you need to use a <i>format string</i>.
+</p>
+<h3 class="segment-chapter">Format strings</h3>
+
+<p>Like string interpolation, a format string uses placeholders that will be replaced by the actual value during runtime. These placeholders, or <i>format specifiers</i>, can be quite intricate.
+</p>
+<p>To create the text for the latitude label you do this:
+</p><pre class="code-block"><span class="hljs-type">String</span>(format: <span class="hljs-string">"%.8f"</span>, location.coordinate.latitude)</pre>
+<p>This creates a new <code>String</code> object using the format string <code>&quot;%.8f&quot;</code>, and the value to replace in that string, <code>location.coordinate.latitude</code>.
+</p>
+<p>Placeholders always start with a percent (<code>%</code>) sign. Examples of common placeholders are: <code>%d</code> for integer values, <code>%f</code> for floating-point, and <code>%@</code> for objects.
+</p>
+<p>Format strings are very common in Objective-C code, but less so in Swift because string interpolation is much simpler (but less powerful).
+</p>
+<p>The <code>%.8f</code> format specifier does the same thing as <code>%f</code>: it takes a decimal number and puts it in the string. The <code>.8</code> means that there should always be 8 digits behind the decimal point.
+</p>
+<p>➤ Run the app, select a location to simulate from the Simulator’s <em>Debug</em> menu and tap the <em>Get My Location</em> button. You’ll now see the latitude and longitude appear on the screen.
+</p><div class="image-30"><img src="graphics/img377.png"  alt="" title="The app shows the GPS coordinates" /></div>
+<p>When the app starts up, it has no location object (<code>location</code> is still <code>nil</code>) and therefore ought to show the &quot;Tap &apos;Get My Location&apos; to Start&quot; message at the top as a hint to the user. But it doesn’t do that yet since the app doesn’t call <code>updateLabels()</code> until it receives the first coordinates.
+</p>
+<p>➤ To fix this, also call <code>updateLabels()</code> from <code>viewDidLoad()</code>:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">super</span>.viewDidLoad()
+  updateLabels()
+}</pre>
+<p>➤ Run the app. Initially, the screen should now say, Tap ‘Get My Location’ to Start, and the latitude and longitude labels are empty.
+</p><div class="image-30"><img src="graphics/img378.png"  alt="" title="What the app looks like when you start it" /></div>
+<p>You can find the project files for this chapter under <em>22 – Get Location Data</em> in the Source Code folder.
+</p></body></html>

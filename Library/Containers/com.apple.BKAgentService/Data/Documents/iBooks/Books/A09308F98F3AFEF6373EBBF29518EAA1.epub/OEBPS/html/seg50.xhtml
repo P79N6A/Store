@@ -1,0 +1,728 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 42: The iPad</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 42: The iPad</h1>
+
+<p>Even though the apps you’ve written so far will work fine on the iPad, they are not optimized for the iPad. There really isn’t much difference between the iPhone and the iPad: they both run iOS and have access to the exact same frameworks. But the iPad has a much bigger screen — 768×1024 points for the regular iPad,  834x1112 points for the 10.5-inch iPad Pro, 1024×1366 points for the 12.9-inch iPad Pro — and that makes all the difference.
+</p>
+<p>Given the much bigger screen real estate available, on the iPad you can have different UI elements which take better advantage of the addiitional screen space. That&apos;s where the differences between an iPad-optimized app and an iPhone app which also runs on the iPad comes into play.
+</p>
+<p>In this chapter you will cover the following:
+</p>
+<ul>
+<li>
+<p><em>Universal apps:</em> A brief explanation of universal apps and how to switch from universal mode to supporting a specific platform only.
+</p></li>
+
+<li>
+<p><em>The split view controller:</em> Using a split view controller to make better use of the available screen space on iPads.
+</p></li>
+
+<li>
+<p><em>Improve the detail pane:</em> Re-using the Detail screen from the iPhone version (with some adjustments) to display detail information on iPad.
+</p></li>
+
+<li>
+<p><em>Size classes in the storyboard:</em> Using size classes to customize specific screens for iPad.
+</p></li>
+
+<li>
+<p><em>Your own popover:</em> Create a menu popover to be displayed on the iPad.
+</p></li>
+
+<li>
+<p><em>Send e-mail from the app:</em> Send a support e-mail from within the app using the iOS e-mail functionality.
+</p></li>
+
+<li>
+<p><em>Landscape on iPhone Plus:</em> Handle landscape mode correctly for iPhone Plus devices since they act like a mini iPad in landscape mode.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Universal apps</h2>
+
+<p>Before Xcode 9, when you created a new project, you could specify whether the app was going to be a <i>universal app</i> which would run on both iPhone and iPad or if it was going to support only one platform.
+</p>
+<p>Since Xcode 9, you don&apos;t have to make this choice — all apps are universal apps by default. However, you can still change an app to be just for iPhone — or for iPad, if you prefer — after you&apos;ve created the project. You will <i>not</i> be doing that for <i>StoreSearch</i>, but in case you want to know how to change your app from a universal app to one which supports a particular platform, here&apos;s how you do it.
+</p>
+<p>➤ Go to the <em>Project Settings</em> screen and select the StoreSearch target.
+</p>
+<p>In the <em>General</em> tab under <em>Deployment Info</em> there is a setting for <em>Devices</em>. It should be set to <em>Universal</em> — and that&apos;s where you want it to be — buf if you wanted to, you can change to one of the other values.
+</p><div class="image-80"><img src="graphics/img711.png"  alt="" title="How to change device support" /></div>
+<p>➤ While you will <em>not</em> make any changes to the setting above, if you haven&apos;t tried this before, it&apos;s a good idea to try running on an iPad simulator now. Be aware that the iPad Simulator is huge, so you may need to use the <em>Window ▸ Scale</em> option from the Simulator menu to make it fit on your computer.
+</p><div class="image-30"><img src="graphics/img712.png"  alt="" title="StoreSearch in the iPad Simulator" /></div>
+<p>This works fine, but as I said before, simply blowing up the interface to iPad size does not take advantage of all the extra space the bigger screen offers. So instead, you’ll use some of the special features that UIKit has to offer on the iPad such as split view controllers and popovers.
+</p>
+<h2 class="segment-chapter">The split view controller</h2>
+
+<p>On the iPhone, with a few exceptions such as when you embed view controllers inside another, a view controller generally manages the whole screen.
+</p>
+<p>On the iPad, because the display is so much bigger, it is common for view controllers to manage just a section of the screen. Often, you will want to combine different types of content in the same screen.
+</p>
+<p>A good example of this is the split view controller. It has two panes: a smaller pane on the left — the “master” pane — usually containing a list of items, and a larger right pane — the “detail” pane — showing more information about the thing you have selected in the master list. Each pane has its own view controller.
+</p>
+<p>If you’ve used an iPad before, then you’ve seen the split view controller in action because it’s used in many standard apps such as Mail and Settings.
+</p><div class="image-60"><img src="graphics/img713.png"  alt="" title="The split view controller in landscape and portrait orientations" /></div>
+<p>If the iPad is in landscape mode, the split view controller has enough room to show both panes at the same time. However, in portrait mode, only the detail view controller is visible and the app provides a button that will slide the master pane into view. Or, you can swipe the screen to reveal/hide it.
+</p>
+<p>In this section, you’ll convert the app to use a split view controller. This has some consequences for the organization of the user interface.
+</p>
+<h3 class="segment-chapter">Check the iPad orientations</h3>
+
+<p>Because the iPad has different dimensions than the iPhone, it will also be used in different ways. Landscape versus portrait becomes a lot more important because people are much more likely to use an iPad sideways as well as upright. Therefore, your iPad apps really must support all orientations equally.
+</p>
+<p>This implies that an iPad app shouldn’t make landscape show a completely different UI than portrait. So, what you did with the iPhone version of the app won’t fly on the iPad — you can no longer show the <code>LandscapeViewController</code> when the user rotates the device. That feature goes out the window.
+</p>
+<p>➤ Open <em>Info.plist</em>. There will be a <em>Supported interface orientations</em> item with three items under it, and a <em>Supported interface orientations (iPad)</em> item with four items under it.
+</p><div class="image-100"><img src="graphics/img714.png"  alt="" title="The supported device orientations in Info.plist" /></div>
+<p>The iPad has its own supported orientations. On the iPhone, you usually don’t want to enable Upside Down but on the iPad you do. If the settings do not correspond to the above, do make sure to change them to match the screenshot.
+</p>
+<p>Next, run the app on the iPad simulator and verify that the app always rotates so that the search bar is on top, no matter what orientation you put the iPad in.
+</p>
+<p>Now, let’s put that split view controller into the app.
+</p>
+<h3 class="segment-chapter">Add a split view controller</h3>
+
+<p>On the latest Xcode versions, you can simply add a Split View Controller object to the storyboard. The split view is only visible on the iPad; on the iPhone it stays hidden. This is a lot simpler than in previous iOS versions where you had to make two different storyboard files, one for the iPhone and one for the iPad. Now you just design your entire UI in a single storyboard and it magically works across all device types.
+</p>
+<p>➤ Open <em>Main.storyboard</em>. If you are still in landscape mode, switch back to portrait mode now.
+</p>
+<p>➤ Drag a new <em>Split View Controller</em> on to the canvas.
+</p>
+<p>➤ The Split View Controller comes with several scenes pre-attached. Remove the white View Controller. Also remove the one that says Root View Controller. Keep just the Master View Controller and the Navigation Controller.
+</p>
+<p>Here’s the final result after I was done:
+</p><div class="image-40"><img src="graphics/img715.png"  alt="" title="The storyboard with the new Split View Controller and Navigation Controller" /></div>
+<p>A split view controller has a relationship segue with two child view controllers, one for the smaller master pane on the left and one for the bigger detail pane on the right.
+</p>
+<p>The obvious candidate for the master pane is the <code>SearchViewController</code>, and the <code>DetailViewController</code> will go — where else? — into the detail pane.
+</p>
+<p>➤ Control-drag from the Split View Controller to the Search scene. Choose <em>Relationship Segue – master view controller</em>.
+</p>
+<p>This puts a new arrow between the split view and the Search screen — this arrow used to be connected to the navigation controller.
+</p>
+<p>You won’t put the Detail View Controller directly into the split view’s detail pane. It’s better to wrap it inside a Navigation Controller first. That is necessary for portrait mode where you need a button to slide the master pane into view. What better place for this button than a navigation bar?
+</p>
+<p>➤ Control-drag from the Split View Controller to the Navigation Controller. Choose <em>Relationship Segue – detail view controller</em>.
+</p>
+<p>➤ Control-drag from the Navigation Controller to the Detail View Controller. Make this a <em>Relationship Segue – root view controller</em>.
+</p>
+<p>The split view must become the initial view controller so it gets loaded by the storyboard first.
+</p>
+<p>➤ Pick up the arrow that currently points to the Search scene — tap on the arrow to select it first and then drag — and drag it over to the Split View Controller. You can also check the <em>Is Initial View Controller</em> option in the Attributes inspector for the Split View Controller instead of dragging the arrow.
+</p>
+<p>Now everything is connected:
+</p><div class="image-50"><img src="graphics/img716.png"  alt="" title="The master and detail panes are connected to the split view" /></div>
+<p>That should be enough to get the app up and running with a split view — albeit with some issues:
+</p><div class="image-35"><img src="graphics/img717.png"  alt="" title="The app in a split view controller" /></div>
+<p>It will still take a bit of effort to make everything look good and work well, but this was the first step.
+</p>
+<p>If you play with the app you’ll notice that it still uses the logic from the iPhone version, and that doesn’t always work so well now that the UI sits in a split view. For example, tapping the price button from the new Detail pane crashes the app…
+</p>
+<p>You’ll fix the app over the course of this chapter to make sure it doesn’t do anything funny on the iPad!
+</p>
+<h3 class="segment-chapter">Fix the master pane</h3>
+
+<p>The master pane works fine in landscape, but in portrait mode it’s not visible. You can make it appear by swiping from the left edge of the screen — try it — but there should really be a button — what&apos;s known as the <i>display mode</i> button — to reveal it as well. The split view controller takes care of most of this logic, but you still need to put that button somewhere.
+</p>
+<p>That’s why you put <code>DetailViewController</code> in a Navigation Controller, so you can add this button — which is a <code>UIBarButtonItem</code> — to its navigation bar.
+</p>
+<p>For the record, it’s not mandatory to use a navigation controller for this. For example, you could also add a toolbar to the <code>DetailViewController</code> or use a different button altogether. But generally, a navigation controller is the easiest way to achieve this.
+</p>
+<p>➤ Add the following properties to <em>AppDelegate.swift</em>, inside the class:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Properties</span>
+<span class="hljs-keyword">var</span> splitVC: <span class="hljs-type">UISplitViewController</span> {
+  <span class="hljs-keyword">return</span> window!.rootViewController <span class="hljs-keyword">as</span>! <span class="hljs-type">UISplitViewController</span>
+}
+
+<span class="hljs-keyword">var</span> searchVC: <span class="hljs-type">SearchViewController</span> {
+  <span class="hljs-keyword">return</span> splitVC.viewControllers.first <span class="hljs-keyword">as</span>! <span class="hljs-type">SearchViewController</span>
+}
+
+<span class="hljs-keyword">var</span> detailNavController: <span class="hljs-type">UINavigationController</span> {
+  <span class="hljs-keyword">return</span> splitVC.viewControllers.last <span class="hljs-keyword">as</span>! <span class="hljs-type">UINavigationController</span>
+}
+
+<span class="hljs-keyword">var</span> detailVC: <span class="hljs-type">DetailViewController</span> {
+  <span class="hljs-keyword">return</span> detailNavController.topViewController 
+                      <span class="hljs-keyword">as</span>! <span class="hljs-type">DetailViewController</span>
+}</pre>
+<p>These four computed properties refer to the various view controllers in the app:
+</p>
+<ul>
+<li>
+<p><code>splitVC</code>: The top-level view controller.
+</p></li>
+
+<li>
+<p><code>searchVC</code>: The Search screen in the master pane of the split view.
+</p></li>
+
+<li>
+<p><code>detailNavController</code>: The <code>UINavigationController</code> in the detail pane of the split view.
+</p></li>
+
+<li>
+<p><code>detailVC</code>: The Detail screen inside the <code>UINavigationController</code>.
+</p></li>
+</ul>
+
+<p>By making properties for these view controllers, you can easily refer to them without having to go digging through the view hierarchy like you did for the previous apps.
+</p>
+<p>➤ Add the following line to <code>application(_:didFinishLaunchingWithOptions:)</code>:
+</p><pre class="code-block">detailVC.navigationItem.leftBarButtonItem = 
+                splitVC.displayModeButtonItem</pre>
+<p>This looks up the Detail screen and puts a button into its navigation item for switching between the split view display modes. Because the <code>DetailViewController</code> is embedded in a <code>UINavigationController</code>, this button will automatically end up in the navigation bar.
+</p>
+<p>If you run the app now, all you get in portrait mode is a back arrow:
+</p><div class="image-60"><img src="graphics/img718.png"  alt="" title="The display mode button" /></div>
+<p>It would be better if this back button said “Search”. You can fix that by giving the view controller from the master pane a title.
+</p>
+<p>➤ In <em>SearchViewController.swift</em>, add the following line to <code>viewDidLoad()</code>:
+</p><pre class="code-block">title = <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"Search"</span>, comment: <span class="hljs-string">"split view master button"</span>)</pre>
+<p>Of course, you’re using <code>NSLocalizedString()</code> because this is text that appears to the user. Hint: the Dutch translation is “Zoeken”.
+</p>
+<p>➤ Run the app and now you should have a proper button for bringing up the master pane in portrait mode:
+</p><div class="image-60"><img src="graphics/img719.png"  alt="" title="The display mode button has a title" /></div>
+<div class="note">
+<p><em>Exercise</em>: On the iPad, rotating to landscape doesn’t bring up the special Landscape View Controller anymore. That’s good because we don’t want to use it in the iPad version of the app, but you haven’t changed anything in the code. Can you explain what stops the landscape view from appearing?
+</p></div>
+
+<p>Answer: The clue is in <code>SearchViewController</code>’s <code>willTransition()</code>. This shows the landscape view when the new vertical size class becomes <i>compact</i>. But on the iPad both the horizontal and vertical size class are always <i>regular</i>, regardless of the device orientation. As a result, nothing happens upon rotation.
+</p>
+<h2 class="segment-chapter">Improve the detail pane</h2>
+
+<p>The detail pane needs some more work — it just doesn’t look very good yet. Also, tapping a row in the search results should fill in the split view’s detail pane, not bring up a new pop-up.
+</p>
+<p>You’re using <code>DetailViewController</code> for both purposes — pop-up and detail pane. So, let’s give it a boolean that determines how it should behave. On the iPhone it will be a pop-up; on the iPad it will not.
+</p>
+<h3 class="segment-chapter">To pop-up or not to pop-up</h3>
+
+<p>➤ Add the following instance variable to <em>DetailViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> isPopUp = <span class="hljs-literal">false</span></pre>
+<p>➤ In <code>viewDidLoad()</code> replace the four lines dealing with the gesture recognizer set up and the one setting up the background color, with the following:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> isPopUp {
+  <span class="hljs-keyword">let</span> gestureRecognizer = <span class="hljs-type">UITapGestureRecognizer</span>(target: <span class="hljs-keyword">self</span>,
+                                     action: #selector(close))
+  gestureRecognizer.cancelsTouchesInView = <span class="hljs-literal">false</span>
+  gestureRecognizer.delegate = <span class="hljs-keyword">self</span>
+  view.addGestureRecognizer(gestureRecognizer)
+    
+  view.backgroundColor = <span class="hljs-type">UIColor</span>.clear    
+} <span class="hljs-keyword">else</span> {
+  view.backgroundColor = <span class="hljs-type">UIColor</span>(patternImage: 
+                         <span class="hljs-type">UIImage</span>(named: <span class="hljs-string">"LandscapeBackground"</span>)!)
+  popupView.isHidden = <span class="hljs-literal">true</span>
+}</pre>
+<p>With the gesture recognizer code inside the <code>if isPopUp</code> check, tapping the background has no effect on the iPad. Likewise for the line that sets the background color to <code>clearColor</code>.
+</p>
+<p>The <code>else</code> branch always hides the pop-up view until a <code>SearchResult</code> is selected in the table view. The background gets a pattern image to make things look a little nicer — it’s the same image you used with the landscape view on the iPhone.
+</p><div class="image-40"><img src="graphics/img720.png"  alt="" title="Making the detail pane look better" /></div>
+<p>Initially this means the <code>DetailViewController</code> doesn’t show anything except for the patterned background. So, you need <code>SearchViewController</code> to tell the <code>DetailViewController</code> that a new <code>SearchResult</code> has been selected.
+</p>
+<p>Previously, on an iPhone, <code>SearchViewController</code> created a new instance of <code>DetailViewController</code> every time you tapped a row, but now, on an iPad, it will need to use the existing instance from the split view’s detail pane instead. But how does the <code>SearchViewController</code> know what that instance is?
+</p>
+<p>You will have to give it a reference to the <code>DetailViewController</code>. A good place for that is in <code>AppDelegate</code> where you create those instances.
+</p>
+<p>➤ First, add this new property to <em>SearchViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> splitViewDetail: <span class="hljs-type">DetailViewController</span>?</pre>
+<p>Notice that you make this property <code>weak</code>. The <code>SearchViewController</code> isn’t responsible for keeping the <code>DetailViewController</code> alive since that&apos;s the job of the split view controller. It would work fine without <code>weak</code> but specifying it makes the relationship clearer.
+</p>
+<p>The variable is an optional because it will be <code>nil</code> when the app runs on an iPhone.
+</p>
+<p>➤ Add the following line to <code>application(_:didFinishLaunchingWithOptions:)</code> in <em>AppDelegate.swift</em>:
+</p><pre class="code-block">searchVC.splitViewDetail = detailVC</pre>
+<p>➤ To change what happens when the user taps a search result on the iPad, replace <code>tableView(_:didSelectRowAt:)</code> in <em>SearchViewController.swift</em> with:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+  didSelectRowAt indexPath: IndexPath)</span></span> {
+  searchBar.resignFirstResponder()
+
+  <span class="hljs-keyword">if</span> view.window!.rootViewController!.traitCollection
+                 .horizontalSizeClass == .compact {
+    tableView.deselectRow(at: indexPath, animated: <span class="hljs-literal">true</span>)
+    performSegue(withIdentifier: <span class="hljs-string">"ShowDetail"</span>, 
+                         sender: indexPath)
+
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">case</span> .results(<span class="hljs-keyword">let</span> list) = search.state {
+      splitViewDetail?.searchResult = list[indexPath.row]
+    }
+  }
+}</pre>
+<p>On the iPhone, this still does the same as before — pop up a new Detail screen — but on the iPad it assigns the <code>SearchResult</code> object to the existing <code>DetailViewController</code> that lives in the detail pane.
+</p>
+<div class="note">
+<p><em>Note</em>: To determine whether the app is running on an iPhone, you look at the horizontal size class of the window’s root view controller, which is the <code>UISplitViewController</code>. On the iPhone, the horizontal size class is always <i>compact</i> — well, almost always since there are some exceptions, but more about that shortly. On the iPad it is always <i>regular</i>.
+</p>
+<p>The reason you’re looking at the size class from the root view controller and not <code>SearchViewController</code> is that the latter’s size class is always horizontally <i>compact</i>, even on iPad, because it sits inside the split view’s master pane.
+</p></div>
+
+<p>These changes by themselves don’t update the contents of the labels in the <code>DetailViewController</code>. So, let’s make that happen.
+</p>
+<p>The ideal place to update the labels is in a <i>property observer</i> on the <code>searchResult</code> variable. After all, the user interface needs to be updated right after you put a new <code>SearchResult</code> object into this variable.
+</p>
+<p>➤ Change the declaration of <code>searchResult</code> in <em>DetailViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> searchResult: <span class="hljs-type">SearchResult</span>! {
+  <span class="hljs-keyword">didSet</span> {
+    <span class="hljs-keyword">if</span> isViewLoaded {
+      updateUI()
+    }
+  }
+}</pre>
+<p>You’ve seen this pattern a few times before. You provide a <code>didSet</code> observer to perform certain functionality when the value of a property changes. After <code>searchResult</code> has changed, you call the <code>updateUI()</code> method to set the text on the labels.
+</p>
+<p>Notice that you first check whether the controller’s view is already loaded. It’s possible that <code>searchResult</code> is given an object when the <code>DetailViewController</code> hasn’t loaded its view yet — which is exactly what happens in the iPhone version of the app. In that case, you don’t want to call <code>updateUI()</code> as there is no user interface yet to update. The <code>isViewLoaded</code> check ensures this property observer only gets used when on an iPad.
+</p>
+<p>➤ Add the following line to the bottom of <code>updateUI()</code>:
+</p><pre class="code-block">popupView.isHidden = <span class="hljs-literal">false</span></pre>
+<p>This makes the view visible when on the iPad — recall that in <code>viewDidLoad()</code> you hid the pop-up because there was nothing to show yet.
+</p>
+<p>➤ Run the app. Now the detail pane should show details about the selected search result. Notice that the row in the table stays selected as well.
+</p><div class="image-35"><img src="graphics/img721.png"  alt="" title="The detail pane shows additional info about the selected item" /></div>
+<h3 class="segment-chapter">Fix the Detail pop-up for iPhone</h3>
+
+<p>One small problem: the Detail pop-up no longer works properly on the iPhone because <code>isPopUp</code> is always false — try it.
+</p>
+<p>➤ In <code>prepare(for:sender:)</code> in <em>SearchViewController.swift</em>, add the line:
+</p><pre class="code-block">detailViewController.isPopUp = <span class="hljs-literal">true</span></pre>
+<p>➤ Do the same thing in <em>LandscapeViewController.swift</em>. Verify that the Detail screen works properly in all situations.
+</p>
+<h3 class="segment-chapter">Display the app name on Detail pane</h3>
+
+<p>It would be nice if the app showed its name in the navigation bar above the detail pane. Currently all that space seems wasted. Ideally, this would use the localized name of the app.
+</p>
+<p>You could use <code>NSLocalizedString()</code> and put the name into the Localizable.strings files, but considering that you already put the localized app name in InfoPlist.strings it would be handy if you could use that. As it happens, you can.
+</p>
+<p>➤ In <em>DetailViewController.swift</em>, add this line to the <code>else</code> clause in <code>viewDidLoad()</code>:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> displayName = <span class="hljs-type">Bundle</span>.main.
+   localizedInfoDictionary?[<span class="hljs-string">"CFBundleDisplayName"</span>] <span class="hljs-keyword">as</span>? <span class="hljs-type">String</span> {
+  title = displayName
+}</pre>
+<p>The <code>title</code> property is used by the <code>UINavigationController</code> to put the title text in the navigation bar. You set it to the value of the <code>CFBundleDisplayName</code> setting from the localized version of Info.plist, i.e. the translations from InfoPlist.strings.
+</p>
+<p>Because <code>NSBundle</code>’s <code>localizedInfoDictionary</code> can be <code>nil</code> you need to unwrap it. The value stored under the <code>&quot;CFBundleDisplayName&quot;</code> key may also be <code>nil</code>. And finally, the <code>as?</code> cast to turn the value into a <code>String</code> can also potentially fail. If you’re counting along, that is three things that can go wrong in this single line of code.
+</p>
+<p>That’s why it’s called <i>optional chaining</i>: you can check a chain of optionals in a single statement. If any of them is <code>nil</code>, the code inside the <code>if</code> is skipped. That’s a lot shorter than writing three separate <code>if</code> statements!
+</p>
+<p>If you were to run the app right now, no title would show up still — unless you have the Simulator set to Dutch — because you did not actually put a translation for <code>CFBundleDisplayName</code> in the English version of InfoPlist.strings.
+</p>
+<p>➤ Add the following line to <em>InfoPlist.strings (English)</em>:
+</p><pre class="code-block"><span class="hljs-type">CFBundleDisplayName</span> = <span class="hljs-string">"StoreSearch"</span>;</pre><div class="image-60"><img src="graphics/img722.png"  alt="" title="That’s a good-looking title" /></div>
+<p>That looks good, but there are a few other small improvements to make.
+</p>
+<h3 class="segment-chapter">Remove input focus on iPad</h3>
+
+<p>On the iPhone, it made sense to give the search bar the input focus so the keyboard appeared immediately after launching the app. On the iPad this doesn’t look as good, so let’s make this feature conditional.
+</p>
+<p>➤ In <code>viewDidLoad()</code> in <em>SearchViewController.swift</em>, enclose the call to <code>becomeFirstResponder()</code> in a condition:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> <span class="hljs-type">UIDevice</span>.current.userInterfaceIdiom != .pad {
+  searchBar.becomeFirstResponder()
+}</pre>
+<p>To figure out whether the app is running on an iPhone or on an iPad, you look at the current <code>userInterfaceIdiom</code>. This is either <code>.pad</code> or <code>.phone</code> — an iPod touch counts as a phone in this case.
+</p>
+<h3 class="segment-chapter">Hide the master pane in portrait mode</h3>
+
+<p>In portrait mode, after you tap a search result, the master pane stays visible and obscures about half of the detail pane. It would be better to hide the master pane when the user makes a selection.
+</p>
+<p>➤ Add the following method to <em>SearchViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">hideMasterPane</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-type">UIView</span>.animate(withDuration: <span class="hljs-number">0.25</span>, animations: {
+    <span class="hljs-keyword">self</span>.splitViewController!.preferredDisplayMode = 
+                                    .primaryHidden
+  }, completion: { <span class="hljs-number">_</span> <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">self</span>.splitViewController!.preferredDisplayMode = .automatic
+  })
+}</pre>
+<p>Every view controller has a built-in <code>splitViewController</code> property that is non-<code>nil</code> if the view controller is currently inside a <code>UISplitViewController</code>.
+</p>
+<p>You can tell the split view to change its display mode to <code>.primaryHidden</code> to hide the master pane. You do this in an animation block, so the master pane disappears with a smooth animation.
+</p>
+<p>The trick is to restore the preferred display mode to <code>.automatic</code> after the animation completes. Otherwise, the master pane stays hidden even in landscape!
+</p>
+<p>➤ Add the following lines to <code>tableView(_:didSelectRowAt:)</code> in the <code>else</code> clause, right after the <code>if case .results</code> block:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> splitViewController!.displayMode != .allVisible {
+  hideMasterPane()
+}</pre>
+<p>The <code>.allVisible</code> mode only applies in landscape, so this says, “if the split view is not in landscape, hide the master pane when a row gets tapped.”
+</p>
+<p>➤ Try it out. Put the iPad in portrait, do a search, and tap a row. Now the master pane will slide away when you tap a row in the table.
+</p>
+<p>Congrats! You have successfully repurposed the Detail pop-up to also work as the detail pane of a split view controller. Whether this is possible in your own apps depends on how different you want the user interfaces of the iPhone and iPad versions to be.
+</p>
+<p>If you’re lucky, you may be able to use the same view controllers for both versions of the app, but often, you might find that the iPad user interface for your app is different enough from the iPhone’s that you have to make all new view controllers with some duplicated logic.
+</p>
+<div class="note">
+<p><em>The Apple Developer Forums</em>
+</p>
+<p>When I first wrote this chapter, how to hide the master pane was not explained anywhere in the official <code>UISplitViewController</code> documentation and I had trouble getting it to work properly.
+</p>
+<p>Desperate, I turned to the Apple Developer Forums and asked my question there. Within a few hours I received a reply from a fellow developer who ran into the same problem and who found a solution — thanks, user “timac”!
+</p>
+<p>So if you’re stuck, don’t forget to look at the Apple Developer Forums for a solution: <a href="https://forums.developer.apple.com/">https://forums.developer.apple.com</a>
+</p></div>
+
+<h2 class="segment-chapter">Size classes in the storyboard</h2>
+
+<p>Even though you’ve placed the existing <code>DetailViewController</code> in the detail pane, the app is not using all that extra space on an iPad effectively. It would be good if you could keep using the same logic from the <code>DetailViewController</code> class but change the layout of its user interface to suit the iPad better.
+</p>
+<p>If you like suffering, you could do <code>if UIDevice.current.userInterfaceIdiom == .pad</code> in <code>viewDidLoad()</code> and move all the labels around programmatically ... but there is a better way. This is exactly the sort of thing size classes were invented for!
+</p>
+<p>➤ Open <em>Main.storyboard</em> and take a look at the <em>View as:</em> pane.
+</p><div class="image-75"><img src="graphics/img723.png"  alt="" title="Size classes in the View as: pane" /></div>
+<p>Notice how it says <em>iPhone SE (wC hR)</em>? The <em>wC</em> and <em>hR</em> are the size class for this particular device: the size class for the width is <i>compact</i> (wC), and the size class for the height is <i>regular</i> (hR).
+</p>
+<p>Recall that there are two possible size classes, <i>compact</i> and <i>regular</i>, and that you can assign one of these values to the horizontal axis (width) and one to the vertical axis (height).
+</p>
+<p>Here is the diagram again:
+</p><div class="image-50"><img src="graphics/img724.png"  alt="" title="Horizontal and vertical size classes" /></div>
+<p>➤ Use the <em>View as:</em> pane to switch to <em>iPad Pro (9.7″)</em>. Not only are the view controllers larger now, but you’ll see the size class has changed to <em>wR hR</em>, or <i>regular</i> in both width and height.
+</p><div class="image-40"><img src="graphics/img725.png"  alt="" title="The size classes for the iPad" /></div>
+<p>We want to make the Detail pop-up bigger when the app runs on the iPad. However, if you make any edits to the storyboard right now, these edits will also affect the design of the app in iPhone mode. Fortunately, there is a way to make edits that apply to a specific size class only.
+</p>
+<p>You can tell Interface Builder that you only want to change the layout for the <i>regular</i> width size class (<em>wR</em>), but leave <i>compact</i> width alone (<em>wC</em>). Now those edits will only affect the appearance of the app on the iPad.
+</p>
+<h3 class="segment-chapter">Uninstall an item for a specific size class</h3>
+
+<p>The Detail pane doesn’t need a close button on the iPad. It is not a pop-up so there’s no reason to dismiss it. Let’s remove that button from the storyboard.
+</p>
+<p>➤ Select the <em>Close Button</em>. Go to the Attributes inspector and scroll all the way to the bottom, to the <em>Installed</em> option.
+</p><div class="image-40"><img src="graphics/img726.png"  alt="" title="The installed checkbox" /></div>
+<p>This option lets you remove a view from a specific size class, while leaving it visible in other size classes.
+</p>
+<p>➤ Click the tiny <em>+</em> button to the left of Installed. This brings up a menu. Choose <em>Width: Regular</em>, <em>Height: Regular</em> and click on <em>Add Variation</em>:
+</p><div class="image-30"><img src="graphics/img727.png"  alt="" title="Adding a variation for the regular, regular size class" /></div>
+<p>This adds a new line with a second Installed checkbox:
+</p><div class="image-40"><img src="graphics/img728.png"  alt="" title="The option can be changed on a per-size class basis" /></div>
+<p>➤ Uncheck Installed for <em>wR hR</em>. Now the Close Button disappears from the scene — if the storyboard is in View as: iPad mode, of course.
+</p>
+<p>The Close Button still exists, but it is not installed in this size class. You can still see the button in the Document Outline, but it is grayed out:
+</p><div class="image-30"><img src="graphics/img729.png"  alt="" title="The Close Button is still present but grayed out" /></div>
+<p>➤ Use the <em>View as:</em> panel to switch back to <em>iPhone SE</em>.
+</p>
+<p>Notice how the Close Button is back in its original position. You’ve only removed it from the storyboard design for the iPad. That’s the power of size classes!
+</p>
+<p>➤ Run the app and you’ll see that the close button really is gone on the iPad:
+</p><div class="image-35"><img src="graphics/img730.png"  alt="" title="No more close button in the top-left corner" /></div>
+<h3 class="segment-chapter">Change the storyboard layout for a given size class</h3>
+
+<p>Using the same principle as above, you can change the layout of the Detail screen to be completely different between the iPhone and iPad versions. For example, you can change the Detail pop-up to be bigger on an iPad.
+</p>
+<p>➤ In the storyboard, switch to the <em>iPad Pro</em> layout again.
+</p>
+<p>➤ Select the <em>Pop-up View</em> and go to the <em>Size inspector</em>. The <em>Constraints</em> section shows the constraints for this view:
+</p><div class="image-25"><img src="graphics/img731.png"  alt="" title="The Size inspector lists the constraints for the selected view" /></div>
+<p>The <em>Width Equals: 240</em> constraint has an <em>Edit</em> button. If you click that, a popup appears that lets you change the width. However, that will change this constraint for <i>all</i> size classes. You want to change it for the iPad only. So, do the following.
+</p>
+<p>➤ Double-click <em>Width Equals: 240</em>. This brings up the <em>Size inspector</em> for just that constraint:
+</p><div class="image-25"><img src="graphics/img732.png"  alt="" title="The Size inspector for the Width constraint" /></div>
+<p>At this point, if you just type in a new value for Constant, the constraint will become larger for all size classes again.
+</p>
+<p>➤ Click the <em>+</em> button next to Constant. In the popup choose <em>Width: Regular</em>, <em>Height: Regular</em> and click <em>Add Variation</em>. This adds a second row. Type <em>500</em> into the new <em>wR hR</em> field.
+</p><div class="image-30"><img src="graphics/img733.png"  alt="" title="Adding a size class variation for the Constant" /></div>
+<p>Now the Pop-up View is a lot wider. Next up you’ll rearrange and resize the labels to take advantage of the extra space.
+</p><div class="image-50"><img src="graphics/img734.png"  alt="" title="The Pop-up View after changing the Width constraint" /></div>
+<p>➤ In the same way, change the <em>Width</em> and <em>Height</em> constraints of the <em>Image View</em> to <em>180</em>.
+</p>
+<p>➤ Select the <em>Vertical Space</em> constraint between the <em>Name</em> label and the <em>Image View</em> and go to its <em>Size inspector</em>. Add a new variation for Constant and type <em>28</em> into the <em>wR hR</em> field.
+</p>
+<p>➤ Repeat this procedure for the other <em>Vertical Space</em> constraints. Each time use the <em>+</em> button to add a new rule for <em>Width: Regular</em>, <em>Height: Regular</em>, and make the new Constant 20 points taller than the existing value.
+</p>
+<p>Remember, if the constraints are difficult to pinpoint, then select the view they’re attached to instead and use the Size inspector to find the actual constraints.
+</p>
+<p>➤ Make the <em>Vertical Space</em> at the top of the <em>Image View</em> 20 points.
+</p>
+<p>➤ And finally, put the <em>$</em><em>9.99 button</em> at 20 points from the sides instead of 8.
+</p>
+<p>You should end up with something that looks like this:
+</p><div class="image-35"><img src="graphics/img735.png"  alt="" title="The Pop-up View after changing the vertical spaces" /></div>
+<p>Just to double-check, switch back to iPhone SE and make sure that the Detail pane is restored to its original dimensions. If not, then you may have changed one of the original constraints instead of making a variation for the iPad’s size class.
+</p>
+<p>In the iPad’s version of the Detail pane, the text is now tiny compared to the pop-up background. So, let’s change the fonts. That works in the same fashion: you add a customization for this size class with the <em>+</em> button, then change the property. You can customize any attribute that has a small + in front of it for different size classes.
+</p>
+<p>➤ Select the <em>Name</em> label. In the <em>Attributes inspector</em> click the <em>+</em> in front of <em>Font</em> to add a new variant. Choose the <em>System Bold</em> font, size <em>28</em>.
+</p><div class="image-30"><img src="graphics/img736.png"  alt="" title="Adding a size class variation for the label’s font" /></div>
+<p>➤ Change the font of the other labels to <em>System</em>, size <em>20</em>. You can do this in one go by making a multiple-selection.
+</p>
+<p>➤ Change all the “leading” <em>Horizontal Space</em> constraints to <em>20</em> for this size class.
+</p>
+<p>The final layout should look like this:
+</p><div class="image-35"><img src="graphics/img737.png"  alt="" title="The layout for the Pop-up View on iPad" /></div>
+<p>Switch back to iPhone SE to make sure all the constraints are still correct there.
+</p>
+<p>➤ Run the app and you should have a much bigger detail view:
+</p><div class="image-45"><img src="graphics/img738.png"  alt="" title="The iPad now uses different constraints for the detail pane" /></div>
+<div class="note">
+<p><em>Exercise</em>: The first time the detail pane shows its contents they appear quite abruptly because you simply set the <code>isHidden</code> property of <code>popupView</code> to <code>false</code>, which causes it to appear instantaneously. See if you can make it show up using a cool animation.
+</p></div>
+
+<p>➤ This is probably a good time to try the app on the iPhone again. The changes you’ve made should be compatible with the iPhone version, but it’s smart to make sure.
+</p>
+<p>If you’re satisfied everything works as it should, then commit the changes.
+</p>
+<div class="note">
+<p><em>Slide over and split-screen on iPad</em>
+</p>
+<p>iOS has a very handy split-screen feature that lets you run two apps side-by-side. It works on pretty much all the 64-bit iPads (with a few caveats). Because you used size classes to build the app’s user interface, split-screen support should work flawlessly.
+</p>
+<p>Try it out: run the app on the iPad Air 2 or iPad Pro simulator. Swipe up from the bottom of the screen to have your dock appear on screen. Drag an app icon from the dock on to the right (or left) edge of the iPad screen and it should snap on, giving you a two apps running side-by-side. You can drag the divider bar to adjust the size occupied by each app. Thanks to size classes, the layout of <i>StoreSearch</i> will automatically adapt to the allotted space.
+</p>
+<p>The <em>View as:</em> panel has a button <em>Vary for Traits</em>. You can use this to change how a view controller acts when it is part of such a split screen.
+</p></div>
+
+<h2 class="segment-chapter">Your own popover</h2>
+
+<p>Anyone who has ever used an iPad before is no doubt familiar with popovers, the floating panels that appear when you tap a button in a navigation bar or toolbar. They are a very handy UI element.
+</p>
+<p>A popover is nothing more than a view controller that is presented in a special way. In this section you’ll create a popover for a simple menu.
+</p>
+<h3 class="segment-chapter">Add the menu items</h3>
+
+<p>➤ In the storyboard, first switch back to <em>iPhone SE</em> because in iPad mode the view controllers are huge and take up too much space.
+</p>
+<p>➤ Drag a new <em>Table View Controller</em> on to the canvas and place it next to the Detail screen.
+</p>
+<p>➤ Change the table view to <em>Grouped</em> style and give it <em>Static Cells</em>.
+</p>
+<p>➤ Add these rows (change the cell style to <em>Basic</em>):
+</p><div class="image-35"><img src="graphics/img739.png"  alt="" title="The design for the new table view controller" /></div>
+<p>This just puts three items in the table. You will only do something with the first one in this book. Feel free to implement the functionality of the other two by yourself.
+</p>
+<h3 class="segment-chapter">Display as popover</h3>
+
+<p>To show the new view controller inside a popover, you first have to add a button to the navigation bar so that there is something to trigger the popover from.
+</p>
+<p>➤ From the Objects Library drag a new <em>Bar Button Item</em> into the <em>Detail View Controller</em>’s <em>Navigation Item</em> — you can find it in the Document Outline. Make sure the Bar Button Item is in the <em>Right Bar Button Items</em> group.
+</p><div class="image-30"><img src="graphics/img740.png"  alt="" title="The new bar button item in the Navigation Item" /></div>
+<p>➤ Change the bar button’s <em>System Item</em> to <em>Action</em>.
+</p>
+<p>This button won’t show up on the iPhone because there, the Detail pop-up doesn’t sit in a navigation controller.
+</p>
+<p>➤ Control-drag from the bar button (in the Document Outline) to the Table View Controller to make segue. Choose the segue type of <em>Action Segue – Present As Popover</em>.
+</p><div class="image-20"><img src="graphics/img741.png"  alt="" title="The new bar button item in the Navigation Item" /></div>
+<p>➤ Give the segue the identifier <em>ShowMenu</em>.
+</p>
+<p>If you run the app and press the menu button, the app should look like this:
+</p><div class="image-40"><img src="graphics/img742.png"  alt="" title="That menu is a bit too tall" /></div>
+<h3 class="segment-chapter">Set the popover size</h3>
+
+<p>The popover doesn’t really know how big its content view controller is, so it just picks a size and that’s just ugly. You can tell it how big the view controller should be with the <i>preferred content size</i> property.
+</p>
+<p>➤ In the <em>Attributes inspector</em> for the <em>Table View Controller</em>, in the <em>Content Size</em> boxes type Width: 320, Height: 204.
+</p><div class="image-30"><img src="graphics/img743.png"  alt="" title="Changing the preferred width and height of the popover" /></div>
+<p>Now the size of the menu popover looks a lot more appropriate:
+</p><div class="image-40"><img src="graphics/img744.png"  alt="" title="The menu popover with a size that fits" /></div>
+<p>When a popover is visible, all other controls on the screen become inactive. The user has to tap outside of the popover to dismiss it before they can use the rest of the screen again — you can make exceptions to this by setting the popover’s <code>passthroughViews</code> property.
+</p>
+<h2 class="segment-chapter">Send e-mail from the app</h2>
+
+<p>Now, let’s make the “Send Support Email” menu option work. Letting users send an e-mail from within your app is pretty easy.
+</p>
+<p>iOS provides the <code>MFMailComposeViewController</code> class that takes care of everything for you. It lets the user type an e-mail and then sends the e-mail using the mail account that is set up on the device.
+</p>
+<p>All you have to do is create an <code>MFMailComposeViewController</code> object and present it on the screen.
+</p>
+<p>The question is: who will be responsible for this mail compose controller? It can’t be the popover because that view controller will be deallocated once the popover goes away.
+</p>
+<p>Instead, you will let the <code>DetailViewController</code> handle the sending of the e-mail, mainly because this is the screen that brings up the popover — via the segue from its bar button item — in the first place. <code>DetailViewController</code> is the only object that knows anything about the popover.
+</p>
+<h3 class="segment-chapter">The MenuViewController class</h3>
+
+<p>To make things work, you’ll create a new class named <code>MenuViewController</code> for the popover, give it a delegate protocol, and have <code>DetailViewController</code> implement those delegate methods.
+</p>
+<p>➤ Add a new file to the project using the <em>Cocoa Touch Class</em> template. Name it <em>MenuViewController</em>, subclass of <em>UITableViewController</em>.
+</p>
+<p>➤ Remove all the data source methods from this file because you don’t need those for a table view with static cells. Also remove all the commented out boilerplate code.
+</p>
+<p>➤ In the storyboard, change the <em>Class</em> of the popover’s table view controller to <em>MenuViewController</em>.
+</p>
+<p>➤ Add a new protocol to <em>MenuViewController.swift</em> (outside the class):
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">protocol</span> <span class="hljs-title">MenuViewControllerDelegate</span>: <span class="hljs-title">class</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">menuViewControllerSendEmail</span><span class="hljs-params">(<span class="hljs-number">_</span> controller: 
+                             MenuViewController)</span></span>
+}</pre>
+<p>➤ Also add a property for this protocol inside the class:
+</p><pre class="code-block"><span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> delegate: <span class="hljs-type">MenuViewControllerDelegate</span>?</pre>
+<p>Like all delegate properties, this is weak because you don’t want <code>MenuViewController</code> to “own” the object that implements the delegate methods.
+</p>
+<p>➤ Finally, add <code>tableView(_:didSelectRowAt:)</code> to handle taps on the rows from the table view:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Table View Delegates</span>
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+           didSelectRowAt indexPath: IndexPath)</span></span> {
+  tableView.deselectRow(at: indexPath, animated: <span class="hljs-literal">true</span>)
+  
+  <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">0</span> {
+    delegate?.menuViewControllerSendEmail(<span class="hljs-keyword">self</span>)
+  }
+}</pre>
+<h3 class="segment-chapter">Set the MenuViewController delegate</h3>
+
+<p>Now you have to make <code>DetailViewController</code> the delegate for this menu popover.
+</p>
+<p>➤ Switch to <em>DetailViewController.swift</em> and add the following extension to the bottom of the source file to conform to the new protocol:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">DetailViewController</span>: <span class="hljs-title">MenuViewControllerDelegate</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">menuViewControllerSendEmail</span><span class="hljs-params">(<span class="hljs-number">_</span>: MenuViewController)</span></span> {
+  }
+}</pre>
+<p>Currently, the code is just a stub. You&apos;ll fill in the implementation code in a bit.
+</p>
+<p>➤ Next, add the following navigation code to the class:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Navigation</span>
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">prepare</span><span class="hljs-params">(<span class="hljs-keyword">for</span> segue: UIStoryboardSegue, 
+                         sender: Any?)</span></span> {
+  <span class="hljs-keyword">if</span> segue.identifier == <span class="hljs-string">"ShowMenu"</span> {
+    <span class="hljs-keyword">let</span> controller = segue.destination <span class="hljs-keyword">as</span>! <span class="hljs-type">MenuViewController</span>
+    controller.delegate = <span class="hljs-keyword">self</span>
+  }
+}</pre>
+<p>This tells the <code>MenuViewController</code> object who its delegate is.
+</p>
+<p>Run the app and tap Send Support Email. Notice how the popover doesn’t disappear yet. You&apos;ll have to manually dismiss it before you can show the mail compose sheet.
+</p>
+<h3 class="segment-chapter">Show the mail compose view</h3>
+
+<p>➤ The <code>MFMailComposeViewController</code> lives in the <code>MessageUI</code> framework — import that in <em>DetailViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> MessageUI</pre>
+<p>➤ Then, add the following code to <code>menuViewControllerSendEmail()</code> (in the extension at the end):
+</p><pre class="code-block">dismiss(animated: <span class="hljs-literal">true</span>) {
+  <span class="hljs-keyword">if</span> <span class="hljs-type">MFMailComposeViewController</span>.canSendMail() {
+    <span class="hljs-keyword">let</span> controller = <span class="hljs-type">MFMailComposeViewController</span>()
+    controller.setSubject(<span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"Support Request"</span>, 
+                                     comment: <span class="hljs-string">"Email subject"</span>))
+    controller.setToRecipients([<span class="hljs-string">"your@email-address-here.com"</span>])
+    <span class="hljs-keyword">self</span>.present(controller, animated: <span class="hljs-literal">true</span>, completion: <span class="hljs-literal">nil</span>)
+  }
+}</pre>
+<p>The code first calls <code>dismiss(animated:)</code> to hide the popover. This method takes a <code>completion</code> closure that until now you’ve always left <code>nil</code>. Here you implement the closure — using trailing syntax — to bring up the <code>MFMailComposeViewController</code> after the popover has faded away.
+</p>
+<p>It’s not a good idea to present a new view controller while the previous one is still in the process of being dismissed. This is why you wait to show the mail compose sheet until after the popover is done animating.
+</p>
+<p>To use the <code>MFMailComposeViewController</code> object, you have to give it the subject of the e-mail and the e-mail address of the recipient. You probably should put your own e-mail address there!
+</p>
+<p>➤ Run the app and pick the Send Support Email menu option. The standard e-mail compose sheet should slide up — if you are on a device. This won&apos;t work on the Simulator at all, sorry.
+</p><div class="image-50"><img src="graphics/img745.png"  alt="" title="The e-mail interface" /></div>
+<div class="note">
+<p><em>Note:</em> If you run the app on a device and don’t see the e-mail sheet, you may not have set up any e-mail accounts on your device.
+</p></div>
+
+<h3 class="segment-chapter">The mail compose view delegate</h3>
+
+<p>Notice that the Send and Cancel buttons don’t actually appear to do anything. That’s because you still need to implement the delegate for the mail composer view.
+</p>
+<p>➤ Add a new extension to <em>DetailViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">DetailViewController</span>: <span class="hljs-title">MFMailComposeViewControllerDelegate</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">mailComposeController</span><span class="hljs-params">(<span class="hljs-number">_</span> controller: 
+      MFMailComposeViewController, didFinishWith result: 
+      MFMailComposeResult, error: Error?)</span></span> {
+    dismiss(animated: <span class="hljs-literal">true</span>, completion: <span class="hljs-literal">nil</span>)
+  }
+}</pre>
+<p>The <code>result</code> parameter says whether the mail was successfully sent or not. This app doesn’t really care about that, but you could show an alert in case of an error if you wanted. Check the documentation for the possible result codes.
+</p>
+<p>➤ In the <code>menuViewControllerSendEmail()</code> method, add the following line (after the <code>controller</code> is created, of course):
+</p><pre class="code-block">controller.mailComposeDelegate = <span class="hljs-keyword">self</span></pre>
+<p>➤ Now, if you press Cancel or Send, the mail compose sheet gets dismissed.
+</p>
+<h3 class="segment-chapter">Modal sheet presentation styles</h3>
+
+<p>Did you notice that the mail sheet did not take up the entire screen area in landscape, but when you rotate to portrait it (almost) does? That is called a <em>page sheet</em>.
+</p>
+<p>On the iPhone, if you presented a modal view controller, it always takes over the entire screen, but on the iPad you have several options.
+</p>
+<p>The page sheet is probably the nicest option for the <code>MFMailComposeViewController</code>, but let’s experiment with the other ones as well, shall we?
+</p>
+<p>➤ In <code>menuViewControllerSendEmail()</code>, add the following line:
+</p><pre class="code-block">controller.modalPresentationStyle = .formSheet</pre>
+<p>The <code>modalPresentationStyle</code> property determines how a modal view controller is presented on the iPad. You’ve switched it from the default page sheet to a <em>form sheet</em>, which looks like this:
+</p><div class="image-30"><img src="graphics/img746.png"  alt="" title="The email interface in a form sheet" /></div>
+<p>A form sheet is smaller than a page sheet, so it takes up less room on the screen. There is also a “full screen” presentation style that always covers the entire screen, even in landscape. Try it out!
+</p>
+<h2 class="segment-chapter">Landscape on iPhone Plus</h2>
+
+<p>The iPhone Plus is a strange beast. It mostly works like any other iPhone, but sometimes it gets ideas and pretends to be an iPad.
+</p>
+<p>➤ Run the app on the <em>iPhone 8 Plus</em> Simulator, do a search, and rotate to landscape.
+</p>
+<p>The app will look something like this:
+</p><div class="image-40"><img src="graphics/img747.png"  alt="" title="The landscape screen appears in the split-view’s master pane" /></div>
+<p>The app tries to do both: show the split view controller and the special landscape view at the same time. Obviously, that’s not going to work.
+</p>
+<p>The iPhone Plus devices are so big that they&apos;re almost small iPads. The designers at Apple decided that in landscape orientation the  Plus should behave like an iPad, and therefore it shows the split view controller.
+</p>
+<p>What’s the trick? Size classes, of course! On a landscape iPhone Plus, the horizontal size class is <i>regular</i>, not <i>compact</i>. But the vertical size class is still compact, just like on the smaller iPhone models.
+</p>
+<h3 class="segment-chapter">Show split view correctly for iPhone Plus</h3>
+
+<p>To stop the <code>LandscapeViewController</code> from showing up, you have to make the rotation logic smarter.
+</p>
+<p>➤ In <em>SearchViewController</em>.swift, change <code>willTransition(to:with:)</code> to:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">willTransition</span><span class="hljs-params">(to newCollection: 
+    UITraitCollection, with coordinator: 
+    UIViewControllerTransitionCoordinator)</span></span> {
+  <span class="hljs-keyword">super</span>.willTransition(to: newCollection, with: coordinator)
+  
+  <span class="hljs-keyword">let</span> rect = <span class="hljs-type">UIScreen</span>.main.bounds
+  <span class="hljs-keyword">if</span> (rect.width == <span class="hljs-number">736</span> &amp;&amp; rect.height == <span class="hljs-number">414</span>) ||   <span class="hljs-comment">// portrait</span>
+     (rect.width == <span class="hljs-number">414</span> &amp;&amp; rect.height == <span class="hljs-number">736</span>) {    <span class="hljs-comment">// landscape</span>
+    <span class="hljs-keyword">if</span> presentedViewController != <span class="hljs-literal">nil</span> {
+      dismiss(animated: <span class="hljs-literal">true</span>, completion: <span class="hljs-literal">nil</span>)
+    }
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> <span class="hljs-type">UIDevice</span>.current.userInterfaceIdiom != .pad {
+    <span class="hljs-keyword">switch</span> newCollection.verticalSizeClass {
+    <span class="hljs-keyword">case</span> .compact:
+      showLandscape(with: coordinator)
+    <span class="hljs-keyword">case</span> .regular, .unspecified:
+      hideLandscape(with: coordinator)
+    }
+  }
+}</pre>
+<p>The bottom bit of this method is as before; it checks the vertical size class and decides whether to show or hide the <code>LandscapeViewController</code>.
+</p>
+<p>You don’t want to do this for the iPhone Plus, so you need to detect somehow that the app is running on the Plus. There are a couple of ways you can do this:
+</p>
+<ul>
+<li>
+<p>Look at the width and height of the screen. The dimensions of the iPhone Plus are 736 by 414 points.
+</p></li>
+
+<li>
+<p>Look at the hardware device name. There are APIs for finding this out, but you have to be careful: often one type of iPhone can have multiple model names, depending on the cellular chipset used or other factors.
+</p></li>
+</ul>
+
+<p>What about the size class? That sounds like it would be the obvious thing to tell the different devices apart. Unfortunately, looking at the size class <i>doesn’t</i> work.
+</p>
+<p>If the device is in portrait, the Plus has the same size classes as the other iPhone models. In other words, in portrait, you can’t tell from the size class alone whether the app is running on a Plus or not — only in landscape, and even then, if you have Display Zoom on, the Plus will no longer have a different size class. It will act like a regular iPhone.
+</p>
+<p>The approach you’re using in this app is to look at the screen dimensions. That’s the cleanest solution I could find. You need to check for both orientations, because the screen bounds change depending on the orientation of the device.
+</p>
+<p>Once you’ve detected the app runs on an iPhone Plus, you no longer show the landscape view, and you dismiss any Detail pop-up that may still be visible before you rotate to landscape.
+</p>
+<p>➤ Try it out. Now the iPhone Plus shows a proper split view:
+</p><div class="image-40"><img src="graphics/img748.png"  alt="" title="The app on the iPhone 8 Plus with a split-view" /></div>
+<h3 class="segment-chapter">Add size class based UI changes for iPhone Plus</h3>
+
+<p>Of course, the Detail pane now uses the iPhone-size design, not the iPad design.
+</p>
+<p>That’s because the size class for <code>DetailViewController</code> is now <i>regular</i> width, <i>compact</i> height. You didn’t make a specific design for that size class, so the app uses the default design.
+</p>
+<p>That’s fine for the size of the Detail view, but it does mean the close button is visible again.
+</p>
+<p>➤ Open the storyboard, open the <em>View as:</em> panel, switch to the <em>iPhone 8 Plus</em> mode and switch to landscape mode — this will help you get the size classes right when you add exceptions.
+</p>
+<p>➤ Select the <em>Close Button</em> in the Detail scene. In the <em>Attributes inspector</em>, add a new row for <em>Installed</em> (for Width: Regular, Height: Compact) and uncheck it:
+</p><div class="image-40"><img src="graphics/img749.png"  alt="" title="Adding a variation for size class width regular, height compact" /></div>
+<p>➤ Select the <em>Center Y Alignment</em> constraint on <em>Pop-up View</em>. Change its <em>Constant</em> to <em>20</em>, but only for this size class. This moves the Detail panel down a bit.
+</p><div class="image-60"><img src="graphics/img750.png"  alt="" title="The finished StoreSearch app on the iPhone 6s Plus or 7 Plus" /></div>
+<p>And that’s it for the <i>StoreSearch</i> app! Congratulations for making it this far, it has been a long road.
+</p>
+<p>➤ Celebrate by committing the final version of the source code and tagging it v1.0!
+</p>
+<p>You can find the project files for this chaper under <em>42 – The iPad</em> in the Source Code folder.
+</p></body></html>

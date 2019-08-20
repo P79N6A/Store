@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 2: The One-Button App</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 2: The One-Button App</h1>
+
+<p>There&apos;s an old Chinese proverb that states, &quot;A journey of a thousand miles begins with a single step.&quot; You are about to take that first step on your journey to iOS developer mastery. And you will take that first step by creating the <i>Bull&apos;s Eye</i> game.
+</p>
+<p>This chapter covers the following:
+</p>
+<ul>
+<li>
+<p><em>The Bull&apos;s Eye game:</em> An introduction to the first app you&apos;ll make.
+</p></li>
+
+<li>
+<p><em>The one-button app:</em> Creating a simple one-button app in which the button can take an action based on a tap on the button.
+</p></li>
+
+<li>
+<p><em>The anatomy of an app:</em> A brief explanation as to the inner-workings of an app.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">The <i>Bull’s Eye</i> game</h2>
+
+<p>This is what the <i>Bull&apos;s Eye</i> game will look like when you’re finished:
+</p><div class="image-70"><img src="graphics/img12.png"  alt="" title="The finished Bull’s Eye game" /></div>
+<p>The objective of the game is to put the bull’s eye, which is on a slider that goes from 1 to 100, as close to a randomly chosen target value as you can. In the screenshot above, the aim is to put the bull’s eye at 84. Because you can’t see the current value of the slider, you’ll have to “eyeball” it.
+</p>
+<p>When you’re confident of your estimate, you press the “Hit Me!” button and a pop-up, also known as an alert, will tell you what your score is:
+</p><div class="image-70"><img src="graphics/img13.png"  alt="" title="An alert pop-up shows the score" /></div>
+<p>The closer to the target value you are, the more points you score. After you dismiss the alert pop-up by pressing the OK button, a new round begins with a new random target. The game repeats until the player presses the “Start Over” button (the curly arrow in the bottom-left corner), which resets the score to 0.
+</p>
+<p>This game probably won’t make you an instant millionaire on the App Store, but even future millionaires have to start somewhere!
+</p>
+<h3 class="segment-chapter">Making a programming to-do list</h3>
+
+<div class="note">
+<p><em>Exercise</em>: Now that you’ve seen what the game will look like and what the gameplay rules are, make a list of all the things that you think you’ll need to do in order to build this game. It’s OK if you draw a blank, but give it a shot anyway.
+</p></div>
+
+<p>I’ll give you an example:
+</p>
+<p><i>The app needs to put the “Hit Me</i><i>!</i><i>” button on the screen and show an alert pop-up when the user presses it.</i>
+</p>
+<p>Try to think of other things the app needs to do — it doesn&apos;t matter if you don’t actually know how to accomplish these tasks. The first step is to figure out <i>what</i> you need to do; <i>how</i> to do these things is not important yet.
+</p>
+<p>Once you know what you want, you can also figure out how to do it, even if you have to ask someone or look it up. But the “what” comes first. You’d be surprised at how many people start writing code without a clear idea of what they’re actually trying to achieve. No wonder they get stuck!
+</p>
+<p>Whenever I start working on a new app, I first make a list of all the different pieces of functionality I think the app will need. This becomes my programming to-do list. Having a list that breaks up a design into several smaller steps is a great way to deal with the complexity of a project.
+</p>
+<p>You may have a cool idea for an app, but when you sit down to write the program it can seem overwhelming. There is so much to do… and where to begin? By cutting up the workload into small steps you make the project less daunting – you can always find a step that is simple and small enough to make a good starting point and take it from there.
+</p>
+<p>It’s no big deal if this exercise gives you some difficulty. You’re new to all of this! As your understanding grows of how software and the development process works, it will become easier to identify the different parts that make up a design and to split it into manageable pieces.
+</p>
+<p>This is what I came up with. I simply took the gameplay description and split it into very small chunks:
+</p>
+<ul>
+<li>
+<p>Put a button on the screen and label it “Hit Me!”
+</p></li>
+
+<li>
+<p>When the player presses the Hit Me button, the app has to show an alert pop-up to inform the player how well he or she did. Somehow, you have to calculate the score and put that into this alert.
+</p></li>
+
+<li>
+<p>Put text on the screen, such as the “Score:” and “Round:” labels. Some of this text changes over time; for example, the score, which increases when the player scores points.
+</p></li>
+
+<li>
+<p>Put a slider on the screen with a range between the values 1 and 100.
+</p></li>
+
+<li>
+<p>Read the value of the slider after the user presses the Hit Me button.
+</p></li>
+
+<li>
+<p>Generate a random number at the start of each round and display it on the screen. This is the target value.
+</p></li>
+
+<li>
+<p>Compare the value of the slider to that random number and calculate a score based on how far off the player is. You show this score in the alert pop-up.
+</p></li>
+</ul>
+
+<ul>
+<li>
+<p>Put the Start Over button on the screen. Make it reset the score and put the player back to the first round.
+</p></li>
+
+<li>
+<p>Put the app in landscape orientation.
+</p></li>
+
+<li>
+<p>Make it look pretty. :]
+</p></li>
+</ul>
+
+<p>I might have missed a thing or two, but this looks like a decent list to start with. Even for a game as basic as this, there are quite a few things you need to do. Making apps is fun, but it’s definitely a lot of work, too!
+</p>
+<h2 class="segment-chapter">The one-button app</h2>
+
+<p>Let’s start at the top of the list and make an extremely simple first version of the game that just displays a single button. When you press the button, the app pops up an alert message. That’s all you are going to do for now. Once you have this working, you can build the rest of the game on this foundation.
+</p>
+<p>The app will look like this:
+</p><div class="image-60"><img src="graphics/img14.png"  alt="" title="The app contains a single button (left) that shows an alert when pressed (right)" /></div>
+<p>Time to start coding! I’m assuming you have downloaded and installed the latest version of Xcode at this point.
+</p>
+<p>In this book, you’ll work with <em>Xcode 10.0</em> or better. Newer versions of Xcode may also work, but anything older than version 10.0 probably would be a no-go.
+</p>
+<p>Because Swift is a very new language, it tends to change between versions of Xcode. If your Xcode is too old — or too new! — then not all of the code in this book may work properly. For this same reason, you’re advised not to use beta versions of Xcode, only the official one from the Mac App Store.
+</p>
+<h3 class="segment-chapter">Creating a new project</h3>
+
+<p>➤ Launch Xcode. If you have trouble locating the Xcode application, you can find it in the <em>/Applications/Xcode</em> folder or in your Launchpad. Because I use Xcode all of the time, I&apos;ve placed it in my dock for easy access.
+</p>
+<p>Xcode shows the “Welcome to Xcode” window when it starts:
+</p>
+<p>➤ Choose <em>Create a new Xcode project</em>. The main Xcode window appears with an assistant that lets you choose a template:
+</p>
+<p>Xcode has bundled templates for a variety of app styles. Xcode will make a pre-configured project for you based on the template you choose. The new project will already include some of the source files you need. These templates are handy because they can save you a lot of typing. They are ready-made starting points.
+</p>
+<p>➤ Select <em>Single View Application</em> and press <em>Next</em>.
+</p>
+<p>This opens a dialog wherein you can enter options for the new app.
+</p><div class="image-55"><img src="graphics/img15.png"  alt="" title="Configuring the new project" /></div>
+<p>➤ Fill out these options as follows:
+</p>
+<ul>
+<li>
+<p>Product Name: <em>BullsEye</em>. If you want to use proper English, you can name the project Bull’s Eye instead of BullsEye, but it’s best to avoid spaces and other special characters in project names.
+</p></li>
+
+<li>
+<p>Team: If you&apos;re already a member of the Apple Developer Program, this will show your team name. For now, it’s best to leave this setting alone; we’ll get back to this later on.
+</p></li>
+
+<li>
+<p>Organization Name: Fill in your own name here or the name of your company.
+</p></li>
+
+<li>
+<p>Organization Identifier: Mine says “com.razeware”. That is the identifier I use for my apps. As is customary, it is my domain name written in reverse. You should use your own identifier here. Pick something that is unique to you, either the domain name of your website (but backwards) or simply your own name. You can always change this later.
+</p></li>
+
+<li>
+<p>Language: <em>Swift</em>
+</p></li>
+</ul>
+
+<p>Make sure the three options at the bottom — Use Core Data, Include Unit Tests, and Include UI Tests — are <i>not</i> selected. You won’t use those in this project.
+</p>
+<p>➤ Press <em>Next</em>. Now, Xcode will ask where to save your project:
+</p><div class="image-50"><img src="graphics/img16.png"  alt="" title="Choosing where to save the project" /></div>
+<p>➤ Choose a location for the project files; for example, the Desktop or your Documents folder.
+</p>
+<p>Xcode will automatically make a new folder for the project using the Product Name that you entered in the previous step (in your case, BullsEye), so you don’t need to make a new folder yourself.
+</p>
+<p>At the bottom of the File Save dialog, there is a checkbox that says, “Create Git repository on My Mac.” You can ignore this for now. You’ll learn about the Git version control system later on.
+</p>
+<p>➤ Press <em>Create</em> to finish.
+</p>
+<p>Xcode will now create a new project named BullsEye, based on the Single View Application template, in the folder you specified.
+</p>
+<p>When it is done, the screen should look something like this:
+</p><div class="image-60"><img src="graphics/img17.png"  alt="" title="The main Xcode window at the start of your project" /></div>
+<p>There may be small differences with what you’re seeing on your own computer if you’re using a version of Xcode newer than my version. Rest assured, any differences will only be superficial.
+</p>
+<div class="note">
+<p><em>Note</em>: If you don’t see a file named ViewController.swift in the list on the left but instead have ViewController.h and ViewController.m, then you picked the wrong language (Objective-C) when you created the project. Start over and be sure to choose Swift as the programming language.
+</p></div>
+
+<h3 class="segment-chapter">Running your project</h3>
+
+<p>➤ Press the <em>Run</em> button in the top-left corner.
+</p><div class="image-30"><img src="graphics/img18.png"  alt="" title="Press Run to launch the app" /></div>
+<div class="note">
+<p><em>Note</em>: If this is the first time you’re using Xcode, it may ask you to enable developer mode. Click <em>Enable</em> and enter your password to allow Xcode to make these changes.
+</p>
+<p>Also, make sure that you do not have your iPhone or iPad plugged in at this point to your computer — for example, for charging. If you do, it might switch to the actual device instead of the simulator for running the app and, since you are not yet set up for running on a device, this could result in errors that might leave you scratching your head.
+</p></div>
+
+<p>Xcode will labor for a bit and then launch your brand new app in iOS Simulator. The app may not look like much yet — and there is not anything you can do with it either — but this is an important first milestone in your journey!
+</p><div class="image-30"><img src="graphics/img19.png"  alt="" title="What an app based on the Single View Application template looks like" /></div>
+<p>If Xcode says “Build Failed” or “Xcode cannot run using the selected device” when you press the Run button, then make sure the picker at the top of the window says <em>BullsEye &gt; iPhone SE</em> (or any other model number) and not <em>Generic iOS Device</em>:
+</p><div class="image-50"><img src="graphics/img20.png"  alt="" title="Making Xcode run the app on the Simulator" /></div>
+<p>If your iPhone is currently connected to your Mac via USB cable, Xcode may have attempted to run the app on your iPhone, and that may not work without some additional setting up. I’ll show you how to get the app to run on your iPhone so that you can show it off to your friends soon, but for now just stick with iOS Simulator.
+</p>
+<p>➤ Next to the Run button is the <em>Stop</em> button (the square thingy). Press that to exit the app.
+</p>
+<p>On your phone (or even the simulator), you’d use the Home button to exit an app (on the simulator, you could also use the <em>Hardware ▸ Home</em> item from the menu bar or use the handy <em>⇧+⌘+H</em> shortcut), but that won’t actually terminate the app. It will disappear from the simulator’s screen, but the app stays suspended in the simulator’s memory, just as it would on a real iPhone.
+</p>
+<p>Until you press Stop, Xcode’s Activity viewer at the top says, “Running BullsEye on iPhone SE”:
+</p><div class="image-90"><img src="graphics/img21.png"  alt="" title="The Xcode activity viewer" /></div>
+<p>It’s not really necessary to stop the app, as you can go back to Xcode and make changes to the source code while the app is still running. However, these changes will not become active until you press Run again. That will terminate any running version of the app, build a new version and launch it in the simulator.
+</p>
+<div class="note">
+<p><em>What happens when you press Run?</em>
+</p>
+<p>Xcode will first <i>compile</i> your source code — that is, translate it – from Swift into machine code that the iPhone (or iOS Simulator) can understand. Even though the programming language for writing iOS apps is Swift or Objective-C, the iPhone itself doesn’t speak those languages. A translation step is necessary.
+</p>
+<p>The compiler is the part of Xcode that converts your Swift source code into executable binary code. It also gathers all the different components that make up the app — source files, images, storyboard files and so on — and puts them into the “application bundle.”
+</p>
+<p>This entire process is also known as <i>building</i> the app. If there are any errors (such as spelling mistakes in your code), the build will fail. If everything goes according to plan, Xcode copies the application bundle to the simulator or the iPhone and launches the app. All that from a single press of the Run button.
+</p></div>
+
+<h3 class="segment-chapter">Adding a button</h3>
+
+<p>I’m sure you’re as unimpressed as I am with an app that just displays a dull white screen! So let’s make it a bit more interesting by adding a button to it.
+</p>
+<p>The left pane of the Xcode window is named the <em>Navigator area</em>. The row of icons along the top lets you select a specific navigator. The default navigator is the <em>Project navigator</em>, which shows the files in your project.
+</p>
+<p>The organization of these files corresponds to the project folder on your hard disk, but that isn’t necessarily always so. You can move files around and put them into new groups and organize away to your heart’s content. We’ll talk more about the different files in your project later.
+</p>
+<p>➤ In the <em>Project navigator</em>, find the item named <em>Main.storyboard</em> and click it once to select it:
+</p><div class="image-30"><img src="graphics/img22.png"  alt="" title="The Project navigator lists the files in the project" /></div>
+<p>Like a superhero changing his or her clothes in a phone booth, the main editing pane now transforms into the <em>Interface Builder</em>. This tool lets you drag-and-drop user interface components such as buttons to create the UI of your app. (OK, maybe a bad analogy, but Interface Builder is a super tool, in my opinion.)
+</p>
+<p>➤ If it’s not already blue, click the <em>Hide or show the inspectors</em> button in Xcode’s toolbar.
+</p><div class="image-35"><img src="graphics/img23.png"  alt="" title="Click this button to show the Utilities pane" /></div>
+<p>These toolbar buttons in the top-right corner change the appearance of Xcode. This one in particular opens a new pane on the right side of the Xcode window.
+</p>
+<p>Your Xcode should now look something like this:
+</p><div class="image-55"><img src="graphics/img24.png"  alt="" title="Editing Main.storyboard in Interface Builder" /></div>
+<p>This is the <i>storyboard</i> for your app. The storyboard contains the designs for all of your app’s screens and shows the navigation flow in your app from one screen to another.
+</p>
+<p>Currently, the storyboard contains just a single screen or <i>scene</i>, represented by a rectangle in the middle of the Interface Builder canvas.
+</p>
+<div class="note">
+<p><em>Note</em>: If you don’t see the rectangle labeled “View Controller” but only an empty canvas, then use your mouse or trackpad to scroll the storyboard around a bit. Trust me, it’s in there somewhere! Also make sure your Xcode window is large enough. Interface Builder takes up a lot of space...
+</p></div>
+
+<p>The scene currently is probably set to the size of an iPhone 8. To keep things simple, you will first design the app for the iPhone SE, which has a slightly smaller screen. Later, you’ll also make the app fit on the larger iPhone models.
+</p>
+<p>➤ At the bottom of the Interface Builder window, click <em>View as: iPhone 8</em> to open up the following panel:
+</p><div class="image-70"><img src="graphics/img25.png"  alt="" title="Choosing the device type" /></div>
+<p>Select the <em>iPhone SE</em>, the second smallest iPhone, thus resizing the preview UI you see in Interface Builder to be set to that of an iPhone SE. You&apos;ll notice that the scene’s rectangle now becomes a bit smaller, corresponding to the screen size of the iPhone 5, iPhone 5s and iPhone SE models.
+</p>
+<p>Do note that depending on the size of your Xcode window, the above panel might also look something like this:
+</p><div class="image-70"><img src="graphics/img26.png"  alt="" title="Choosing the device type - compact view" /></div>
+<p>If you get this screen, just select the <em>iPhone SE</em> from the list of choices you get when you click on <em>Device</em>.
+</p>
+<p>➤ In the Xcode toolbar, make sure it says <em>BullsEye &gt; iPhone SE</em> (next to the Stop button). If it doesn’t, then click it and pick iPhone SE from the list:
+</p><div class="image-55"><img src="graphics/img27.png"  alt="" title="Switching the Simulator to iPhone SE" /></div>
+<p>Now, when you run the app, it will run on the iPhone SE Simulator (try it out!).
+</p>
+<p>Back to the storyboard:
+</p>
+<p>➤ The first button on the top right toolbar shows the <em>Library</em> panel when you click it:
+</p><div class="image-25"><img src="graphics/img28.png"  alt="" title="The Object Library" /></div>
+<p>Scroll through the items in the Object Library list until you see <em>Button</em>. Alternatively, you can type the word &quot;button&quot; in to the search/filter box at the top.
+</p>
+<p>➤ Click on <em>Button</em> and drag it onto the working area, on top of the scene’s rectangle.
+</p><div class="image-60"><img src="graphics/img29.png"  alt="" title="Dragging the button on top of the scene" /></div>
+<p>That’s how easy it is to add most new UI (user interface) items — just drag and drop. You’ll do a lot of this, so take some time to get familiar with the process.
+</p>
+<p>Drag and drop a few other controls, such as labels, sliders, and switches, just to get the hang of it. Once you are done, delete everything except for the first button you added.
+</p>
+<p>This should give you some idea of the UI controls that are available in iOS. Notice that the Interface Builder helps you to lay out your controls by snapping them to the edges of the view and to other objects. It’s a very handy tool!
+</p>
+<p>➤ Double-click the button to edit its title. Call it Hit Me!
+</p><div class="image-20"><img src="graphics/img30.png"  alt="" title="The button with the new title" /></div>
+<p>It’s possible that your button might have a border around it:
+</p><div class="image-20"><img src="graphics/img31.png"  alt="" title="The button with a bounds rectangle" /></div>
+<p>This border is not part of the button, it’s just there to show you how large the button is. You can turn these borders on or off using the <em>Editor ▸ Canvas ▸ Show Bounds Rectangles</em> menu option.
+</p>
+<p>When you’re done playing with Interface Builder, press the Run button from Xcode’s toolbar. The app should now appear in the simulator, complete with your “Hit Me!” button. However, when you tap the button, it doesn’t do anything yet. For that, you’ll have to write some Swift code!
+</p>
+<h3 class="segment-chapter">Using the source code editor</h3>
+
+<p>A button that doesn’t do anything when tapped is of no use to anyone. So let’s make it show an alert pop-up. In the finished game, the alert will display the player’s score; for now, you will limit yourself to a simple text message (the traditional “Hello, World!”).
+</p>
+<p>➤ In the <em>Project navigator</em>, click on <em>ViewController.swift</em>.
+</p>
+<p>The Interface Builder will disappear and the editor area now contains a bunch of brightly colored text. This is the Swift source code for your app:
+</p><div class="image-100"><img src="graphics/img32.png"  alt="" title="The source code editor" /></div>
+<div class="note">
+<p><em>Note</em>: If your Xcode editor window does not show the line numbers as in the screenshot above, and you&apos;d actually like to see the line numbers, from the menu bar choose <em>Xcode</em> ▸ <em>Preferences…</em> ▸ <em>Text Editing</em> and go to the <em>Editing</em> tab. There, you should see a <em>Line numbers</em> checkbox under <em>Show</em> - check it.
+</p></div>
+
+<p>➤ Add the following lines directly <em>above</em> the very last <code>}</code> bracket in the file:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showAlert</span><span class="hljs-params">()</span></span> {
+}</pre>
+<p>The source code for <em>ViewController.swift</em> should now look like this:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> UIKit
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ViewController</span>: <span class="hljs-title">UIViewController</span> </span>{
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+    <span class="hljs-keyword">super</span>.viewDidLoad()
+    <span class="hljs-comment">// Do any additional setup after loading the view, typically from a nib.</span>
+  }
+  
+  <span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showAlert</span><span class="hljs-params">()</span></span> {
+  }
+}</pre>
+<p>Yes, the above code leaves out the bunch of green text above the code with a copyright notice. And that&apos;s totally fine since the green text is just a comment block, or notes for developers, and not a necessary part of the code.
+</p>
+<p>Before I can tell you what the above code means, I have to introduce the concept of a view controller.
+</p>
+<div class="note">
+<p><em>Xcode will autosave</em>
+</p>
+<p>You don’t have to save your files after you make changes to them because Xcode will automatically save any modified files when you press the Run button.
+</p>
+<p>Nevertheless, Xcode isn’t the most stable piece of software out there and, occasionally, it may crash on you before it has had a chance to save your changes.
+</p>
+<p>Therefore, do remember to press <em>⌘+S</em> on a regular basis to save any changes that you&apos;ve made.
+</p></div>
+
+<h3 class="segment-chapter">View controllers</h3>
+
+<p>You’ve edited the <em>Main.storyboard</em> file to build the user interface of the app. It’s only a button on a white background, but a user interface nonetheless. You also added source code to <em>ViewController.swift</em>.
+</p>
+<p>These two files — the storyboard and the Swift file — together form the design and implementation of a <i>view controller.</i> A lot of the work in building iOS apps is making view controllers. The job of a view controller, generally, is to manage a single screen in your app.
+</p>
+<p>Take a simple cookbook app, for example. When you launch the cookbook app, its main screen lists the available recipes. Tapping a recipe opens a new screen that shows the recipe in detail with an appetizing photo and cooking instructions. Each of these screens is managed by a view controller.
+</p><div class="image-35"><img src="graphics/img33.png"  alt="" title="The view controllers in a simple cookbook app" /></div>
+<p>What these two screens do is very different. One is a list of several items; the other presents a detail view of a single item.
+</p>
+<p>That’s why you need two view controllers: One that knows how to deal with lists and another that can handle images and cooking instructions. One of the design principles of iOS is that each screen in your app gets its own view controller.
+</p>
+<p>Currently, <i>Bull’s Eye</i> has only one screen (the white one with the button) and thus only needs one view controller. That view controller is simply named “ViewController,” and the storyboard and Swift file work together to implement it. (If you are curious, you can check the connection between the screen and the code for it by switching to the Identity inspector on the right sidebar of Xcode in the storyboard view. The Class value shows the current class associated with the storyboard scene.)
+</p>
+<p>Simply put, the Main.storyboard file contains the design of the view controller’s user interface, while ViewController.swift contains its functionality — the logic that makes the user interface work, written in the Swift language.
+</p>
+<p>Because you used the Single View Application template, Xcode automatically created the view controller for you. Later, you will add a second screen to the game and you will create your own view controller for that.
+</p>
+<h3 class="segment-chapter">Making connections</h3>
+
+<p>The two lines of source code you just added to ViewController.swift lets Interface Builder know that the controller has a “showAlert” action, which presumably will show an alert pop-up. You will now connect the button on the storyboard to that action in your source code.
+</p>
+<p>➤ Click <em>Main.storyboard</em> to go back into Interface Builder.
+</p>
+<p>In Interface Builder, there should be a second pane on the left, next to the navigator area, called the <em>Document Outline</em>, that lists all the items in your storyboard. If you do not see that pane, click the small toggle button in the bottom-left corner of the Interface Builder canvas to reveal it.
+</p><div class="image-60"><img src="graphics/img34.png"  alt="" title="The button that shows the Document Outline pane" /></div>
+<p>➤ Click the <em>Hit Me button</em> once to select it.
+</p>
+<p>With the Hit Me button selected, hold down the <em>Control</em> key, click on the button and drag up to the <em>View Controller</em> item in the Document Outline. You should see a blue line going from the button up to View Controller.
+</p>
+<p>(Instead of holding down Control, you can also right-click and drag, but don’t let go of the mouse button before you start dragging.)
+</p><div class="image-80"><img src="graphics/img35.png"  alt="" title="Ctrl-drag from the button to View Controller" /></div>
+<p>Once you’re on View Controller, let go of the mouse button and a small menu will appear. It contains several sections: “Action Segue,” “Sent Events,” and &quot;Non-Adaptive Action Segue,&quot; with one or more options below each. You’re interested in the <em>showAlert</em> option under Sent Events. The Sent Events section shows all possible actions in your source code that can be hooked up to your storyboad — <em>showAlert</em> is the name of the action that you added earlier in the source code of <em>ViewController.swift</em>.
+</p><div class="image-40"><img src="graphics/img36.png"  alt="" title="The pop-up menu with the showAlert action" /></div>
+<p>➤ Click on <em>showAlert</em> to select it. This instructs Interface Builder to make a connection between the button and the line <code>@IBAction func showAlert()</code>.
+</p>
+<p>From now on, whenever the button is tapped the <code>showAlert</code> action will be performed. That is how you make buttons and other controls do things: You define an action in the view controller’s Swift file and then you make the connection in Interface Builder.
+</p>
+<p>You can see that the connection was made by going to the <em>Connections inspector</em> in the Utilities pane on the right side of the Xcode window. You should have the button selected when you do this.
+</p>
+<p>➤ Click the small arrow-shaped button at the top of the pane to switch to the Connections inspector:
+</p><div class="image-25"><img src="graphics/img37.png"  alt="" title="The inspector shows the connections from the button to any other objects" /></div>
+<p>In the Sent Events section, the “Touch Up Inside” event is now connected to the showAlert action. You should also see the connection in the Swift file.
+</p>
+<p>➤ Select <em>ViewController.swift</em> to edit it.
+</p>
+<p>Notice how, to the left of the line with <code>@IBAction func showAlert()</code>, there is a solid circle? Click on that circle to reveal what this action is connected to.
+</p><div class="image-60"><img src="graphics/img38.png"  alt="" title="A solid circle means the action is connected to something" /></div>
+<h3 class="segment-chapter">Acting on the button</h3>
+
+<p>You now have a screen with a button. The button is hooked up to an action named <code>showAlert</code> that will be performed when the user taps the button.
+</p>
+<p>Currently, however, the action is empty and nothing will happen (try it out by running the app again, if you like). You need to give the app more instructions.
+</p>
+<p>➤ In <em>ViewController.swift</em>, modify <code>showAlert</code> to look like the following:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showAlert</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> alert = <span class="hljs-type">UIAlertController</span>(title: <span class="hljs-string">"Hello, World"</span>, 
+                              message: <span class="hljs-string">"This is my first app!"</span>, 
+                       preferredStyle: .alert)
+
+  <span class="hljs-keyword">let</span> action = <span class="hljs-type">UIAlertAction</span>(title: <span class="hljs-string">"Awesome"</span>, style: .<span class="hljs-keyword">default</span>, 
+                           handler: <span class="hljs-literal">nil</span>)
+
+  alert.addAction(action)
+
+  present(alert, animated: <span class="hljs-literal">true</span>, completion: <span class="hljs-literal">nil</span>)
+}</pre>
+<p>The new lines of code implement the actual alert display functionality.
+</p>
+<p>The commands between the <code>{ }</code> brackets of the action tell the iPhone what to do, and they are performed from top to bottom.
+</p>
+<p>The code in <code>showAlert</code> creates an alert with a title “Hello, World,” a message that states, “This is my first app!” and a single button labeled “Awesome.”
+</p>
+<p>If you’re not sure about the distinction between the title and the message: Both show text, but the title is slightly bigger and in a bold typeface.
+</p>
+<p>➤ Click the <em>Run</em> button from Xcode’s toolbar. If you didn’t make any typos, your app should launch in iOS Simulator and you should see the alert box when you tap the button.
+</p><div class="image-25"><img src="graphics/img39.png"  alt="" title="The alert pop-up in action" /></div>
+<p>Congratulations, you’ve just written your first iOS app! What you just did may have seemed like gibberish to you, but that shouldn’t matter. We&apos;ll take it one small step at a time.
+</p>
+<p>You can strike off the first two items from the to-do list already: Putting a button on the screen and showing an alert when the user taps the button.
+</p>
+<p>Take a little break, let it all sink in and come back when you’re ready for more! You’re only just getting started...
+</p>
+<div class="note">
+<p><em>Note</em>: Just in case you get stuck, I have provided the complete Xcode projects, which are snapshots of the project as at the beginning and end of each chapter. That way, you can compare your version of the app to mine, or — if you really make a mess of things — continue from a version that is known to work.
+</p></div>
+
+<p>You can find the project files for each chapter in the corresponding folder.
+</p>
+<h3 class="segment-chapter">Problems?</h3>
+
+<p>If Xcode gives you a “Build Failed” error message after you press Run, then make sure you typed in everything correctly. Even the smallest mistake could potentially confuse Xcode. It can be quite overwhelming at first to make sense of the error messages that Xcode spits out. A small typo at the top of a source file can produce several errors elsewhere in that file.
+</p>
+<p>One common mistake is differences in capitalization. The Swift programming language is case-sensitive, which means it sees <code>Alert</code> and <code>alert</code> as two different names. Xcode complains about this with a “&lt;something&gt; undeclared” or “Use of unresolved identifier” error.
+</p>
+<p>When Xcode says things like “Parse Issue” or “Expected &lt;something&gt;” then you probably forgot a curly bracket <code>}</code> or parenthesis <code>)</code> somewhere. Not matching up opening and closing brackets is a common error.
+</p>
+<p><em>Tip</em>: In Xcode, there are multiple ways to find matching brackets to see if they line up. If you move the editing cursor past a closing bracket, Xcode will highlight the corresponding opening bracket, or vice versa. You could also hold down the <em>⌘</em> key and move your mouse cursor over a line with a curly bracket and Xcode will highlight the full block from the opening curly bracket to the closing curly bracket (or vice versa) — nifty!
+</p><div class="image-100"><img src="graphics/img40.png"  alt="" title="Xcode shows you the complete block for curly brackets" /></div>
+<p>Tiny details are very important when you’re programming. Even one single misplaced character can prevent the Swift compiler from building your app.
+</p>
+<p>Fortunately, such mistakes are easy to find.
+</p><div class="image-100"><img src="graphics/img41.png"  alt="" title="Xcode makes sure you can’t miss errors" /></div>
+<p>When Xcode detects an error, it switches the pane on the left from the Project navigator, to the <em>Issue navigator</em>, which shows all the errors and warnings that Xcode has found. (You can go back to the project navigator using the small icons along the top.)
+</p>
+<p>In the above screenshot, apparently, I forgot a comma.
+</p>
+<p>Click on the error message in the Issue navigator and Xcode takes you to the line in the source code with the error. Sometimes, depending on the error, it even suggests a fix:
+</p><div class="image-80"><img src="graphics/img42.png"  alt="" title="Fix-it suggests a solution to the problem" /></div>
+<p>It could be a bit of a puzzle to figure out what exactly you did wrong when your build fails - fortunately, Xcode lends a helping hand.
+</p>
+<div class="note">
+<p><em>Errors and warnings</em>
+</p>
+<p>Xcode makes a distinction between errors (red) and warnings (yellow). Errors are fatal. If you get one, you cannot run the app until the error is fixed. Warnings are informative. Xcode just says, “You probably didn’t mean to do this, but go ahead anyway.”
+</p>
+<p>In the previous screenshot showing all the error locations via arrows, you&apos;ll notice that there is a warning (a yellow triangle) in the Issue navigator. We&apos;ll discuss this particular warning and how to fix it later on.
+</p>
+<p>Generally though, it is best to treat all warnings as if they were errors. Fix the warning before you continue and only run your app when there are zero errors and zero warnings. That doesn’t guarantee the app won’t have any bugs, but at least they won’t be silly ones!
+</p></div>
+
+<h2 class="segment-chapter">The anatomy of an app</h2>
+
+<p>It might be good at this point to get some sense of what goes on behind the scenes of an app.
+</p>
+<p>An app is essentially made up of <em>objects</em> that can send messages to each other. Many of the objects in your app are provided by iOS; for example, the button is a <code>UIButton</code> object and the alert pop-up is a <code>UIAlertController</code> object. Some objects you will have to program yourself, such as the view controller.
+</p>
+<p>These objects communicate by passing messages to each other. For example, when the user taps the Hit Me button in the app, that <code>UIButton</code> object sends a message to your view controller. In turn, the view controller may message more objects.
+</p>
+<p>On iOS, apps are <i>event-driven</i>, which means that the objects listen for certain events to occur and then process them.
+</p>
+<p>As strange as it may sound, an app spends most of its time doing... absolutely nothing. It just sits there waiting for something to happen. When the user taps the screen, the app springs to action for a few milliseconds, and then it goes back to sleep again until the next event arrives.
+</p>
+<p>Your part in this scheme is that you write the source code for the actions that will be performed when your objects receive the messages for such events.
+</p>
+<p>In the app, the button’s Touch Up Inside event is connected to the view controller’s <code>showAlert</code> action. So when the button recognizes it has been tapped, it sends the <code>showAlert</code> message to your view controller.
+</p>
+<p>Inside <code>showAlert</code>, the view controller sends another message, <code>addAction</code>, to the <code>UIAlertController</code> object. And to show the alert, the view controller sends the <code>present</code> message.
+</p>
+<p>Your whole app will be made up of objects that communicate in this fashion.
+</p><div class="image-100"><img src="graphics/img43.png"  alt="" title="The general flow of events in an app" /></div>
+<p>Maybe you have used PHP or Ruby scripts on your web site. This event-based model is different from how a PHP script works. The PHP script will run from top-to-bottom, executing the statements one-by-one until it reaches the end and then it exits.
+</p>
+<p>Apps, on the other hand, don’t exit until the user terminates them (or they crash!). They spend most of their time waiting for input events, then handle those events and go back to sleep.
+</p>
+<p>Input from the user, mostly in the form of touches and taps, is the most important source of events for your app, but there are other types of events as well. For example, the operating system will notify your app when the user receives an incoming phone call, when it has to redraw the screen, when a timer has counted down, etc.
+</p>
+<p>Everything your app does is triggered by some event.
+</p>
+<p>You can find the project files for the app up to this point under <em>02 - The One-Button App</em> in the Source Code folder.
+</p></body></html>

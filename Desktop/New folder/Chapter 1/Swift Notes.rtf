@@ -1,0 +1,623 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671
+{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;\f1\fnil\fcharset0 LucidaGrande;\f2\fnil\fcharset178 GeezaPro;
+\f3\fnil\fcharset0 LucidaGrande-Bold;\f4\fnil\fcharset0 HelveticaNeue-Bold;\f5\fnil\fcharset0 Georgia;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red255\green255\blue255;\red251\green2\blue7;
+\red253\green128\blue8;\red251\green2\blue255;\red153\green102\blue51;\red38\green38\blue38;\red33\green255\blue6;
+\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c100000\c100000\c100000;\cssrgb\c100000\c14913\c0;
+\cssrgb\c100000\c57637\c0;\cssrgb\c100000\c25279\c100000;\cssrgb\c66800\c47512\c25860;\cssrgb\c20000\c20000\c20000;\cssrgb\c0\c97680\c0;
+\cssrgb\c0\c0\c0\c84314;}
+\margl1440\margr1440\vieww24520\viewh12580\viewkind0
+\deftab720
+\pard\pardeftab720\sl320\partightenfactor0
+
+\f0\fs26 \cf2 \cb3 \expnd0\expndtw0\kerning0
+Swift notes \
+\
+\
+1-\'93These two files \'97 the storyboard and the Swift file \'97 together form the design and \
+          implementation   of a view controller\
+ \
+2- \'93The storyboard contains the designs of all your app\'92s view controllers inside a single document, with arrows showing the flow between them. In storyboard terminology, each view controller is named a scene\'94 (from section 2)\
+\
+3- \'93the view type specified in code has to match the scene's type.\'94 for example\
+       class ViewController: UIViewController \{\} - if the view is tableview Controller so the \
+         source code file have to as following\
+        class ChecklistViewController: UITableViewController \
+        \'93With this change you tell the Swift compiler that your view controller is now a \
+         UITableViewController object instead of a regular UIViewController\'94\
+. \
+   - The job of a view controller, generally, is to manage a single screen in your app.\'94\
+\
+  - \'93One of the design principles of iOS is that each screen in your app gets its own view\
+                controller.\
+    page 57\
+\
+3- \'93Warnings are informative. Xcode just says, \'93You probably didn\'92t mean to do this, but go \
+          ahead anyway.\'94\
+\
+4- anatomy of an App\
+   - ios app is event-driven witch means :\
+       \'93app spends most of its time doing... absolutely nothing. It just sits there waiting for \
+          something to happen. When the user taps the screen, the app springs to action for a \
+           few milliseconds, and then it goes back to sleep again until the next event arrives\'94\
+\
+\
+   - \'93An app is essentially made up of objects that can send messages to each other. Many of the objects in your app are provided by iOS; for example, the button is a UIButton object and the alert pop-up is a UIAlertController object. Some objects you will have to program yourself, such as the view controller.\'94\
+\
+
+\fs36 \cf4 \'93Chapter 3: Slider and Labels
+\fs26 \cf2 \'94\
+\
+\
+5- point and pixels \
+\
+   - \'93one point corresponds to one pixel. As a result, these low-resolution devices don\'92t look \
+        very  sharp\'94\
+\
+   - \'93it\'92s the smallest element that a screen is made up of\'94 it consists of (pics or pix + \
+             Element)\
+   \
+  - \'93The more pixels = the better the image looks.\'94 \'93It packs a lot of pixels in a very small \
+        space, making for a much sharper display\'94\
+\
+ - \'93The form factor of the device determines the width and height of the screen in points\'94\
+ \
+ - \'93 iPhone 4 and later models, one point actually corresponds to two pixels horizontally and \
+      vertically, so four pixels in total . recently there 3x resolution with 9 pixels for every point\
+\
+- \'93Developers work in points, designers work in pixels\'94, \'93UIKit works with points instead of\
+            pixels\'94\
+\
+6- \'93UIKit and other frameworks\
+\
+  - \'93 It manages the view controllers and generally takes care of anything else that deals with \
+       your  app\'92s user interface. (That is what UI stands for: User Interface.)\'94\
+         \'93such as buttons, labels and navigation bars\'94\
+\
+\
+  - foundation\
+     which provides many of the basic building blocks for building apps; Core Graphics for \
+          drawing basic shapes such as lines, gradients and images on the screen\'94\
+\
+  - AVfoundation\
+     \'93for playing sound and video; and many others.\
+\
+The complete set of frameworks for iOS is known collectively as Cocoa Touch.\'94\
+\
+7- \'93Understanding objects, data and methods,Variables,Function\'94\
+A\
+  -  \'93Each object takes care of a specific part of the program.\'94\
+ \
+ - \'93Any object can have both data and functionality\'94\
+    Examble :\
+           - \'93The button has data and functionality. Examples of button data are the text  \
+          and color of its label, its position on the screen, its width and height and so on\'94\
+.         - when you put a button in the VC also consider its data\
+\
+  -Sending message :\'93 It\'92s a good way to think conceptually of how objects communicate\'94\
+\
+ -\'93The important thing to remember is that objects have methods (the steps involved in  \
+       buying ice cream) and data (the actual ice cream and the money to buy it with)\'94\
+\
+ -\'93not all data from an object can be inspected by other objects and/or code \'97 this is \
+     an area known as access control and you'll learn about this later\'94\
+\
+B :Variables\
+   \
+  -\'93A variable allows the app to remember things. Think of a variable as a temporary storage\
+        container for a single piece of data\'94\
+\
+   -\'93Each variable has a certain lifetime (also known as its scope) that depends on exactly \
+     where in \
+        your program you defined that variable.\'94\
+       \'93There are three possible scope levels in Swift\'94\
+        1.\'93Global scope: \
+        2-Instance scope:  These objects are alive for as long as the object that owns them stays alive.\
+               -instance variables can been seen by all methods in the class.\
+            - instance variables declared inside a class but outside a method.\
+            -instance variables can be accessed if they are declared as public.\
+            - An instance variable belongs to an instance of a class\
+           -instance variables always have default value\
+        3-Local scope\
+            	\'95	must be initialized before use, otherwise it won't compile.\
+\
+C-Function \
+\
+ - \'93belong to an object while a method does. In other words, a method is exactly like a function \'97  that\'92s why you use the func keyword to define them \'97 except that you need to have an object to  use the method. But regular functions, or free functions as they are sometimes called, can be used anywhere\'94\
+\
+
+\fs36 \cf4 Chapter 4 Outlets
+\fs26 \cf2 \
+\
+ViewDidLoad: \'93the viewDidLoad() message is sent by UIKit immediately after the view \
+           controller loads its user interface from the storyboard file. At this point, the view\
+              controller isn\'92t visible yet, so this is a good place to set instance variables to \
+               their proper initial values\'94\
+     -This method is called after the view controller has loaded its view hierarchy into memory\
+\
+ Outlet and Connection 	\
+    - Outlet and Action are ways (or connection/intermediary) by which a \
+           ViewController will interact with its View\
+     -outlet is used when you want to change some property of control i.e. text\
+           color or text size of a label. While Action is used when you want to detect \
+            a trigger i.e. when button is pressed.\
+     -\'93 @IBOutlet variable so you could reference the slider anywhere from within the view \
+                controller\'94\
+     - \'93@IBAction attribute, which allows Interface Builder to see the method so you can \
+                 connect it to your buttons, sliders and so on.\'94\
+\
+note : function like this (func updateLabels()) it does not have @IBAction so it cannot be used as an action from Interface Builder, \'93as a result, Interface Builder can\'92t see it. To use updateLabels(), you will have to call it yourself.\'94\
+\
+          {\field{\*\fldinst{HYPERLINK "https://l.facebook.com/l.php?u=https%3A%2F%2Fstackoverflow.com%2Fquestions%2F11374488%2Fwhat-is-the-difference-between-outlet-%3Ffbclid%3DIwAR06oUwK7cF_j9ykuWAHQwUrdrtfUAdalx4FReZEu7hZf8_RokaSHX7UsJg&h=AT3EQxIvN7dYpem58mmGH9dvEY73w8OdWyDlI8vYBpMkPkv_h9glHhpBK7kM9aNYDJEeKQ2KHFSmIKjLGK0bjgIe3dso-0EIeRehoIFUkjBO0WzZnhD3ileMvCX49rVPLxDnXIXz9P8"}}{\fldrslt \ul https://stackoverflow.com/questions/11374488/what-is-the-difference-between-outlet-}} connection-and-action-connection\
+\
+note: \'93You can send a message from one method in the object to another method in that same object.\'94\
+\
+-  \'93To call a method on an object, you\'92d normally write: receiver.methodName(parameters)\
+The receiver is the object you\'92re sending the message to. If you\'92re sending the message to yourself, then the receiver is self. But because sending messages to self is very common, you can also leave this special keyword out for many cases.\'94\
+\
+\
+
+\fs36 \cf4 \'93Chapter 5: Rounds and Score\'94\
+
+\fs26 \cf2 \
+   - Algorithm: \'93series of steps for solving a computational problem\'94\
+or we can say in english : \'93It\'92s just a series of steps that you perform to calculate something\'94\
+\
+
+\fs36 \cf4 \
+
+\f1 Chapter
+\f2  
+\f1 6
+\f2\fs26 \cf2 \
+
+\f1 -
+\f2  
+\f1 \'93a
+\f2  
+\f1 lot
+\f2  
+\f1 of
+\f2  
+\f1 the
+\f2  
+\f1 programming
+\f2  
+\f1 for
+\f2  
+\f1 iOS
+\f2  
+\f1 involves
+\f2  
+\f1 waiting
+\f2  
+\f1 for
+\f2  
+\f1 specific
+\f2  
+\f1 events
+\f2  
+\f1 to
+\f2  
+\f1 occur
+\f2  
+\f1 \'96
+\f2  
+\f1 buttons
+\f2  
+\f1 being
+\f2  
+\f1 tapped,
+\f2  
+\f1 sliders
+\f2  
+\f1 being
+\f2  
+\f1 moved,
+\f2  
+\f1 and
+\f2  
+\f1 so
+\f2  
+\f1 on\'94
+\f2 \
+\
+
+\f1 -\'93The self keyword allows the view controller to refer to itself. That shouldn\'92t be too strange a concept. When you say, \'93I want ice cream,\'94 you use the word \'93I\'94 to refer to yourself. Similarly, objects can talk about (or to) themselves as well\'94\
+\
+-\'93Normally you don\'92t need to use self to send messages to the view controller, even though it is allowed. The exception: inside closures you do have to use self to refer to the view controller.\
+This is a rule in Swift. If you forget self in a closure, Xcode will complain (try it out)\'94\
+\
+
+\f3\b \
+
+\f0\b0\fs36 \cf4 Chapter 8\
+
+\fs28 \
+\cf2 - Add New Constraints Button: \'93This button lets you define relationships, called constraints, between the currently selected view and other views in the scene. When you run the app,\'94,also we cans say it defines \'93 Spacing to nearest neighbor section \'94\
+\
+- \'93UIKit evaluates these constraints and calculates the final layout of the views\'94\
+\
+- Remember: \'93for each view, there must always be enough constraints to define both its position and its size\'94\
+  - regards to its position you have to add x,y constraints otherwise you get read \
+       red lines which means there are error \
+\
+- \'93As you've noticed, there are different types of constraints - there are alignment \
+          constraints and spacing constraints\'94\
+\
+- SAFE AREA:  \'93In Xcode 9, Apple introduced a new mechanism to go along with Auto Layout to work with the iPhone X screen. Since the iPhone X has a notch at the top, you don't want most apps to display their content beneath the notch since that content would not display properly.\
+-	So, Xcode 9 has what is known as safe layout guides to define where it is safe to display content. If you take a look at the Auto Layout constraints for the background image on the main scene (or even the About scene for that matter), you will notice that the background image aligns to the safe area.\
+\'94\
+\
+\
+---------------------------------------------------------------------------------------------------\
+
+\f4\b\fs48 \cf5 Section 2: Checklist\
+\cf6 \
+
+\fs36 \cf4 Chapter 9: Table Views\
+\
+
+\f0\b0\fs24 \cf2 -Table View : Shows a list of things\
+\
+- The navigation controller:  allows you to build a hierarchy of screens that lead from one screen to another. It adds a navigation bar at the top with a title and a back button\'94\
+\
+note: \'93Navigation controllers and table views are often used together\'94\
+\
+note: \'93table view controller: is a special type of view controller that makes working with table views easier.\'94 also we can say its usual view controller but contains table view object \
+\
+
+\fs28 \cf7 TableView
+\fs26 : They also have built-in facilities for handling common behavior such as scrolling, selecting rows, editing the table's contents, and animating the addition or removal of rows
+\fs32 \cf8 .
+\fs24 \cf2 \
+\
+\'93
+\fs28 \cf9 The anatomy of a table view
+\f4\b\fs48 \cf6 \
+
+\fs24 \cf2 1- 
+\f0\b0 \'93There are two styles of tables: \'93plain\'94 and \'93grouped\'94. They work mostly the same, but there are a few small differences.\'94\
+   . \'93The plain style is used for rows that all represent something similar, such as contacts in an \
+       address book where each row contains the name of one person\'94\
+   . \'93The grouped style is used when the items in the list can be organized by a particular attribute, \
+       like book categories for a list of books\'94\
+\
+2- \'93Tables display their data in cells. A cell is related to a row but it\'92s not exactly the same.\
+   -A cell is a view that shows a row of data that happens to be visible at that moment.\
+   -If your table can show 10 rows at a time on the screen, then it only has 10 cells, even though \
+     there may be hundreds of rows of actual data.\'94\
+   - \'93Whenever a row scrolls off the screen and becomes invisible, its cell will be re-used for a new \
+       row that becomes visible\'94\
+   -\'93You\'92ll usually have fewer cells than rows. If the app always made a cell for each row, iOS would \
+      run out of memory really fast, especially on large tables. Because not all rows can be visible at  \
+      once, that would be very wasteful and slow.\'94\
+  -\'93Now you know why UITableView makes the distinction between rows \'96 the data, of which you\'92ll  \
+     usually have lots \'96 and cells \'96 the visible representation of that data on the screen, of which there \
+      are only about a dozen\'94\
+\
+3- \'93You also need to set 
+\f4\b a reuse identifier
+\f0\b0  on the cell. This is an internal name that the table view uses to find free cells to reuse when rows scroll off the screen and new rows must become visible
+\f4\b \'94\
+\
+
+\f0\b0 -\'93Reuse identifiers are also important for when you want to display different types of cells in the \
+   same table.\'94\
+\
+- \'93The table needs to assign cells for those new rows, and recycling existing cells is more efficient\
+    than creating new cells. This technique is what makes table views scroll smoothly\'94\
+\
+4-Protocol: \'93 its a standard set of methods that a class must adhere to - a protocol to be followed, . It allows code to be written in such a way that you know that a given class would implement certain methods (with specific parameters of a given type) \'94\
+\
+- \'93A protocol usually allows you to add functionality for a certain type of operation to a class - for example, handling data for a table view.\'94\
+\
+5- \'93The table view needs to know how many rows of data it has and how it should display each of those rows. But you can\'92t simply dump that data into the table view\'92s lap and be done with it. You don\'92t say: \'93Dear table view, here are my 100 rows, now go show them on the screen.\'94\
+\
+-Instead, you say to the table view: \'93This view controller is now your data source. You can ask it questions about the data anytime you feel like it.\'94\
+Once it is hooked up to a data source \'96 i.e. your view controller \'96 the table view sends a numberOfRowsInSection message to find out how many data rows there are.\
+\
+-And when the table view needs to draw a particular row on the screen it sends a cellForRowAt message to ask the data source for a cell.\
+\
+-You see this pattern all the time in iOS: one object does something on behalf of another object. In this case, the ChecklistViewController works to provide the data to the table view, but only when the table view asks for it.\'94\
+\
+
+\f4\b\fs28 \cf9 Concept of delegation\
+
+\fs48 \cf6 \
+
+\f0\b0\fs24 \cf2 \'93The concept of delegation is very common in iOS. An object will often rely on another object to help it out with certain tasks. This separation of concerns keeps the system simple, as each object does only what it is good at and lets other objects take care of the rest. The table view offers a great example of this\'94\
+\
+\'93Because every app has its own requirements for what its data looks like, the table view must be able to deal with lots of different types of data. Instead of making the table view very complex, or requiring that you modify it to suit your own apps, the UIKit designers have chosen to delegate the duty of providing the cells to display to another object, the data source.\
+\
+-The table view doesn\'92t really care who its data source is or what kind of data your app deals with, just that it can send the cellForRowAt message and receive a cell in return. This keeps the table view component simple and moves the responsibility for handling the data to where it belongs: your code.\
+\
+-Likewise, the table view knows how to recognize when the user taps a row, but what it should do in response depends on the app. In this app, you\'92ll make it toggle the checkmark; another app will likely do something totally different.\
+\'94\
+\
+-\'93Using the delegation system, the table view can simply send a message that a tap occurred and let the delegate sort it out.\
+\
+-Usually, components will have just one delegate. But the table view splits up its delegate duties into two separate helpers: the UITableViewDataSource for putting rows into the table, and the UITableViewDelegate for handling taps on the rows and several other tasks.\'94\
+\
+------------------------------\
+
+\fs36 \cf4 \'93Chapter 10: The Data Model\'94
+\fs24 \cf2 \
+\
+MVC\
+\
+1- \'93
+\f4\b\fs26 Controller objects.
+\f0\b0\fs24  The controller is the object that connects your data model objects to the views. It listens to taps on the views, makes the data model objects do some calculations in response, and updates the views to reflect the new state of your model. The controller is in charge. On iOS, the controller is called the \'93view controller\'94\
+Exm: \
+\'93The table view controller is the thing that ties them together through the act of implementing the table view\'92s data source and delegate methods\'94\
+\
+\
+Note: \'93 
+\f4\b The view
+\f0\b0  is what you see.but 
+\f4\b The view controller 
+\f0\b0 is what does the work behind the scenes. It is the bridge that sits between your data model and the views.\'94\
+\
+
+\fs28 ----------\
+\
+1-\cf9 Arrays:\
+\cf2  -\'93An array is an ordered list of objects. If you think of a variable as a container of one value (or one object) then an array is a container for multiple objects\'94\
+\
+-\'93An array is a collection object. There are several other collection objects and they all organize their objects in a different fashion. Dictionary, for example, contains key-value pairs, just like a real dictionary contains a list of words and a description for each of those words. You\'92ll use some of these other collection types in later chapters.\'94\
+\
+\uc0\u8235 -----------------------------------------------\uc0\u8236 \
+
+\f1 \cf4 Chapter
+\f2  
+\f1 11:Navigation Controller
+\f2 \cf2 \
+\
+
+\f1\fs24 1-Navigation Controller:\'93
+\f2  
+\f1 It
+\f2  
+\f1 is
+\f2  
+\f1 the
+\f2  
+\f1 thing
+\f2  
+\f1 that
+\f2  
+\f1 lets
+\f2  
+\f1 you
+\f2  
+\f1 go
+\f2  
+\f1 from
+\f2  
+\f1 one
+\f2  
+\f1 screen
+\f2  
+\f1 to
+\f2  
+\f1 another:\'94\
+     - \'93The Navigation Controller is a special type of view controller that acts as a container \
+         for other view controllers. It comes with a navigation bar and has the ability to easily\
+          go from one screen to another, by sliding them in and out of sight. The container \
+           essentially \'93wraps around\'94 these screens\'94\
+
+\f2 \
+
+\f0  2- you can add Navigation Bar Item into your view Controller and put it at the top \
+     - instead, you will embed your viewController into navigation Controller \
+      - once you embedded Navigation Controller, it makes a relationship with your present VC\
+      - when the app starts-up , the present VC put itself automatically inside Navigation Controller\
+       - and then the\'93Navigation Item object was automatically added to the view controller which \
+          contains \'93he title and buttons that appear in the navigation bar when this view controller \
+          becomes active.\
+      - Each embedded view controller has its own Navigation Item that it uses to  configure what \
+         shows up in the navigation bar.\'94\
+\
+\
+3- \'93When the navigation controller slides a new view controller in, it replaces the contents of the \
+      navigation bar with the new view controller\'92s Navigation Item.\'94\
+      -\'93It has a navigation bar with a title in the middle and a \'93back\'94 button that automatically takes \
+        the user back to the previous screen. You can put a button (or several buttons) of your own on \
+        the right\
+\
+4- notice the following notes \
+\
+1-\'93Generally, there is a single navigation controller for a given navigation flow.\
+2-A single navigation controller could present multiple view controllers as part of its navigation flow.\
+3-Each view controller in a navigation hierarchy has a reference to the navigation controller which  \
+    presented it\'94\
+\
+Note: \'93When the app starts up, the Checklist View Controller is automatically put inside a navigation controller.\'94\
+\
+\
+Note2: \'93What does it mean for an object to be destroyed? Each object occupies a small section of \
+            the computer\'92s memory. When you create an object instance, a chunk of memory is reserved\
+             to hold the object\'92s data. if the object is deallocated, that memory becomes available again \
+              and will eventually be occupied by new objects.\'94\
+\
+           \'93After it has been \'93deleted, the object does not exist in memory any more and you can no \
+            longer use it.\'94\
+\
+\
+\
+\
+ Note3 -\'93What do you think happens to the AddItemViewController object when you dismiss it? \
+             After the view controller disappears from the screen, its object is destroyed and the memory\
+              it was using is reclaimed by the system.\
+\
+            -Every time the user opens the Add Item screen, the app makes a new instance of it. This\
+              means a view controller object is only alive for the duration that the user is interacting with\
+               it; there is no point in keeping it around afterwards.\'94\
+\
+\
+
+\fs28 \
+\uc0\u8235 -----------------------------------------------\uc0\u8236 \
+
+\f1 \cf4 Chapter
+\f2  
+\f1 12: Add Item Screen 
+\f0\fs24 \cf2 \
+1-\
+-\'93 You use return to send a value from a method back to the method that called it.\
+- Methods call other methods and receive values in return.\
+-\'93The return value is often called the result of the method.\'94\
+- You cannot just return any value. The value you return must be of the data type that is specified after the -> arrow that follows the method name.\
+For example,: \'93override func tableView(_ tableView: UITableView, \
+      numberOfRowsInSection section: Int) -> Int \{\
+  return 1 \
+\}\
+\
+2 - \'93 Note that returning nil from a method is only allowed if there is a question mark (or exclamation point) behind the return type\'94\
+\
+Example : \'93override func tableView(_ tableView: UITableView, \
+          willSelectRowAt indexPath: IndexPath) -> IndexPath\cf4 ?\cf2  \{\
+  return nil\
+\}\'94\
+	\
+- \'93The special value nil represents \'93no value\'94 but it\'92s used to mean different things throughout the iOS SDK. Sometimes it means \'93nothing found\'94 or \'93don\'92t do anything\'94. Here it means that the row should not be selected when the user taps it.\'94\
+\
+		\
+\
+\
+3-to disallow empty input --> if the user tap done without entering any text in text field that adding a to-do item in list with has no description text 
+\f1 which is no useful so :
+\f0 \
+\
+   -\'93you should disable the Done button when no text has been typed yet in the t
+\f1 able
+\f2  
+\f1 view
+\f0 \'94\
+     - \'93Of course, you have two Done buttons to take care of, one on the keyboard, and one in the \
+       . navigation bar\'94\
+      regarding to keyboard : \'93On the Attributes inspector for the text field, check Auto-enable Return Key. That\'92s it. Now when you run the app, the Done button on the keyboard is disabled when there is no text in the text field. Try it out!\'94\
+\
+  - regarding navigation Bar \
+\
+\
+\
+Note:\'93remember that it always takes three steps to become a delegate.\
+\
+1- You declare yourself capable of being a delegate. To become the delegate for UITextField you need to include UITextFieldDelegate in the class line for the view controller. This tells the compiler that this particular view controller can actually handle the notification messages that the text field sends to it\'94\
+2-You let the object in question, in this case the UITextField, know that the view controller wishes to become its delegate. If you forget to tell the text field that it has a delegate, it will never send you any notifications.\
+\
+3-Implement the delegate methods. It makes no sense to become a delegate if you\'92re not responding to the messages you\'92re being sent!\'94\
+\
+\cf7 - i want to make search about --> \'93NSRange vs. Range and NSString vs. String\'94 491\
+\cf2 \
+\
+------------------------\
+
+\fs28 \cf4 \'93Chapter 13: Delegates and Protocols\'94\
+\
+\pard\pardeftab720\sl480\partightenfactor0
+
+\f5\fs26 \cf9 Delegates
+\fs24 \cf10 : are a design pattern that allows one object to send messages to another object when a specific event happens
+\fs42 .
+\f0\fs28 \cf4 \
+\pard\pardeftab720\sl320\partightenfactor0
+\cf4 \
+\pard\pardeftab720\sl320\partightenfactor0
+
+\fs24 \cf2 \uc0\u8235 -\uc0\u8236  \'93 one of the fundamental tasks that every iOS app needs to do: sending messages from one view \
+     controller to another. 
+\f1 for this reason we use delegation design pattern 
+\f0 \
+\
+-Note: there are many ways we can use  instead of delegation but most of these approaches \
+   shackles the two view controller objects together.\'94 \'93As a general principle, if screen A launches screen B then you don\'92t want screen B to know too much about the screen that invoked it (A). The less B knows of A, the better.\'94\
+\
+- \'93in many apps it\'92s common for one screen to be accessible from multiple places if we don't use the delegation design pattern it leads us a lower performance \
+\
+-\'93Note: It is customary for the delegate methods to have a reference to their owner as the first (or only) parameter.\
+Doing this is not required, but still a good idea. For example, in the case of table views, it may happen that an object is the delegate or data source for more than one table view. In that case, you need to be able to distinguish between those table views. To allow for this, the table view delegate methods have a parameter for the UITableView object that sent the notification. Having this reference also saves you from having to make an @IBOutlet for the table view.\
+That explains why you pass self to your delegate methods. Recall that self refers to the object itself, in this case AddItemViewController. It\'92s also why all the delegate method names start with addItemViewController.\'94\
+\
+\pard\pardeftab720\sl320\partightenfactor0
+\cf7 \'93weak var delegate: AddItemViewControllerDelegate?\
+- \'93You may be wondering why the delegate would ever be nil\cf2 . \'94--> the answer in 531 , also i need to search\
+\
+\pard\pardeftab720\sl320\partightenfactor0
+
+\fs26 \cf9 optionals
+\fs24 \cf2  \
+\
+-\'93In other programming languages the special symbol nil or NULL is often used to indicate that a variable has no value. This is not allowed in Swift for normal variables.\
+\
+The problem with nil and NULL is that they are a frequent cause of crashing apps. If an app attempts to use a variable that is nil when you don\'92t expect it to be nil, the app will crash. This is the dreaded \'93null pointer dereference\'94 error.\
+\
+-Swift stops this by preventing you from using nil with regular variables.\
+However, sometimes a variable does need to have \'93no value\'94. In that case you can make it an optional. You mark something as optional in Swift using either a question mark ? or an exclamation point !.\
+Only variables that are made optional can have the value nil.\
+\'94\
+\
+-\'93The question mark tells Swift that it\'92s OK for the method to return nil instead of an actual value\'94
+\fs28 \
+--------------------------\
+\pard\pardeftab720\sl320\partightenfactor0
+\cf4 \'93Chapter 15: Saving and Loading\'94\
+\
+\pard\pardeftab720\sl320\partightenfactor0
+
+\fs26 \cf9 \'93The need for data persistence\
+\pard\pardeftab720\sl320\partightenfactor0
+
+\fs24 \cf2 1-Thanks to the multitasking nature of iOS, an app stays in memory when you close it and go back to the home screen or switch to another app. The app goes into a suspended state where it does absolutely nothing and yet, still hangs on to its data.\
+\
+2-During normal usage, users will never truly terminate an app, just suspend it. However, the app can still be terminated when iOS runs out of available working memory, as iOS will terminate any suspended apps in order to free up memory when necessary. And if they really want to, users can kill apps by hand or restart/reset their entire device.\
+\
+3-Just keeping the list of items in memory is not good enough because there is no guarantee that the app will remain in memory forever, whether active or suspended.\
+Instead, you will need to persist this data in a file on the device\'92s long-term flash storage.\'94\
+\'93This is no different than saving a file from your word\'93processor on your desktop computer, except that iOS apps should take care of this automatically.\
+The user shouldn\'92t have to press a Save button just to make sure unsaved data is safely placed in long-term storage.\'94\
+\
+\pard\pardeftab720\sl320\partightenfactor0
+
+\fs26 \cf9 The documents folder\
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 1-\'93iOS apps live in a sheltered environment known as the sandbox. Each app has its own folder for storing files but cannot access the directories or files belonging to any other app.\'94\
+\
+2-\'93This is a security measure, designed to prevent malicious software such as viruses from doing any damage. If an app can only change its own files, it cannot modify (or affect) any other part of the system\'94\
+\
+\'93\cf9 You can see several folders inside the app\'92s sandbox folder:\cf2 \
+1-The Documents folder where the app will put its data files. Currently the Documents folder is empty.\
+2-The Library folder has cache files and preferences files. The contents of this folder are managed by the operating system.\
+3-The SystemData folder, as the name implies, is for use by the operating system to store any system level information relevant to the app.\
+4-The tmp folder is for temporary files. Sometimes apps need to create files for temporary usage. You don\'92t want these to clutter up your Documents folder, so tmp is a good place to put them. iOS will clear out this folder from time to time.\'94\
+\
+-- what do you do to save items in ios apps?\
+for example to save checklitstitems  we will use swift's codaple protocol  which let objects which support the codable protocol to store themselves in a structured file format \
+\
+-\'93All you care about is that the data gets stored in some kind of file in the app\'92s Documents folder, and you\'92ll leave the technical details to Codable.\'94\
+\
+\pard\pardeftab720\sl320\partightenfactor0
+\cf9 do keyword\
+\
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 1-\'93sets up a block of code to catch Swift errors. Swift handles errors under certain conditions by throwing an error\'94\
+\
+\'93you need a block of code to catch the error and to handle it \'94\
+\
+try--> \'93\'93let data = try encoder.encode(items)\'94\
+the try keyword indicates that the call to encode can fail and if that happens, that it will throw an error. (If you do not have the try keyword before a call to a method which throws an error, you will get an Xcode error. Try it and see.)If the call to encode fails, execution will immediately jump to the catch block instead of proceeding on to the next line\'94\
+\
+catch--> \'93The catch statement indicates the block of code to be executed if an error was thrown by any line of code in the enclosing do block.\'94\
+\
+- \'93also if you simply have a catch block, Swift will automatically populate a local variable named error which will contain the error thrown by one of the statements within the do block.\'94\
+\
+\pard\pardeftab720\sl320\partightenfactor0
+\cf9 \'93The Codable protocol\
+\pard\pardeftab720\sl320\partightenfactor0
+\cf2 -Swift arrays \'97 as well as most other standard Swift objects and structures \'97 conform to the Codable protocol. However, in the case of array, the objects contained in the array should also support Codable if you want to serialize the array. So is our ChecklistItem class Codable compliant? I don't believe so \'94\
+\
+}

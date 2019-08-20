@@ -1,0 +1,40 @@
+Aug 19 08:37:50 ahmeds-mbp CoreSimulatorService[1101] <Notice>: com.apple.CoreSimulator.CoreSimulatorService 572.2 starting.
+Aug 19 08:37:50 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device 434CBC10-7BD1-4BC4-967A-24EDBA80B08D encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:51 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device E3CA01AC-240F-4A8A-BD9B-EA4864505D01 encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:51 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device 4A6A2981-7965-4AD4-9FEA-074F52BF3A36 encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:51 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device 7AB6BE2B-B3A9-4777-937A-1AF75AE55B44 encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:51 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device 77104E08-01BD-4331-97EC-BD0017E99F7E encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:51 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device B3ABCD2D-79AD-4938-A9AC-0504887D7575 encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:51 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device 8092BBC4-8686-4127-8B53-4510DB70CFDC encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:51 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device 327A0D47-8CBF-4623-A1E5-C3C2DB5F731C encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:51 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device 6020385E-A283-4721-BCFA-67F1F8091FFE encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:51 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device FD44CE19-9764-4CC5-AE34-C9E612A600C1 encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:51 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device E78B1998-24BB-4754-9C65-D7AA045AA594 encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:52 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device 6BA20F37-9F2E-43B4-A63F-C2EB7253D5B6 encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:52 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device BECF3735-AF60-4241-A17F-0B16CAC23065 encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:52 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device 9D5AD172-F290-4152-A212-0E06B45AA3B2 encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:52 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device A091DF0A-D41E-4A21-BC85-E63260CC6712 encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:52 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device F86C8093-FB5D-4817-86DD-8B05172DFC4A encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:52 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device 4BDF951E-613D-473A-89CD-02667B52D8D7 encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:52 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device 3A885705-DE51-470C-9098-26C6BD16BF61 encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:52 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device 724234D5-D7CA-4A35-96D5-767779F21867 encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:52 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device 7DFD345E-4E4A-4F81-ADDF-E70B63690CAE encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:52 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device BFF0BB30-8458-4F63-8A2E-29783E09081C encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:52 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device B8CE8722-0DD2-48FE-B1DA-BC241A28C66A encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:53 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device F8235975-27B1-404B-A38D-52C7BE1654FF encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:53 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device F3A0512E-CC57-43C0-9E4F-A3B83812F948 encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:53 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device 386F9869-A030-420A-97BD-B33022D339AD encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:54 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device 60DC21EE-9253-4B1D-BA7A-521F61F7073F encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:54 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device D2673800-B0BB-4CDB-A074-053ABF2AE85F encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:54 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device BB7D12AD-EC3D-43CC-B9E8-881878177A5A encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:54 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device 16CCD338-6824-4D8F-8C67-15C36CF265DA encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:54 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device 8A85013E-5BAB-46D0-A141-1ACE08EFB20E encountered in creation state at launch.  The device will be re-created.
+Aug 19 08:37:54 ahmeds-mbp CoreSimulatorService[1101] <Warning>: Device E3BBDCDC-A52D-44FD-8891-357BEF2CE3E4 encountered in creation state at launch.  The device will be re-created.
+Aug 19 09:20:27 Ahmeds-MacBook-Pro CoreSimulatorService[421] <Notice>: com.apple.CoreSimulator.CoreSimulatorService 572.2 starting.
+Aug 20 12:46:35 ahmeds-mbp CoreSimulatorService[705] <Notice>: com.apple.CoreSimulator.CoreSimulatorService 572.2 starting.
+Aug 20 12:58:54 ahmeds-mbp CoreSimulatorService[705] <Warning>: Device 419D922E-637B-438B-A624-FD06A264397F encountered in creation state at launch.  The device will be re-created.
+Aug 20 12:58:58 ahmeds-mbp CoreSimulatorService[705] <Warning>: Device 8BF669D7-BF5F-41D6-BA76-B9393CC074CD encountered in creation state at launch.  The device will be re-created.
+Aug 20 17:57:20 Ahmeds-MacBook-Pro CoreSimulatorService[447] <Notice>: com.apple.CoreSimulator.CoreSimulatorService 572.2 starting.
+Aug 20 17:57:29 Ahmeds-MacBook-Pro CoreSimulatorService[447] <Notice>: Device IBSimDeviceTypeiPad2x (419D922E-637B-438B-A624-FD06A264397F, iOS 12.0, Booted) encountered in unexpected state at launch: Booted.  Shutting down.
+Aug 20 17:57:29 Ahmeds-MacBook-Pro CoreSimulatorService[447] <Notice>: Device iPhone SE (8BF669D7-BF5F-41D6-BA76-B9393CC074CD, iOS 12.0, Booted) encountered in unexpected state at launch: Booted.  Shutting down.
+Aug 20 20:07:17 Ahmeds-MacBook-Pro CoreSimulatorService[405] <Notice>: com.apple.CoreSimulator.CoreSimulatorService 572.2 starting.

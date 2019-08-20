@@ -1,0 +1,1037 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 31: Polishing the App</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 31: Polishing the App</h1>
+
+<p>Apps with appealing visuals sell better than ugly ones. Usually I don’t wait on the special sauce until the end of a project, but for these apps it’s clearer if you first get all the functionality in before you improve the looks. Now that the app works as it should, let’s make it look good!
+</p>
+<p>You’re going to go from this:
+</p><div class="image-55"><img src="graphics/img487.png"  alt="" title="" /></div>
+<p>To this:
+</p><div class="image-55"><img src="graphics/img488.png"  alt="" title="" /></div>
+<p>The main screen gets the biggest makeover, but you’ll also tweak the others a little.
+</p>
+<p>You&apos;ll do the following in this chapter:
+</p>
+<ul>
+<li>
+<p><em>Convert placemarks to strings:</em> Refactor the code to display placemarks as text values so that the code is centralized and easier to use.
+</p></li>
+
+<li>
+<p><em>Back to black:</em> Change the appearance of the app to have a black background and light text.
+</p></li>
+
+<li>
+<p><em>The map screen:</em> Update the map screen to have icons for the action buttons instead of text.
+</p></li>
+
+<li>
+<p><em>Fix the table views:</em> Update all the table views in the app to have black backgrounds with white text.
+</p></li>
+
+<li>
+<p><em>Polish the main screen:</em> Update the appearance of the main screen to add a bit of awesome sauce!
+</p></li>
+
+<li>
+<p><em>Make some noise:</em> Add sound effects to the app.
+</p></li>
+
+<li>
+<p><em>The icon and launch images:</em> Add the app icon and launch images to complete the app.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Convert placemarks to strings</h2>
+
+<p>Let’s begin by improving the code. I’m not really happy with the way the reverse geocoded street address gets converted from a <code>CLPlacemark</code> object into a string. It works, but the code is unwieldy and repetitive.
+</p>
+<p>There are three places where this happens:
+</p>
+<ul>
+<li>
+<p><code>CurrentLocationViewController</code>, the main screen.
+</p></li>
+
+<li>
+<p><code>LocationDetailsViewController</code>, the Tag/Edit Location screen.
+</p></li>
+
+<li>
+<p><code>LocationsViewController</code>, the list of saved locations.
+</p></li>
+</ul>
+
+<p>Let’s start with the main screen. <em>CurrentLocationViewController.swift</em> has a method named <code>string(from:)</code> where this conversion happens. It’s supposed to return a string that looks like this:
+</p><pre class="code-block">subThoroughfare thoroughfare
+locality administrativeArea postalCode</pre>
+<p>This string goes into a <code>UILabel</code> that has room for two lines, so you use the <code>\n</code> character sequence to create a line-break between the thoroughfare and locality.
+</p>
+<p>The problem is that any of these properties may be <code>nil</code>. So, the code has to be smart enough to skip the empty ones  that’s what all the <code>if let</code>s are for.
+</p>
+<p>What I don’t like is that there’s a lot of repetition going on in this method. You can refactor this.
+</p>
+<div class="note">
+<p><em>Exercise.</em> Try to make this method simpler by moving the common logic into a new method.
+</p></div>
+
+<p>Answer: Here is how I did it. While you could create a new method to add some text to a line with a separator to handle the above multiple <code>if let</code> lines, you would need to add that method to all three view controllers. Of course, you could add the method to the Functions.swift file to centralize the method too...
+</p>
+<p>But better still, what if you created a new <code>String</code> extension since this functionality is for adding some text to an existing string? Sounds like a plan?
+</p>
+<p>➤ Add a new file to the project using the <em>Swift File</em> template. Name it <em>String+AddText</em>.
+</p>
+<p>➤ Add the following to <em>String+AddText.swift</em>:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">String</span> </span>{
+  <span class="hljs-keyword">mutating</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">add</span><span class="hljs-params">(text: String?, 
+    separatedBy separator: String)</span></span> {
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> text = text {
+      <span class="hljs-keyword">if</span> !isEmpty {
+        <span class="hljs-keyword">self</span> += separator
+      }
+      <span class="hljs-keyword">self</span> += text
+    }
+  }
+}</pre>
+<p>Most of the code should be pretty self-explanatory. You ask the string to add some text to itself, and if the string is currently not empty, you add the specified separator first before adding the new text.
+</p>
+<div class="note">
+<p><em>Mutating</em>
+</p>
+<p>Notice the <code>mutating</code> keyword. You haven’t seen this before. Sorry, it doesn’t have anything to do with X-men — programming is certainly fun, but not <i>that</i> fun :]
+</p>
+<p>When a method changes the value of a <code>struct</code>, it must be marked as <code>mutating</code>. Recall that <code>String</code> is a <code>struct</code>, which is a value type, and therefore cannot be modified when declared with <code>let</code>.
+</p>
+<p>The <code>mutating</code> keyword tells Swift that the <code>add(text:separatedBy:)</code> method can only be used on strings that are made with <code>var</code>, but not on strings made with <code>let</code>.
+</p>
+<p>If you try to modify <code>self</code> in a method on a <code>struct</code> that is not marked as <code>mutating</code>, Swift considers this an error.
+</p>
+<p>You don’t need to use the <code>mutating</code> keyword on methods inside a <code>class</code> because classes are reference types and can always be mutated, even if they are declared with <code>let</code>.
+</p></div>
+
+<p>➤ Switch over to <em>CurrentLocationViewController.swift</em> and replace <code>string(from:)</code> with the following:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">string</span><span class="hljs-params">(from placemark: CLPlacemark)</span></span> -&gt; <span class="hljs-type">String</span> {
+  <span class="hljs-keyword">var</span> line1 = <span class="hljs-string">""</span>
+  line1.add(text: placemark.subThoroughfare, separatedBy: <span class="hljs-string">""</span>)
+  line1.add(text: placemark.thoroughfare, separatedBy: <span class="hljs-string">" "</span>)
+
+  <span class="hljs-keyword">var</span> line2 = <span class="hljs-string">""</span>
+  line2.add(text: placemark.locality, separatedBy: <span class="hljs-string">""</span>)
+  line2.add(text: placemark.administrativeArea, 
+     separatedBy: <span class="hljs-string">" "</span>)
+  line2.add(text: placemark.postalCode, separatedBy: <span class="hljs-string">" "</span>)
+
+  line1.add(text: line2, separatedBy: <span class="hljs-string">"\n"</span>)
+  <span class="hljs-keyword">return</span> line1
+}</pre>
+<p>That looks a lot cleaner. The logic that decides whether or not to add a <code>CLPlacemark</code> property to the string now lives in your new <code>String</code> extension, so you no longer need all those <code>if let</code> statements. You also use <code>add(text:separatedBy:)</code> to add <code>line2</code> to <code>line1</code> with a newline character in between.
+</p>
+<p>➤ Run the app to see if it works.
+</p>
+<p>There’s still a small thing you can do to improve the new <code>add(text:separatedBy:)</code> method. Remember default parameter values? You can use them here.
+</p>
+<p>➤ In <em>String+AddText.swift</em>, change the line that defines the method to:
+</p><pre class="code-block"><span class="hljs-keyword">mutating</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">add</span><span class="hljs-params">(text: String?, 
+                  separatedBy separator: String = <span class="hljs-string">""</span>)</span></span> {</pre>
+<p>Now, instead of:
+</p><pre class="code-block">line1.add(text: placemark.subThoroughfare, separatedBy: <span class="hljs-string">""</span>)</pre>
+<p>You can write:
+</p><pre class="code-block">line1.add(text: placemark.subThoroughfare)</pre>
+<p>The default value for <code>separator</code> is an empty string. If the <code>separatedBy</code> parameter is left out, <code>separator</code> will be set to <code>&quot;&quot;</code>.
+</p>
+<p>➤ Make these changes in <em>CurrentLocationViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">string</span><span class="hljs-params">(from placemark: CLPlacemark)</span></span> -&gt; <span class="hljs-type">String</span> {
+  . . .
+  line1.add(text: placemark.subThoroughfare)
+  . . .
+  line2.add(text: placemark.locality)
+  . . .</pre>
+<p>Where the separator is an empty string, you leave out the <code>separatedBy: &quot;&quot;</code> part of the method call. Note that the other instances of <code>add(text:separatedBy:)</code> in the method don&apos;t have empty strings as the separator but instead, have a space.
+</p>
+<p>Now you have a pretty clean solution that you can re-use in the other two view controllers.
+</p>
+<p>➤ In <em>LocationDetailsViewController.swift</em>, replace the <code>string(from:)</code> code with:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">string</span><span class="hljs-params">(from placemark: CLPlacemark)</span></span> -&gt; <span class="hljs-type">String</span> {
+  <span class="hljs-keyword">var</span> line = <span class="hljs-string">""</span>
+  line.add(text: placemark.subThoroughfare)
+  line.add(text: placemark.thoroughfare, separatedBy: <span class="hljs-string">" "</span>)
+  line.add(text: placemark.locality, separatedBy: <span class="hljs-string">", "</span>)
+  line.add(text: placemark.administrativeArea, 
+    separatedBy: <span class="hljs-string">", "</span>)
+  line.add(text: placemark.postalCode, separatedBy: <span class="hljs-string">" "</span>)
+  line.add(text: placemark.country, separatedBy: <span class="hljs-string">", "</span>)
+  <span class="hljs-keyword">return</span> line
+}</pre>
+<p>It’s slightly different from how the main screen does it. There are no newline characters and some of the elements are separated by commas instead of just spaces. Newlines aren’t necessary here because the label will wrap.
+</p>
+<p>The final place where placemarks are shown is <code>LocationsViewController</code>. However, this class doesn’t have a <code>string(from:)</code> method. Instead, the logic for formatting the address lives in <code>LocationCell</code>.
+</p>
+<p>➤ Go to <em>LocationCell.swift</em>. Change the relevant part of <code>configure(for:)</code>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">configure</span><span class="hljs-params">(<span class="hljs-keyword">for</span> location: Location)</span></span> {
+  . . .
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> placemark = location.placemark {
+    <span class="hljs-keyword">var</span> text = <span class="hljs-string">""</span>
+    text.add(text: placemark.subThoroughfare)
+    text.add(text: placemark.thoroughfare, separatedBy: <span class="hljs-string">" "</span>)
+    text.add(text: placemark.locality, separatedBy: <span class="hljs-string">", "</span>)
+    addressLabel.text = text
+  } <span class="hljs-keyword">else</span> {
+    . . .</pre>
+<p>You only show the street and the city, so the conversion is simpler.
+</p>
+<p>And that’s it for placemarks.
+</p>
+<h2 class="segment-chapter">Back to black</h2>
+
+<p>Right now the app looks like a typical iOS app: lots of white, gray tab bar, blue tint color. Let’s go for a radically different look and paint the whole thing black.
+</p>
+<p>➤ Open the storyboard and go to the <em>Current Location View Controller</em>. Select the top-level view and change its <em>Background Color</em> to <em>Black Color</em>.
+</p>
+<p>➤ Select all the labels (probably easiest from the Document Outline since they are now invisible) and set their <em>Color</em> to <em>White Color</em>.
+</p>
+<p>➤ Change the <em>Font</em> of the <em>(Latitude/Longitude goes here)</em> labels to <em>System Bold 17</em>.
+</p>
+<p>➤ Select the two buttons and change their <em>Font</em> to <em>System Bold 20</em>, to make them slightly larger. You may need to resize their frames to make the text fit (remember, <em>⌘=</em> is the magic keyboard shortcut).
+</p>
+<p>➤ In the <em>File inspector</em>, change <em>Global Tint</em> to the color <em>Red: 255, Green: 238, Blue: 136</em>. That makes the buttons and other interactive elements yellow, which stands out nicely against the black background.
+</p>
+<p>➤ Select the Get My Location button and change its <em>Text Color</em> to <em>White Color</em>. This provides some contrast between the two buttons.
+</p>
+<p>The storyboard should look like this:
+</p><div class="image-25"><img src="graphics/img489.png"  alt="" title="The new yellow-on-black design" /></div>
+<p>When you run the app, there are two obvious problems:
+</p>
+<ol>
+<li>
+<p>The status bar text has become invisible — it is black text on a black background.
+</p></li>
+
+<li>
+<p>The grey tab bar sticks out like a sore thumb. Also, the yellow tint color doesn’t get applied to the tab bar icons.
+</p></li>
+</ol>
+
+<p>To fix this, you can use the <code>UIAppearance</code> API — this is a set of methods that lets you customize the look of the standard UIKit controls.
+</p>
+<h3 class="segment-chapter">Use UIAppearance</h3>
+
+<p>When customizing the UI, you can customize your app on a per-control basis, as you&apos;ve done up to this point, or you can use the “appearance proxy” to change the look of all of the controls of a particular type at once. That’s what you’re going to do here.
+</p>
+<p>➤ Add the following method to <em>AppDelegate.swift</em>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">customizeAppearance</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-type">UINavigationBar</span>.appearance().barTintColor = <span class="hljs-type">UIColor</span>.black
+  <span class="hljs-type">UINavigationBar</span>.appearance().titleTextAttributes = [ 
+    <span class="hljs-type">NSAttributedString</span>.<span class="hljs-type">Key</span>.foregroundColor: 
+    <span class="hljs-type">UIColor</span>.white ]
+  
+  <span class="hljs-type">UITabBar</span>.appearance().barTintColor = <span class="hljs-type">UIColor</span>.black
+  
+  <span class="hljs-keyword">let</span> tintColor = <span class="hljs-type">UIColor</span>(red: <span class="hljs-number">255</span>/<span class="hljs-number">255.0</span>, green: <span class="hljs-number">238</span>/<span class="hljs-number">255.0</span>, 
+                         blue: <span class="hljs-number">136</span>/<span class="hljs-number">255.0</span>, alpha: <span class="hljs-number">1.0</span>)
+  <span class="hljs-type">UITabBar</span>.appearance().tintColor = tintColor
+}</pre>
+<p>This changes the “bar tint” or background color of all navigation bars and tab bars in the app to black in one fell swoop. It also sets the color of the navigation bar’s title label to white and applies the tint color to the tab bar.
+</p>
+<p>➤ Call this method from the top of <code>application(_:didFinishLaunchingWithOptions:)</code>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">application</span><span class="hljs-params">(<span class="hljs-number">_</span> application: UIApplication, 
+                 didFinishLaunchingWithOptions . . .)</span></span> -&gt; <span class="hljs-type">Bool</span> {
+  customizeAppearance()
+  . . .
+}</pre>
+<p>This looks better already.
+</p><div class="image-35"><img src="graphics/img490.png"  alt="" title="The tab bar is now nearly black and has yellow icons" /></div>
+<p>On the Locations and Map screens you can clearly see that the bars now have a dark tint:
+</p><div class="image-30"><img src="graphics/img491.png"  alt="" title="The navigation and tab bars appear in a dark color" /></div>
+<p>Keep in mind that the bar tint is not the true background color. The bars are still translucent, which is why they appear as a medium gray rather than pure black.
+</p>
+<h3 class="segment-chapter">Tab bar icons</h3>
+
+<p>The icons in the tab bar could also do with some improvement. The Xcode Tabbed Application template put a bunch of cruft in the app that you’re no longer using — let’s get rid of it all.
+</p>
+<p>➤ Remove the <em>SecondViewController.swift</em> file from the project.
+</p>
+<p>➤ Remove the <em>first</em> and <em>second</em> images from the asset catalog (Assets.xcassets).
+</p>
+<p>Tab bar images should be basic grayscale images of up to 30 × 30 points — that is 60 × 60 pixels for Retina and 90 × 90 pixels for Retina HD. You don’t have to tint the images; iOS will automatically draw them in the proper color.
+</p>
+<p>➤ The resources for this <em>tutorial</em> include an <em>Images</em> directory. Add the files from this folder to the asset catalog.
+</p>
+<p>➤ Go to the storyboard. Select the <em>Tab Bar Item</em> of the navigation controller embedding the Current Location screen. In the <em>Attributes inspector</em>, under <em>Image</em> choose <em>Tag</em> — this is the name of one of the images you’ve just added.
+</p><div class="image-25"><img src="graphics/img492.png"  alt="" title="Choosing an image for a Tab Bar Item" /></div>
+<p>➤ For the Tab Bar Item of the navigation controller attached to the Locations screen, choose the <em>Locations</em> image.
+</p>
+<p>➤ For the Tab Bar Item of the navigation controller embedding the Map View Controller, choose the <em>Map</em> image.
+</p>
+<p>Now the tab bar looks a lot more appealing:
+</p><div class="image-60"><img src="graphics/img493.png"  alt="" title="The tab bar with proper icons" /></div>
+<h3 class="segment-chapter">The status bar</h3>
+
+<p>The status bar is currently invisible on the Tag screen and appears as black text on dark gray on the other two screens. It would look better if the status bar text was white instead.
+</p>
+<p>To do this, you need to override the <code>preferredStatusBarStyle</code> property in your view controllers and make it return the value <code>.lightContent</code>.
+</p>
+<p>The simplest way to make the status bar white for all your view controllers in the entire app is to replace the <code>UITabBarController</code> with your own subclass.
+</p>
+<p>➤ Add a new source file to the project and name it <em>MyTabBarController.swift</em>.
+</p>
+<p>➤ Replace the contents of <em>MyTabBarController.swift</em> with:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> UIKit
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyTabBarController</span>: <span class="hljs-title">UITabBarController</span> </span>{
+  <span class="hljs-keyword">override</span> <span class="hljs-keyword">var</span> preferredStatusBarStyle: <span class="hljs-type">UIStatusBarStyle</span> {
+    <span class="hljs-keyword">return</span> .lightContent
+  }
+  
+  <span class="hljs-keyword">override</span> <span class="hljs-keyword">var</span> childForStatusBarStyle: <span class="hljs-type">UIViewController</span>? {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+  }
+}</pre>
+<p>By returning <code>nil</code> from <code>childForStatusBarStyle</code>, the tab bar controller will look at its own <code>preferredStatusBarStyle</code> property instead of those from the other view controllers.
+</p>
+<p>➤ In the storyboard, select the Tab Bar Controller and in the <em>Identity inspector</em> change its <em>Class</em> to <em>MyTabBarController</em>. This tells the storyboard that it should now create an instance of your subclass when the app starts up.
+</p>
+<p>That’s right, you can replace standard UIKit components with your own subclasses!
+</p>
+<p>Subclassing lets you change what the built-in UIKit objects do — that’s the power of object-oriented programming. But don’t get carried away and alter their behavior <i>too</i> much — before you know it, your app ends up with an identity crisis!
+</p>
+<p><code>MyTabBarController</code> still does everything that the standard <code>UITabBarController</code> does. You only override <code>preferredStatusBarStyle</code> to change the status bar color.
+</p>
+<p>You can plug this <code>MyTabBarController</code> class into any app that uses a tab bar controller, and from then on, all its view controllers will have a white status bar.
+</p>
+<p>Now the status bar is white everywhere:
+</p><div class="image-35"><img src="graphics/img494.png"  alt="" title="The status bar is visible again" /></div>
+<p>Well, almost everywhere… When you open the photo picker, the status bar fades to black again. Subclasses to the rescue again!
+</p>
+<p>➤ Add a new file to the project and name it <em>MyImagePickerController.swift</em>. (Getting a sense of déjà vu?)
+</p>
+<p>➤ Replace the contents of <em>MyImagePickerController.swift</em> with:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> UIKit
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyImagePickerController</span>: <span class="hljs-title">UIImagePickerController</span> </span>{
+  <span class="hljs-keyword">override</span> <span class="hljs-keyword">var</span> preferredStatusBarStyle: <span class="hljs-type">UIStatusBarStyle</span> {
+    <span class="hljs-keyword">return</span> .lightContent
+  }
+}</pre>
+<p>Now, instead of instantiating the standard <code>UIImagePickerController</code> to pick a photo, you should use this new subclass.
+</p>
+<p>➤ Go to <em>LocationDetailsViewController.swift</em>. In <code>takePhotoWithCamera()</code> and <code>choosePhotoFromLibrary()</code>, change the line that creates the image picker to:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> imagePicker = <span class="hljs-type">MyImagePickerController</span>()</pre>
+<p>This is allowed because <code>MyImagePickerController</code> is a subclass of the standard <code>UIImagePickerController</code> - it has the same properties and methods. As far as UIKit is concerned, the two are interchangeable. So, you can use your subclass anywhere you’d use <code>UIImagePickerController</code>.
+</p>
+<p>While you’re at it, the photo picker still uses the standard blue tint color. That makes its navigation bar buttons hard to read. The fix is simple: set the tint color on the Image Picker Controller just before you present it.
+</p>
+<p>➤ Add the following line to the two methods:
+</p><pre class="code-block">imagePicker.view.tintColor = view.tintColor</pre>
+<p>Now the Cancel button appears in yellow instead of blue.
+</p><div class="image-40"><img src="graphics/img495.png"  alt="" title="The photo picker with the new colors" /></div>
+<p>There is one more thing to change. When the app starts up, iOS looks in the Info.plist file to determine whether it should show a status bar while the app launches, and if so, what color that status bar should be.
+</p>
+<p>Right now, it’s set to Default, which is the black status bar.
+</p>
+<p>➤ Just to be thorough, go to the <em>Project Settings</em> screen. In the <em>General</em> tab, under <em>Deployment Info</em> is a <em>Status Bar Styl</em>e option. Change this to <em>Light</em>.
+</p><div class="image-50"><img src="graphics/img496.png"  alt="" title="Changing the status bar style for app startup" /></div>
+<p>And now the status bar really is white everywhere!
+</p>
+<h2 class="segment-chapter">The map screen</h2>
+
+<p>The Map screen currently has a somewhat busy navigation bar with three pieces of text in it: the title and the two buttons.
+</p><div class="image-40"><img src="graphics/img497.png"  alt="" title="The bar button items have text labels" /></div>
+<p>The design advice that Apple gives is to prefer text to icons because icons tend to be harder to understand. The disadvantage of using text is that it makes your navigation bar more crowded.
+</p>
+<p>There are two possible solutions:
+</p>
+<ol>
+<li>
+<p>Remove the title. If the purpose of the screen is obvious, which it is in this case, then the title “Map” is superfluous. You might as well remove it.
+</p></li>
+
+<li>
+<p>Keep the title but replace the button labels with icons.
+</p></li>
+</ol>
+
+<p>For this app, you’ll choose the second option.
+</p>
+<p>➤ Go to the Map scene in the storyboard and select the <em>Locations</em> bar button item. In the <em>Attributes inspector</em>, under <em>Image</em> choose <em>Pin</em>. This will remove the text from the button.
+</p>
+<p>➤ For the User bar button item, choose the <em>User</em> image.
+</p>
+<p>The Map screen now looks like this:
+</p><div class="image-50"><img src="graphics/img498.png"  alt="" title="Map screen with the button icons" /></div>
+<p>Notice that the dot for the user’s current location is drawn in the yellow tint color (it was a blue dot before).
+</p>
+<p>The <em>ⓘ</em> button on the map annotations also appears in yellow, making it hard to see on the white callout. Fortunately, you can override the tint color on a per-view basis. There’s no rule that says the tint color has to be the same everywhere!
+</p>
+<p>➤ In <em>MapViewController.swift</em>, in the method <code>mapView(_:viewFor:)</code>, add this below the line that sets <code>pinView.pinTintColor</code>:
+</p><pre class="code-block">pinView.tintColor = <span class="hljs-type">UIColor</span>(white: <span class="hljs-number">0.0</span>, alpha: <span class="hljs-number">0.5</span>)</pre>
+<p>This sets the annotation’s tint color to half-opaque black:
+</p><div class="image-50"><img src="graphics/img499.png"  alt="" title="The callout button is now easier to see" /></div>
+<h2 class="segment-chapter">Fix the table views</h2>
+
+<p>The app is starting to shape up, but there are still some details to take care of. The table views, for example, are still very white.
+</p>
+<p>Unfortunately, what <code>UIAppearance</code> can do for table views is very limited. So, you’ll have to customize each of the table views individually.
+</p>
+<p>This can be done either via code, or via storyboard. Personally, I prefer to make UI changes as much as possible via storyboards since then I can see the actual changes such as color, spacing, font etc. and be sure how a change affects the rest of the UI. So, let&apos;s make these changes via storyboards as much as possible.
+</p>
+<h3 class="segment-chapter">Storyboard changes for the Locations scene</h3>
+
+<p>➤ Open the storyboard and select the table view for the Locations scene. Set <em>Table View - Separator</em> color to <em>white with 20% Opacity</em>, <em>Scroll View - Indicators</em> to <em>white</em>, and <em>View - Background</em> to <em>black</em>.
+</p><div class="image-90"><img src="graphics/img500.png"  alt="" title="Table view color changes" /></div>
+<p>This makes the table view itself black but does not alter the cells.
+</p>
+<p>➤ Select the prototype cell in the table view and set its <em>View - Background</em> to <em>black</em>.
+</p>
+<p>➤ Next, select the Description label in the cell and set its <em>Label - Color</em> and <em>Label - Highlighted</em> color to <em>white</em>.
+</p>
+<p>➤ Select the Address label and set its <em>Label - Color</em> and <em>Label - Highlighted</em> color to <em>white with 60% Opacity</em>.
+</p>
+<p>➤ Run the app. That’s starting to look pretty good already:
+</p><div class="image-50"><img src="graphics/img501.png"  alt="" title="The table view cells are now white-on-black" /></div>
+<p>That&apos;s as far as we can get with customization via storyboard. But there are a couple of small issues still.
+</p>
+<h3 class="segment-chapter">Code changes for the Locations view</h3>
+
+<p>The first, when you tap a cell it still lights up in a bright color, which is a little jarring. It would look better if the selection color was more subdued.
+</p>
+<p>Unfortunately, there is no “selectionColor” property on <code>UITableViewCell</code>, but you can give it a different view to display when it is selected via a <code>UITableViewCell</code>&apos;s <code>selectedBackgroundView</code> property.
+</p>
+<p>➤ In <em>LocationCell.swift</em>, replace <code>awakeFromNib()</code> with the following:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">awakeFromNib</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">super</span>.awakeFromNib()
+  <span class="hljs-keyword">let</span> selection = <span class="hljs-type">UIView</span>(frame: <span class="hljs-type">CGRect</span>.zero)
+  selection.backgroundColor = <span class="hljs-type">UIColor</span>(white: <span class="hljs-number">1.0</span>, alpha: <span class="hljs-number">0.3</span>)
+  selectedBackgroundView = selection
+}</pre>
+<p>Every object that comes from a storyboard has the <code>awakeFromNib()</code> method. This method is invoked when UIKit loads the object from the storyboard. It’s the ideal place to customize its looks.
+</p>
+<p>Here, you create a new <code>UIView</code> filled with a dark gray color. This new view is placed on top of the cell’s background when the user taps on the cell. It will look like this:
+</p><div class="image-30"><img src="graphics/img502.png"  alt="" title="The selected cell has a subtly different background color" /></div>
+<p>The second issue is that the section headers are a bit on the heavy side. There is no easy way to customize the existing headers, but you can replace them with a view of your own.
+</p>
+<p>➤ Go to <em>LocationsViewController.swift</em> and add the following table view delegate method:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+     viewForHeaderInSection section: Int)</span></span> -&gt; <span class="hljs-type">UIView</span>? {
+
+  <span class="hljs-keyword">let</span> labelRect = <span class="hljs-type">CGRect</span>(x: <span class="hljs-number">15</span>, 
+                         y: tableView.sectionHeaderHeight - <span class="hljs-number">14</span>, 
+                         width: <span class="hljs-number">300</span>, height: <span class="hljs-number">14</span>)
+  <span class="hljs-keyword">let</span> label = <span class="hljs-type">UILabel</span>(frame: labelRect)
+  label.font = <span class="hljs-type">UIFont</span>.boldSystemFont(ofSize: <span class="hljs-number">11</span>)
+  
+  label.text = tableView.dataSource!.tableView!(
+                 tableView, titleForHeaderInSection: section)
+  
+  label.textColor = <span class="hljs-type">UIColor</span>(white: <span class="hljs-number">1.0</span>, alpha: <span class="hljs-number">0.6</span>)
+  label.backgroundColor = <span class="hljs-type">UIColor</span>.clear
+  
+  <span class="hljs-keyword">let</span> separatorRect = <span class="hljs-type">CGRect</span>(
+          x: <span class="hljs-number">15</span>, y: tableView.sectionHeaderHeight - <span class="hljs-number">0.5</span>, 
+          width: tableView.bounds.size.width - <span class="hljs-number">15</span>, height: <span class="hljs-number">0.5</span>)
+  <span class="hljs-keyword">let</span> separator = <span class="hljs-type">UIView</span>(frame: separatorRect)
+  separator.backgroundColor = tableView.separatorColor
+  
+  <span class="hljs-keyword">let</span> viewRect = <span class="hljs-type">CGRect</span>(x: <span class="hljs-number">0</span>, y: <span class="hljs-number">0</span>, 
+                    width: tableView.bounds.size.width, 
+                   height: tableView.sectionHeaderHeight)
+  <span class="hljs-keyword">let</span> view = <span class="hljs-type">UIView</span>(frame: viewRect)
+  view.backgroundColor = <span class="hljs-type">UIColor</span>(white: <span class="hljs-number">0</span>, alpha: <span class="hljs-number">0.85</span>)
+  view.addSubview(label)
+  view.addSubview(separator)
+  <span class="hljs-keyword">return</span> view
+}</pre>
+<p>This method gets called once for each section in the table view. Here, you create a label for the section name, a 1-pixel high view that functions as a separator line, and a container view to hold these two subviews.
+</p>
+<p>It looks like this:
+</p><div class="image-50"><img src="graphics/img503.png"  alt="" title="The section headers now draw much less attention to themselves" /></div>
+<div class="note">
+<p><em>Note:</em> Did you notice anything special about the following line?
+</p>
+<p><code>label.text = tableView.dataSource!.tableView!(tableView, titleForHeaderInSection: section)</code>
+</p>
+<p>This asks the table view’s data source for the text to put in the header. The <code>dataSource</code> property is an optional so you’re using <code>!</code> to unwrap it. But that’s not the only <code>!</code> in this line…
+</p>
+<p>You’re calling the <code>tableView(_:titleForHeaderInSection:)</code> method on the table view’s data source, which is of course the <code>LocationsViewController</code> itself.
+</p>
+<p>But this method is an optional method — not all data sources need to implement it. Because of that you have to <i>unwrap the method</i> with the exclamation mark in order to use it. Unwrapping methods… does it get any crazier than that?
+</p>
+<p>By the way, you can also write this as:
+</p>
+<p><code>label.text = self.tableView(tableView, titleForHeaderInSection: section)</code>
+</p>
+<p>Here you use <code>self</code> to directly access that method on <code>LocationsViewController</code>. Both ways achieve exactly the same thing, since the view controller happens to be the table view’s data source.
+</p></div>
+
+<p>Another small improvement you can make is to always put the section headers in uppercase.
+</p>
+<p>➤ Change <code>tableView(_:titleForHeaderInSection:)</code> to:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+    titleForHeaderInSection section: Int)</span></span> -&gt; <span class="hljs-type">String</span>? {
+  <span class="hljs-keyword">let</span> sectionInfo = fetchedResultsController.sections![section]
+  <span class="hljs-keyword">return</span> sectionInfo.name.uppercased()
+}</pre>
+<p>Now the section headers look even better:
+</p><div class="image-50"><img src="graphics/img504.png"  alt="" title="The section header text is in uppercase" /></div>
+<p>Currently, if a location does not have a photo, there is a black gap where the thumbnail is supposed to be. That doesn’t look very professional. It’s better to show a placeholder image. You already added one to the asset catalog when you imported the Images folder.
+</p>
+<p>➤ In <em>LocationCell.swift</em>’s <code>thumbnail(for:)</code>, replace the last line that returns an empty <code>UIImage</code> with:
+</p><pre class="code-block"><span class="hljs-keyword">return</span> <span class="hljs-type">UIImage</span>(named: <span class="hljs-string">"No Photo"</span>)!</pre>
+<p>Recall that <code>UIImage(named:)</code> is a failable initializer, so it returns an optional. Don’t forget the exclamation point at the end to unwrap the optional.
+</p>
+<p>Now locations without photos appear like so:
+</p><div class="image-60"><img src="graphics/img505.png"  alt="" title="A location using the placeholder image" /></div>
+<p>That makes it a lot clearer to the user that the photo is missing. (As opposed to, say, being a photo of a black hole.)
+</p>
+<p>The placeholder image is round. That’s the fashion for thumbnail images on iOS these days, and it’s pretty easy to make the other thumbnails rounded too.
+</p>
+<p>➤ Still in <em>LocationCell.swift</em>, add the following lines to the end of <code>awakeFromNib()</code>:
+</p><pre class="code-block"><span class="hljs-comment">// Rounded corners for images</span>
+photoImageView.layer.cornerRadius = 
+                     photoImageView.bounds.size.width / <span class="hljs-number">2</span>
+photoImageView.clipsToBounds = <span class="hljs-literal">true</span>
+separatorInset = <span class="hljs-type">UIEdgeInsets</span>(top: <span class="hljs-number">0</span>, <span class="hljs-keyword">left</span>: <span class="hljs-number">82</span>, bottom: <span class="hljs-number">0</span>, 
+                                                 <span class="hljs-keyword">right</span>: <span class="hljs-number">0</span>)</pre>
+<p>This gives the image view rounded corners with a radius that is equal to half the width of the image, which makes it a perfect circle.
+</p>
+<p>The <code>clipsToBounds</code> setting makes sure that the image view respects these rounded corners and does not draw outside them.
+</p>
+<p>The <code>separatorInset</code> moves the separator lines between the cells a bit to the right so there are no lines between the thumbnail images.
+</p><div class="image-30"><img src="graphics/img506.png"  alt="" title="The thumbnails are now circular" /></div>
+<div class="note">
+<p><em>Note:</em> As you&apos;ll notice from the above image, the rounded thumbnails don’t look very good if the original photo isn’t square. You may want to change the Mode of the image view back to Aspect Fill or Scale to Fill so that the thumbnail always fills up the entire image view.
+</p></div>
+
+<p>At this point, you probably want to make sure that the labels in this screen extend to cover the full width of larger screens — remember that while you’ve been designing for 320 point wide screens, you&apos;ve been setting up Auto Layout constraints so that all screen sizes will be automatically supported.
+</p>
+<p><em>Tip:</em> To verify that the labels now take advantage of all the available screen space on larger screens, give them a non-transparent background color. I like bright purple!
+</p>
+<p>➤ Add these lines to <code>awakeFromNib()</code>  (in LocationCell.swift, of course) and run the app:
+</p><pre class="code-block">descriptionLabel.backgroundColor = <span class="hljs-type">UIColor</span>.purple
+addressLabel.backgroundColor = <span class="hljs-type">UIColor</span>.purple</pre>
+<p>This is how it looks on an iPhone 8 Plus screen:
+</p><div class="image-50"><img src="graphics/img507.png"  alt="" title="The labels resize to fit the iPhone 8 Plus" /></div>
+<p>When you’re done testing, don’t forget to remove the lines that set the background color. It’s useful as a debugging tool, but not particularly pretty to look at.
+</p>
+<p>There are two other table views in the app and they require similar changes.
+</p>
+<h3 class="segment-chapter">Table view changes for Tag Location screen</h3>
+
+<p>➤ Open the storyboard and select the table view for the Tag Location scene. Set <em>Table View - Separator</em> color to <em>white with 20% Opacity</em>, <em>Scroll View - Indicators</em> to <em>white</em>, and <em>View - Background</em> to <em>black</em>.
+</p>
+<p>➤ Select all the static cells in the table view and set their <em>View - Background</em> to <em>black</em>.
+</p>
+<p>➤ Select the Description text view and set its <em>Text View - Color</em> to <em>white</em>, and <em>View - Background</em> to <em>black</em>.
+</p>
+<p>➤ Select the Add Photo label and set its <em>Label - Color</em> and <em>Label - Highlighted</em> color to <em>white</em>.
+</p>
+<p>➤ Select the main label from all the cells with the Right Detail style and set their <em>Label - Color</em> and <em>Label - Highlighted</em> color to <em>white</em>.
+</p>
+<p>➤ Select the detail label from all the cells with the Right Detail style and set their <em>Label - Color</em> and <em>Label - Highlighted</em> color to <em>white with 60% Opacity</em>.
+</p>
+<p>➤ Select the Address label and set its <em>Label - Color</em> and <em>Label - Highlighted</em> color to <em>white</em>.
+</p>
+<p>➤ Select the Address detail label and set its <em>Label - Color</em> and <em>Label - Highlighted</em> color to <em>white with 60% Opacity</em>.
+</p>
+<p>That completes all the storyboard changes but there are a few code changes left.
+</p>
+<p>Previously, you modified the cell&apos;s subclasss to add the selection highlighting. However, you have static table view cells here and don&apos;t have a subclasss to modify. Don&apos;t despair yet though, the table view delegate has a handy method that comes in useful here.
+</p>
+<p>➤ Open <em>LocationDetailsViewController.swift</em> and add the following method:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+                   willDisplay cell: UITableViewCell, 
+                 forRowAt indexPath: IndexPath)</span></span> {
+  <span class="hljs-keyword">let</span> selection = <span class="hljs-type">UIView</span>(frame: <span class="hljs-type">CGRect</span>.zero)
+  selection.backgroundColor = <span class="hljs-type">UIColor</span>(white: <span class="hljs-number">1.0</span>, alpha: <span class="hljs-number">0.3</span>)
+  cell.selectedBackgroundView = selection
+}</pre>
+<p>The <code>willDisplay</code> delegate method is called just before a cell becomes visible. So, you can do some last-minute customizations on the cell and its contents in this method.
+</p>
+<p>➤ Run the app. The Tag Location screen should now looks like this:
+</p><div class="image-30"><img src="graphics/img508.png"  alt="" title="The Tag Location screen with styling applied" /></div>
+<h3 class="segment-chapter">Table view changes for the Category Picker screen</h3>
+
+<p>The final table view is the category picker. There&apos;s nothing new here, the changes are basically the same as before.
+</p>
+<p>➤ Open the storyboard and select the table view for the Category Picker view controller. Set <em>Table View - Separator</em> color to <em>white with 20% Opacity</em>, <em>Scroll View - Indicators</em> to <em>white</em>, and <em>View - Background</em> to <em>black</em>.
+</p>
+<p>➤ Select the prototype cell in the table view and set its <em>View - Background</em> to <em>black</em>.
+</p>
+<p>➤ Select the label in the prototype cell and set its  <em>Label - Color</em> and <em>Label - Highlighted</em> color to <em>white</em>.
+</p>
+<p>All that&apos;s left is to set the cell background for highlighted cells. Since there is no subclass for the cell, do I hear you saying that we should use the table view delegate&apos;s <code>willDisplay</code> method again? That certainly is an option ...
+</p>
+<p>But rememember that we are dealing with a prototype cell here. That means that it already is being set up in code via <code>cellForRowAt</code>. So why not simply use the existing method to do the extra work? Remember, there&apos;s often multiple ways to do the same thing.
+</p>
+<p>➤ Open <em>CategoryPickerViewController.swift</em> and add the following code to <code>cellForRowAt</code>, just before the <code>return</code>:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+             cellForRowAt indexPath: IndexPath)</span></span> -&gt; 
+             <span class="hljs-type">UITableViewCell</span> {
+  . . .
+  <span class="hljs-keyword">let</span> selection = <span class="hljs-type">UIView</span>(frame: <span class="hljs-type">CGRect</span>.zero)
+  selection.backgroundColor = <span class="hljs-type">UIColor</span>(white: <span class="hljs-number">1.0</span>, alpha: <span class="hljs-number">0.3</span>)
+  cell.selectedBackgroundView = selection
+  <span class="hljs-comment">// End new code</span>
+  <span class="hljs-keyword">return</span> cell
+}</pre>
+<p>Now the category picker is dressed in black as well. It’s a bit of work to change the visuals of all these table views by hand, but it’s worth it.
+</p><div class="image-35"><img src="graphics/img509.png"  alt="" title="The category picker is lookin’ sharp" /></div>
+<h2 class="segment-chapter">Polish the main screen</h2>
+
+<p>I’m pretty happy with all the other screens, but the main screen needs a bit more work to be presentable.
+</p>
+<p>Here’s what you’ll do:
+</p>
+<ul>
+<li>
+<p>Show a logo when the app starts up. Normally, such splash screens are bad for the user experience, but here I think we can get away with it.
+</p></li>
+
+<li>
+<p>Make the logo disappear with an animation when the user taps Get My Location.
+</p></li>
+
+<li>
+<p>While the app is fetching the coordinates, show an animated activity spinner to make it even clearer to the user that something is going on.
+</p></li>
+
+<li>
+<p>Hide the Latitude: and Longitude: labels until the app has found coordinates.
+</p></li>
+</ul>
+
+<p>You will first hide the text labels from the screen until the app actually has some coordinates to display. The only label that will be visible until then is the one at the top and it will say “Searching...” or give some kind of error message.
+</p>
+<p>In order to do this, you must have outlets for the labels.
+</p>
+<p>➤ Add the following properties to <em>CurrentLocationViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> latitudeTextLabel: <span class="hljs-type">UILabel</span>!
+<span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> longitudeTextLabel: <span class="hljs-type">UILabel</span>!</pre>
+<p>You’ll put the logic for updating these labels in a single place, <code>updateLabels()</code>, so that hiding and showing them is pretty straightforward.
+</p>
+<p>➤ Change <code>updateLabels()</code> in <em>CurrentLocationViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">updateLabels</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> location = location {
+    . . .
+    latitudeTextLabel.isHidden = <span class="hljs-literal">false</span>
+    longitudeTextLabel.isHidden = <span class="hljs-literal">false</span>
+  } <span class="hljs-keyword">else</span> {
+    . . .
+    latitudeTextLabel.isHidden = <span class="hljs-literal">true</span>
+    longitudeTextLabel.isHidden = <span class="hljs-literal">true</span>
+  }
+}</pre>
+<p>➤ Connect the <em>Latitude:</em> and <em>Longitude:</em> labels in the storyboard to the <code>latitudeTextLabel</code> and <code>longitudeTextLabel</code> outlets.
+</p>
+<p>➤ Run the app and verify that the <em>Latitude:</em> and <em>Longitude:</em> labels only appear when you have obtained GPS coordinates.
+</p>
+<h3 class="segment-chapter">The first impression</h3>
+
+<p>The main screen looks decent and is completely functional, but it could do with more pizzazz. It lacks the “Wow!” factor. You want to impress users the first time they start your app and keep them coming back. To pull this off, you’ll add a logo and a cool animation.
+</p>
+<p>When the user hasn’t yet pressed the Get My Location button, there are no GPS coordinates and the Tag Location button is hidden. Instead of showing a completely blank upper panel, you can show a large version of the app’s icon.
+</p><div class="image-20"><img src="graphics/img510.png"  alt="" title="The welcome screen of MyLocations" /></div>
+<p>When the user taps the Get My Location button, the icon rolls out of the screen — it’s round so that kinda makes sense — while a panel with the GPS status will slide in.
+</p>
+<p>This is pretty easy to program thanks to the power of Core Animation and it makes the app a whole lot more impressive for first-time users.
+</p>
+<p>First, you need to move the labels into a new container subview.
+</p>
+<p>➤ Open the storyboard and go to the <em>Current Location View Controller</em>. In the Document Outline, select the six labels and the Tag Location button. With these seven views selected, choose <em>Editor → Embed In → View Without Inset</em> from the Xcode menu bar.
+</p>
+<p>This creates a blank, white <code>UIView</code> and puts these labels and the button inside that new view.
+</p>
+<div class="note">
+<p><em>Note:</em> The &quot;View Without Inset&quot; option is new in Xcode 10. Previously, you only had the &quot;View&quot; option which created a view with some padding around the controls that you enclosed in the view. This new option does not add any extra padding and keeps your enclosed controls at their original locations.
+</p></div>
+
+<p>➤ Change the <em>Background</em> color of this new container view to <em>Clear Color</em>, so that everything becomes visible again.
+</p>
+<p>The layout of the screen hasn’t changed; you have simply reorganized the view hierarchy so that you can easily manipulate and animate this group of views as a whole. Grouping views in a container view is a common technique for building complex layouts.
+</p>
+<p>➤ To avoid problems on smaller screens, make sure that the Get My Location button sits higher up in the view hierarchy than the container view. If the button sits under another view you cannot tap it anymore.
+</p>
+<p>Non-intuitively, in the Document Outline, the button must sit below the container view. If it doesn’t, drag to rearrange:
+</p><div class="image-25"><img src="graphics/img511.png"  alt="" title="Get My Location must sit below the container view in the Document Outline" /></div>
+<div class="note">
+<p><em>Note:</em> When you drag the Get My Location button, make sure you’re not dropping it into the container view. The view you just added and the Get My Location button should sit at the same level in the view hierarchy.
+</p></div>
+
+<p>When you embedded the six labels and the button in the container view, the Auto Layout constraints that those seven controls had to the main view were broken. Makes sense, right? Because those controls are now inside a different view.
+</p>
+<p>We have to fix a few Auto Layout constraints so that the controls are laid out correctly within the container view.
+</p>
+<p>➤ Select the Container View and set its Auto Layout constraints as follows: <em>left=16</em>, <em>top=0</em>, and <em>right=16</em>.
+</p>
+<p>➤ Select the <em>(Message Label)</em> at the top and set its Auto Layout Constraints to: <em>left=0</em>, <em>top=0</em>, and <em>right=0</em>.
+</p>
+<p>➤ Select the <em>Latitude:</em>, <em>Longitude:</em>, and <em>(Address goes here)</em> labels and set their Auto Layout Constraints to: <em>left=0</em>.
+</p>
+<p>➤ Select the <em>(Latitude goes here)</em>, <em>(Longitude goes here)</em>, and <em>(Address goes here)</em>  labels and set their Auto Layout Constraints to: <em>right=0</em>.
+</p>
+<p>➤ Finally, set the Tag Location button&apos;s Auto Layout Constraints to: <em>left=0</em>, <em>bottom=0</em>, and <em>right=0</em>.
+</p>
+<p>➤ Add the following outlet to <em>CurrentLocationViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> containerView: <span class="hljs-type">UIView</span>!</pre>
+<p>➤ In the storyboard, connect the new container <code>UIView</code> to the <code>containerView</code> outlet.
+</p>
+<p>Now on to the good stuff!
+</p>
+<p>➤ Add the following instance variables to <em>CurrentLocationViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> logoVisible = <span class="hljs-literal">false</span>
+
+<span class="hljs-built_in">lazy</span> <span class="hljs-keyword">var</span> logoButton: <span class="hljs-type">UIButton</span> = {
+  <span class="hljs-keyword">let</span> button = <span class="hljs-type">UIButton</span>(type: .custom)
+  button.setBackgroundImage(<span class="hljs-type">UIImage</span>(named: <span class="hljs-string">"Logo"</span>), 
+                            <span class="hljs-keyword">for</span>: .normal)
+  button.sizeToFit()
+  button.addTarget(<span class="hljs-keyword">self</span>, action: #selector(getLocation), 
+                   <span class="hljs-keyword">for</span>: .touchUpInside)
+  button.center.x = <span class="hljs-keyword">self</span>.view.bounds.midX
+  button.center.y = <span class="hljs-number">220</span>
+  <span class="hljs-keyword">return</span> button
+}()</pre>
+<p>The logo image is actually a button, so that you can tap the logo to get started. The app will show this button when it starts up, and when it doesn’t have anything better to display — for example, after you press Stop and there are no coordinates and no error. To orchestrate this, you’ll use the boolean <code>logoVisible</code>.
+</p>
+<p>The button is a “custom” type <code>UIButton</code>, meaning that it has no title text or other frills. It draws the <em>Logo.png</em> image and calls the <code>getLocation()</code> method when tapped.
+</p>
+<p>This is another one of those lazily loaded properties; I did that because it’s nice to keep all the initialization logic inline with the declaration of the property.
+</p>
+<p>➤ Add the following method:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showLogoView</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">if</span> !logoVisible {
+    logoVisible = <span class="hljs-literal">true</span>
+    containerView.isHidden = <span class="hljs-literal">true</span>
+    view.addSubview(logoButton)
+  }
+}</pre>
+<p>This hides the container view so the labels disappear, and puts the <code>logoButton</code> object on the screen. This is the first time <code>logoButton</code> is accessed, so at this point the lazy loading kicks in.
+</p>
+<p>➤ In <code>updateLabels()</code>, change the line that says,
+</p><pre class="code-block">statusMessage = <span class="hljs-string">"Tap 'Get My Location' to Start"</span></pre>
+<p>to:
+</p><pre class="code-block">statusMessage = <span class="hljs-string">""</span>
+showLogoView()</pre>
+<p>This new logic makes the logo appear when there are no coordinates or error messages to display. That’s also the state at startup time, so when you run the app now, you should be greeted by the logo.
+</p>
+<p>➤ Run the app to check it out.
+</p>
+<p>When you tap the logo (or Get My Location), the logo should disappear and the panel with the labels ought to show up. That doesn’t happen yet, so let’s add some more code to do that.
+</p>
+<p>➤ Add the following method:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">hideLogoView</span><span class="hljs-params">()</span></span> {
+  logoVisible = <span class="hljs-literal">false</span>
+  containerView.isHidden = <span class="hljs-literal">false</span>
+  logoButton.removeFromSuperview()
+}</pre>
+<p>This is the counterpart to <code>showLogoView()</code>. For now, it simply removes the button with the logo and un-hides the container view with the GPS coordinates.
+</p>
+<p>➤ Add the following to <code>getLocation()</code>, right after the authorization status checks:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> logoVisible {
+  hideLogoView()
+}</pre>
+<p>Before it starts the location manager, this first removes the logo from the screen if it was visible.
+</p>
+<p>Currently, there is no animation code to be seen. When doing complicated layout stuff such as this, I always first want to make sure the basics work. If they do, you can make it look fancy with an animation afterwards.
+</p>
+<p>➤ Run the app. You should see the screen with the logo. Press the Get My Location button and the logo is replaced by the coordinate labels.
+</p>
+<p>Great! <i>Now</i> you can add the animation. The only method you have to change is <code>hideLogoView()</code>.
+</p>
+<p>➤ First, give <code>CurrentLocationViewController</code> the ability to handle animation events by making it the <code>CAAnimationDelegate</code>:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CurrentLocationViewController</span>: <span class="hljs-title">UIViewController</span>, 
+              <span class="hljs-title">CLLocationManagerDelegate</span>, <span class="hljs-title">CAAnimationDelegate</span> </span>{</pre>
+<p>➤ Then replace <code>hideLogoView()</code> with:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">hideLogoView</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">if</span> !logoVisible { <span class="hljs-keyword">return</span> }
+  
+  logoVisible = <span class="hljs-literal">false</span>
+  containerView.isHidden = <span class="hljs-literal">false</span>
+  containerView.center.x = view.bounds.size.width * <span class="hljs-number">2</span>
+  containerView.center.y = <span class="hljs-number">40</span> + 
+     containerView.bounds.size.height / <span class="hljs-number">2</span>
+  
+  <span class="hljs-keyword">let</span> centerX = view.bounds.midX
+  
+  <span class="hljs-keyword">let</span> panelMover = <span class="hljs-type">CABasicAnimation</span>(keyPath: <span class="hljs-string">"position"</span>)
+  panelMover.isRemovedOnCompletion = <span class="hljs-literal">false</span>
+  panelMover.fillMode = <span class="hljs-type">CAMediaTimingFillMode</span>.forwards
+  panelMover.duration = <span class="hljs-number">0.6</span>
+  panelMover.fromValue = <span class="hljs-type">NSValue</span>(cgPoint: containerView.center)
+  panelMover.toValue = <span class="hljs-type">NSValue</span>(cgPoint: 
+       <span class="hljs-type">CGPoint</span>(x: centerX, y: containerView.center.y))
+  panelMover.timingFunction = <span class="hljs-type">CAMediaTimingFunction</span>(
+                name: <span class="hljs-type">CAMediaTimingFunctionName</span>.easeOut)
+  panelMover.delegate = <span class="hljs-keyword">self</span>
+  containerView.layer.add(panelMover, forKey: <span class="hljs-string">"panelMover"</span>)
+  
+  <span class="hljs-keyword">let</span> logoMover = <span class="hljs-type">CABasicAnimation</span>(keyPath: <span class="hljs-string">"position"</span>)
+  logoMover.isRemovedOnCompletion = <span class="hljs-literal">false</span>
+  logoMover.fillMode = <span class="hljs-type">CAMediaTimingFillMode</span>.forwards
+  logoMover.duration = <span class="hljs-number">0.5</span>
+  logoMover.fromValue = <span class="hljs-type">NSValue</span>(cgPoint: logoButton.center)
+  logoMover.toValue = <span class="hljs-type">NSValue</span>(cgPoint:
+      <span class="hljs-type">CGPoint</span>(x: -centerX, y: logoButton.center.y))
+  logoMover.timingFunction = <span class="hljs-type">CAMediaTimingFunction</span>(
+                 name: <span class="hljs-type">CAMediaTimingFunctionName</span>.easeIn)
+  logoButton.layer.add(logoMover, forKey: <span class="hljs-string">"logoMover"</span>)
+  
+  <span class="hljs-keyword">let</span> logoRotator = <span class="hljs-type">CABasicAnimation</span>(keyPath: 
+                       <span class="hljs-string">"transform.rotation.z"</span>)
+  logoRotator.isRemovedOnCompletion = <span class="hljs-literal">false</span>
+  logoRotator.fillMode = <span class="hljs-type">CAMediaTimingFillMode</span>.forwards
+  logoRotator.duration = <span class="hljs-number">0.5</span>
+  logoRotator.fromValue = <span class="hljs-number">0.0</span>
+  logoRotator.toValue = -<span class="hljs-number">2</span> * <span class="hljs-type">Double</span>.pi
+  logoRotator.timingFunction = <span class="hljs-type">CAMediaTimingFunction</span>(
+                  name: <span class="hljs-type">CAMediaTimingFunctionName</span>.easeIn)
+  logoButton.layer.add(logoRotator, forKey: <span class="hljs-string">"logoRotator"</span>)
+}</pre>
+<p>This creates three animations that are played at the same time:
+</p>
+<ol>
+<li>
+<p>The <code>containerView</code> is placed outside the screen (somewhere on the right) and moved to the center.
+</p></li>
+
+<li>
+<p>The logo image view slides out of the screen.
+</p></li>
+
+<li>
+<p>The logo image also rotates around its center, giving the impression that it’s rolling away.
+</p></li>
+</ol>
+
+<p>Because the “panelMover” animation takes longest, you set a delegate on it so that you will be notified when the entire animation is over.
+</p>
+<p>➤ Now add the necessary <code>CAAnimationDelegate</code> method:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Animation Delegate Methods</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">animationDidStop</span><span class="hljs-params">(<span class="hljs-number">_</span> anim: CAAnimation, 
+               finished flag: Bool)</span></span> {
+  containerView.layer.removeAllAnimations()
+  containerView.center.x = view.bounds.size.width / <span class="hljs-number">2</span>
+  containerView.center.y = <span class="hljs-number">40</span> + 
+                containerView.bounds.size.height / <span class="hljs-number">2</span>
+  logoButton.layer.removeAllAnimations()
+  logoButton.removeFromSuperview()
+}</pre>
+<p>This cleans up after the animations and removes the logo button, as you no longer need it.
+</p>
+<p>➤ Run the app. Tap on Get My Location to make the logo disappear. I think the animation looks pretty cool.
+</p>
+<p><em>Tip:</em> To get the logo back so you can try again, first choose <em>Location → None</em> from the Simulator’s <em>Debug</em> menu. Then tap Get My Location followed by Stop to make the logo reappear.
+</p>
+<p>Apple says that good apps should “surprise and delight”, and modest animations such as these really make your apps more interesting to use —ß as long as you don’t overdo it!
+</p>
+<h3 class="segment-chapter">Add an activity indicator</h3>
+
+<p>When the user taps the Get My Location button, you currently change the button’s text to say Stop to indicate the change of state. You can make it even clearer to the user that something is going on by adding an animated activity “spinner”.
+</p>
+<p>It will look like this:
+</p><div class="image-30"><img src="graphics/img512.png"  alt="" title="The animated activity spinner shows that the app is busy" /></div>
+<p>UIKit comes with a standard control for this, <code>UIActivityIndicatorView</code>. You could add the spinner to the storyboard — and that&apos;s the way I generally prefer to do things. However, it&apos;s good to learn diffrent techniques and so you&apos;ll create the spinner in code this time.
+</p>
+<p>The code to change the appearance of the Get My Location button sits in the <code>configureGetButton()</code> method. That’s also a good place to show and hide the spinner.
+</p>
+<p>➤ Replace <code>configureGetButton()</code> with the following:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">configureGetButton</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> spinnerTag = <span class="hljs-number">1000</span>
+  
+  <span class="hljs-keyword">if</span> updatingLocation {
+    getButton.setTitle(<span class="hljs-string">"Stop"</span>, <span class="hljs-keyword">for</span>: .normal)
+    
+    <span class="hljs-keyword">if</span> view.viewWithTag(spinnerTag) == <span class="hljs-literal">nil</span> {
+      <span class="hljs-keyword">let</span> spinner = <span class="hljs-type">UIActivityIndicatorView</span>(style: .white)
+      spinner.center = messageLabel.center
+      spinner.center.y += spinner.bounds.size.height/<span class="hljs-number">2</span> + <span class="hljs-number">25</span>
+      spinner.startAnimating()
+      spinner.tag = spinnerTag
+      containerView.addSubview(spinner)
+    }
+  } <span class="hljs-keyword">else</span> {
+    getButton.setTitle(<span class="hljs-string">"Get My Location"</span>, <span class="hljs-keyword">for</span>: .normal)
+    
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> spinner = view.viewWithTag(spinnerTag) {
+      spinner.removeFromSuperview()
+    }
+  }
+}</pre>
+<p>In addition to changing the button text to “Stop”, you create a new instance of <code>UIActivityIndicatorView</code>. Then you do some calculations to position the spinner view below the message label at the top of the screen. The call to <code>addSubview()</code> actually adds the spinner to the container view and makes it visible.
+</p>
+<p>To keep track of this spinner view, you give it a tag of 1000. You could use an instance variable but this is just as easy and it keeps everything local to the <code>configureGetButton()</code> method. It’s nice to have everything in one place.
+</p>
+<p>When it’s time to revert the button to its old state, you call <code>removeFromSuperview()</code> to remove the activity indicator view from the screen.
+</p>
+<p>And that’s all you need to do.
+</p>
+<p>➤ Run the app. There should now be a cool little animation while the app is busy talking to the GPS satellites.
+</p>
+<h2 class="segment-chapter">Make some noise</h2>
+
+<p>Visual feedback is important, but you can’t expect users to keep their eyes glued to the screen all the time, especially if an operation might take a few seconds or more.
+</p>
+<p>Emitting an unobtrusive sound is a good way to alert the user that a task is complete — for example, when your iPhone sends an email, you hear a soft “whoosh” sound.
+</p>
+<p>You’re going to add a sound effect to the app too, which is to be played when the first reverse geocoding successfully completes. That seems like a reasonable moment to alert the user that GPS and address information has been captured.
+</p>
+<p>There are many ways to play sounds on iOS, but you’re going to use one of the simplest: system sounds. The System Sound API is intended for short beeps and other notification sounds, which is exactly the type of sound that you want to play here.
+</p>
+<p>➤ Add an import for AudioToolbox, the framework for playing system sounds, to the top of <em>CurrentLocationViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> AudioToolbox</pre>
+<p>➤ Add a <code>soundID</code> instance variable:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> soundID: <span class="hljs-type">SystemSoundID</span> = <span class="hljs-number">0</span></pre>
+<p>Because writing just 0 would normally give you a variable of type <code>Int</code>, you explicitly mention the type that you want it to be: <code>SystemSoundID</code>. This is a numeric identifier — sometimes called a “handle” — that refers to a system sound object. 0 means no sound has been loaded yet.
+</p>
+<p>➤ Add the following methods to the class:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Sound effects</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">loadSoundEffect</span><span class="hljs-params">(<span class="hljs-number">_</span> name: String)</span></span> {
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> path = <span class="hljs-type">Bundle</span>.main.path(forResource: name, 
+                                      ofType: <span class="hljs-literal">nil</span>) {
+    <span class="hljs-keyword">let</span> fileURL = <span class="hljs-type">URL</span>(fileURLWithPath: path, isDirectory: <span class="hljs-literal">false</span>)
+    <span class="hljs-keyword">let</span> error = <span class="hljs-type">AudioServicesCreateSystemSoundID</span>(
+                      fileURL <span class="hljs-keyword">as</span> <span class="hljs-type">CFURL</span>, &amp;soundID)
+    <span class="hljs-keyword">if</span> error != kAudioServicesNoError {
+      <span class="hljs-built_in">print</span>(<span class="hljs-string">"Error code <span class="hljs-subst">\(error)</span> loading sound: <span class="hljs-subst">\(path)</span>"</span>)
+    }
+  }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">unloadSoundEffect</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-type">AudioServicesDisposeSystemSoundID</span>(soundID)
+  soundID = <span class="hljs-number">0</span>
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">playSoundEffect</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-type">AudioServicesPlaySystemSound</span>(soundID)
+}</pre>
+<p>The <code>loadSoundEffect()</code> method loads the sound file and puts it into a new sound object. The specifics don’t really matter, but you end up with a reference to that object in the <code>soundID</code> instance variable.
+</p>
+<p>➤ Call <code>loadSoundEffect()</code> from <code>viewDidLoad()</code>:
+</p><pre class="code-block">loadSoundEffect(<span class="hljs-string">"Sound.caf"</span>)</pre>
+<p>➤ In <code>locationManager(_:didUpdateLocations:)</code>, in the geocoder’s completion closure, change the following code:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> error == <span class="hljs-literal">nil</span>, <span class="hljs-keyword">let</span> p = placemarks, !p.isEmpty {
+  <span class="hljs-comment">// New code block</span>
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.placemark == <span class="hljs-literal">nil</span> {               
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"FIRST TIME!"</span>)
+    <span class="hljs-keyword">self</span>.playSoundEffect()
+  }
+  <span class="hljs-comment">// End new code</span>
+  <span class="hljs-keyword">self</span>.placemark = p.last!
+} <span class="hljs-keyword">else</span> {
+  . . .</pre>
+<p>The new <code>if</code> statement simply checks whether the <code>self.placemark</code> instance variable is <code>nil</code>, in which case this is the first time you’ve reverse geocoded an address. It then plays a sound using the <code>playSoundEffect()</code> method.
+</p>
+<p>Of course, you shouldn’t forget to add the actual sound effect to the project!
+</p>
+<p>➤ Add the <em>Sound</em> folder from this app&apos;s Resources to the project. Make sure <em>Copy items if needed</em> is selected — click the Options button in the file open panel to reveal this option.
+</p>
+<p>➤ Run the app and see if it makes some noise. The sound should only be played for the first address it finds — when you see the FIRST TIME! log message — even if more precise locations keep coming in afterwards.
+</p>
+<p><em>Note:</em> If you don’t hear the sound on the Simulator, try the app on a device. Sometimes system sounds will not play on the simulators.
+</p>
+<div class="note">
+<p><em>CAF audio files</em>
+</p>
+<p>The Sound folder contains a single file, <em>Sound.caf</em>. The <em>caf</em> extension stands for Core Audio Format, and it’s the preferred file format for these kinds of short audio files on iOS.
+</p>
+<p>If you want to use your own sound file but it is in a different format than CAF and your audio software can’t save CAF files, then you can use the <code>afconvert</code> utility to convert the audio file. You need to run it from the Terminal:
+</p>
+<p><code>$ /usr/bin/afconvert -f caff -d LEI16 Sound.wav Sound.caf</code>
+</p>
+<p>This converts the Sound.wav file into Sound.caf. You don’t need to do this for the audio file from this app&apos;s Sound folder because that file is already in the correct format. But if you want to experiment with your own audio files, then knowing how to use <code>afconvert</code> might be useful.
+</p>
+<p>By the way, iOS can play .wav files just fine, but .caf is more optimal.
+</p></div>
+
+<h2 class="segment-chapter">The icon and launch images</h2>
+
+<p>The Resources folder for this app contains an <em>Icon</em> folder with the app icons.
+</p>
+<p>➤ Import the icon images into the asset catalog -  you can simply drag them from Finder into the <em>AppIcon</em> group. It’s best to drag them one-by-one into their respective slots — if you drag the whole set of icons into the group at once, Xcode can get confused.
+</p><div class="image-70"><img src="graphics/img513.png"  alt="" title="The icons in the asset catalog" /></div>
+<p>The app currently also has a launch file, <em>LaunchScreen.storyboard</em>, that provides the splash image for when the app is still loading.
+</p>
+<p>Instead of using a storyboard for the launch screen, you can also supply a set of images. Let’s do that for this app.
+</p>
+<p>➤ In the <em>Project Settings</em> screen, in the <em>General</em> tab, find the <em>App Icons and Launch Images</em> section. Click the <em>Use Asset Catalog</em> button next to <em>Launch Images Source</em>:
+</p><div class="image-80"><img src="graphics/img514.png"  alt="" title="Using the asset catalog for launch images" /></div>
+<p>Xcode now asks if you want to migrate the launch images. Click <em>Migrate</em>.
+</p>
+<p>➤ Clear the <em>Launch Screen File</em> text field.
+</p>
+<p>➤ Also remove <em>LaunchScreen.storyboard</em> from the project. It’s also a good idea to delete the app from the Simulator, or even reset it, so that there is no trace of the old launch screen.
+</p>
+<p>➤ Open <em>Assets.xcassets</em>. There is now a <em>LaunchImage</em> item in the list. Select it and go to the Attributes inspector. Under both <em>iOS 8.0 and Later</em> and <em>iOS 7.0 and Later</em>, put checkmark by <em>iPhone Portrait</em>:
+</p><div class="image-80"><img src="graphics/img515.png"  alt="" title="Enabling the launch images for iPhone portrait" /></div>
+<p>You should now have five slots for dropping the launch images into — if you have any slots that say “Unassigned”, then select and remove them by pressing the delete key.
+</p>
+<p>The Resources folder for this app contains a <em>Launch Images</em> folder. Let’s take a look at one of those images, <em>Launch Image Retina 4.png</em>:
+</p><div class="image-35"><img src="graphics/img516.png"  alt="" title="The launch image for this app" /></div>
+<p>The launch image only has the tab bar and the logo button, but no status bar or any buttons. The reason it has no “Get My Location” button is that you don’t want users to try and tap it while the app is still loading since it’s not really a button!
+</p>
+<p>To make this launch image, I ran the app in the Simulator and chose <em>File → Save Screen Shot</em>. This puts a new PNG file on the Desktop. I then opened this image in Photoshop and blanked out any text and the status bar portion of the image. The iPhone will draw its own status bar on top anyway.
+</p>
+<p>➤ Drag the files from the <em>Launch Images</em> folder into the asset catalog, one at a time. The slot for each image should be pretty obvious.
+</p>
+<p>Done. That was easy. :-)
+</p>
+<p>And with that, <i>MyLocations</i> is complete! Woohoo!
+</p>
+<p>You can find the final project files for the app under <em>31 - Polishing the App</em> in the Source Code folder.
+</p>
+<h2 class="segment-chapter">The end</h2>
+
+<p>Congrats on making it this far! It has been a long and winding road with a lot of theory to boot. I hope you learned a lot of useful stuff.
+</p>
+<p>The final storyboard for <i>MyLocations</i> looks like this:
+</p><div class="image-80"><img src="graphics/img517.png"  alt="" title="" /></div>
+<p>In this section you took a more detailed look at Swift, but there&apos;s still plenty to discover. To learn more about the Swift programming language, I recommend that you read the following books:
+</p>
+<ul>
+<li>
+<p><em>The Swift Programming Language</em> by Apple. This is a free download on the iBooks Store. If you don’t want to read the whole thing, at least take the Swift tour. It’s a great introduction to the language.
+</p></li>
+
+<li>
+<p><em>Swift Apprentice</em> by the raywenderlich.com tutorial Team. This is a book that teaches you everything you need to know about Swift, from beginning to advanced topics. This is a sister book to the iOS Appentice; the iOS Apprentice focuses more on making apps, while the Swift Apprentice focuses more on the Swift language itself. <a href="https://store.raywenderlich.com/products/swift-apprentice">https://store.raywenderlich.com/products/swift-apprentice</a>
+</p></li>
+</ul>
+
+<p>There are several good Core Data beginner books on the market. Here are two recommendations:
+</p>
+<ul>
+<li>
+<p><em>Core Data by Tutorials</em> by the raywenderlich.com tutorial Team. One of the few Core Data books that is completely up-to-date with the lastest iOS and Swift versions. This book is for intermediate iOS developers who already know the basics of iOS and Swift development, but want to learn how to use Core Data to save data in their apps. <a href="https://store.raywenderlich.com/products/core-data-by-tutorials">https://store.raywenderlich.com/products/core-data-by-tutorials</a>
+</p></li>
+
+<li>
+<p><em>Core Data Programming Guide</em> by Apple. If you want to get into the nitty gritty, then Apple’s official guide is a must-read. You can learn a ton from this guide. <a href="http://apple.co/2wNgiRu">apple.co/2wNgiRu</a>
+</p></li>
+</ul>
+
+<p>Credits for this tutorial:
+</p>
+<ul>
+<li>
+<p>Sound effect based on a flute sample by elmomo, downloaded from The Freesound Project (<a href="http://freesound.org">freesound.org</a>)
+</p></li>
+
+<li>
+<p>Image resizing category is based on code by Trevor Harmon (<a href="http://bit.ly/2wNGRX3">bit.ly/2wNGRX3</a>)
+</p></li>
+
+<li>
+<p>HudView code is based on MBProgressHud by Matej Bukovinski (<a href="https://github.com/matej/MBProgressHUD">github.com/matej/MBProgressHUD</a>)
+</p></li>
+</ul>
+
+<p>Are you ready for the final app? Then continue on to the next chapter, where you’ll make an app that communicates with a web service over the network!
+</p></body></html>

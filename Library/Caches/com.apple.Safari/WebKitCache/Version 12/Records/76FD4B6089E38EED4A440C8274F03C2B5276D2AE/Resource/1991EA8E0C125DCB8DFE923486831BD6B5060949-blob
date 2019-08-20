@@ -1,0 +1,1443 @@
+<!doctype html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Choose Your CV Template - Free Online CV Builder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Additional tags here -->
+    	<link rel="alternate" href="/en/account/choose-template" hreflang="x-default" />
+    <link rel="alternate" href="/en/account/choose-template" hreflang="en" />
+    <link rel="alternate" href="/nl/account/choose-template" hreflang="nl" />
+    <link rel="alternate" href="/fr/account/choose-template" hreflang="fr" />
+    <link rel="alternate" href="/de/account/choose-template" hreflang="de" />
+    
+    <meta name="description" content="Need a professional CV? Choose a free CV template and give yourself a professional look using my online CV builder. Free CV Builder &amp; Flexible CV Templates.">
+
+    <meta property='og:site_name' value='CV-Template'/>
+    <meta property='og:title' content="Choose Your CV Template - Free Online CV Builder" />
+    <meta property='og:url' content="/" />
+    <meta property='og:type' content='article' />
+    <meta property='og:image' content="/img/cv-template-ogdata.jpg" />
+    <meta property='og:description' content="Need a professional CV? Choose a free CV template and give yourself a professional look using my online CV builder. Free CV Builder &amp; Flexible CV Templates." />
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Choose Your CV Template - Free Online CV Builder" />
+    <meta name="twitter:description" content="Need a professional CV? Choose a free CV template and give yourself a professional look using my online CV builder. Free CV Builder &amp; Flexible CV Templates." />
+    <meta name="twitter:image" content="/img/cv-template-twitter-cards.jpg" />
+
+    <script src="/js/jquery-3.4.0.min.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:200,400,400italic,300,300italic,700,700italic'
+          rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/css/landing.css"/>
+
+    <link rel="stylesheet" href="/misc/font-awesome.css"/>
+
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/img/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/img/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/img/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/img/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/img/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/img/apple-touch-icon-152x152.png" />
+    <link rel="icon" type="image/png" href="/img/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/img/favicon-16x16.png" sizes="16x16" />
+    <meta name="application-name" content="&nbsp;"/>
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="/img/mstile-144x144.png" />
+
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-86784251-1', 'auto');
+  ga('send', 'pageview');
+  ga('set', 'anonymizeIp', true);
+</script>
+
+    
+    <script type="text/javascript">
+
+    window._initInterface = function () {
+        // load languagefile
+        i.lang = {"lang":"en","welcome":"Welcome","register":"Register","have_account":"I have already an account","help_me":"Help Me!","request_password":"Request new password","back_to_signin":"I already have an account","dont_have_account":"I don't have an account","sign_in":"Sign In","my_cv":"My CV's","logout":"logout","account":"account","password_doesnt_match":"passwords doesn't match","add_page":"add page","margin":"Margin","margin_top":"Margin top","margin_bottom":"Marge bottom","margin_extra_small":"extra small","margin_small":"small","margin_medium":"medium","margin_large":"large","margin_extra_large":"extra large","enable_add":"Enable add for..","add_sections":"Add sections","add_items":"Add items","change_style":"Change style: ","field_show_hide":"Field show\/hide settings","element_title":"Element-title","section_title":"Section title","break_element_title":"How to break the element?","break_item":"between items","break_section":"between sections","break_element":"don't break the element","font_size":"font size","font_style":"font style","caps":"caps","save":"save","duplicate":"save as copy","pdf":"PDF","purchase_template":"purchase template","general_settings":"General Settings","choose_font":"Choose font","font_size_element_title":"Font size","show_element_title_caps":"Capslock","show_element_title_border":"Underlined","header":"Header","footer":"Footer","text":"Text","page_number":"Page number","position":"Position","header_placeholder":"CV Name Surname","change_design":"Change design","left":"Left","right":"Right","delete_cv":"Are you sure you want to delete this CV\/Coverletter?","add_multiple_items":"Add multiple items","how_many_items":"How many items do you want to add? (max 15)","delete_item":"Are you sure you want to delete this item?","delete_section":"Are you sure you want to delete this section?","delete_element":"Are you sure you want to delete the whole element?","delete_element_title":"Delete element","delete_page":"Are you sure you want to delete this page?<br \/><b>IMPORTANT<\/b>: ALL ELEMENTS  ON THIS PAGE WILL BE REMOVED!","delete_page_shifted_stay":"Are you sure you want to delete this page?<br \/><b>IMPORTANT<\/b>: ALL ELEMENTS  ON THIS PAGE WILL BE REMOVED!<br \/><br \/><em>Note: Shifted items of previous page(s) will remain, remove them first to fully delete this page<\/em>","delete_page_shifted_next_page":"Are you sure you want to delete this page?<br \/><b>IMPORTANT<\/b>: ALL ELEMENTS  ON THIS PAGE WILL BE REMOVED!<br \/><br \/><em>Note: Shifted items of previous page(s) will be added to the next page<\/em>","delete_page_title":"Delete page","delete_item_title":"Delete","delete_section_title":"Delete section","yes":"Yes","no":"No","okay":"Got it","leave_page":"Did you save your CV?","photo_error_title":"Image upload failed","photo_error":"The maximum image size is 2mb, allowed sizes are; jpg\/jpeg\/png\/gif\/bmp\/tif\/tiff\/jif\/jfif","wrong_combination":"These credentials do not match our records.","wrong_mail":"This email is not registered","used_mail":"This email is invalid or already in use","form_send":"The message was sent successfully","form_not_send":"something went wrong, please check the credentials or mail us directly using support@cv-template.com","margin_top_error":"the top margin has to be at least 20px","add_element":"Add Element","new_element":"New elements","existing_element":"Existing Elements (used in the past\/other template)","template":"Template","template_title":"Get noticed with a professional designed CV","unlimited_access":"Unlimited access and CV downloads","unlimited_pdf_exports":"Unlimited PDF exports","matching_coverletter_design":"Free matching Cover letter design","always_accessible":"24\/7 accessible","free_updates":"Free updates","prized_at_only":"Prized at only","excluding_tax_of":"Excluding vat of","including_tax_of":"Including vat of","excluding_tax":"price without vat: ","including_free_cover_letter_design":"Including <b>Free<\/b> Cover letter design","get_your_cv":"Get my CV","no_recurring_costs":"No recurring costs","easily_manage":"Easily manage and duplicate CV's in your personal dashboard","instant_access":"Instant access after secure payment","pay_with":"Pay with","loading_payment_gateway":"Loading payment gateway..","mollie":"Use mollie to pay with Ideal, BanContact or Belfius Direct Net. The monthly plan is not supported with this method.","other_payment_method":"Select other payment method","other":"other","thank_you":"Thank You!","succesful_purchase":"You've succesfully purchased the template and can now download your succeeding CV!","transaction_failed":"Transaction failed","failed_purchase":"The transaction has failed, try again or contact us.","nameFunction_elementTitle":"Name","nameFunction_elementName":"Name","nameFunction_sectionTitle":"Name","nameFunction_addSection":"Add Name Group","nameFunction_addItem":"Add Name","nameFunction_addItems":"Add Names","nameFunction_firstName":"Name","nameFunction_lastName":"Surname","nameFunction_jobTitle":"Job title","nameFunction_personaDescription":"About yourself...","nameFunction_firstNameField":"Name","nameFunction_lastNameField":"Surname","nameFunction_jobTitleField":"Job title","nameFunction_personaDescriptionField":"Description","workExperience_elementTitle":"Experience","workExperience_elementName":"Work","workExperience_sectionTitle":"Work group","workExperience_addSection":"Add Work Group","workExperience_addItem":"Add Workexperience","workExperience_addItems":"Add Workexperiences","workExperience_functionTitle":"Function title","workExperience_nameCompany":"Company","workExperience_city":"city","workExperience_yearFrom":"JJJJ","workExperience_yearTill":"Present","workExperience_workDescription":"Description of the job, position and responsibilities.","workExperience_reference":"Referee contact","workExperience_functionTitleField":"Function","workExperience_nameCompanyField":"Company","workExperience_cityField":"City","workExperience_yearFromField":"Start year","workExperience_yearTillField":"End year","workExperience_workDescriptionField":"Description","workExperience_referenceIconField":"Referee icon","workExperience_referenceField":"Referee","education_elementTitle":"Education","education_elementName":"Education","education_sectionTitle":"Education group","education_addSection":"Add education group","education_addItem":"Add education","education_addItems":"Add educations","education_educationName":"Education\/course name","education_nameInstitution":"Organization","education_cityInstitution":"City","education_yearFrom":"JJJJ","education_yearTill":"Present","education_educationDescription":"Description of the education\/course.","education_reference":"Referee contact","education_educationNameField":"Educationname","education_nameInstitutionField":"Organization","education_cityInstitutionField":"City","education_yearFromField":"Start year","education_yearTillField":"End year","education_educationDescriptionField":"Description","education_referenceIconField":"Referee icon","education_referenceField":"Referee","skills_elementTitle":"Skills","skills_elementName":"Skills","skills_sectionTitle":"Skill group","skills_addSection":"Add skill group","skills_addItem":"Add skill","skills_addItems":"Add skills","skills_skillTitle":"Skill","reference_elementTitle":"Referees","reference_elementName":"Referee","reference_sectionTitle":"Referee group","reference_addSection":"Add referee group","reference_addItem":"Add referee","reference_referenceName":"Name Referee","reference_functionTitle":"Function title","reference_company":"Company","reference_phone":"012 3456 7890","reference_mail":"name.surname@email.com","reference_referenceNameField":"Name referee","reference_functionTitleField":"Function referee","reference_companyField":"Company referee","reference_companyIconField":"Company icon","reference_phoneField":"Phone","reference_mailField":"E-mail","reference_phoneIconField":"Phone icon","reference_mailIconField":"E-mail icon","relevantRoles_elementTitle":"Relevant roles","relevantRoles_elementName":"Relevant roles","relevantRoles_sectionTitle":"Relevant role group","relevantRoles_addSection":"Add relevant role group","relevantRoles_addItem":"Add relevant role","relevantRoles_type":"Type","relevantRoles_description":"Description","relevantRoles_year":"JJJJ-JJJJ","relevantRoles_typeField":"Type","relevantRoles_descriptionField":"Description","relevantRoles_yearField":"Year","contact_elementTitle":"Contact","contact_elementName":"Contact","contact_sectionTitle":"Contact group","contact_addSection":"Add contact group","contact_addItem":"Add contact line","contact_addItems":"Add contact lines","contact_info":"Click on the icon to change","contact_contactIconField":"Icon","profile_elementTitle":"Personal information","profile_elementName":"Personal information","profile_sectionTitle":"Personal information group","profile_addSection":"Add personal information group","profile_addItem":"Add line","profile_addItems":"Add lines","profile_info":"Text","profile_iconField":"Icon","profile_label":"Label","profile_labelField":"Label","details_elementTitle":"Details","details_elementName":"Details","details_sectionTitle":"Details group","details_addSection":"Add details group","details_addItem":"Add details line","details_addItems":"Add details lines","details_info":"Text","details_iconField":"Icon","details_label":"Label","details_labelField":"Label","profilePhoto_elementTitle":"Profile picture","profilePhoto_elementName":"Picture","profilePhoto_sectionTitle":"Picture group","profilePhoto_addSection":"Add picture group","profilePhoto_addItem":"Add photo","profilePhoto_addItems":"Add photos","profilePhoto_reset":"reset","profilePhoto_delete":"delete photo","profilePhoto_drop_here":"Drop image here..","profilePhoto_click_here":"or click here..","delete_photo":"Are you sure you want to delete this photo?","delete_photo_title":"Delete photo","nameFunction_tagline":"Cover Letter","address_elementName":"Address","regarding_elementName":"Regarding","date_elementName":"Date","salutation_elementName":"Salutation","paragraph_personal_motive_elementName":"Personal motive","paragraph_competences_elementName":"Competences","paragraph_motive_company_elementName":"Motivation company","paragraph_questions_elementName":"Questions","paragraph_closure_elementName":"Closure","greetings_elementName":"Greetings","paragraph_elementName":"Paragraph","single_line_elementName":"Line","list_elementName":"List","address_elementTitle":"Address","address_sectionTitle":"Address group","address_addSection":"Add address group","address_addItem":"Add address line","address_addItems":"Add address lines","regarding_elementTitle":"Regarding","regarding_sectionTitle":"Regarding group","regarding_addSection":"Add group","regarding_addItem":"Add line","regarding_addItems":"Add lines","regarding_regarding":"RE: ...application for the job opportunity","date_elementTitle":"Date","date_sectionTitle":"Date group","date_addSection":"Add date group","date_addItem":"Add date","date_addItems":"Add dates","date_date":"DD\/MM\/JJJJ","date_dateField":"Date","date_city":"City","date_cityField":"City","salutation_elementTitle":"Salutation","salutation_sectionTitle":"Salutation group","salutation_addSection":"Add group","salutation_addItem":"Add line","salutation_addItems":"Add lines","salutation_salutation":"Dear Sir\/Madam,","paragraph_introduction_elementTitle":"Introduction","paragraph_introduction_elementName":"Introduction","paragraph_introduction_sectionTitle":"Introduction group","paragraph_introduction_addSection":"Add group","paragraph_introduction_addItem":"Add paragraph","paragraph_introduction_addItems":"Add paragraphs","paragraph_introduction_introduction":"Hereby I apply for the position of..","paragraph_personal_motive_elementTitle":"Personal motive","paragraph_personal_motive_sectionTitle":"Personal motive group","paragraph_personal_motive_addSection":"Add group","paragraph_personal_motive_addItem":"Add paragraph","paragraph_personal_motive_addItems":"Add paragraphs","paragraph_personal_motive_motive":"Describe what's interesting for you in this application..","paragraph_competences_elementTitle":"Competences","paragraph_competences_sectionTitle":"Competences group","paragraph_competences_addSection":"Add group","paragraph_competences_addItem":"Add paragraph","paragraph_competences_addItems":"Add paragraphs","paragraph_competences_competence":"Why are you the number one for this position?","paragraph_motive_company_elementTitle":"Motivation company","paragraph_motive_company_sectionTitle":"Motivation company group","paragraph_motive_company_addSection":"Add group","paragraph_motive_company_addItem":"Add paragraph","paragraph_motive_company_addItems":"Add paragraphs","paragraph_motive_company_motive_company":"Why do you want to work for this company?","paragraph_questions_elementTitle":"Questions","paragraph_questions_sectionTitle":"Questions group","paragraph_questions_addSection":"Add group","paragraph_questions_addItem":"Add paragraph","paragraph_questions_addItems":"Add paragraphs","paragraph_questions_question":"What are your questions regarding this position?","paragraph_closure_elementTitle":"Closure","paragraph_closure_sectionTitle":"Closure group","paragraph_closure_addSection":"Add group","paragraph_closure_addItem":"Add paragraph","paragraph_closure_addItems":"Add paragraphs","paragraph_closure_closure":"I like to discuss my competences for this application in a personal talk. How will the application process be pursued further? (direct reader to an action)","greetings_elementTitle":"Greetings","greetings_sectionTitle":"Greetings group","greetings_addSection":"Add group","greetings_addItem":"Add greeting","greetings_addItems":"Add greetings","greetings_greetings":"Sincerely,","name_elementTitle":"Name","name_elementName":"Name","name_sectionTitle":"Name group","name_addSection":"Add group","name_addItem":"Add Name","name_addItems":"Add Names","name_name":"Name Surname","paragraph_elementTitle":"Paragraph","paragraph_sectionTitle":"Paragraph group","paragraph_addSection":"Add group","paragraph_addItem":"Add paragraph","paragraph_addItems":"Add paragraphs","paragraph_paragraph":"Empty paragraph..","single_line_elementTitle":"Line","single_line_sectionTitle":"Line group","single_line_addSection":"Add group","single_line_addItem":"Add line","single_line_addItems":"Add lines","single_line_line":"Empty line..","list_elementTitle":"List","list_sectionTitle":"List group","list_addSection":"Add group","list_addItem":"Add bulletpoint","list_addItems":"Add bulletpoints","list_list":"List item","about_elementTitle":"Profile","about_elementName":"Profile","about_sectionTitle":"Profile group","about_addSection":"Add group","about_addItem":"Add paragraph","about_addItems":"Add paragraphs","about_about":"About yourself..","jobRelated_elementTitle":"Job related","jobRelated_elementName":"Job related","jobRelated_sectionTitle":"Job related group","jobRelated_addSection":"Add group","jobRelated_addItem":"Add related experience","jobRelated_addItems":"Add related experience","jobRelated_functionTitle":"Function title","jobRelated_nameCompany":"Company","jobRelated_city":"city","jobRelated_yearFrom":"JJJJ","jobRelated_yearTill":"Present","jobRelated_workDescription":"Description of the job, position and responsibilities.","jobRelated_reference":"Referee contact","jobRelated_functionTitleField":"Function","jobRelated_nameCompanyField":"Company","jobRelated_cityField":"City","jobRelated_yearFromField":"Start year","jobRelated_yearTillField":"End year","jobRelated_workDescriptionField":"Description","jobRelated_referenceIconField":"Referee icon","jobRelated_referenceField":"Referee","text_elementTitle":"Text","text_elementName":"Text","text_sectionTitle":"Text group","text_addSection":"Add group","text_addItem":"Add paragraph","text_addItems":"Add paragraphs","text_text":"Text..","motivation_elementTitle":"Motivation","motivation_elementName":"Motivation","motivation_sectionTitle":"Motivation group","motivation_addSection":"Add group","motivation_addItem":"Add paragraph","motivation_addItems":"Add paragraphs","motivation_text":"Describe your motivation for the job you are applying to","course_elementTitle":"Course","course_elementName":"Course","course_sectionTitle":"Course group","course_addSection":"Add course group","course_addItem":"Add course","course_addItems":"Add courses","course_title":"Course name","course_organisation":"Organisation","course_city":"City","course_yearFrom":"JJJJ","course_yearTill":"Present","course_description":"Description of the course.","course_url":"Url","course_reference":"Referee contact","course_titleField":"Name","course_organisationField":"Organisation","course_cityField":"City","course_yearFromField":"Start year","course_yearTillField":"End year","course_descriptionField":"Description","course_urlIconField":"Url icon","course_urlField":"Url","course_referenceIconField":"Referee icon","course_referenceField":"Referee","projects_elementTitle":"Projects","projects_elementName":"Projects","projects_sectionTitle":"Projects group","projects_addSection":"Add project group","projects_addItem":"Add project","projects_addItems":"Add projects","projects_title":"Project name","projects_organisation":"Organisation","projects_city":"City","projects_yearFrom":"JJJJ","projects_yearTill":"Present","projects_description":"Description of the project.","projects_url":"Url","projects_reference":"Referee project","projects_titleField":"Name","projects_organisationField":"Organisation","projects_cityField":"City","projects_yearFromField":"Start year","projects_yearTillField":"End year","projects_descriptionField":"Description","projects_urlIconField":"Url icon","projects_urlField":"Url","projects_referenceIconField":"Referee icon","projects_referenceField":"Referee","publications_elementTitle":"Publications","publications_elementName":"Publications","publications_sectionTitle":"Publication group","publications_addSection":"Add publication group","publications_addItem":"Add publication","publications_addItems":"Add publications","publications_title":"Publication name","publications_tagline":"Publication type (Journal\/article\/book)","publications_authors":"Authors and co-authors","publications_organisation":"Organisation","publications_city":"City","publications_yearFrom":"JJJJ","publications_yearTill":"Present","publications_description":"Description of the publication.","publications_url":"Url","publications_reference":"Referee publication","publications_titleField":"Publication","publications_taglineField":"Type","publications_authorsField":"Authors","publications_organisationField":"Organisation","publications_cityField":"City","publications_yearFromField":"Start year","publications_yearTillField":"End year","publications_descriptionField":"Description","publications_urlIconField":"Url icon","publications_urlField":"Url","publications_referenceIconField":"Referee icon","publications_referenceField":"Referee","volunteer_elementTitle":"Volunteer work","volunteer_elementName":"Volunteer work","volunteer_sectionTitle":"Volunteer work group","volunteer_addSection":"Add volunteer work group","volunteer_addItem":"Add volunteer work","volunteer_addItems":"Add volunteer works","volunteer_title":"Volunteer work","volunteer_organisation":"Organisation","volunteer_city":"City","volunteer_yearFrom":"JJJJ","volunteer_yearTill":"Present","volunteer_description":"Description of the volunteer work","volunteer_url":"Url","volunteer_reference":"Referee volunteer work","volunteer_titleField":"Name","volunteer_organisationField":"Organisation","volunteer_cityField":"City","volunteer_yearFromField":"Start year","volunteer_yearTillField":"End year","volunteer_descriptionField":"Description","volunteer_urlIconField":"Url icon","volunteer_urlField":"Url","volunteer_referenceIconField":"Referee icon","volunteer_referenceField":"Referee","additional_activities_elementTitle":"Additional activities","additional_activities_elementName":"Additional activities","additional_activities_sectionTitle":"Additional activities group","additional_activities_addSection":"Add additional activities group","additional_activities_addItem":"Add additional activity","additional_activities_addItems":"Add additional activities","additional_activities_title":"Additional activity","additional_activities_description":"Description of the activity","additional_activities_titleField":"Name","additional_activities_descriptionField":"Description","additional_activities_iconField":"Icon","competences_elementTitle":"Competences","competences_elementName":"Competences","competences_sectionTitle":"Competences group","competences_addSection":"Add competences group","competences_addItem":"Add competence","competences_addItems":"Add competences","competences_title":"Competence","competences_description":"Description of the competence","competences_titleField":"Competence","competences_descriptionField":"Description","competences_iconField":"Icon","relevantKnowledge_elementTitle":"Relevant knowledge","relevantKnowledge_elementName":"Relevant knowledge","relevantKnowledge_sectionTitle":"Relevant knowledge group","relevantKnowledge_addSection":"Add relevant knowledge group","relevantKnowledge_addItem":"Add line","relevantKnowledge_addItems":"Add lines","relevantKnowledge_title":"Relevant knowledge","relevantKnowledge_description":"Description","relevantKnowledge_titleField":"Relevant knowledge","relevantKnowledge_descriptionField":"Description","relevantKnowledge_iconField":"Icon","interests_elementTitle":"Interests","interests_elementName":"Interests","interests_sectionTitle":"Interests group","interests_addSection":"Add interests group","interests_addItem":"Add interest","interests_addItems":"Add interests","interests_title":"Interest","interests_description":"Description of the interest","interests_titleField":"Interest","interests_descriptionField":"Description","interests_iconField":"Icon","awards_elementTitle":"Achievements","awards_elementName":"Achievements","awards_sectionTitle":"Achievements group","awards_addSection":"Add achievements group","awards_addItem":"Add achievement","awards_addItems":"Add achievements","awards_title":"Achievement","awards_description":"Description of the achievement","awards_titleField":"Achievement","awards_descriptionField":"Description","awards_iconField":"Icon","quote_elementTitle":"Quote","quote_elementName":"Quote","quote_sectionTitle":"Quote group","quote_addSection":"Add quote group","quote_addItem":"Add quote","quote_addItems":"Add quotes","quote_quote":"Quote","quote_author":"Author","quote_quoteField":"Quote","quote_authorField":"Author","bulletpoint_elementTitle":"List","bulletpoint_elementName":"List","bulletpoint_sectionTitle":"List group","bulletpoint_addSection":"Add list group","bulletpoint_addItem":"Add list","bulletpoint_addItems":"Add lists","bulletpoint_title":"Point","bulletpoint_description":"Description of the point","bulletpoint_titleField":"Point","bulletpoint_descriptionField":"Description","bulletpoint_iconField":"Icon","timeline_elementTitle":"Timeline","timeline_elementName":"Timeline","timeline_sectionTitle":"Timeline group","timeline_addSection":"Add timeline group","timeline_addItem":"Add item","timeline_addItems":"Add items","timeline_title":"Title item","timeline_organisation":"Organisation","timeline_city":"City","timeline_yearFrom":"JJJJ","timeline_yearTill":"Present","timeline_description":"Description of the item.","timeline_url":"Url","timeline_reference":"Referee item","timeline_titleField":"Name","timeline_organisationField":"Organisation","timeline_cityField":"City","timeline_yearFromField":"Start year","timeline_yearTillField":"End year","timeline_descriptionField":"Description","timeline_urlIconField":"Url icon","timeline_urlField":"Url","timeline_referenceIconField":"Referee icon","timeline_referenceField":"Referee","icon_none":"empty","icon_fa_plus":"plus","icon_fa_search":"search","icon_fa_paper_plane":"paper plane","icon_fa_share_alt":"share","icon_fa_university":"university","icon_fa_graduation_cap":"graduation cap","icon_fa_rss":"feed","icon_fa_coffee":"coffee","icon_fa_heart":"heart","icon_fa_link":"link","icon_fa_headphones":"headphones","icon_fa_trophy":"award","icon_fa_bolt":"bolt","icon_fa_cloud_download":"cloud download","icon_fa_calculator":"calculator","icon_fa_calendar":"calendar","icon_fa_book":"book","icon_fa_paint_brush":"paint brush","icon_fa_bar_chart":"bar chart","icon_fa_area_chart":"area chart","icon_fa_birthday_cake":"birthday","icon_fa_user":"user","icon_fa_users":"users","icon_fa_thumbs_up":"thumbs up","icon_fa_mars":"gender mars","icon_fa_venus":"gender venus","icon_fa_transgender":"transgender","icon_fa_cog":"gear","icon_fa_cogs":"cogs","icon_fa_globe":"globe","icon_fa_map_marker":"map marker","icon_fa_location_arrow":"location arrow","icon_fa_phone":"phone","icon_fa_mobile":"mobile","icon_fa_television":"television","icon_fa_laptop":"Laptop","icon_fa_home":"home","icon_fa_envelope":"mail","icon_fa_comment":"comment","icon_fa_comments":"comments","icon_fa_question_circle":"questionmark","icon_fa_check":"check","icon_fa_times":"cross","icon_fa_tag":"tag","icon_fa_tags":"tags","icon_fa_flag":"flag","icon_fa_car":"car","icon_fa_motorcycle":"motorcycle","icon_fa_truck":"truck","icon_fa_linkedin":"linkedin","icon_fa_facebook":"facebook","icon_fa_facebook_square":"facebook square","icon_fa_youtube_play":"youtube play","icon_fa_youtube":"youtube","icon_fa_google_plus":"google plus","icon_fa_twitter":"twitter","icon_fa_github":"github","icon_fa_foursquare":"foursquare","icon_fa_instagram":"instagram","icon_fa_pinterest":"pinterest","icon_fa_reddit_alien":"reddit","icon_fa_skype":"skype","icon_fa_snapchat":"snapchat","icon_fa_snapchat_ghost":"snapchat ghost","icon_fa_soundcloud":"soundcloud","icon_fa_spotify":"spotify","icon_fa_tumblr":"tumblr","icon_fa_whatsapp":"whatsapp","icon_fa_steam":"steam","start_tutorial_title":"Quick Basics","start_tutorial_tagline":"Learn the fundamentals in 6 steps and get the maximum out of CV-Template","start_tutorial_yes":"Yes please!","start_tutorial_no":"skip tutorial","tutorial_next":"Next &raquo;","tutorial_previous":"previous","tutorial_get_started":"Get started!","tutorial_frame_zero_title":"Click on any field to edit the text","tutorial_frame_zero_tagline":"Hit the tab key to easily navigate to the next field within the element","tutorial_frame_one_title":"Hover over elements to show all options","tutorial_frame_one_tagline":"Easily add items by clicking on the \u2018add \u2026\u2019 button","tutorial_frame_two_title":"Rearrange elements or items by click and drag on the left border","tutorial_frame_two_tagline":"The border will appear once the element is hovered","tutorial_frame_three_title":"Show element settings by clicking the cog","tutorial_frame_three_tagline":"Change the element style, add more whitespace and show\/hide fields","tutorial_frame_four_title":"Change font family, element titles, page numbering and more\u2026","tutorial_frame_four_tagline":"General settings can be accessed by clicking the gear in the top bar","tutorial_frame_five_title":"Add new elements to ensure your CV is complete","tutorial_frame_five_tagline":"You can also recover any deleted element by clicking the add element button","tutorial_frame_six_title":"Oh, and don\u2019t forget to save your CV!","tutorial_frame_six_tagline":"Moreover, the complete manual is available at the top right corner of your screen","secure_payment":"Secure payment through","starter":"Starter","starter_summary":"Two weeks of unlimited PDF exports, single template","starter_description":"Make one perfect CV","starter_tagline":"Two Weeks","career":"Career","career_summary":"A year of unlimited PDF exports, single template","career_description":"Optimal CV for every job opportunity","career_tagline":"Year","dedicated":"Dedicated","dedicated_summary":"5 years of unlimited PDF exports, single template","dedicated_description":"Sollicitate regularly","dedicated_tagline":"One Template","unlimited":"Unlimited","unlimited_summary":"5 years of unlimited PDF exports, all templates","unlimited_description":"Full package","unlimited_tagline":"All Templates","choose_different_plan":"Choose different plan","price":"Price","tax":"VAT","total":"Total","unlimited_exports":"Unlimited downloads","for_two_weeks":"for two weeks","for_year":"for a year","for_5_years":"for 5 years","matching_cover_letter":"Matching Cover Letter","all_templates":"All Templates","maximize_job_interview_rate":"Maximize your job interview rate","most_popular":"Most Popular","all_plans_include":"All plans include","faq":"Frequently Asked Questions","question1":"Which payment methods are accepted?","answer1":"We accept all common payment ways, including creditcards (VISA, MasterCard, Maestro JCB, Discover, American Express, Diners Club and Union Pay), PayPal, iDeal and BanContact.","question2":"Are plans automatically renewed?","answer2":"No, it is just a one time payment. If you want to upgrade or renew the model at the end, it is possible.","question3":"Are my CV's deleted after the period is ended?","answer3":"No, CV\u2019s are being stored for at least 5 years (unless deleted by yourself).","question4":"Are future templates included in the Unlimited model?","answer4":"Yes, you will have access to all templates, including future ones.","question5":"Will updates be free?","answer5":"Yes, all future extensions (like new elements) within the purchased template will be free of charge.","question6":"Can I also download the CV in a word document?","answer6":"No, because of the designed layout only PDF guarantees your CV will look good at all time. Moreover, PDF is the format that everyone accepts.","still_have_question":"Do you still have a question? Please don't hesitate to contact us!","review1":"I\u2019m a computer illiterate 50-year-old citizen, and what a convenience! The tutorial is clear and basically you want to play with your CV from that moment.<br \/>The support desk was great, giving me the confidence to just play around with my CV until I was satisfied.","function1":"Healthcare","review2":"I had no Idea what a 'good' CV looked like.<br \/>With CV-Template I could follow the format, presenting all the information required.<br \/>I liked especially the fact that I could personalize my CV so that it reflects my character","function2":"Chemist","review3":"Finding a job was extremely difficult and took me a long time until I started working with CV-Template! It turned out that I could build my CV much more efficiently with my distinctive activities emerged much better. This proved a good move, and I was immediately invited for interviews. Within time I had a new job!","function3":"Catering Manager","recruiter":"Recruiter","experienced_recruiter":"Experienced recruiter (18+ years)","recruiter_review_text":"When I saw CV-Template the first time, I was surprised about how extensive and thoughtful the tool was. This is how a CV must look like, and if this tool was available 15 years ago, it would have made the lives of all those applicants a lot easier.<br \/>I recommend strongly to use a CV from CV-Template as the designs are exactly how a recruiter wants to see it.","two_weeks":"2-weeks","one_year":"1-year","five_years":"5-years","start_immediately":"Start Immediately","one_year_unlimited":"1-year All CV's","one_year_unlimited_summary":"1-Year unlimited downloads for all cv templates and cover letter designs.<br \/>Free bonus: Full Careerpackage","code_expired":"code expired","wrong_code":"wrong code","code_accepted":"code accepted","add_coupon_code":"add couponcode","add_code":"add code","social_share_twitter1":"Get%20noticed%20with%20your%20CV%20and%20increase%20your%20job%20interview%20rate%20now!%20Get%2010%25%20off","social_share_twitter2":"expires","social_share_title":"Get%20noticed%20with%20your%20CV!","social_share_tagline":"Succeeding CVs made easy","social_share_description":"Maximize%20your%20job%20interview%20rate%20now!%20Choose%20a%20professional%20design%20and%20follow%20the%20flexible%20format,%20making%20your%20optimal%20CV.%20With%20this%20code","social_share_discount_until":"you%20have%20until","social_share_get_discount":"to%20get%20an%20extra%2010%25%20discount!","change_default_layout":"Change default layout","standard_cv":"Standard CV","skill_based_cv":"Skill-based CV","performance_based_cv":"Performance-based CV","personal_based_cv":"Personal-based CV","choose_your_cv_type":"Choose your CV Type","ensure_right_focus":"The default layout will change to ensure the right focus","standard_cv_description":"<div class=\"description\">Default\/neutral CV<\/div><div class=\"use-if\"><div>Basic<\/div>Complete, balanced CV.<\/div>","skill_based_cv_description":"<div class=\"description\">Focuses on your skills and strengths<\/div><div class=\"use-if\"><div>Use if...<\/div>You have a special skill set that benefits the employer<\/div>","performance_based_cv_description":"<div class=\"description\">Focuses on achievements and work experience<\/div><div class=\"use-if\"><div>Use if...<\/div>You have a lot of work experience and want to focus on results<\/div>","personal_based_cv_description":"<div class=\"description\">Focuses on personal characteristics and motivation<\/div><div class=\"use-if\"><div>Use if...<\/div>You are working with people and your personality is important<\/div>","back_to_tutorial":"Back to tutorial","impress_recruiters_immediately":"Impress Recruiters. Immediately.","created_over_no_recurring":"Created over 5000 CV's, No recurring costs","secure_ssl":"Personal information is sent using Secure Sockets Layer (SSL) to provide you with a safe order experience.","secondment_title":"Optimized Secondment CV","secondment_tagline":"Show your added value to the client, increasing the chance of success","expert_session":"Expert session","risk_free":"60-Day Guarantee*","risk_free_explanation":"*<b>Winning CV Guaranteed<\/b>: This purchase is 100% risk-free. If you don\u2019t feel like you got value from CV-Template, email the support team within 60 days, show them your constructed cv and we\u2019ll refund your latest payment promptly and courteously.","risk_free_secondment_explanation":"*<b>100% risk free<\/b>: If you don\u2019t feel like you got value from CV-Template, email the support team within 60 days, show them your constructed cv and we\u2019ll refund your full payment of the CV template promptly and courteously.","no_guarantee":"No extra guarantee","year_and_book":"5 Years + Book","popular_detachering":"5 Years","starter_detachering":"1 Year","pdf_book":"PDF Chapter 4: \"Het professionele CV\" (dutch)","book_taren":"Book: Intakegesprekken & Detachering (dutch)","free_shipment":"(free shipment)","expert_session_taren":"Expert session Taren","expert_session_taren_conditions":"(1 hour: Utrecht or Skype)","premium":"Premium","premium_text":"Join the Club. Become your Premium Self and aim for nothing less than the best.","premium_button":"Winning CV Guaranteed","free":"Free","free_text":"Completely free, no questions asked","free_button":"Download for free","save_cv_to_account":"Save your CV to your account in order to enable the free download","your_best_email":"Your best email","preparing_download":"Preparing download...","download_will_start":"We are rendering your CV in high quality... Download will start within a few seconds","purchase_get_guide_free":"Let's make a deal... Purchase your CV now, get my CV checklist completely free!","take_this_offer":"Get the free checklist!","no_thanks_skills_fine":"No thanks, my CV skills are fine","download_will_be_available":"Download will be available after payment","create_account_secure_data":"Create your CV-Template account to secure your CV Data","cv_will_be_accessible":"Your CV will be accessible with this address","continue_payment":"Continue Payment","coupon_discount":"Coupon discount","free_download":"Download PDF","show":"SHOW","hide":"HIDE","fill_in_first_name":"Please fill in your (first) name","fill_in_best_email":"Please fill in your best email","password_longer_6_characters":"Your password needs to be longer than 6 characters","accept_privacy_policy":"Due to the General Data Protection Regulation you need to confirm that you are older than 18 years and accept our privacy policy","accept_the":"I accept the","privacy_policy":"privacy policy","under_18":"and I am 18 years or older or have parental consent.","cv_data_stored":"Your CV data is safely stored in Amsterdam and will NOT be processed by anyone.","accept_our_terms":"Please accept our terms to continue.","continue":"Continue","super_fast_2_minute":"Super Fast 2-Minute","linkedin_import":"LinkedIn Import","connect_to_fill_in_cv":"Connect with LinkedIn to have your CV filled in automatically.","cv_template_that_easy":"CV-Template is that easy!","import_linkedin_profile":"Import LinkedIn Profile","body_text_container":"Text colour in the main area.","body_text_sidebar":"Text colour in the sidebar.","body_text_justify":"Justify body text","choose_font_element_title":"Title font","choose_name_font":"Select name font","margin_bottom_element_title":"Margin bottom","font_size_template":"Font size","line_height_template":"Line-height","body_text":"Body-text","image_align":"Image alignment","bullet_point_style":"Bullet-point style","margin_job_title":"Margin job title","number_of_dots":"Number of dots","skill_line":"Place skill-indicators on a new line","container_area":"Main area","sidebar_area":"Sidebar","margin_left":"Margin-left","margin_right":"Margin-right","label_elementTitle":"Skills","label_elementName":"Label","label_sectionTitle":"Label group","label_addSection":"Add group","label_addItem":"Add label","label_addItems":"Add labels","label_label":"Label..","white_opacity":"Opacity white overlay","scale":"Image scale","posX":"X-axis image","posY":"Y-axis image","default_image":"Choose image","default_image_description":"It might take a few seconds to load the image","upload_own_image":"Upload photo","own_image_achieve":"Image history","use_custom_image":"Choose a custom image","image_settings":"Image settings","header_settings":"Header settings","enjoy_your_premium_look":"Enjoy Your Premium Look.","tons_of_premium_features":"Your CV will feel like a custom designed artwork.","monthly":"Monthly","monthly_payment_plan":"Low-priced Monthly Recurring","month":"Month","lifetime":"Lifetime","lifetime_payment":"One-time Payment","unlimited_downloads":"6 Matching Cover Letter Designs","access_to_all_premium_cvs":"6 premium designed CVs","premium_styles":"Over 25 Exclusive Element Styles","premium_features":"18 Advanced Control Options","get_highly_effective_cv":"Unlock CV-Template Premium","risk_free_guarantee":"Get a Job or Your Money Back","best_value":"Best Value","winning_cv_guaranteed":"Winning CV Guaranteed","one_time_payment":"Low, Single Payment","become_your_premium_self":"Stand out from the crowd","clothes_make_the_man":"Recruiters like beautiful CVs as much as you do","standing_out_next_level":"Impress recruiters. Immediately.","so_much_control":"So much control, your CV will feel like a custom-designed artwork.","unlimited_access_premium":"Unlimited access to all 6 premium CV templates","matching_cover_letter_designs":"Complete your look with a matching cover letter","premium_element_styles":"Access to over 45 new premium styles & options","advanced_control_options":"Make your optimal first impression and get more interviews","money_back_guarantee":"It works. 100% Money-Back guarantee","join_the_club_become_premium":"Invest in your future and enjoy it the rest of your life. Become your premium self and aim for the best.","to_your_best_job_yet":"To your best job,","go_premium":"Go Premium","take_me_to_free":"just take me to free","back_to_builder":"Back to the Builder","want_to_stand_out":"Become Your Premium Self","grab_tailored_suit":"A highly effective CV is the best career investment you can make","choose_your_plan":"Select your preferred plan","this_purchase_is_risk_free":"This purchase is 100% Risk-Free*","monthly_plan_can_be_cancelled":"The monthly plan can be canceled any time.","select_preferred_payment_method":"Select your preferred payment method","your_preferred_payment_method":"Your preferred payment method","try_cv_template_premium":"Try CV-Template Premium Now!","with_only_one_chance":"With only one chance, you cannot afford to NOT be your best","instantly_wow_everyone":"Instantly 'wow' everyone","express_your_creativity":"Express your creativity","experienced_professional":"Experienced professional","want_to_stand_out_go_dark":"Stand out? Go Dark.","subscription_tagline":"All premium templates, unlimited downloads. Subscription.","lifetime_tagline":"All premium templates, unlimited downloads. Forever.","subscription_can_be_canceled":"Subscription can be cancelled any time","welcome_offer_expires_in":"One time offer expires in","download_cv_immediately":"Download your CV immediately","instant_access_cv_premium":"Get instant access to all the premium templates and premium options. Enjoy a painless CV writing experience and get that job in no-time!","do_you_have_a_question":"Do you have a question? Please","contact_us":"Contact us","or_view_our":"or view our","image_absolute":"Use a static position (ignoring other elements)","image_position_x":"Image position X (page left to right)","image_position_y":"Image position Y (page top to bottom)","premium_vs_free":"77% of the recruiters were more likely to hire a premium candidate based on first impression*"};
+        i.serverTime = {"date":"2019-08-19 06:38:42.604125","timezone_type":3,"timezone":"UTC"};
+        i.currency = ['usd', 'US$'];
+        i.token = "Z766sVO5KneGQIy8i4QJwwdeHmEwVw6QqgI8aYBN";
+        i.fonts = {"font":[
+	{"fontName":"AlegreyaSans",
+		"types": [
+			"Light",
+			"LightItalic",
+			"Regular",
+			"Bold",
+			"Italic",
+			"BoldItalic",
+			"ExtraBold",
+			"ExtraBoldItalic"
+		],
+		"path": "fonts/Alegreya_Sans/"
+	},
+	{"fontName":"AlegreyaSansSC",
+		"types": [
+			"Light",
+			"LightItalic",
+			"Regular",
+			"Bold",
+			"Italic",
+			"BoldItalic",
+			"ExtraBold",
+			"ExtraBoldItalic"
+		],
+		"path": "fonts/Alegreya_Sans_SC/"
+	},
+	{"fontName":"Exo2",
+		"types": [
+			"Light",
+			"LightItalic",
+			"Regular",
+			"Bold",
+			"Italic",
+			"BoldItalic",
+			"ExtraBold",
+			"ExtraBoldItalic"
+		],
+		"path": "fonts/Exo_2/"
+	},
+	{"fontName":"Kanit",
+		"types": [
+			"Light",
+			"LightItalic",
+			"Regular",
+			"Bold",
+			"Italic",
+			"BoldItalic",
+			"ExtraBold",
+			"ExtraBoldItalic"
+		],
+		"path": "fonts/Kanit/"
+	},
+	{"fontName":"LibreFranklin",
+		"types": [
+			"Light",
+			"LightItalic",
+			"Regular",
+			"Bold",
+			"Italic",
+			"BoldItalic",
+			"ExtraBold",
+			"ExtraBoldItalic"
+		],
+		"path": "fonts/Libre_Franklin/"
+	},
+	{
+		"fontName":"Merriweather",
+		"types": [
+			"Light",
+			"LightItalic",
+			"Regular",
+			"Bold",
+			"Italic",
+			"BoldItalic",
+			"ExtraBold",
+			"ExtraBoldItalic"
+		],
+		"path": "fonts/Merriweather/"
+	},
+	{
+		"fontName":"OpenSans",
+		"types": [
+			"Light",
+			"LightItalic",
+			"Regular",
+			"Bold",
+			"Italic",
+			"BoldItalic",
+			"ExtraBold",
+			"ExtraBoldItalic"
+		],
+		"path": "fonts/Open_Sans/"
+	},
+	{"fontName":"Prompt",
+		"types": [
+			"Light",
+			"LightItalic",
+			"Regular",
+			"Bold",
+			"Italic",
+			"BoldItalic",
+			"ExtraBold",
+			"ExtraBoldItalic"
+		],
+		"path": "fonts/Prompt/"
+	},
+	{"fontName":"Raleway",
+		"types": [
+			"Light",
+			"LightItalic",
+			"Regular",
+			"Bold",
+			"Italic",
+			"BoldItalic",
+			"ExtraBold",
+			"ExtraBoldItalic"
+		],
+		"path": "fonts/Raleway/"
+	},
+	{"fontName":"Roboto",
+		"types": [
+			"Light",
+			"LightItalic",
+			"Regular",
+			"Bold",
+			"Italic",
+			"BoldItalic",
+			"ExtraBold",
+			"ExtraBoldItalic"
+		],
+		"path": "fonts/Roboto/"
+	},
+	{"fontName":"SourceSansPro",
+		"types": [
+			"Light",
+			"LightItalic",
+			"Regular",
+			"Bold",
+			"Italic",
+			"BoldItalic",
+			"ExtraBold",
+			"ExtraBoldItalic"
+		],
+		"path": "fonts/Source_Sans_Pro/"
+	},
+	{"fontName":"Taviraj",
+		"types": [
+			"Light",
+			"LightItalic",
+			"Regular",
+			"Bold",
+			"Italic",
+			"BoldItalic",
+			"ExtraBold",
+			"ExtraBoldItalic"
+		],
+		"path": "fonts/Taviraj/"
+	},
+	{"fontName":"Trirong",
+		"types": [
+			"Light",
+			"LightItalic",
+			"Regular",
+			"Bold",
+			"Italic",
+			"BoldItalic",
+			"ExtraBold",
+			"ExtraBoldItalic"
+		],
+		"path": "fonts/Trirong/"
+	},
+	{"fontName":"NotoSansTC",
+		"types": [
+			"Light",
+			"LightItalic",
+			"Regular",
+			"Bold",
+			"Italic",
+			"BoldItalic",
+			"ExtraBold",
+			"ExtraBoldItalic"
+		],
+		"path": "fonts/Noto_Sans_TC/"
+	}
+]};
+        i.icons = {"icon":[
+	{"icon":"none","name":"empty","category":"general"},
+	{"icon":"fa-plus","name":"plus","category":"general"},
+	{"icon":"fa-search","name":"search","category":"general"},
+	{"icon":"fa-paper-plane","name":"paper plane","category":"general"},
+	{"icon":"fa-share-alt","name":"share","category":"general"},
+	{"icon":"fa-university","name":"university","category":"general"},
+	{"icon":"fa-graduation-cap","name":"graduation cap","category":"general"},
+	{"icon":"fa-rss","name":"feed","category":"general"},
+	{"icon":"fa-coffee","name":"coffee","category":"general"},
+	{"icon":"fa-heart","name":"heart","category":"general"},
+	{"icon":"fa-link","name":"link","category":"general"},
+	{"icon":"fa-headphones","name":"headphones","category":"general"},
+	{"icon":"fa-trophy","name":"award","category":"general"},
+	{"icon":"fa-bolt","name":"bolt","category":"general"},
+	{"icon":"fa-cloud-download","name":"cloud download","category":"general"},
+	{"icon":"fa-calculator","name":"calculator","category":"general"},
+	{"icon":"fa-calendar","name":"calendar","category":"general"},
+	{"icon":"fa-book","name":"book","category":"general"},
+	{"icon":"fa-paint-brush","name":"paint brush","category":"general"},
+	{"icon":"fa-bar-chart","name":"bar chart","category":"general"},
+	{"icon":"fa-area-chart","name":"area chart","category":"general"},
+	{"icon":"fa-birthday-cake","name":"birthday","category":"general"},
+	{"icon":"fa-user","name":"user","category":"general"},
+	{"icon":"fa-users","name":"users","category":"general"},
+	{"icon":"fa-thumbs-up","name":"thumbs up","category":"general"},
+	{"icon":"fa-mars","name":"gender mars","category":"general"},
+	{"icon":"fa-venus","name":"gender venus","category":"general"},
+	{"icon":"fa-transgender","name":"transgender","category":"general"},
+	{"icon":"fa-cog","name":"gear","category":"general"},
+	{"icon":"fa-cogs","name":"cogs","category":"general"},
+	{"icon":"fa-globe","name":"globe","category":"general"},
+	{"icon":"fa-map-marker","name":"map marker","category":"general"},
+	{"icon":"fa-location-arrow","name":"location arrow","category":"general"},
+	{"icon":"fa-phone","name":"phone","category":"general"},
+	{"icon":"fa-mobile","name":"mobile","category":"general"},
+	{"icon":"fa-television","name":"television","category":"general"},
+	{"icon":"fa-laptop","name":"laptop","category":"general"},
+	{"icon":"fa-home","name":"home","category":"general"},
+	{"icon":"fa-envelope","name":"mail","category":"general"},
+	{"icon":"fa-comment","name":"comment","category":"general"},
+	{"icon":"fa-comments","name":"comments","category":"general"},
+	{"icon":"fa-question-circle","name":"questionmark","category":"general"},
+	{"icon":"fa-check","name":"check","category":"general"},
+	{"icon":"fa-times","name":"cross","category":"general"},
+	{"icon":"fa-tag","name":"tag","category":"general"},
+	{"icon":"fa-tags","name":"tags","category":"general"},
+	{"icon":"fa-flag","name":"flag","category":"general"},
+	{"icon":"fa-car","name":"car","category":"general"},
+	{"icon":"fa-motorcycle","name":"motorcycle","category":"general"},
+	{"icon":"fa-truck","name":"truck","category":"general"},
+	{"icon":"fa-linkedin","name":"linkedin","category":"social"},
+	{"icon":"fa-facebook","name":"facebook","category":"social"},
+	{"icon":"fa-facebook-square","name":"facebook square","category":"social"},
+	{"icon":"fa-youtube-play","name":"youtube play","category":"social"},
+	{"icon":"fa-youtube","name":"youtube","category":"social"},
+	{"icon":"fa-google-plus","name":"google plus","category":"social"},
+	{"icon":"fa-twitter","name":"twitter","category":"social"},
+	{"icon":"fa-github","name":"github","category":"social"},
+	{"icon":"fa-foursquare","name":"foursquare","category":"social"},
+	{"icon":"fa-instagram","name":"instagram","category":"social"},
+	{"icon":"fa-pinterest","name":"pinterest","category":"social"},
+	{"icon":"fa-reddit-alien","name":"reddit","category":"social"},
+	{"icon":"fa-skype","name":"skype","category":"social"},
+	{"icon":"fa-snapchat","name":"snapchat","category":"social"},
+	{"icon":"fa-snapchat-ghost","name":"snapchat ghost","category":"social"},
+	{"icon":"fa-soundcloud","name":"soundcloud","category":"social"},
+	{"icon":"fa-spotify","name":"spotify","category":"social"},
+	{"icon":"fa-tumblr","name":"tumblr","category":"social"},
+	{"icon":"fa-whatsapp","name":"whatsapp","category":"social"},
+	{"icon":"fa-steam","name":"steam","category":"social"}
+]};
+        i.defaults = {"elementDefaults":[
+	{"elementId":"0","elementType":"nameFunction","elementTitle":"persona","elementName":"Persona","elementIcon":"<i class='fa fa-user' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"Persona","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","firstName":"","lastName":"", "jobTitle":"", "personaDescription":"About yourself..."}
+		]}
+	]},
+	{"elementId":"1","elementType":"workExperience","elementTitle":"Experience","elementName":"Work","elementIcon":"<i class='fa fa-briefcase' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"Workexperience section","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","functionTitle":"","nameCompany":"", "city":"","yearFrom":"", "yearTill":"","workDescription":"","referenceIcon":"<i class='fa fa-user'></i>","reference":""}
+		]}
+	]},
+	{"elementId":"2","elementType":"education","elementTitle":"Education","elementName":"Education","elementIcon":"<i class='fa fa-graduation-cap' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"Education section","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","educationName":"","nameInstitution":"", "cityInstitution":"", "yearFrom":"", "yearTill":"","educationDescription":"","referenceIcon":"<i class='fa fa-user'></i>","reference":""}
+		]}
+	]},
+	{"elementId":"3","elementType":"skills","elementTitle":"Skills","elementName":"Skills","elementIcon":"<i class='fa fa-diamond' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","skillTitle":"","rate1":"off", "rate2":"off", "rate3":"on", "rate4":"on","rate5":"on"},
+			{"itemId":"1","itemOrder":"1","skillTitle":"","rate1":"off", "rate2":"off", "rate3":"on", "rate4":"on","rate5":"on"},
+			{"itemId":"2","itemOrder":"2","skillTitle":"","rate1":"off", "rate2":"off", "rate3":"on", "rate4":"on","rate5":"on"}
+		]},
+		{"sectionId":"1","sectionTitle":"","sectionOrder":"1","items":[
+			{"itemId":"3","itemOrder":"0","skillTitle":"","rate1":"off", "rate2":"off", "rate3":"on", "rate4":"on","rate5":"on"},
+			{"itemId":"4","itemOrder":"1","skillTitle":"","rate1":"off", "rate2":"off", "rate3":"on", "rate4":"on","rate5":"on"},
+			{"itemId":"5","itemOrder":"2","skillTitle":"","rate1":"off", "rate2":"off", "rate3":"on", "rate4":"on","rate5":"on"}
+		]}
+	]},
+	{"elementId":"4","elementType":"reference","elementTitle":"References","elementName":"Reference","elementIcon":"<i class='fa fa-users' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","referenceName":"","functionTitle":"","company":"","companyIcon":"<i class='fa fa-building'></i>","phoneIcon":"<i class='fa fa-phone'></i>","phone":"","mailIcon":"<i class='fa fa-envelope'></i>","mail":""},
+			{"itemId":"1","itemOrder":"1","referenceName":"","functionTitle":"","company":"","companyIcon":"<i class='fa fa-building'></i>","phoneIcon":"<i class='fa fa-phone'></i>","phone":"","mailIcon":"<i class='fa fa-envelope'></i>","mail":""}
+		]},
+		{"sectionId":"1","sectionTitle":"","sectionOrder":"1","items":[
+			{"itemId":"2","itemOrder":"0","referenceName":"","functionTitle":"","company":"","companyIcon":"<i class='fa fa-building'></i>","phoneIcon":"<i class='fa fa-phone'></i>","phone":"","mailIcon":"<i class='fa fa-envelope'></i>","mail":""}
+		]}
+	]},
+	{"elementId":"5","elementType":"contact","elementTitle":"Contact","elementName":"Contact","elementIcon":"<i class='fa fa-info' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"Contact","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","contactIcon":"<i class='fa fa-home'></i>","contactInfo":"City"},
+			{"itemId":"1","itemOrder":"1","contactIcon":"<i class='fa fa-phone'></i>","contactInfo":"012 3456 7890"},
+			{"itemId":"2","itemOrder":"2","contactIcon":"<i class='fa fa-mobile'></i>","contactInfo":"06 1234 5678"},
+			{"itemId":"3","itemOrder":"3","contactIcon":"<i class='fa fa-envelope'></i>","contactInfo":"name.lastname@email.com"}
+		]},
+		{"sectionId":"1","sectionTitle":"Social","sectionOrder":"1","items":[
+			{"itemId":"4","itemOrder":"0","contactIcon":"<i class='fa fa-linkedin'></i>","contactInfo":"name.lastname"},
+			{"itemId":"5","itemOrder":"1","contactIcon":"<i class='fa fa-twitter'></i>","contactInfo":"@namelastname"},
+			{"itemId":"6","itemOrder":"2","contactIcon":"<i class='fa fa-facebook'></i>","contactInfo":"/name.lastname"}
+		]}
+	]},
+	{"elementId":"6","elementType":"profilePhoto","elementTitle":"Profile","elementName":"Profile","elementIcon":"<i class='fa fa-camera' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","url":"","translateX":"-130","translateY":"-100","scale":"0.5"}
+		]}
+	]},
+	{"elementId":"7","elementType":"about","elementTitle":"About","elementName":"About","elementIcon":"<i class='fa fa-comment-o' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","about":""}
+		]}
+	]},
+	{"elementId":"8","elementType":"course","elementTitle":"Course","elementName":"Course","elementIcon":"<i class='fa fa-graduation-cap' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","title":"","organisation":"", "city":"", "yearFrom":"", "yearTill":"","description":"","referenceIcon":"<i class='fa fa-user'></i>","reference":"reference","urlIcon":"<i class='fa fa-link' aria-hidden='true'></i>","url":""}
+		]}
+	]},
+	{"elementId":"9","elementType":"projects","elementTitle":"Projects","elementName":"Projects","elementIcon":"<i class='fa fa-archive' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","title":"","organisation":"", "city":"", "yearFrom":"", "yearTill":"","description":"","referenceIcon":"<i class='fa fa-user'></i>","reference":"reference","urlIcon":"<i class='fa fa-link' aria-hidden='true'></i>","url":""}
+		]}
+	]},
+	{"elementId":"10","elementType":"publications","elementTitle":"Publications","elementName":"Publications","elementIcon":"<i class='fa fa-bookmark' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","title":"","organisation":"", "tagline":"", "authors":"", "city":"", "yearFrom":"", "yearTill":"","description":"","referenceIcon":"<i class='fa fa-user'></i>","reference":"reference","urlIcon":"<i class='fa fa-link' aria-hidden='true'></i>","url":""}
+		]}
+	]},
+	{"elementId":"11","elementType":"volunteer","elementTitle":"Volunteer","elementName":"Volunteer","elementIcon":"<i class='fa fa-pagelines' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","title":"","organisation":"", "city":"", "yearFrom":"", "yearTill":"","description":"","referenceIcon":"<i class='fa fa-user'></i>","reference":"reference","urlIcon":"<i class='fa fa-link' aria-hidden='true'></i>","url":""}
+		]}
+	]},
+	{"elementId":"12","elementType":"additional_activities","elementTitle":"Additional activities","elementName":"Additional activities","elementIcon":"<i class='fa fa-bolt' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","icon":"<i class='fa fa-bolt' aria-hidden='true'></i>","title":"","description":""}
+		]}
+	]},
+	{"elementId":"13","elementType":"competences","elementTitle":"Competences","elementName":"Competences","elementIcon":"<i class='fa fa-check' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","icon":"<i class='fa fa-check' aria-hidden='true'></i>","title":"","description":""}
+		]}
+	]},
+	{"elementId":"14","elementType":"interests","elementTitle":"Interests","elementName":"Interests","elementIcon":"<i class='fa fa-heart' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","icon":"<i class='fa fa-heart' aria-hidden='true'></i>","title":"","description":""}
+		]}
+	]},
+	{"elementId":"15","elementType":"awards","elementTitle":"Awards","elementName":"Awards","elementIcon":"<i class='fa fa-trophy' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","icon":"<i class='fa fa-trophy' aria-hidden='true'></i>","title":"","description":""}
+		]}
+	]},
+	{"elementId":"16","elementType":"quote","elementTitle":"Quote","elementName":"Quote","elementIcon":"<i class='fa fa-quote-left' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","quote":"","author":""}
+		]}
+	]},
+	{"elementId":"17","elementType":"text","elementTitle":"Text","elementName":"Text","elementIcon":"<i class='fa fa-file-text-o' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"text","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","text":""}
+		]}
+	]},
+	{"elementId":"18","elementType":"bulletpoint","elementTitle":"List","elementName":"List","elementIcon":"<i class='fa fa-list' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","icon":"<i class='fa fa-check' aria-hidden='true'></i>","title":"","description":""}
+		]}
+	]},
+	{"elementId":"19","elementType":"timeline","elementTitle":"Timeline","elementName":"Timeline","elementIcon":"<i class='fa fa-clock-o' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","title":"","organisation":"", "city":"", "yearFrom":"", "yearTill":"","description":"","referenceIcon":"<i class='fa fa-user'></i>","reference":"reference","urlIcon":"<i class='fa fa-link' aria-hidden='true'></i>","url":""}
+		]}
+	]},
+	{"elementId":"20","elementType":"profile","elementTitle":"Profile","elementName":"Profile","elementIcon":"<i class='fa fa-address-card' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"Profile","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","icon":"<i class='fa fa-user'></i>","label":"Name","info":"Name Surname"},
+			{"itemId":"1","itemOrder":"1","icon":"<i class='fa fa-birthday-cake'></i>","label":"Birthdate","info":"Birthdate"},
+			{"itemId":"2","itemOrder":"2","icon":"<i class='fa fa-genderless'></i>","label":"Gender","info":"Gender"},
+			{"itemId":"3","itemOrder":"3","icon":"<i class='fa fa-home'></i>","label":"Residence","info":"Place of residence"},
+			{"itemId":"4","itemOrder":"4","icon":"<i class='fa fa-globe'></i>","label":"Nationality","info":"Nationality"},
+		]}
+	]},
+	{"elementId":"21","elementType":"motivation","elementTitle":"Motivation","elementName":"Motivation","elementIcon":"<i class='fa fa-line-chart' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"motivation","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","text":""}
+		]}
+	]},
+	{"elementId":"22","elementType":"jobRelated","elementTitle":"Job Related","elementName":"Job Related","elementIcon":"<i class='fa fa-compass' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"job related section","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","functionTitle":"","nameCompany":"", "city":"","yearFrom":"", "yearTill":"","workDescription":"","referenceIcon":"<i class='fa fa-user'></i>","reference":""}
+		]}
+	]},
+	{"elementId":"23","elementType":"details","elementTitle":"Details","elementName":"Details","elementIcon":"<i class='fa fa-asterisk' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"Details","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","icon":"<i class='fa fa-calendar'></i>","label":"Available from","info":"Date"},
+			{"itemId":"1","itemOrder":"1","icon":"<i class='fa fa-clock-o'></i>","label":"Number of hours/week","info":""},
+			{"itemId":"2","itemOrder":"2","icon":"<i class='fa fa-handshake-o'></i>","label":"Employment relationship","info":"Employed or hired?"},
+			{"itemId":"3","itemOrder":"3","icon":"<i class='fa fa-usd'></i>","label":"Hourly rate (excl. VAT)","info":""},
+		]}
+	]},
+	{"elementId":"24","elementType":"relevantRoles","elementTitle":"Relevant roles","elementName":"Relevant roles","elementIcon":"<i class='fa fa-repeat' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","type":"","description":"","year":""},
+		]}
+	]},
+	{"elementId":"25","elementType":"relevantKnowledge","elementTitle":"Relevant Knowledge","elementName":"Relevant Knowledge","elementIcon":"<i class='fa fa-flask' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","icon":"<i class='fa fa-check' aria-hidden='true'></i>","title":"","description":""}
+		]}
+	]},
+	{"elementId":"26","elementType":"label","elementTitle":"Label","elementName":"Label","elementIcon":"<i class='fa fa-tag' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","label":""}
+		]}
+	]},
+],
+"letterDefaults":[
+	{"elementId":"0","elementType":"nameFunction","elementTitle":"persona","elementName":"Persona","elementIcon":"<i class='fa fa-user' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"Persona","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","firstName":"","lastName":"", "tagline":""}
+		]}
+	]},
+	{"elementId":"1","elementType":"address","elementTitle":"address","elementName":"Address","elementIcon":"<i class='fa fa-home' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"Address","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","contactIcon":"<i class='fa fa-home'></i>","contactInfo":"Streetname/number"},
+			{"itemId":"1","itemOrder":"1","contactIcon":"&nbsp;","contactInfo":"City, State/Country"},
+			{"itemId":"2","itemOrder":"2","contactIcon":"&nbsp;","contactInfo":"Post/Zip Code"}
+		]}
+	]},
+	{"elementId":"2","elementType":"regarding","elementTitle":"regarding","elementName":"Regarding","elementIcon":"<i class='fa fa-search' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","regarding":""}
+		]}
+	]},
+	{"elementId":"3","elementType":"date","elementTitle":"date","elementName":"Date","elementIcon":"<i class='fa fa-calendar' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","date":"","city":""}
+		]}
+	]},
+	{"elementId":"4","elementType":"salutation","elementTitle":"salutation","elementName":"Salutation","elementIcon":"<i class='fa fa-smile-o' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","salutation":""}
+		]}
+	]},
+	{"elementId":"5","elementType":"paragraph_introduction","elementTitle":"introduction","elementName":"Introduction","elementIcon":"<i class='fa fa-handshake-o' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","introduction":""}
+		]}
+	]},
+	{"elementId":"6","elementType":"paragraph_personal_motive","elementTitle":"personal motive","elementName":"Personal motive","elementIcon":"<i class='fa fa-heart' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","motive":""}
+		]}
+	]},
+	{"elementId":"7","elementType":"paragraph_competences","elementTitle":"competences","elementName":"Competence","elementIcon":"<i class='fa fa-check' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","competence":""}
+		]}
+	]},
+	{"elementId":"8","elementType":"paragraph_motive_company","elementTitle":"company motive","elementName":"Company motive","elementIcon":"<i class='fa fa-building' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","motive_company":""}
+		]}
+	]},
+	{"elementId":"9","elementType":"paragraph_questions","elementTitle":"questions","elementName":"Questions","elementIcon":"<i class='fa fa-question' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","question":""}
+		]}
+	]},
+	{"elementId":"10","elementType":"paragraph_closure","elementTitle":"closure","elementName":"Closure","elementIcon":"<i class='fa fa-comment' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","closure":""}
+		]}
+	]},
+	{"elementId":"11","elementType":"greetings","elementTitle":"greetings","elementName":"Greetings","elementIcon":"<i class='fa fa-share' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","greetings":""}
+		]}
+	]},
+	{"elementId":"12","elementType":"name","elementTitle":"name","elementName":"Name","elementIcon":"<i class='fa fa-user' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","name":""}
+		]}
+	]},
+	{"elementId":"13","elementType":"paragraph","elementTitle":"paragraph","elementName":"Paragraph","elementIcon":"<i class='fa fa-paragraph' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","paragraph":""}
+		]}
+	]},
+	{"elementId":"14","elementType":"single_line","elementTitle":"single line","elementName":"Single Line","elementIcon":"<i class='fa fa-text-width' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","line":""}
+		]}
+	]},
+	{"elementId":"15","elementType":"list","elementTitle":"list","elementName":"List","elementIcon":"<i class='fa fa-list-ul' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","list":""},
+			{"itemId":"1","itemOrder":"1","list":""},
+			{"itemId":"2","itemOrder":"2","list":""}
+		]}
+	]},
+	{"elementId":"16","elementType":"contact","elementTitle":"Contact","elementName":"Contact","elementIcon":"<i class='fa fa-info' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"Contact","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","contactIcon":"<i class='fa fa-phone'></i>","contactInfo":"012 3456 7890"},
+			{"itemId":"1","itemOrder":"1","contactIcon":"<i class='fa fa-mobile'></i>","contactInfo":"06 1234 5678"},
+			{"itemId":"2","itemOrder":"2","contactIcon":"<i class='fa fa-envelope'></i>","contactInfo":"name.surname@email.com"}
+		]}
+	]},
+	{"elementId":"17","elementType":"profilePhoto","elementTitle":"Profile","elementName":"Profile","elementIcon":"<i class='fa fa-camera' aria-hidden='true'></i>","sections":[
+		{"sectionId":"0","sectionTitle":"profile","sectionOrder":"0","items":[
+			{"itemId":"0","itemOrder":"0","url":"/img/person1.jpg","translateX":"-130","translateY":"-100","scale":"0.5"}
+		]}
+	]}
+],
+"settingDefaults":[
+	{"elementId":"0", "marginTop":"20", "marginBottom":"20","numStyles":"5","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"false","elementTitle":"hide","sectionTitle":"hide","firstName":"show","firstNameFont":"35","firstNameUppercase":"true","lastName":"show","lastNameFont":"35","lastNameUppercase":"true","jobTitle":"show","jobTitleUppercase":"true","personaDescription":"hide","personaDescriptionFont":"","personaDescriptionUppdercase":"true","style":[{"elementTitle":"Light","sectionTitle":"Bold","firstName":"ExtraBoldItalic","lastName":"ExtraBoldItalic","jobTitle":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","firstName":"Light","lastName":"Light","jobTitle":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","firstName":"Light","lastName":"Light","jobTitle":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","firstName":"Light","lastName":"ExtraBold","jobTitle":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","firstName":"Light","lastName":"Light","jobTitle":"Light"}]},
+	{"elementId":"1", "marginTop":"20", "marginBottom":"20","numStyles":"7","currentStyle":"0","break":"item","sectionAdd":"false","itemAdd":"true","elementTitle":"show","sectionTitle":"hide","functionTitle":"show","functionTitleUppercase":"true","nameCompany":"show","city":"show","yearFrom":"show","yearTill":"show","workDescription":"show","referenceIcon":"hide","reference":"hide","style":[{"elementTitle":"Light","sectionTitle":"Bold","functionTitle":"Bold","nameCompany":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","workDescription":"Light","reference":"Italic"},{"elementTitle":"Light","sectionTitle":"Bold","functionTitle":"Bold","nameCompany":"Light","city":"Light","yearFrom":"Light","yearTill":"Light","workDescription":"Light","reference":"Italic"},{"elementTitle":"Light","sectionTitle":"Bold","functionTitle":"Italic","nameCompany":"Bold","city":"Italic","yearFrom":"Light","yearTill":"Light","workDescription":"Light","reference":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","functionTitle":"Light","nameCompany":"Bold","city":"Light","yearFrom":"Bold","yearTill":"Bold","workDescription":"Light","reference":"Italic"},{"elementTitle":"Light","sectionTitle":"Bold","functionTitle":"Bold","nameCompany":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","workDescription":"Light","reference":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","functionTitle":"Bold","nameCompany":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","workDescription":"Light","reference":"Italic"},{"elementTitle":"Light","sectionTitle":"Bold","functionTitle":"Light","nameCompany":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","workDescription":"Light","reference":"Italic"},{"elementTitle":"Light","sectionTitle":"Bold","functionTitle":"Bold","nameCompany":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","workDescription":"Light","reference":"Italic"},{"elementTitle":"Light","sectionTitle":"Bold","functionTitle":"Bold","nameCompany":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","workDescription":"Light","reference":"Italic"},{"elementTitle":"Light","sectionTitle":"Bold","functionTitle":"Bold","nameCompany":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","workDescription":"Light","reference":"Italic"},{"elementTitle":"Light","sectionTitle":"Bold","functionTitle":"Bold","nameCompany":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","workDescription":"Light","reference":"Italic"},{"elementTitle":"Light","sectionTitle":"Bold","functionTitle":"Bold","nameCompany":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","workDescription":"Light","reference":"Italic"}]},
+	{"elementId":"2", "marginTop":"20", "marginBottom":"20","numStyles":"6","currentStyle":"0","break":"item","sectionAdd":"false","itemAdd":"true","elementTitle":"show","sectionTitle":"hide","educationName":"show","educationNameUppercase":"true","nameInstitution":"show","cityInstitution":"show","yearFrom":"show","yearTill":"show","educationDescription":"show","referenceIcon":"hide","reference":"hide","style":[{"elementTitle":"Light","sectionTitle":"Bold","educationName":"Bold","nameInstitution":"Bold","cityInstitution":"Bold","yearFrom":"Bold","yearTill":"Bold","educationDescription":"Light","reference":"Italic"},{"elementTitle":"Light","sectionTitle":"Bold","educationName":"Bold","nameInstitution":"Light","cityInstitution":"Light","yearFrom":"Light","yearTill":"Light","educationDescription":"Light","reference":"Italic"},{"elementTitle":"Light","sectionTitle":"Bold","educationName":"Bold","nameInstitution":"Italic","cityInstitution":"Italic","yearFrom":"Light","yearTill":"Light","educationDescription":"Light","reference":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","educationName":"Bold","nameInstitution":"Regular","cityInstitution":"Regular","yearFrom":"Bold","yearTill":"Bold","educationDescription":"Light","reference":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","educationName":"Bold","nameInstitution":"Bold","cityInstitution":"Bold","yearFrom":"Bold","yearTill":"Bold","educationDescription":"Light","reference":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","educationName":"Bold","nameInstitution":"Bold","cityInstitution":"Bold","yearFrom":"Bold","yearTill":"Bold","educationDescription":"Light","reference":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","educationName":"Bold","nameInstitution":"Bold","cityInstitution":"Bold","yearFrom":"Bold","yearTill":"Bold","educationDescription":"Light","reference":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","educationName":"Bold","nameInstitution":"Bold","cityInstitution":"Bold","yearFrom":"Bold","yearTill":"Bold","educationDescription":"Light","reference":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","educationName":"Bold","nameInstitution":"Bold","cityInstitution":"Bold","yearFrom":"Bold","yearTill":"Bold","educationDescription":"Light","reference":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","educationName":"Bold","nameInstitution":"Bold","cityInstitution":"Bold","yearFrom":"Bold","yearTill":"Bold","educationDescription":"Light","reference":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","educationName":"Bold","nameInstitution":"Bold","cityInstitution":"Bold","yearFrom":"Bold","yearTill":"Bold","educationDescription":"Light","reference":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","educationName":"Bold","nameInstitution":"Bold","cityInstitution":"Bold","yearFrom":"Bold","yearTill":"Bold","educationDescription":"Light","reference":"LightItalic"}]},
+	{"elementId":"3", "marginTop":"20", "marginBottom":"20","numStyles":"6","currentStyle":"0","break":"section","sectionAdd":"true","itemAdd":"true","elementTitle":"show","sectionTitle":"show","style":[{"elementTitle":"Light","sectionTitle":"Bold","skillTitle":"Light","skillItem":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","skillTitle":"Light","skillItem":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","skillTitle":"Light","skillItem":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","skillTitle":"Light","skillItem":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","skillTitle":"Light","skillItem":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","skillTitle":"Light","skillItem":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","skillTitle":"Light","skillItem":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","skillTitle":"Light","skillItem":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","skillTitle":"Light","skillItem":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","skillTitle":"Light","skillItem":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","skillTitle":"Light","skillItem":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","skillTitle":"Light","skillItem":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","skillTitle":"Light","skillItem":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","skillTitle":"Light","skillItem":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","skillTitle":"Light","skillItem":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","skillTitle":"Light","skillItem":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","skillTitle":"Light","skillItem":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","skillTitle":"Light","skillItem":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","skillTitle":"Light","skillItem":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","skillTitle":"Light","skillItem":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","skillTitle":"Light","skillItem":"Light"}]},
+	{"elementId":"4", "marginTop":"20", "marginBottom":"20","numStyles":"2","currentStyle":"0","break":"item","sectionAdd":"false","itemAdd":"true","elementTitle":"show","sectionTitle":"hide","referenceName":"show","functionTitle":"show","companyIcon":"hide","company":"hide","phoneIcon":"hide","phone":"show","mailIcon":"hide","mail":"show","style":[{"elementTitle":"Light","sectionTitle":"Bold","referenceName":"Bold","functionTitle":"Light","company":"Light","phone":"Light","mail":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","referenceName":"Bold","functionTitle":"Light","company":"Light","phone":"Light","mail":"Light"}]},
+	{"elementId":"5", "marginTop":"20", "marginBottom":"20","numStyles":"1","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"true","elementTitle":"show","sectionTitle":"hide","contactIcon":"show","style":[{"elementTitle":"Light","sectionTitle":"Bold","contactInfo":"Light"}]},
+	{"elementId":"6", "marginTop":"20", "marginBottom":"20","numStyles":"4","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"false","elementTitle":"hide","sectionTitle":"hide","style":[{"elementTitle":"Light","sectionTitle":"Bold"},{"elementTitle":"Light","sectionTitle":"Bold"},{"elementTitle":"Light","sectionTitle":"Bold"},{"elementTitle":"Light","sectionTitle":"Bold"},{"elementTitle":"Light","sectionTitle":"Bold"},{"elementTitle":"Light","sectionTitle":"Bold"},{"elementTitle":"Light","sectionTitle":"Bold"},{"elementTitle":"Light","sectionTitle":"Bold"},{"elementTitle":"Light","sectionTitle":"Bold"},{"elementTitle":"Light","sectionTitle":"Bold"},{"elementTitle":"Light","sectionTitle":"Bold"},{"elementTitle":"Light","sectionTitle":"Bold"},{"elementTitle":"Light","sectionTitle":"Bold"},{"elementTitle":"Light","sectionTitle":"Bold"},{"elementTitle":"Light","sectionTitle":"Bold"},{"elementTitle":"Light","sectionTitle":"Bold"}]},
+	{"elementId":"7", "marginTop":"20", "marginBottom":"20","numStyles":"1","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"false","elementTitle":"show","sectionTitle":"hide","style":[{"elementTitle":"Light","sectionTitle":"Bold","about":"Light"}]},
+	{"elementId":"8", "marginTop":"20", "marginBottom":"20","numStyles":"6","currentStyle":"2","break":"item","sectionAdd":"false","itemAdd":"true","elementTitle":"show","sectionTitle":"hide","title":"show","titleUppercase":"true","organisation":"show","city":"show","yearFrom":"show","yearTill":"show","description":"show","referenceIcon":"hide","reference":"hide","urlIcon":"hide","url":"hide","style":[{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"Italic","url":"Italic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Light","city":"Light","yearFrom":"Light","yearTill":"Light","description":"Light","reference":"Italic","url":"Italic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Italic","city":"Italic","yearFrom":"Light","yearTill":"Light","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Regular","city":"Regular","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"}]},
+	{"elementId":"9", "marginTop":"20", "marginBottom":"20","numStyles":"6","currentStyle":"2","break":"item","sectionAdd":"false","itemAdd":"true","elementTitle":"show","sectionTitle":"hide","title":"show","titleUppercase":"true","organisation":"show","city":"hide","yearFrom":"show","yearTill":"hide","description":"show","referenceIcon":"hide","reference":"hide","urlIcon":"hide","url":"hide","style":[{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"Italic","url":"Italic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Light","city":"Light","yearFrom":"Light","yearTill":"Light","description":"Light","reference":"Italic","url":"Italic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Italic","city":"Italic","yearFrom":"Light","yearTill":"Light","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Regular","city":"Regular","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"}]},
+	{"elementId":"10", "marginTop":"20", "marginBottom":"20","numStyles":"6","currentStyle":"0","break":"item","sectionAdd":"false","itemAdd":"true","elementTitle":"show","sectionTitle":"hide","title":"show","titleUppercase":"true","tagline":"show","authors":"show","organisation":"hide","city":"hide","yearFrom":"show","yearTill":"hide","description":"show","referenceIcon":"hide","reference":"hide","urlIcon":"hide","url":"hide","style":[{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","tagline":"Light","authors":"Regular","organisation":"Regular","city":"Regular","yearFrom":"Regular","yearTill":"Regular","description":"Light","reference":"Italic","url":"Italic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","tagline":"Italic","authors":"Regular","organisation":"Regular","city":"Regular","yearFrom":"Regular","yearTill":"Regular","description":"Light","reference":"Italic","url":"Italic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","tagline":"Regular","authors":"Regular","organisation":"Italic","city":"Italic","yearFrom":"Light","yearTill":"Light","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","tagline":"Regular","authors":"Regular","organisation":"Regular","city":"Regular","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","tagline":"Bold","authors":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","tagline":"Regular","authors":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"}]},
+	{"elementId":"11", "marginTop":"20", "marginBottom":"20","numStyles":"6","currentStyle":"0","break":"item","sectionAdd":"false","itemAdd":"true","elementTitle":"show","sectionTitle":"hide","title":"show","titleUppercase":"true","organisation":"show","city":"hide","yearFrom":"show","yearTill":"show","description":"show","referenceIcon":"hide","reference":"hide","urlIcon":"hide","url":"hide","style":[{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"Italic","url":"Italic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Light","city":"Light","yearFrom":"Light","yearTill":"Light","description":"Light","reference":"Italic","url":"Italic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Italic","city":"Italic","yearFrom":"Light","yearTill":"Light","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Regular","city":"Regular","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"}]},
+	{"elementId":"12", "marginTop":"20", "marginBottom":"20","numStyles":"2","currentStyle":"0","break":"item","sectionAdd":"false","itemAdd":"true","elementTitle":"show","sectionTitle":"hide","icon":"show","title":"show","description":"hide","style":[{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","description":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","description":"Light"}]},
+	{"elementId":"13", "marginTop":"20", "marginBottom":"20","numStyles":"2","currentStyle":"0","break":"item","sectionAdd":"false","itemAdd":"true","elementTitle":"show","sectionTitle":"hide","icon":"show","title":"show","description":"hide","style":[{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","description":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","description":"Light"}]},
+	{"elementId":"14", "marginTop":"20", "marginBottom":"20","numStyles":"2","currentStyle":"0","break":"item","sectionAdd":"false","itemAdd":"true","elementTitle":"show","sectionTitle":"hide","icon":"show","title":"show","description":"show","style":[{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","description":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","description":"Light"}]},
+	{"elementId":"15", "marginTop":"20", "marginBottom":"20","numStyles":"2","currentStyle":"0","break":"item","sectionAdd":"false","itemAdd":"true","elementTitle":"show","sectionTitle":"hide","icon":"show","title":"show","description":"show","style":[{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","description":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","description":"Light"}]},
+	{"elementId":"16", "marginTop":"20", "marginBottom":"20","numStyles":"2","currentStyle":"0","break":"item","sectionAdd":"false","itemAdd":"false","elementTitle":"hide","sectionTitle":"hide","quote":"show","quoteFont":"32","author":"show","style":[{"elementTitle":"Light","sectionTitle":"Bold","quote":"Bold","author":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","quote":"Bold","author":"Light"}]},
+	{"elementId":"17", "marginTop":"20", "marginBottom":"20","numStyles":"1","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"false","elementTitle":"show","sectionTitle":"hide","style":[{"elementTitle":"Light","sectionTitle":"Bold","text":"Light"}]},
+	{"elementId":"18", "marginTop":"20", "marginBottom":"20","numStyles":"2","currentStyle":"0","break":"item","sectionAdd":"false","itemAdd":"true","elementTitle":"show","sectionTitle":"hide","icon":"show","title":"show","description":"hide","style":[{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","description":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","description":"Light"}]},
+	{"elementId":"19", "marginTop":"20", "marginBottom":"20","numStyles":"6","currentStyle":"2","break":"item","sectionAdd":"false","itemAdd":"true","elementTitle":"show","sectionTitle":"hide","title":"show","titleUppercase":"true","organisation":"show","city":"hide","yearFrom":"show","yearTill":"hide","description":"show","referenceIcon":"hide","reference":"hide","urlIcon":"hide","url":"hide","style":[{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"Italic","url":"Italic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Light","city":"Light","yearFrom":"Light","yearTill":"Light","description":"Light","reference":"Italic","url":"Italic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Italic","city":"Italic","yearFrom":"Light","yearTill":"Light","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Regular","city":"Regular","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","organisation":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","description":"Light","reference":"LightItalic","url":"LightItalic"}]},
+	{"elementId":"20", "marginTop":"20", "marginBottom":"20","numStyles":"1","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"true","elementTitle":"show","sectionTitle":"hide","icon":"hide","label":"show","style":[{"elementTitle":"Light","sectionTitle":"Bold","label":"Bold","info":"Light"}]},
+	{"elementId":"21", "marginTop":"20", "marginBottom":"-10","numStyles":"1","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"false","elementTitle":"show","sectionTitle":"hide","style":[{"elementTitle":"Light","sectionTitle":"Bold","text":"Light"}]},
+	{"elementId":"22", "marginTop":"20", "marginBottom":"-10","numStyles":"1","currentStyle":"0","break":"item","sectionAdd":"false","itemAdd":"true","elementTitle":"show","sectionTitle":"hide","functionTitle":"show","functionTitleUppercase":"false","nameCompany":"show","city":"hide","yearFrom":"hide","yearTill":"hide","workDescription":"show","referenceIcon":"hide","reference":"hide","style":[{"elementTitle":"Light","sectionTitle":"Bold","functionTitle":"Light","nameCompany":"Bold","city":"Bold","yearFrom":"Bold","yearTill":"Bold","workDescription":"Light","reference":"Italic"}]},
+	{"elementId":"23", "marginTop":"20", "marginBottom":"-10","numStyles":"1","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"true","elementTitle":"show","sectionTitle":"hide","icon":"hide","label":"show","style":[{"elementTitle":"Light","sectionTitle":"Bold","label":"Bold","info":"Light"}]},
+	{"elementId":"24", "marginTop":"20", "marginBottom":"-10","numStyles":"1","currentStyle":"0","break":"item","sectionAdd":"false","itemAdd":"true","elementTitle":"show","sectionTitle":"hide","type":"show","description":"show","year":"hide","style":[{"elementTitle":"Light","sectionTitle":"Bold","type":"Bold","description":"Light","year":"Light"}]},
+	{"elementId":"25", "marginTop":"20", "marginBottom":"-10","numStyles":"2","currentStyle":"1","break":"item","sectionAdd":"false","itemAdd":"true","elementTitle":"show","sectionTitle":"hide","icon":"show","title":"show","description":"hide","style":[{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","description":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","title":"Bold","description":"Light"}]},
+	{"elementId":"26", "marginTop":"20", "marginBottom":"-10","numStyles":"6","currentStyle":"0","break":"item","sectionAdd":"false","itemAdd":"true","elementTitle":"hide","sectionTitle":"hide","label":"show","style":[{"elementTitle":"Light","sectionTitle":"Bold","label":"Regular"},{"elementTitle":"Light","sectionTitle":"Bold","label":"Regular"},{"elementTitle":"Light","sectionTitle":"Bold","label":"Regular"},{"elementTitle":"Light","sectionTitle":"Bold","label":"Regular"},{"elementTitle":"Light","sectionTitle":"Bold","label":"Regular"},{"elementTitle":"Light","sectionTitle":"Bold","label":"Regular"}]},
+
+],
+"settingLetterDefaults":[
+	{"elementId":"0", "marginTop":"20", "marginBottom":"20","numStyles":"4","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"false","elementTitle":"hide","sectionTitle":"hide","firstName":"show","firstNameFont":"35","firstNameUppercase":"true","lastName":"show","lastNameFont":"35","lastNameUppercase":"true","tagline":"show","taglineUppercase":"true","style":[{"elementTitle":"Light","sectionTitle":"Bold","firstName":"ExtraBoldItalic","lastName":"ExtraBoldItalic","tagline":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","firstName":"Light","lastName":"Light","tagline":"LightItalic"},{"elementTitle":"Light","sectionTitle":"Bold","firstName":"Light","lastName":"Light","tagline":"Light"},{"elementTitle":"Light","sectionTitle":"Bold","firstName":"Light","lastName":"ExtraBold","tagline":"Light"}]},
+	{"elementId":"1", "marginTop":"20", "marginBottom":"20","numStyles":"1","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"true","elementTitle":"hide","sectionTitle":"hide","contactIcon":"show","style":[{"elementTitle":"Light","sectionTitle":"Bold","contactInfo":"Light"}]},
+	{"elementId":"2", "marginTop":"20", "marginBottom":"-25","numStyles":"1","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"false","elementTitle":"hide","sectionTitle":"hide","regarding":"show","style":[{"elementTitle":"Light","sectionTitle":"Bold","regarding":"Light"}]},
+	{"elementId":"3", "marginTop":"20", "marginBottom":"20","numStyles":"1","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"false","elementTitle":"hide","sectionTitle":"hide","date":"show","city":"show","style":[{"elementTitle":"Light","sectionTitle":"Bold","date":"LightItalic","city":"LightItalic"}]},
+	{"elementId":"4", "marginTop":"20", "marginBottom":"-25","numStyles":"1","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"false","elementTitle":"hide","sectionTitle":"hide","salutation":"show","style":[{"elementTitle":"Light","sectionTitle":"Bold","salutation":"Light"}]},
+	{"elementId":"5", "marginTop":"20", "marginBottom":"-35","numStyles":"1","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"false","elementTitle":"hide","sectionTitle":"hide","introduction":"show","style":[{"elementTitle":"Light","sectionTitle":"Bold","introduction":"Light"}]},
+	{"elementId":"6", "marginTop":"20", "marginBottom":"-35","numStyles":"1","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"false","elementTitle":"hide","sectionTitle":"hide","motive":"show","style":[{"elementTitle":"Light","sectionTitle":"Bold","motive":"Light"}]},
+	{"elementId":"7", "marginTop":"20", "marginBottom":"-35","numStyles":"1","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"false","elementTitle":"hide","sectionTitle":"hide","competence":"show","style":[{"elementTitle":"Light","sectionTitle":"Bold","competence":"Light"}]},
+	{"elementId":"8", "marginTop":"20", "marginBottom":"-35","numStyles":"1","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"false","elementTitle":"hide","sectionTitle":"hide","motive-company":"show","style":[{"elementTitle":"Light","sectionTitle":"Bold","motive-company":"Light"}]},
+	{"elementId":"9", "marginTop":"20", "marginBottom":"-35","numStyles":"1","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"false","elementTitle":"hide","sectionTitle":"hide","question":"show","style":[{"elementTitle":"Light","sectionTitle":"Bold","questions":"Light"}]},
+	{"elementId":"10", "marginTop":"20", "marginBottom":"-35","numStyles":"1","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"false","elementTitle":"hide","sectionTitle":"hide","closure":"show","style":[{"elementTitle":"Light","sectionTitle":"Bold","closure":"Light"}]},
+	{"elementId":"11", "marginTop":"20", "marginBottom":"-10","numStyles":"1","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"false","elementTitle":"hide","sectionTitle":"hide","greetings":"show","style":[{"elementTitle":"Light","sectionTitle":"Bold","greetings":"Light"}]},
+	{"elementId":"12", "marginTop":"20", "marginBottom":"20","numStyles":"1","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"false","elementTitle":"hide","sectionTitle":"hide","name":"show","style":[{"elementTitle":"Light","sectionTitle":"Bold","name":"Light"}]},
+	{"elementId":"13", "marginTop":"20", "marginBottom":"-35","numStyles":"1","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"true","elementTitle":"hide","sectionTitle":"hide","paragraph":"show","style":[{"elementTitle":"Light","sectionTitle":"Bold","paragraph":"Light"}]},
+	{"elementId":"14", "marginTop":"20", "marginBottom":"20","numStyles":"1","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"true","elementTitle":"hide","sectionTitle":"hide","line":"show","style":[{"elementTitle":"Light","sectionTitle":"Bold","line":"Light"}]},
+	{"elementId":"15", "marginTop":"20", "marginBottom":"20","numStyles":"1","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"true","elementTitle":"hide","sectionTitle":"hide","list":"show","style":[{"elementTitle":"Light","sectionTitle":"Bold","list":"Light"}]},
+	{"elementId":"16", "marginTop":"20", "marginBottom":"20","numStyles":"1","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"true","elementTitle":"show","sectionTitle":"hide","contactIcon":"show","style":[{"elementTitle":"Light","sectionTitle":"Bold","contactInfo":"Light"}]},
+	{"elementId":"17", "marginTop":"20", "marginBottom":"20","numStyles":"2","currentStyle":"0","break":"element","sectionAdd":"false","itemAdd":"false","elementTitle":"hide","sectionTitle":"hide","style":[{"elementTitle":"Light","sectionTitle":"Bold"},{"elementTitle":"Light","sectionTitle":"Bold"}]}
+],
+"templateDefaults":[
+	{"mainColor":"","mainBackground":"","sideBackground":"","headerBackground":"","hoverBackground":"","dragareaBorder":"#54dbfb","dragareaBackground":"#f0faff","headerDark":"#EFEFEF","sideDark":"#EFEFEF","mainDark":"#515151","headerLight":"#777777","sideLight":"#777777","mainLight":"#7A7A7A","elementBorder":"false","fontFamily":"Open Sans","titleSize":"30","titelUppercase":"true","headerText":"CV Firstname Lastname","headerPos":"right","showHeader":"false","footerText":"CV Firstname Lastname","footerPos":"left","showFooter":"false","headerPageNumber":"false","headerNumberPos":"right","footerPageNumber":"false","footerNumberPos":"right"}
+]};
+        i.basePath = "https://www.cv-template.com/";
+        i.language = "en";
+        i.authenticated = false;
+        i.secondment = false;
+        i.cvTimestamp = undefined;
+        i.preview = false;
+        i.user = null;
+
+        
+                    i.userEmail = 'eqCHEP5OGj4f9lxBI3J2GPvuWolxHHa4lqJnqxNctmp@local';
+            i.referredUsers = 0;
+            i.user = {"Name":"","Email":"eqCHEP5OGj4f9lxBI3J2GPvuWolxHHa4lqJnqxNctmp@local","AcceptedPrivacyPolicy":null,"AcceptedOverEighteen":null,"AcceptedEmail":null,"ReferralUrl":"https:\/\/www.cv-template.com\/en?ref=459724babd0","Created":{"date":"2019-08-19 06:37:52.000000","timezone_type":3,"timezone":"UTC"}};
+            i.boughtProducts = [];
+            i.subscriptions = [];
+            };
+
+</script>
+
+<script type="text/javascript" src="https://www.cv-template.com/js/interface.js"></script>    <script type="text/javascript">
+    
+    </script></head>
+<body class="bgimage" style="min-height: 780px;">
+<div id="menu" class="builder" style="background-color: #1e1e1e;">
+    <a href="/" style="display: block; width: 180px;">
+        <div id="logo"></div>
+    </a>
+    <ul class="menu">
+        <li class="signinscreen">Sign In</li>
+        <li class="registerscreen" style="display: none;">Register</li>
+        <li class="store"><a href="/en/products" target="_blank">Store</a></li>
+        <li class="dropdown">Language
+            <ul class="submenu">
+                                                            <li><a href="/en/account/choose-template">English</a></li>
+                                            <li><a href="/de/account/choose-template">Deutsch</a></li>
+                                            <li><a href="/fr/account/choose-template">Fran&#231;ais</a></li>
+                                            <li><a href="/nl/account/choose-template">Nederlands</a></li>
+                                                </ul>
+        </li>
+    </ul>
+    <div class="mobile-menu-toggle"></div>
+</div>
+<div id="bglayer"></div>
+<section id="mail-cta">
+    <div class="close-cta"></div>
+    <div class="title">7 mistakes to avoid when making a succeeding CV</div>
+    <div class="errormessage"></div>
+    <input id="yournameshare" class="input" type="text" name="name" placeholder="Your Name">
+    <input id="secondnameshare" class="input" type="text" name="secondname" placeholder="Second Name">
+    <input id="email" class="input" type="text" name="email" placeholder="Email Address">
+    <div class="button orange">Get the free PDF</div>
+</section>
+<div id="mobile-menu-wrapper">
+    <section id="mobile-cta">
+        <div class="cta-wrapper">
+            <div class="titleline1">7 mistakes</div>
+            <div class="titleline2">to avoid when making a</div>
+            <div class="titleline3">succeeding CV</div>
+            <div class="button orange">Get the free PDF</div>
+        </div>
+    </section>
+    <div id="mobile-menu">
+        <div class="clicklayer"></div>
+        <ul style="position:relative;">
+            <li class="signIn signinscreen">Sign In</li>
+            <li class="dropdown">Language</li>
+            <ul class="submenu">
+                                                            <li><a href="/en/account/my-cvs">English</a></li>
+                                            <li><a href="/de/account/my-cvs">Deutsch</a></li>
+                                            <li><a href="/fr/account/my-cvs">Fran&#231;ais</a></li>
+                                            <li><a href="/nl/account/my-cvs">Nederlands</a></li>
+                                                </ul>
+        </ul>
+    </div>
+</div>
+<div class="container mycvs choosecv">
+<div class="innerwrap">
+
+    <div class="title" style="border-bottom: 0px; padding-bottom: 0px; margin-bottom: 5px;">Choose Your Favourite CV Template</div>
+    <div class="subtitle choose-cv" style="display: block;font-weight: normal;text-align: center;color: #f3da94;font-size: 21px;border-bottom: 1px solid white;padding-bottom: 20px;margin-bottom: 20px;">77% of the recruiters were more likely to hire a premium candidate based on first impression*</div>
+    <div class="templatecontainer choose-cv">
+        <div class="template premium" template="15">
+            <a href="https://www.cv-template.com/en/builder/template/15/new-cv">
+                <div class="img">
+                    <img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/img/premium-cv/photo-cv.jpg" />
+                    <div class="button">Select</div>
+                </div>
+            </a>
+            <div class="templatecolors">
+                <div class="colors">
+                    <div class="color active" style="background-color: #528259;" img="photo-cv.jpg"></div>
+                    <div class="color" style="background-color: #066a92;" img="photo-cv-lightblue.jpg"></div>
+                    <div class="color" style="background-color: #181E86;" img="photo-cv-blue.jpg"></div>
+                    <div class="color" style="background-color: #7d127d;" img="photo-cv-purple.jpg"></div>
+                    <div class="color" style="background-color: #ec6b02;" img="photo-cv-orange.jpg"></div>
+                    <div class="color" style="background-color: #dc0d0d;" img="photo-cv-red.jpg"></div>
+                </div>
+            </div>
+        </div>
+        <div class="template premium" template="16">
+            <a href="https://www.cv-template.com/en/builder/template/16/new-cv">
+                <div class="img">
+                    <img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/img/premium-cv/creative-cv.jpg" />
+                    <div class="button">Select</div>
+                </div>
+            </a>
+            <div class="templatecolors">
+                <div class="colors">
+                    <div class="color active" style="background-color: #8317A3;" img="creative-cv.jpg"></div>
+                    <div class="color" style="background-color: #20279a;" img="creative-cv-blue.jpg"></div>
+                    <div class="color" style="background-color: #45a9a1;" img="creative-cv-greenblue.jpg"></div>
+                    <div class="color" style="background-color: #7a8c23;" img="creative-cv-lime.jpg"></div>
+                    <div class="color" style="background-color: #4f8a31;" img="creative-cv-green.jpg"></div>
+                    <div class="color" style="background-color: #BB251D;" img="creative-cv-red.jpg"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="template premium" template="17">
+            <a href="https://www.cv-template.com/en/builder/template/17/new-cv">
+                <div class="img">
+                    <img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/img/premium-cv/professional-cv.jpg" />
+                    <div class="button">Select</div>
+                </div>
+            </a>
+            <div class="templatecolors">
+                <div class="colors">
+                    <div class="color active" style="background-color: #E87929;" img="professional-cv.jpg"></div>
+                    <div class="color" style="background-color: #DC5A8D;" img="professional-cv-pink.jpg"></div>
+                    <div class="color" style="background-color: #8c29ab;" img="professional-cv-purple.jpg"></div>
+                    <div class="color" style="background-color: #2e2ca2;" img="professional-cv-blue.jpg"></div>
+                    <div class="color" style="background-color: #2b80b3;" img="professional-cv-lightblue.jpg"></div>
+                    <div class="color" style="background-color: #31a767;" img="professional-cv-green.jpg"></div>
+                    <div class="color" style="background-color: #26867d;" img="professional-cv-darkgreen.jpg"></div>
+                    <div class="color" style="background-color: #825739;" img="professional-cv-brown.jpg"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="template premium" template="18">
+            <a href="https://www.cv-template.com/en/builder/template/18/new-cv">
+                <div class="img">
+                    <img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/img/premium-cv/dark-cv.jpg" />
+                    <div class="button">Select</div>
+                </div>
+            </a>
+            <div class="templatecolors">
+                <div class="colors">
+                    <div class="color" style="background-color: #d8437d;" img="dark-cv-pink.jpg"></div>
+                    <div class="color active" style="background-color: #E87929;" img="dark-cv.jpg"></div>
+                    <div class="color" style="background-color: #ecdd1e;" img="dark-cv-yellow.jpg"></div>
+                    <div class="color" style="background-color: #2ca965;" img="dark-cv-green.jpg"></div>
+                    <div class="color" style="background-color: #1ab79c;" img="dark-cv-greenblue.jpg"></div>
+                    <div class="color" style="background-color: #5375c5;" img="dark-cv-blue.jpg"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="template premium" template="19">
+            <a href="https://www.cv-template.com/en/builder/template/19/new-cv">
+                <div class="img">
+                    <img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/img/premium-cv/elegant-cv-gold.jpg" />
+                    <div class="button">Select</div>
+                </div>
+            </a>
+            <div class="templatecolors">
+                <div class="colors">
+                    <div class="color" style="background-color: #825739;" img="elegant-cv-brown.jpg"></div>
+                    <div class="color active" style="background-color: #B27F00;" img="elegant-cv-gold.jpg"></div>
+                    <div class="color" style="background-color: #A80068;" img="elegant-cv-pink.jpg"></div>
+                    <div class="color" style="background-color: #8c29ab;" img="elegant-cv-purple.jpg"></div>
+                    <div class="color" style="background-color: #100e96;" img="elegant-cv-blue.jpg"></div>
+                    <div class="color" style="background-color: #2b80b3;" img="elegant-cv-lightblue.jpg"></div>
+                    <div class="color" style="background-color: #31a767;" img="elegant-cv-green.jpg"></div>
+                    <div class="color" style="background-color: #26867d;" img="elegant-cv-darkgreen.jpg"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="template premium" template="20">
+            <a href="https://www.cv-template.com/en/builder/template/20/new-cv">
+                <div class="img">
+                    <img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/img/premium-cv/clean-cv-gold.jpg" />
+                    <div class="button">Select</div>
+                </div>
+            </a>
+            <div class="templatecolors" style="width: 241px;">
+                <div class="colors">
+                    <div class="color active" style="background-color: #B27F00;" img="clean-cv-gold.jpg"></div>
+                    <div class="color" style="background-color: #E87929;" img="clean-cv-orange.jpg"></div>
+                    <div class="color" style="background-color: #DC5A8D;" img="clean-cv-pink.jpg"></div>
+                    <div class="color" style="background-color: #8c29ab;" img="clean-cv-purple.jpg"></div>
+                    <div class="color" style="background-color: #2e2ca2;" img="clean-cv-blue.jpg"></div>
+                    <div class="color" style="background-color: #2b80b3;" img="clean-cv-lightblue.jpg"></div>
+                    <div class="color" style="background-color: #31a767;" img="clean-cv-green.jpg"></div>
+                    <div class="color" style="background-color: #139a63;" img="clean-cv-darkgreen.jpg"></div>
+                    <div class="color" style="background-color: #a26439;" img="clean-cv-brown.jpg"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="template" template="1">
+            <a href="https://www.cv-template.com/en/builder/template/1/new-cv">
+                <div class="img">
+                    <img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/img/choose-template/t1-gold.jpg" />
+                    <div class="button">Select</div>
+                </div>
+            </a>
+            <div class="templatecolors">
+                <div class="colors">
+                    <div class="color active" style="background-color: #B27F00;" img="t1-gold.jpg"></div>
+                    <div class="color" style="background-color: #7BAD00;" img="t1-lime.jpg"></div>
+                    <div class="color" style="background-color: #00AA71;" img="t1-green.jpg"></div>
+                    <div class="color" style="background-color: #A80068;" img="t1-purple.jpg"></div>
+                    <div class="color" style="background-color: #0061ca;" img="t1-blue.jpg"></div>
+                    <div class="color" style="background-color: #c51b0a;" img="t1-red.jpg"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="template" template="14">
+            <a href="https://www.cv-template.com/en/builder/template/14/new-cv">
+                <div class="img">
+                    <img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/img/choose-template/t14-blue.jpg" />
+                    <div class="button">Select</div>
+                </div>
+            </a>
+            <div class="templatecolors">
+                <div class="colors">
+                    <div class="color active" style="background-color: #167EA6;" img="t14-blue.jpg"></div>
+                    <div class="color" style="background-color: #1C168C;" img="t14-darkblue.jpg"></div>
+                    <div class="color" style="background-color: #00A200;" img="t14-green.jpg"></div>
+                    <div class="color" style="background-color: #FF7D00;" img="t14-orange.jpg"></div>
+                    <div class="color" style="background-color: #F60000;" img="t14-red.jpg"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="template" template="5">
+            <a href="https://www.cv-template.com/en/builder/template/5/new-cv">
+                <div class="img">
+                    <img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/img/choose-template/t5-blue.jpg" />
+                    <div class="button">Select</div>
+                </div>
+            </a>
+            <div class="templatecolors">
+                <div class="colors">
+                    <div class="color" style="background-color: #008400;" img="t5-green.jpg"></div>
+                    <div class="color" style="background-color: #00C5A7;" img="t5-greenblue.jpg"></div>
+                    <div class="color active" style="background-color: #009CE5;" img="t5-blue.jpg"></div>
+                    <div class="color" style="background-color: #4973E9;" img="t5-darkblue.jpg"></div>
+                    <div class="color" style="background-color: #D32D19;" img="t5-red.jpg"></div>
+                    <div class="color" style="background-color: #e36ec9;" img="t5-pink.jpg"></div>
+                    <div class="color" style="background-color: #f78a3e;" img="t5-orange.jpg"></div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+
+        <div class="template" template="8">
+            <a href="https://www.cv-template.com/en/builder/template/8/new-cv">
+                <div class="img">
+                    <img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/img/choose-template/t8-orange.jpg" />
+                    <div class="button">Select</div>
+                </div>
+            </a>
+            <div class="templatecolors">
+                <div class="colors">
+                    <div class="color active" style="background-color: #f78a3e;" img="t8-orange.jpg"></div>
+                    <div class="color" style="background-color: #F328C4;" img="t8-pink.jpg"></div>
+                    <div class="color" style="background-color: #009CE5;" img="t8-lightblue.jpg"></div>
+                    <div class="color" style="background-color: #2C3AA3;" img="t8-blue.jpg"></div>
+                    <div class="color" style="background-color: #00AF01;" img="t8-green.jpg"></div>
+                    <div class="color" style="background-color: #E30000;" img="t8-red.jpg"></div>
+                    <div class="color" style="background-color: #515151;" img="t8-black.jpg"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="template" template="6">
+            <a href="https://www.cv-template.com/en/builder/template/6/new-cv">
+                <div class="img">
+                    <img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/img/choose-template/t6-lime.jpg" />
+                    <div class="button">Select</div>
+                </div>
+            </a>
+            <div class="templatecolors">
+                <div class="colors">
+                    <div class="color" style="background-color: #4a9e33;" img="t6-green.jpg"></div>
+                    <div class="color active" style="background-color: #9EBB1F;" img="t6-lime.jpg"></div>
+                    <div class="color" style="background-color: #00B1D2;" img="t6-lightblue.jpg"></div>
+                    <div class="color" style="background-color: #004ebe;" img="t6-blue.jpg"></div>
+                    <div class="color" style="background-color: #c51b0a;" img="t6-red.jpg"></div>
+                    <div class="color" style="background-color: #C17E45;" img="t6-brown.jpg"></div>
+                </div>
+            </div>
+        </div>
+
+        
+
+        <div class="template" template="7">
+            <a href="https://www.cv-template.com/en/builder/template/7/new-cv">
+                <div class="img">
+                    <img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/img/choose-template/t7-orange.jpg" />
+                    <div class="button">Select</div>
+                </div>
+            </a>
+            <div class="templatecolors">
+                <div class="colors">
+                    <div class="color active" style="background-color: #f78a3e;" img="t7-orange.jpg"></div>
+                    <div class="color" style="background-color: #e36ec9;" img="t7-pink.jpg"></div>
+                    <div class="color" style="background-color: #32cae0;" img="t7-blue.jpg"></div>
+                    <div class="color" style="background-color: #56c381;" img="t7-green.jpg"></div>
+                    <div class="color" style="background-color: #00AF01;" img="t7-darkgreen.jpg"></div>
+                    <div class="color" style="background-color: #E30000;" img="t7-red.jpg"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="template" template="9">
+            <a href="https://www.cv-template.com/en/builder/template/9/new-cv">
+                <div class="img">
+                    <img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/img/choose-template/t9-red.jpg" />
+                    <div class="button">Select</div>
+                </div>
+            </a>
+            <div class="templatecolors">
+                <div class="colors">
+                    <div class="color" style="background-color: #f78a3e;" img="t9-orange.jpg"></div>
+                    <div class="color active" style="background-color: #EF3636;" img="t9-red.jpg"></div>
+                    <div class="color" style="background-color: #4171D8;" img="t9-blue.jpg"></div>
+                    <div class="color" style="background-color: #00AE6C;" img="t9-green.jpg"></div>
+                    <div class="color" style="background-color: #6BB000;" img="t9-lime.jpg"></div>
+                    <div class="color" style="background-color: #B6006A;" img="t9-purple.jpg"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="template" template="2">
+            <a href="https://www.cv-template.com/en/builder/template/2/new-cv">
+                <div class="img">
+                    <img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/img/choose-template/t2-orange.jpg" />
+                    <div class="button">Select</div>
+                </div>
+            </a>
+            <div class="templatecolors">
+                <div class="colors">
+                    <div class="color active" style="background-color: #f78a3e;" img="t2-orange.jpg"></div>
+                    <div class="color" style="background-color: #e36ec9;" img="t2-purple.jpg"></div>
+                    <div class="color" style="background-color: #32cae0;" img="t2-blue.jpg"></div>
+                    <div class="color" style="background-color: #56c381;" img="t2-green.jpg"></div>
+                </div>
+            </div>
+        </div>
+
+        
+
+        
+        <div class="template" template="0">
+            <a href="https://www.cv-template.com/en/builder/template/0/new-cv">
+                <div class="img">
+                    <img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/img/choose-template/t0-green.jpg" />
+                    <div class="button">Select</div>
+                </div>
+            </a>
+            <div class="templatecolors">
+                <div class="colors">
+                    <div class="color active" style="background-color: #4a9e33;" img="t0-green.jpg"></div>
+                    <div class="color" style="background-color: #ff9926;" img="t0-orange.jpg"></div>
+                    <div class="color" style="background-color: #ef4416;" img="t0-darkorange.jpg"></div>
+                    <div class="color" style="background-color: #004ebe;" img="t0-blue.jpg"></div>
+                    <div class="color" style="background-color: #ed1dc1;" img="t0-purple.jpg"></div>
+                    <div class="color" style="background-color: #c51b0a;" img="t0-red.jpg"></div>
+                </div>
+            </div>
+        </div>
+
+
+        
+
+        <div class="template" template="4">
+            <a href="https://www.cv-template.com/en/builder/template/4/new-cv">
+                <div class="img">
+                    <img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/img/choose-template/t4-orange.jpg" />
+                    <div class="button">Select</div>
+                </div>
+            </a>
+            <div class="templatecolors">
+                <div class="colors">
+                    <div class="color" style="background-color: #56c381;" img="t4-green.jpg"></div>
+                    <div class="color active" style="background-color: #f78a3e;" img="t4-orange.jpg"></div>
+                    <div class="color" style="background-color: #e36ec9;" img="t4-pink.jpg"></div>
+                    <div class="color" style="background-color: #32cae0;" img="t4-lightblue.jpg"></div>
+                    <div class="color" style="background-color: #1141B6;" img="t4-blue.jpg"></div>
+                    <div class="color" style="background-color: #BF0D25;" img="t4-red.jpg"></div>
+                </div>
+            </div>
+        </div>
+
+
+        
+
+        
+
+
+        <div class="template" template="3">
+            <a href="https://www.cv-template.com/en/builder/template/3/new-cv">
+                <div class="img">
+                    <img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/img/choose-template/t3-red.jpg" />
+                    <div class="button">Select</div>
+                </div>
+            </a>
+            <div class="templatecolors">
+                <div class="colors">
+                    <div class="color" style="background-color: #4a9e33;" img="t3-green.jpg"></div>
+                    <div class="color" style="background-color: #ff9926;" img="t3-orange.jpg"></div>
+                    <div class="color" style="background-color: #ef4416;" img="t3-darkorange.jpg"></div>
+                    <div class="color" style="background-color: #004ebe;" img="t3-blue.jpg"></div>
+                    <div class="color" style="background-color: #ed1dc1;" img="t3-pink.jpg"></div>
+                    <div class="color active" style="background-color: #c51b0a;" img="t3-red.jpg"></div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div style="display: block; width: 100%; clear: both; font-size: 13px; color: white;">*Tests performed between 11 July - 15 August 2019 with several premium and non-premium CV designs containing the same content. 24 out of the 31 recruiters chose the premium version over the non-premium one after looking at the CVs for just 5 seconds. Be adviced, as opinions are not absolute and the test data is relatively small, results may vary depending on the recruiters&#039;s age, demographics and applying job position.</div>
+
+
+    </div>
+
+    <!--<div class="subtitle choose-letter">Cover Letters Designs</div>-->
+    <div class="templatecontainer choose-letter">
+
+        <div id="referral-lightbox" style="background-color: #f9f9f9;">
+            <h2 style="line-height: 1.2em;max-width: 700px;margin: 0 auto; margin-top: 10px; text-decoration: underline;display: block; padding-top: 15px;padding-bottom: 5px; text-transform: uppercase;font-weight: bold; margin-left: 280px;">GET YOUR JOB UP TO 20% FASTER WITH A MATCHING COVER LETTER DESIGN</span></h2>
+            <h3 style="font-size: 19px; margin-top: 2px; margin-bottom: -13px;color: #555; font-weight: 300; margin-left: 280px;">Complete Your Professional Look for just 1 Referral</h3>
+           <div id="referral-container">
+               <div class="cv-slider">
+                    <img template="1" class="active" src="/img/course/create-cv-online-builder-template-1.jpg" alt="CV Template 1" title="Create a professional designed CV in our online CV Builder">
+                    <img template="7" src="/img/course/create-cv-online-builder-template-7.jpg" alt="CV Template 7" title="Create a professional designed CV in our online CV Builder">
+                    <img template="8" src="/img/course/create-cv-online-builder-template-8.jpg" alt="CV Template 8" title="Create a professional designed CV in our online CV Builder">
+                    <img template="6" src="/img/course/create-cv-online-builder-template-6.jpg" alt="CV Template 6" title="Create a professional designed CV in our online CV Builder">
+                </div>
+                <div class="code">
+                    <div class="referralcode"><div>Share this link, refer 1 friend and get unlimited access to all Cover Letter Designs</div><input id="referralUrl" type="text" value=""/></div>
+
+                    <a class="linkedin-share" target="_blank" href="">
+                        <div class="socialmedia linkedin"><i class="fa fa-linkedin" aria-hidden="true"></i> LinkedIn</div>
+                    </a>
+                    <a class="facebook-share" target="_blank" href="">
+                        <div class="socialmedia facebook"><i class="fa fa-facebook" aria-hidden="true"></i> Facebook</div>
+                    </a>
+                    <a class="twitter-share" target="_blank" href="">
+                        <div class="socialmedia twitter"><i class="fa fa-twitter" aria-hidden="true"></i> Twitter</div>
+                    </a>
+                    <a class="reddit-share" target="_blank" href="">
+                        <div class="socialmedia reddit"><i class="fa fa-reddit-alien" aria-hidden="true"></i> Reddit</div>
+                    </a>
+                </div>
+            </div>
+            <div id="getting-referrals"><b>Getting 1 referral is easy</b>. Just share your link on LinkedIn, Facebook, Quora, Twitter, Pinterest, Instagram, WhatsApp or direct mail and you have access WITHIN 15 MINUTES.<br /><br /><b>Really; just answering a CV related question on <a href="https://www.quora.com" target="_blank">Quora</a> or <a href="https://www.reddit.com" target="_blank">Reddit</a> while including your personal link will grant you access in no time!</b><br /><br /><span style="font-size:15px; font-weight: 300;">Note: a referral will be registered as soon as someone creates a CV-Template account using your unique link. You will be notified by email.</span>
+            </div>
+        </div>
+        <div id="cover-letters" style="display: none;">
+            <div class="template premium" template="15">
+                <a href="https://www.cv-template.com/en/builder/template/15/new-letter">
+                    <div class="img">
+                        <img alt="Cover Letter template" title="Choose your Cover Letter template and create a professional Cover Letter in minutes. Free CV Builder." src="/img/premium-cv/photo-cv-letter.jpg" />
+                        <div class="button">Select</div>
+                    </div>
+                </a>
+            </div>
+            <div class="template premium" template="16">
+                <a href="https://www.cv-template.com/en/builder/template/16/new-letter">
+                    <div class="img">
+                        <img alt="Cover Letter template" title="Choose your Cover Letter template and create a professional Cover Letter in minutes. Free CV Builder." src="/img/premium-cv/creative-cv-letter.jpg" />
+                        <div class="button">Select</div>
+                    </div>
+                </a>
+            </div>
+            <div class="template premium" template="17">
+                <a href="https://www.cv-template.com/en/builder/template/17/new-letter">
+                    <div class="img">
+                        <img alt="Cover Letter template" title="Choose your Cover Letter template and create a professional Cover Letter in minutes. Free CV Builder." src="/img/premium-cv/professional-cv-letter.jpg" />
+                        <div class="button">Select</div>
+                    </div>
+                </a>
+            </div>
+            <div class="template premium" template="18">
+                <a href="https://www.cv-template.com/en/builder/template/18/new-letter">
+                    <div class="img">
+                        <img alt="Cover Letter template" title="Choose your Cover Letter template and create a professional Cover Letter in minutes. Free CV Builder." src="/img/premium-cv/dark-cv-letter.jpg" />
+                        <div class="button">Select</div>
+                    </div>
+                </a>
+            </div>
+            <div class="template premium" template="19">
+                <a href="https://www.cv-template.com/en/builder/template/19/new-letter">
+                    <div class="img">
+                        <img alt="Cover Letter template" title="Choose your Cover Letter template and create a professional Cover Letter in minutes. Free CV Builder." src="/img/premium-cv/elegant-cv-letter.jpg" />
+                        <div class="button">Select</div>
+                    </div>
+                </a>
+            </div>
+            <div class="template premium" template="20">
+                <a href="https://www.cv-template.com/en/builder/template/20/new-letter">
+                    <div class="img">
+                        <img alt="Cover Letter template" title="Choose your Cover Letter template and create a professional Cover Letter in minutes. Free CV Builder." src="/img/premium-cv/clean-cv-letter.jpg" />
+                        <div class="button">Select</div>
+                    </div>
+                </a>
+            </div>
+
+
+            <div class="template" template="1">
+                <a href="https://www.cv-template.com/en/builder/template/1/new-letter">
+                    <div class="img">
+                        <img alt="Cover Letter template" title="Choose your Cover Letter template and create a professional Cover Letter in minutes. Free CV Builder." src="/img/choose-template/cover-letter-1.jpg" />
+                        <div class="button">Select</div>
+                    </div>
+                </a>
+            </div>
+            <div class="template" template="14">
+                <a href="https://www.cv-template.com/en/builder/template/14/new-letter">
+                    <div class="img">
+                        <img alt="Cover Letter template" title="Choose your Cover Letter template and create a professional Cover Letter in minutes. Free CV Builder." src="/img/choose-template/cover-letter-10.jpg" />
+                        <div class="button">Select</div>
+                    </div>
+                </a>
+            </div>
+            <div class="template" template="5">
+                <a href="https://www.cv-template.com/en/builder/template/5/new-letter">
+                    <div class="img">
+                        <img alt="Cover Letter template" title="Choose your Cover Letter template and create a professional Cover Letter in minutes. Free CV Builder." src="/img/choose-template/cover-letter-5.jpg" />
+                        <div class="button">Select</div>
+                    </div>
+                </a>
+            </div>
+            <div class="template" template="8">
+                <a href="https://www.cv-template.com/en/builder/template/8/new-letter">
+                    <div class="img">
+                        <img alt="Cover Letter template" title="Choose your Cover Letter template and create a professional Cover Letter in minutes. Free CV Builder." src="/img/choose-template/cover-letter-8.jpg" />
+                        <div class="button">Select</div>
+                    </div>
+                </a>
+            </div>
+            <div class="template" template="6">
+                <a href="https://www.cv-template.com/en/builder/template/6/new-letter">
+                    <div class="img">
+                        <img alt="Cover Letter template" title="Choose your Cover Letter template and create a professional Cover Letter in minutes. Free CV Builder." src="/img/choose-template/cover-letter-6.jpg" />
+                        <div class="button">Select</div>
+                    </div>
+                </a>
+            </div>
+            <div class="template" template="7">
+                <a href="https://www.cv-template.com/en/builder/template/7/new-letter">
+                    <div class="img">
+                        <img alt="Cover Letter template" title="Choose your Cover Letter template and create a professional Cover Letter in minutes. Free CV Builder." src="/img/choose-template/cover-letter-7.jpg" />
+                        <div class="button">Select</div>
+                    </div>
+                </a>
+            </div>
+            <div class="template" template="9">
+                <a href="https://www.cv-template.com/en/builder/template/9/new-letter">
+                    <div class="img">
+                        <img alt="Cover Letter template" title="Choose your Cover Letter template and create a professional Cover Letter in minutes. Free CV Builder." src="/img/choose-template/cover-letter-9.jpg" />
+                        <div class="button">Select</div>
+                    </div>
+                </a>
+            </div>
+            <div class="template" template="2">
+                <a href="https://www.cv-template.com/en/builder/template/2/new-letter">
+                    <div class="img">
+                        <img alt="Cover Letter template" title="Choose your Cover Letter template and create a professional Cover Letter in minutes. Free CV Builder." src="/img/choose-template/cover-letter-2.jpg" />
+                        <div class="button">Select</div>
+                    </div>
+                </a>
+            </div>
+            <div class="template" template="0">
+                <a href="https://www.cv-template.com/en/builder/template/0/new-letter">
+                    <div class="img">
+                        <img alt="Cover Letter template" title="Choose your Cover Letter template and create a professional Cover Letter in minutes. Free CV Builder." src="/img/choose-template/cover-letter-0.jpg" />
+                        <div class="button">Select</div>
+                    </div>
+                </a>
+            </div>
+            <div class="template" template="4">
+                <a href="https://www.cv-template.com/en/builder/template/4/new-letter">
+                    <div class="img">
+                        <img alt="Cover Letter template" title="Choose your Cover Letter template and create a professional Cover Letter in minutes. Free CV Builder." src="/img/choose-template/cover-letter-4.jpg" />
+                        <div class="button">Select</div>
+                    </div>
+                </a>
+            </div>
+            <div class="template" template="3">
+                <a href="https://www.cv-template.com/en/builder/template/3/new-letter">
+                    <div class="img">
+                        <img alt="Cover Letter template" title="Choose your Cover Letter template and create a professional Cover Letter in minutes. Free CV Builder." src="/img/choose-template/cover-letter-3.jpg" />
+                        <div class="button">Select</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+
+            <!--Cover Lettersss
+                        	<div class="template" template="0"><a href="https://www.cv-template.com/en/builder/template/0/new-letter"><img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/en/builder/template/0/letter-preview.jpg" />
+                <div class="button chooseletter">Select</div></a></div>
+                        	<div class="template" template="0"><a href="https://www.cv-template.com/en/builder/template/1/new-letter"><img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/en/builder/template/1/letter-preview.jpg" />
+                <div class="button chooseletter">Select</div></a></div>
+                        	<div class="template" template="0"><a href="https://www.cv-template.com/en/builder/template/2/new-letter"><img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/en/builder/template/2/letter-preview.jpg" />
+                <div class="button chooseletter">Select</div></a></div>
+                        	<div class="template" template="0"><a href="https://www.cv-template.com/en/builder/template/3/new-letter"><img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/en/builder/template/3/letter-preview.jpg" />
+                <div class="button chooseletter">Select</div></a></div>
+                        	<div class="template" template="0"><a href="https://www.cv-template.com/en/builder/template/4/new-letter"><img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/en/builder/template/4/letter-preview.jpg" />
+                <div class="button chooseletter">Select</div></a></div>
+                        	<div class="template" template="0"><a href="https://www.cv-template.com/en/builder/template/5/new-letter"><img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/en/builder/template/5/letter-preview.jpg" />
+                <div class="button chooseletter">Select</div></a></div>
+                        	<div class="template" template="0"><a href="https://www.cv-template.com/en/builder/template/6/new-letter"><img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/en/builder/template/6/letter-preview.jpg" />
+                <div class="button chooseletter">Select</div></a></div>
+                        	<div class="template" template="0"><a href="https://www.cv-template.com/en/builder/template/7/new-letter"><img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/en/builder/template/7/letter-preview.jpg" />
+                <div class="button chooseletter">Select</div></a></div>
+                        	<div class="template" template="0"><a href="https://www.cv-template.com/en/builder/template/8/new-letter"><img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/en/builder/template/8/letter-preview.jpg" />
+                <div class="button chooseletter">Select</div></a></div>
+                        	<div class="template" template="0"><a href="https://www.cv-template.com/en/builder/template/9/new-letter"><img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/en/builder/template/9/letter-preview.jpg" />
+                <div class="button chooseletter">Select</div></a></div>
+                        	<div class="template" template="0"><a href="https://www.cv-template.com/en/builder/template/10/new-letter"><img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/en/builder/template/10/letter-preview.jpg" />
+                <div class="button chooseletter">Select</div></a></div>
+                        	<div class="template" template="0"><a href="https://www.cv-template.com/en/builder/template/11/new-letter"><img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/en/builder/template/11/letter-preview.jpg" />
+                <div class="button chooseletter">Select</div></a></div>
+                        	<div class="template" template="0"><a href="https://www.cv-template.com/en/builder/template/12/new-letter"><img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/en/builder/template/12/letter-preview.jpg" />
+                <div class="button chooseletter">Select</div></a></div>
+                        	<div class="template" template="0"><a href="https://www.cv-template.com/en/builder/template/13/new-letter"><img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/en/builder/template/13/letter-preview.jpg" />
+                <div class="button chooseletter">Select</div></a></div>
+                        	<div class="template" template="0"><a href="https://www.cv-template.com/en/builder/template/14/new-letter"><img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/en/builder/template/14/letter-preview.jpg" />
+                <div class="button chooseletter">Select</div></a></div>
+                        	<div class="template" template="0"><a href="https://www.cv-template.com/en/builder/template/15/new-letter"><img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/en/builder/template/15/letter-preview.jpg" />
+                <div class="button chooseletter">Select</div></a></div>
+                        	<div class="template" template="0"><a href="https://www.cv-template.com/en/builder/template/16/new-letter"><img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/en/builder/template/16/letter-preview.jpg" />
+                <div class="button chooseletter">Select</div></a></div>
+                        	<div class="template" template="0"><a href="https://www.cv-template.com/en/builder/template/17/new-letter"><img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/en/builder/template/17/letter-preview.jpg" />
+                <div class="button chooseletter">Select</div></a></div>
+                        	<div class="template" template="0"><a href="https://www.cv-template.com/en/builder/template/18/new-letter"><img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/en/builder/template/18/letter-preview.jpg" />
+                <div class="button chooseletter">Select</div></a></div>
+                        	<div class="template" template="0"><a href="https://www.cv-template.com/en/builder/template/19/new-letter"><img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/en/builder/template/19/letter-preview.jpg" />
+                <div class="button chooseletter">Select</div></a></div>
+                        	<div class="template" template="0"><a href="https://www.cv-template.com/en/builder/template/20/new-letter"><img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/en/builder/template/20/letter-preview.jpg" />
+                <div class="button chooseletter">Select</div></a></div>
+                    </div>-->
+    </div>
+</div>
+
+<div class="detachering-cv" style="display:none;">
+        <div class="title">Choose Secondment Template</div>
+        <!--<div class="subtitle choose-cv">CV Designs</div>-->
+        <div class="templatecontainer choose-cv">
+
+            <div class="template secondment" template="11">
+                <a href="https://www.cv-template.com/en/builder/template/11/new-cv?secondment=1">
+                    <div class="img">
+                        <img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/img/choose-template/t11-blue.jpg" />
+                        <img class="img2" src="/img/choose-template/tt11-blue.jpg" />
+                        <div class="button">Select</div>
+                    </div>
+                </a>
+                <div class="templatecolors">
+                    <div class="colors">
+                        <div class="color active" style="background-color: #167EA6;" img="t11-blue.jpg"></div>
+                        <div class="color" style="background-color: #1C168C;" img="t11-darkblue.jpg"></div>
+                        <div class="color" style="background-color: #00A200;" img="t11-green.jpg"></div>
+                        <div class="color" style="background-color: #FF7D00;" img="t11-orange.jpg"></div>
+                        <div class="color" style="background-color: #F60000;" img="t11-red.jpg"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="template secondment" template="10">
+                <a href="https://www.cv-template.com/en/builder/template/10/new-cv?secondment=1">
+                    <div class="img">
+                        <img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/img/choose-template/t10-blue.jpg" />
+                        <img class="img2" src="/img/choose-template/tt10-blue.jpg" />
+                        <div class="button">Select</div>
+                    </div>
+                </a>
+                <div class="templatecolors">
+                    <div class="colors">
+                        <div class="color active" style="background-color: #167EA6;" img="t10-blue.jpg"></div>
+                        <div class="color" style="background-color: #1C168C;" img="t10-darkblue.jpg"></div>
+                        <div class="color" style="background-color: #00A200;" img="t10-green.jpg"></div>
+                        <div class="color" style="background-color: #FF7D00;" img="t10-orange.jpg"></div>
+                        <div class="color" style="background-color: #F60000;" img="t10-red.jpg"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="template secondment" template="12">
+                <a href="https://www.cv-template.com/en/builder/template/12/new-cv?secondment=1">
+                    <div class="img">
+                        <img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/img/choose-template/t12-blue.jpg" />
+                        <img class="img2" src="/img/choose-template/tt12-blue.jpg" />
+                        <div class="button">Select</div>
+                    </div>
+                </a>
+                <div class="templatecolors">
+                    <div class="colors">
+                        <div class="color active" style="background-color: #167EA6;" img="t12-blue.jpg"></div>
+                        <div class="color" style="background-color: #1C168C;" img="t12-darkblue.jpg"></div>
+                        <div class="color" style="background-color: #00A200;" img="t12-green.jpg"></div>
+                        <div class="color" style="background-color: #FF7D00;" img="t12-orange.jpg"></div>
+                        <div class="color" style="background-color: #F60000;" img="t12-red.jpg"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="template secondment" template="13">
+                <a href="https://www.cv-template.com/en/builder/template/13/new-cv?secondment=1">
+                    <div class="img">
+                        <img alt="CV template" title="Choose your CV template and create a professional CV in minutes. Free CV Builder." src="/img/choose-template/t13-blue.jpg" />
+                        <img class="img2" src="/img/choose-template/tt13-blue.jpg" />
+                        <div class="button">Select</div>
+                    </div>
+                </a>
+                <div class="templatecolors">
+                    <div class="colors">
+                        <div class="color active" style="background-color: #167EA6;" img="t13-blue.jpg"></div>
+                        <div class="color" style="background-color: #1C168C;" img="t13-darkblue.jpg"></div>
+                        <div class="color" style="background-color: #00A200;" img="t13-green.jpg"></div>
+                        <div class="color" style="background-color: #FF7D00;" img="t13-orange.jpg"></div>
+                        <div class="color" style="background-color: #F60000;" img="t13-red.jpg"></div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+</div>
+
+<div id="footer">
+		<a href="/en/disclaimer/">Disclaimer</a> | <a href="/en/privacy-policy/">Privacy Policy</a> | <a href="/en/terms-of-use/">Terms of Use</a> | <a href="/en/contact/">Contact</a>
+		<div class="copyright">Copyright &copy; 2019 CV-Template. All Rights Reserved.</div>
+	</div>
+	<div id="signin">
+    <div class="blurredbackground"></div>
+	    <div class="signinbox">
+	        <div class="title">Welcome</div>
+	        <div class="box">
+	            <div class="feedback" style="color: #cc0000;margin-top:-20px;margin-bottom: 10px;"></div>
+	            <input type="text" placeholder="name" name="name" class="register">
+	            <input type="text" placeholder="email" name="email" class="stay">
+	            <div class="password" style="position: relative;">
+	                <input id="password-field" type="password" placeholder="password" name="password">
+	                <div id="showpassword" class="register">SHOW</div>
+	                <div id="meter-wrapper"><div id="meter"></div></div>
+	            </div>
+	            <div id="privacy-policy" class="register">
+	                <input id="accept-policy" type="checkbox" name="privacy-policy-adult">I accept the <a href="https://www.cv-template.com/en/privacy-policy" target="_blank">privacy policy</a> and I am 18 years or older or have parental consent.
+	            </div>
+	            <div id="receive-emails" class="register">
+	                <div class="emails-title">Do you want a copy of my <b>extensive CV guide</b>?<br /><em style="display: none; font-weight: 300;">Sign up for my powerful email course.</em></div>
+	                <div id="choicerequired"></div>
+	                <div class="choice"><input type="radio" id="emailbuttonyes" name="receive-emails" value="yes"><span>Yes</span></div>
+	                <div class="choice"><input type="radio" id="emailbuttonno" name="receive-emails" value="no"><span>No</span></div>
+	                <div class="accept">YES! You can email me with your best advice, tips, updates, freebies and offer opportunities.<!--<span style="font-size: 14px; font-weight: 300;">(You can unsubscribe any time)</span>--></div>
+	            </div>
+	            
+	            <input type="submit" value="Sign In" class="stay">
+	            <div class="privacy-description register">Your CV data is safely stored in Amsterdam and will NOT be processed by anyone.</div>
+	            <!--<input type="checkbox" name="remember" class="remember"><label>remember me</label>-->
+	            <div class="forgotpassword">forgot password</div>
+	        </div>
+	        <div id="register">I don&#039;t have an account</div>
+	    </div>
+	</div>
+
+	<div id="bg-layer" style="display: none;"></div>
+	<script src="/js/script.js"></script>
+	<script>
+        $(document).ready(function(){
+            if(i.user){
+                if(i.user.AcceptedEmail){
+                    $('#receive-emails').remove();
+                }
+            }
+            if(i.authenticated){
+
+		        $('#referralUrl').val(i.user.ReferralUrl);
+
+
+		        $('.linkedin-share').attr('href','https://www.linkedin.com/shareArticle?mini=true&url='+i.user.ReferralUrl+'&title=Give%20yourself%20a%20professional%20look%20in%20no%20time.%20Free%20CV%20Builder&summary=&source=');
+		        $('.facebook-share').attr('href','https://www.facebook.com/sharer/sharer.php?u='+i.user.ReferralUrl);
+		        $('.twitter-share').attr('href','https://twitter.com/home?status=Give%20yourself%20a%20professional%20look%20in%20no%20time.%20Free%20CV%20Builder%20'+i.user.ReferralUrl);
+		        $('.reddit-share').attr('href','http://reddit.com/submit?url='+i.user.ReferralUrl+'&title=Give%20yourself%20a%20professional%20look%20in%20no%20time.%20Free%20CV%20Builder');
+		        //console.log(i.referredUsers);
+		        if(i.referredUsers >= 1 || i.boughtProducts.includes('package_premium-templates')){
+		            $('#referral-lightbox').css('display','none');
+		            $('#cover-letters').css('display','block');
+		        }
+            }else if(window.location.href.indexOf("letter") > -1) {
+				window.location.replace("https://www.cv-template.com/en/login");
+			}
+        });
+    </script>
+</body>
+</html>

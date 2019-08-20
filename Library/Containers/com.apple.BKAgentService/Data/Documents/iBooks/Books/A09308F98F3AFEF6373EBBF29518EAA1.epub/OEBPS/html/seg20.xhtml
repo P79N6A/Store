@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 14: Edit Items</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 14: Edit Items</h1>
+
+<p>Adding new items to the list is a great step forward for the app, but there are usually three things an app needs to do with data:
+</p>
+<ol>
+<li>
+<p>Add new items (which you’ve tackled).
+</p></li>
+
+<li>
+<p>Deleting items (you allow that with swipe-to-delete).
+</p></li>
+
+<li>
+<p>Editing existing items (uhh…).
+</p></li>
+</ol>
+
+<p>The last is useful when you want to rename an item from your list - afterall, we all make typos.
+</p>
+<p>This chapter covers the following:
+</p>
+<ul>
+<li>
+<p><em>Edit items:</em> Edit existing to-do items via the app interface.
+</p></li>
+
+<li>
+<p><em>Refactor the code:</em> Using Xcode&apos;s built-in refactoring capability to rename code to be easily identifiable.
+</p></li>
+
+<li>
+<p><em>One more thing:</em> Fix missed code changes after the code refactoring using the Find navigator.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Edit items</h2>
+
+<p>You could make a completely new Edit Item screen, but it would be needless duplication of work — the edit screen woul work mostly the same as the Add Item screen. The only difference is that it doesn’t start out empty — instead, it works with an existing to-do item.
+</p>
+<p>So, let’s re-use the Add Item screen and make it capable of editing an existing <code>ChecklistItem</code> object.
+</p><div class="image-25"><img src="graphics/img273.png"  alt="" title="Editing a to-do item" /></div>
+<p>For the edit option, when the user presses Done, you won’t have to make a new <code>ChecklistItem</code> object, instead, you will simply update the text in the existing <code>ChecklistItem</code>.
+</p>
+<p>You’ll also tell the delegate about these changes so that it can update the text label of the corresponding table view cell.
+</p>
+<div class="note">
+<p><em>Exercise:</em> What changes would you need to make to the Add Item screen to enable it to edit existing items?
+</p></div>
+
+<p>Answer:
+</p>
+<ol>
+<li>
+<p>The screen title must be changed to <em>Edit Item</em>.
+</p></li>
+
+<li>
+<p>You must be able to pass it an existing <code>ChecklistItem</code> object.
+</p></li>
+
+<li>
+<p>You have to place the <code>ChecklistItem</code>’s text into the text field.
+</p></li>
+
+<li>
+<p>When the user presses Done, you should not add a new <code>ChecklistItem</code> object, but instead, update the existing one.
+</p></li>
+</ol>
+
+<p>There is a bit of a user interface problem, though… How will the user actually open the Edit Item screen? In many apps that is done by tapping on the item’s row, but in <i>Checklists</i> that already toggles the checkmark on or off.
+</p>
+<p>To solve this problem, you’ll have to revise the UI a little first.
+</p>
+<h3 class="segment-chapter">Revise the UI to allow editing</h3>
+
+<p>When a row is given two functions, the standard approach is to use a <em>detail disclosure button</em> for the secondary task:
+</p><div class="image-30"><img src="graphics/img274.png"  alt="" title="The detail disclosure button" /></div>
+<p>Tapping the row itself will still perform the row’s main function — in this case, toggling the checkmark. But tapping the disclosure button will open the Edit Item screen.
+</p>
+<div class="note">
+<p><em>Note:</em> An alternative approach is in Apple’s <i>Reminders</i> app, where the checkmark is on the left and tapping only this part of the row will toggle the checkmark. Tapping anywhere else in the row will bring up the Edit screen for that item.
+</p>
+<p>There are also apps that can toggle the whole screen into “Edit mode” and then let you change the text of an item inline. Which solution you choose depends on what works best for your data.
+</p></div>
+
+<p>➤ Go to the table view cell in the storyboard for the Checklists scene and in the <em>Attributes inspector</em> set its <em>Accessory</em> to <em>Detail Disclosure</em>.
+</p>
+<p>Instead of the checkmark, you’ll now see a chevron (<code>&gt;</code>) and a blue info button on the cell. This means you’ll have to place the checkmark somewhere else.
+</p>
+<h3 class="segment-chapter">The new checkmark</h3>
+
+<p>➤ Drag a new <em>Label</em> on to the cell and place it to the left of the text label. Give it the following attributes:
+</p>
+<ul>
+<li>
+<p>Text: √ (you can type this with <em>Alt/Option+V</em>)
+</p></li>
+
+<li>
+<p>Font: Helvetica Neue, Bold, size 22
+</p></li>
+
+<li>
+<p>Tag: 1001
+</p></li>
+</ul>
+
+<p>You’ve given this new label its own tag, so you can easily find it later.
+</p>
+<p>If typing Option-V does not work for you, or you&apos;d prefer a different image, choose <em>Edit → Emoji </em><em>&amp;</em><em> Symbols</em> from the Xcode menu bar. Use the search bar to search for “check” – or whatever takes your fancy. (Note that not all of these special symbols may actually work on your iPhone.)
+</p><div class="image-30"><img src="graphics/img275.png"  alt="" title="The Emoji &amp; Symbols palette" /></div>
+<p>➤ Resize the text label so that it doesn’t overlap the checkmark or the disclosure button. It should be about 215 points wide.
+</p>
+<p>➤ Adjust the Auto Layout constraints on the button original label and set new constraints on the new label after you&apos;ve positioned everything to your satisfaction.
+</p>
+<p>The best course of action is probably to retain all the existing layout constraints on the old label except for the <em>leading</em> one. You can delete any constraints by selecting the control (the label in this case) and then switching to the Size inspector, selecting the relevant constraint and tapping <em>Delete</em>.
+</p>
+<p>You can then set up Auto Layout constraints for the new label for <em>width</em>, <em>left</em>, <em>top</em>, <em>right</em>, and <em>bottom</em> via the <em>Add New Constraints</em> button to position everything correctly.
+</p>
+<p>The design of the prototype cell should now look similar to this:
+</p><div class="image-40"><img src="graphics/img276.png"  alt="" title="The new design of the prototype cell" /></div>
+<p>➤ In <em>ChecklistViewController.swift</em>, change <code>configureCheckmark(for:with:)</code> to:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">configureCheckmark</span><span class="hljs-params">(<span class="hljs-keyword">for</span> cell: UITableViewCell, 
+                       with item: ChecklistItem)</span></span> {
+  <span class="hljs-keyword">let</span> label = cell.viewWithTag(<span class="hljs-number">1001</span>) <span class="hljs-keyword">as</span>! <span class="hljs-type">UILabel</span>
+
+  <span class="hljs-keyword">if</span> item.checked {
+    label.text = <span class="hljs-string">"√"</span>
+  } <span class="hljs-keyword">else</span> {
+    label.text = <span class="hljs-string">""</span>
+  }
+}   </pre>
+<p>Instead of setting the cell’s <code>accessoryType</code> property, this now changes the text in the new label.
+</p>
+<p>➤ Run the app and you’ll see that the checkmark has moved to the left. There is also a blue detail disclosure button on the right. Tapping the row still toggles the checkmark, but tapping the blue button doesn’t do anything ... yet.
+</p><div class="image-25"><img src="graphics/img277.png"  alt="" title="The checkmarks are now on the other side of the cell" /></div>
+<h3 class="segment-chapter">The edit screen segue</h3>
+
+<p>Next, you’re going to make the detail disclosure button open the Add/Edit Item screen. This is pretty simple because Interface Builder also allows you to make a segue for a disclosure button.
+</p>
+<p>➤ Open the storyboard. Select the table view cell for the Checklists scene and <em>Control-drag</em> to the Add Item scene to make a segue. From the popup, choose <em>Show</em> from the <em>Accessory Action</em> section (not from Selection Segue):
+</p><div class="image-20"><img src="graphics/img278.png"  alt="" title="Making a segue from the detail disclosure button" /></div>
+<p>There should now be two segues going from the Checklists screen to the navigation controller. One is triggered by the + button, the other by the detail disclosure button from the prototype cell.
+</p><div class="image-60"><img src="graphics/img279.png"  alt="" title="Two arrows for two segues" /></div>
+<p>For the app to make a distinction between these two segues, they must have unique identifiers.
+</p>
+<p>➤ Give this new segue the identifier <em>EditItem</em> (in the <em>Attributes inspector</em>).
+</p>
+<p>If you run the app now, tapping the blue ⓘ button will also open the Add Item screen. But the Cancel and Done buttons won’t work.
+</p>
+<div class="note">
+<p><em>Exercise:</em> Can you explain why not?
+</p></div>
+
+<p>Answer: You haven’t set the delegate yet. Remember that you set the delegate in <code>prepare(for:sender:)</code>, but only for when the + button is tapped to perform the <i>AddItem</i> segue. You haven’t done the same for this new <i>EditItem</i> segue.
+</p>
+<p>Before you do that though, you should first make the Add Item screen capable of editing existing <code>ChecklistItem</code> objects.
+</p>
+<h3 class="segment-chapter">Update the Add Item screen to handle editing</h3>
+
+<p>➤ Add a new property for a <code>ChecklistItem</code> object below the other instance variables in <em>AddItemViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> itemToEdit: <span class="hljs-type">ChecklistItem</span>?</pre>
+<p>This variable contains the existing <code>ChecklistItem</code> object that the user will edit. But when adding a new to-do item, <code>itemToEdit</code> will be <code>nil</code>. That is how the view controller will make the distinction between adding and editing.
+</p>
+<p>Because <code>itemToEdit</code> can be <code>nil</code>, it needs to be an optional. That explains the question mark.
+</p>
+<p>➤ Update  <code>viewDidLoad()</code> in <em>AddItemViewController.swift</em> as follows:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  . . .
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> item = itemToEdit {
+    title = <span class="hljs-string">"Edit Item"</span>
+    textField.text = item.text
+  }
+}</pre>
+<p>Recall that <code>viewDidLoad()</code> is called by UIKit when the view controller is loaded from the storyboard, but before it is shown on the screen. That gives you time to put the user interface in order.
+</p>
+<p>In editing mode, when <code>itemToEdit</code> is not <code>nil</code>, you change the title in the navigation bar to “Edit Item”. You do this by changing the <code>title</code> property.
+</p>
+<p>Each view controller has a number of built-in properties and this is one of them. The navigation controller looks for the <code>title</code> property and automatically changes the text in the navigation bar.
+</p>
+<p>You also set the text in the text field to the value from the item’s <code>text</code> property.
+</p>
+<h4 class="segment-chapter">if let</h4>
+
+<p>You cannot use optionals like you would regular variables. For example, if <code>viewDidLoad()</code> had the following code:
+</p><pre class="code-block">    textField.text = itemToEdit.text</pre>
+<p>Xcode would complain with the error message, “Value of optional type ChecklistItem? not unwrapped”.
+</p>
+<p>That’s because <code>itemToEdit</code> is the optional version of <code>ChecklistItem</code>.
+</p>
+<p>In order to use it, you first need to <i>unwrap</i> the optional. You do that with the following special syntax:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> temporaryConstant = optionalVariable {
+  <span class="hljs-comment">// temporaryConstant now contains the unwrapped value of the </span>
+  <span class="hljs-comment">// optional variable. temporayConstant is only available from</span>
+  <span class="hljs-comment">// within this if block</span>
+}</pre>
+<p>If the optional is not <code>nil</code>, then the code inside the <code>if</code> statement is performed.
+</p>
+<p>There are a few other ways to read the value of an optional, but using <code>if let</code> is the safest: if the optional has no value – i.e. it is <code>nil</code> – then the code inside the <code>if let</code> block is skipped over.
+</p>
+<p>The new code you added to <code>viewDidLoad</code> can also be written like this:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> itemToEdit = itemToEdit {
+  title = <span class="hljs-string">"Edit Item"</span>
+  textField.text = itemToEdit.text
+}</pre>
+<p>Looks a bit weird, doesn&apos;t it? Why are we assigning the value from <code>itemToEdit</code> back again to <code>itemToEdit</code>? And how come the compiler doesn&apos;t complain about optional unwrapping now if we write the code like that?
+</p>
+<p>The above practice is called <i>variable shadowing</i> - you create a &quot;shadow&quot; instance of the <code>itemToEdit</code> variable just for the duration of the <code>if</code> condition and that shadow instance is an unwrapped instance of the originally optional <code>itemToEdit</code> variable.
+</p>
+<p>So, when you refer to <code>itemToEdit</code> when assigning text to the text field, you are actually referring to the unwrapped instance of the variable instead of the original optional instance.
+</p>
+<p>This might be a bit confusing if you are new to Swift and optionals. So, whether you use variable shadowing to unwrap optionals, or not, is entirely up to you. Personally, I prefer shadowing because then the code is clear about the variable being referred to in the code at all times since the same variable name is used for both the optional and unwrapped versions.
+</p>
+<p>The <code>AddItemViewController</code> is now capable of recognizing when it needs to edit an item. If the <code>itemToEdit</code> property is given a <code>ChecklistItem</code> object, then the screen magically changes into the Edit Item screen.
+</p>
+<p>But where do you set that <code>itemToEdit</code> property? In prepare-for-segue, of course! That’s the ideal place for placing values into the properties of the new screen before it becomes visible.
+</p>
+<h3 class="segment-chapter">Set the item to be edited</h3>
+
+<p>➤ Change <code>prepare(for:sender:)</code> in <em>ChecklistViewController.swift</em> to the following:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">prepare</span><span class="hljs-params">(<span class="hljs-keyword">for</span> segue: UIStoryboardSegue, 
+                         sender: Any?)</span></span> {
+  <span class="hljs-keyword">if</span> segue.identifier == <span class="hljs-string">"AddItem"</span> {
+    . . .
+    
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> segue.identifier == <span class="hljs-string">"EditItem"</span> {
+    <span class="hljs-keyword">let</span> controller = segue.destination
+                     <span class="hljs-keyword">as</span>! <span class="hljs-type">AddItemViewController</span>
+    controller.delegate = <span class="hljs-keyword">self</span>
+    
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> indexPath = tableView.indexPath(
+                          <span class="hljs-keyword">for</span>: sender <span class="hljs-keyword">as</span>! <span class="hljs-type">UITableViewCell</span>) {
+      controller.itemToEdit = items[indexPath.row]
+    }
+  }
+}</pre>
+<p>As before, you get the <code>AddItemViewController</code> via the segue&apos;s  <code>destination</code> .
+</p>
+<p>You also set the view controller’s <code>delegate</code> property so you’re notified when the user taps Cancel or Done. Nothing new there. This is the same as for the <code>AddItem</code> segue.
+</p>
+<p>This is the interesting new bit:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> indexPath = tableView.indexPath(
+                      <span class="hljs-keyword">for</span>: sender <span class="hljs-keyword">as</span>! <span class="hljs-type">UITableViewCell</span>){
+  controller.itemToEdit = items[indexPath.row]
+}</pre>
+<p>You’re in the <code>prepare(for:sender:)</code> method, which has a parameter named <code>sender</code>. This parameter contains a reference to the control that triggered the segue, in this case, the table view cell whose disclosure button was tapped.
+</p>
+<p>You use that <code>UITableViewCell</code> object to find the table view row number by looking up the corresponding index path using <code>tableView.indexPath(for:)</code>.
+</p>
+<p>The return type of <code>indexPath(for:)</code> is <code>IndexPath?</code>, an optional, meaning it can possibly return <code>nil</code>. That’s why you need to unwrap this optional value with <code>if let</code> before you can use it.
+</p>
+<p>Once you have the index path, you obtain the <code>ChecklistItem</code> object to edit, and you assign this to <code>AddItemViewController</code>’s <code>itemToEdit</code> property.
+</p>
+<h4 class="segment-chapter">Sending data between view controllers</h4>
+
+<p>We’ve talked about screen B (the Add/Edit Item screen) passing data back to screen A (the Checklists screen) via delegates. But here, you’re passing a piece of data the other way around – from screen A to screen B – namely, the <code>ChecklistItem</code> to edit.
+</p>
+<p>Data transfer between view controllers works two ways:
+</p>
+<ol>
+<li>
+<p>From A to B. When screen A opens screen B, A can give B the data it needs.  You simply make a new instance variable in B’s view controller. Screen A then puts an object into this property right before it makes screen B visible, usually in <code>prepare(for:sender:)</code>.
+</p></li>
+
+<li>
+<p>From B to A. To pass data back from B to A you use a delegate.
+</p></li>
+</ol>
+
+<p>This illustration shows how screen A sends data to screen B by putting it into B’s properties, and how screen B sends data back to the delegate:
+</p><div class="image-50"><img src="graphics/img280.png"  alt="" title="" /></div>
+<p>I hope the flow between view controllers is starting to make sense to you now. You’re going to do this sort of thing a few more times in this app, just to make sure you get comfortable with it.
+</p>
+<p>Making iOS apps is all about creating view controllers and sending messages between them, so you want this to become second nature.
+</p>
+<p>➤ With these steps done, you can now run the app. A tap on the + button opens the Add Item screen as before. But tap the accessory button on an existing row and the screen that opens is named Edit Item. It already contains the to-do item’s text:
+</p><div class="image-25"><img src="graphics/img281.png"  alt="" title="Editing an item" /></div>
+<h3 class="segment-chapter">Enable the Done button for edits</h3>
+
+<p>One small problem: the Done button in the navigation bar is initially disabled. This is because you originally set it to be disabled in the storyboard.
+</p>
+<p>➤ Change <code>viewDidLoad()</code> in <em>AddItemViewController.swift</em> to fix this:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">super</span>.viewDidLoad()
+
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> item = itemToEdit {
+    title = <span class="hljs-string">"Edit Item"</span>
+    textField.text = item.text
+    doneBarButton.isEnabled = <span class="hljs-literal">true</span>    <span class="hljs-comment">// add this line</span>
+  }
+}</pre>
+<p>When in edit mode, you simply enable the Done button since you are guaranteed to be passed some text for the item.
+</p>
+<p>The problems don’t end here, though. Run the app, tap a row to edit it, and press Done. Instead of changing the text on the existing item, a brand new to-do item with the new text is added to the list.
+</p>
+<p>How come? You didn’t write the code yet to update the data model! So, the delegate always thinks it needs to add a new row.
+</p>
+<p>To solve this, you will add a new method to the delegate protocol.
+</p>
+<h3 class="segment-chapter">Handle edits in the delegate protocol</h3>
+
+<p>➤ Add the following line to the <code>protocol</code> section in <em>AddItemViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">addItemViewController</span><span class="hljs-params">(<span class="hljs-number">_</span> controller: AddItemViewController, 
+                  didFinishEditing item: ChecklistItem)</span></span></pre>
+<p>The full protocol now looks like this:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">protocol</span> <span class="hljs-title">AddItemViewControllerDelegate</span>: <span class="hljs-title">class</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">addItemViewControllerDidCancel</span><span class="hljs-params">(
+                 <span class="hljs-number">_</span> controller: AddItemViewController)</span></span>
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">addItemViewController</span><span class="hljs-params">(
+                 <span class="hljs-number">_</span> controller: AddItemViewController,
+                 didFinishAdding item: ChecklistItem)</span></span>
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">addItemViewController</span><span class="hljs-params">(
+                <span class="hljs-number">_</span> controller: AddItemViewController,
+                didFinishEditing item: ChecklistItem)</span></span>
+}</pre>
+<p>There is a method that is invoked when the user presses Cancel and two methods for when the user presses Done.
+</p>
+<p>After adding a new item you call <code>didFinishAdding</code>, but when editing an existing item, the new <code>didFinishEditing</code> method should now be called instead.
+</p>
+<p>By using different methods, the delegate (the <code>ChecklistViewController</code>), can make a distinction between those two situations.
+</p>
+<p>➤ In <em>AddItemViewController.swift</em>, change the <code>done()</code> method to:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">done</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> item = itemToEdit {
+    item.text = textField.text!
+    delegate?.addItemViewController(<span class="hljs-keyword">self</span>, 
+                  didFinishEditing: item)    
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">let</span> item = <span class="hljs-type">ChecklistItem</span>()
+    item.text = textField.text!
+    delegate?.addItemViewController(<span class="hljs-keyword">self</span>, didFinishAdding: item)
+  }
+}</pre>
+<p>First the code checks whether the <code>itemToEdit</code> property contains an object - you should recognize the <code>if let</code> syntax for unwrapping an optional.
+</p>
+<p>If the optional is not <code>nil</code>, you put the text from the text field into the existing <code>ChecklistItem</code> object and then call the new delegate method.
+</p>
+<p>In the case that <code>itemToEdit</code> <i>is</i> <code>nil</code>, the user is adding a new item and you do the stuff you did before (inside the <code>else</code> block).
+</p>
+<h3 class="segment-chapter">Implement the new delegate method</h3>
+
+<p>➤ Try to build the app. It won’t work.
+</p>
+<p>Xcode says “Build Failed” but there don’t seem to be any error messages in <em>AddItemViewController.swift</em>. So what went wrong?
+</p>
+<p>You can see all errors and warnings from Xcode in the <em>Issue navigator</em>.
+</p><div class="image-25"><img src="graphics/img282.png"  alt="" title="Xcode warns about incomplete implementation" /></div>
+<p>The error is apparently in <code>ChecklistViewController</code> because it does not implement a method from the protocol. That is not so strange because you just added the new <code>addItemViewController(_:didFinishEditing:)</code> method to the delegate protocol. But you did not yet tell the view controller, which plays the role of the delegate, what to do about it.
+</p>
+<div class="note">
+<p><em>Note:</em> The exact error message in my version of Xcode is “Method … has different argument names from those required by protocol …”. That’s a bit of a strange error message, wouldn’t you say? It doesn’t really describe what’s wrong, just what the compiler is confused about.
+</p>
+<p>As you write your own apps, you’ll probably run into other strange or even undecipherable error messages. This should get better in time. The Swift compiler is quite new at the job and still needs to work on its bedside manner.
+</p></div>
+
+<p>➤ Add the following to <em>ChecklistViewController.swift</em> and the compiler error will be history:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">addItemViewController</span><span class="hljs-params">(
+              <span class="hljs-number">_</span> controller: AddItemViewController, 
+     didFinishEditing item: ChecklistItem)</span></span> {
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> index = items.index(of: item) {
+    <span class="hljs-keyword">let</span> indexPath = <span class="hljs-type">IndexPath</span>(row: index, section: <span class="hljs-number">0</span>)
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> cell = tableView.cellForRow(at: indexPath) {
+      configureText(<span class="hljs-keyword">for</span>: cell, with: item)
+    }
+  }
+  navigationController?.popViewController(animated:<span class="hljs-literal">true</span>)
+}</pre>
+<p>The <code>ChecklistItem</code> object already has the new text — it was put there by <code>done()</code> — and the cell for it already exists in the table view. But you do need to update the label for its table view cell.
+</p>
+<p>So, in this new method you look for the cell that corresponds to the <code>ChecklistItem</code> object and, using the <code>configureText(for:with:)</code> method you wrote earlier, tell it to refresh its label.
+</p>
+<p>The first statement is the most interesting:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> index = items.index(of: item) {</pre>
+<p>In order to create the <code>IndexPath</code> that you need to retrieve the cell, you first need to find the row number for this <code>ChecklistItem</code>. The row number is the same as the index of the <code>ChecklistItem</code> in the <code>items</code> array - you can use the <code>index(of:)</code> method to return that index.
+</p>
+<p>Now, it won’t happen here, but in theory it’s possible that you use <code>index(of:)</code> on an object that is not actually in the array. To account for the possibility, <code>index(of:)</code> does not return a normal value, it returns an optional. If the object is not part of the array, the returned value is <code>nil</code>.
+</p>
+<p>That’s why you need to use <code>if let</code> here to unwrap the return value from <code>index(of:)</code>.
+</p>
+<p>➤ Try to build the app. Oops, I guess I spoke too soon! Xcode has found another reason to complain: “Cannot invoke index with an argument list of type blah blah blah”. What does <i>that</i> mean?
+</p><div class="image-30"><img src="graphics/img283.png"  alt="" title="New Xcode error" /></div>
+<p>This error is displayed because you can’t use <code>index(of:)</code> on just any array (or collection of objects). An object has to be “equatable” if you are to use <code>index(of:)</code> on an array of that object type. This is because <code>index(of:)</code> must be able to somehow compare the object that you’re looking for against the objects in the array, to see if they are equal.
+</p>
+<p>Your <code>ChecklistItem</code> object does not have any functionality for that yet. There are a few ways you can fix this, but we’ll go for the easy one.
+</p>
+<p>➤ In <em>ChecklistItem.swift</em>, change the class line to:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ChecklistItem</span>: <span class="hljs-title">NSObject</span> </span>{</pre>
+<p>If you’ve programmed in Objective-C before, you&apos;ll be familiar with <code>NSObject</code>.
+</p>
+<p>Almost all objects in Objective-C programs are based on <code>NSObject</code>. It’s the most basic building block provided by iOS, and it offers a bunch of useful functionality that standard Swift objects don’t have.
+</p>
+<p>You can write many Swift programs without having to resort to <code>NSObject</code>, but in times like these it comes in handy.
+</p>
+<p>Building <code>ChecklistItem</code> on top of <code>NSObject</code> is enough to satisfy the “equatable” requirement. In case you&apos;re interested, the other way to do this would have been to specify that <code>ChecklistItem</code> conforms to the <code>Equatable</code> protocol. But then, you&apos;d have to implement an additional method to indicate how the comparison of two <code>ChecklistItem</code> instances would happen. So going with <code>NSObject</code> conformance is easier for the time being.
+</p>
+<p>➤ Run the app again and verify that editing items works now. Excellent!
+</p>
+<h2 class="segment-chapter">Refactor the code</h2>
+
+<p>At this point, you have an app that can add new items and edit existing items using the combined Add/Edit Item screen. Pretty sweet!
+</p>
+<p>Given the recent changes, I don’t think the name <code>AddItemViewController</code> is appropriate anymore as this screen is now used to both add and edit items.
+</p>
+<p>I suggest you rename it to <code>ItemDetailViewController</code>.
+</p>
+<h3 class="segment-chapter">Rename the view controller</h3>
+
+<p>Most IDEs (or <em>I</em>ntegrated <em>D</em>evelopment <em>E</em>nvironments) such as Xcode have a feature named <i>refactoring</i>, which allows you to change the name of a class, method, or variable throughout the entire project, safely. Unfortunately, the refactoring functionality in Xcode did not work correctly for several years with Swift source files :[
+</p>
+<p>The good news is that as of Xcode 9, the refactoring functionaliy in Xcode has not only been restored for Swift files, but it has been re-written from the ground up to work for most of the source code types you would generally work on in Xcode!
+</p>
+<p>Yes, I hear you saying, &quot;Enough of the sales pitch, show me how to refactor!&quot; There are a couple of ways to access the refactor functionality, but the easiest is to simply <em>right-click</em> (or, <em>Control-click</em>) on any class name, method, or variable.
+</p>
+<p>You&apos;ll get a menu similar to this:
+</p><div class="image-70"><img src="graphics/img284.png"  alt="" title="The Xcode context menu" /></div>
+<p>You should notice two things about the above screenshot:
+</p>
+<ol>
+<li>
+<p>Notice how the class name (or method name, or variable name) that was under your cursor when you right-clicked was highlighted? That indicates that the highlighted name is the one that would be renamed.
+</p></li>
+
+<li>
+<p>Notice the <em>Rename…</em> option on the menu under <em>Refactor</em>? It&apos;s this menu option which provides the rename functionality. (There are other refactoring options on that menu too - most of them should be fairly obvious based on the menu title.)
+</p></li>
+</ol>
+
+<p>➤ If you right-clicked over the <code>AddItemViewController</code> class name, select the <em>Refactor - Rename…</em> option now. (If you right-clicked elsewhere, first move your cursor over the class name, right-click, and then select Rename…). You should get a screen similar to the following:
+</p><div class="image-100"><img src="graphics/img285.png"  alt="" title="Xcode rename view" /></div>
+<p>The new screen shows you all the files and instances (including the storyboard and file names) in the project where the particular name you selected is used. Also notice how the name at the instance where you right-clicked is now editable.
+</p>
+<p>Start typing in the new name you want and you&apos;ll notice that all the matching names for all the other instances in the view update in real-time. Cool!
+</p><div class="image-100"><img src="graphics/img286.png"  alt="" title="Xcode real-time renaming" /></div>
+<p>When you&apos;ve entered the correct name and verified that everything will be updated correctly, just click the <em>Rename</em> button on the top right corner and you&apos;re done :] It&apos;s as simple as that!
+</p>
+<div class="note">
+<p><em>Note:</em> While the refactoring works flawlessly most of the time, I&apos;ve sometimes had Xcode do all the refactoring correctly except for renaming the current file itself. If this does happen to you, you might have to rename the file manually by looking for it in the project folder and renaming it via Finder.
+</p></div>
+
+<h3 class="segment-chapter">Test the code after a refactor</h3>
+
+<p>Let&apos;s see if everything works correctly now.
+</p>
+<p>➤ Press <em>⌘+B</em> to compile the app.
+</p>
+<div class="note">
+<p><em>Note:</em> Getting a “Build Failed” error? Sometimes this does happen after a massive change across the whole project like this. The first thing to try is to use the Xcode menu&apos;s <em>Product → Clean Build Folder</em> option and try building again. It should work in most cases at that point.
+</p></div>
+
+<p>Because you made quite a few changes all over the place, it’s a good idea to clean up the debris and detritus from old compiler runs so that Xcode picks up all the new changes. You don’t have to be paranoid about this, but it’s good practice to clean house once in a while.
+</p>
+<p>➤ From Xcode’s menu bar choose <em>Product → Clean Build Folder</em>. When the clean is done, choose <em>Product → Build</em> (or simply press the Run button).
+</p>
+<p>If there are no build issues, run the app again and test the various features just to make sure everything still works! (If the build succeeds but Xcode still shows red error icons in your source file, then close the project and open it again, or restart Xcode. Restarting Xcode is the solution that Almost Always Works™. And if it doesn&apos;t, restarting your computer is the last resort. That does get rid of even the most stubborn issues.)
+</p>
+<h2 class="segment-chapter">One more thing</h2>
+
+<p>The rename process appears to have gone through flawlessly, your app works fine when you test it, and there are no crashes. So, everything should be fine and you can move on to the next feature in the app, right?
+</p>
+<p>Well … not quite :] Switch to <em>ItemDetailViewController.swift</em> and check the protocol definition at the top. What do you see?
+</p><div class="image-100"><img src="graphics/img287.png"  alt="" title="The protocol name has not changed after renaming" /></div>
+<p>Looks as if the protocol name, <code>AddItemViewControllerDelegate</code>, did not change when you renamed <code>AddItemViewController</code>.
+</p>
+<p>If you think about it, it makes sense. <code>AddItemViewControllerDelegate</code> is a different entity than <code>AddItemViewController</code>. So all the renaming did was to change all the references to the  <code>AddItemViewController</code> class, not the <code>AddItemViewControllerDelegate</code> protocol.
+</p>
+<p>You can easily change the name of the protocol to <code>ItemDetailViewControllerDelegate</code> by using Xcode&apos;s rename functionality yet again. But you&apos;ll notice that that only changes the protocol name itself - not the protocol method names. Hmm … this is going to be a lot of work!
+</p>
+<p>You can try renaming each protocol method separately and Xcode&apos;s rename functionality will do a stellar job with the renaming, but you&apos;d have to do this three times for the three methods. This could get really time consuming, especially if you were dealing with a protocol with lots of methods. But ... there&apos;s an easier way.
+</p>
+<p>What is this easier way? To use Xcode&apos;s search and replace functionality, of course! As you&apos;ll notice, all that remains to change in the <code>ItemDetailViewControllerDelegate</code> is the method names, all of which begin with <code>addItemViewController</code>. So, if you can search for the term <code>addItemViewController</code> across the entire project and replace it with <code>itemDetailViewController</code>, you should be done, right?
+</p>
+<p>Here&apos;s how you do it:
+</p>
+<p>➤ Switch to the <em>Find navigator</em> (fourth tab in the navigator pane).
+</p>
+<p>➤ Click on <em>Find</em> to change it to <em>Replace</em>.
+</p>
+<p>➤ Change Ignoring Case to <em>Matching Case</em>.
+</p>
+<p>➤ Type as the search text: <em>addItemViewController</em>. Important: Make sure you spell it exactly like this since your search term is going to be case-sensitive!
+</p>
+<p>➤ Type in the replacement field: <em>itemDetailViewController</em>, again making sure that you type it exactly.
+</p><div class="image-30"><img src="graphics/img288.png"  alt="" title="The search &amp; replace options" /></div>
+<p>➤ Press <em>return</em> on your keyboard to start the search. This doesn’t replace anything yet.
+</p>
+<p>The Find navigator shows the files containing matches for the search term. You should see two Swift source files in this list.
+</p><div class="image-25"><img src="graphics/img289.png"  alt="" title="The search results" /></div>
+<p>➤ Click on any item in the file list above to be taken to that particular match in the relevant file with the match highlighted in the source code:
+</p><div class="image-90"><img src="graphics/img290.png"  alt="" title="The results list allows you to verify each match" /></div>
+<p>Have a look through the search results just to make sure Xcode isn’t doing anything you’ll regret later. It should only rename everything that says <code>addItemViewController</code> to <code>itemDetailViewController</code> but there&apos;s always the possibility that Xcode matched some unrelated code accidentally.
+</p>
+<p>➤ If you are satisfied that the matches are correct, click <em>Replace All</em>. (You could also select only some results in the list and then click <em>Replace</em> to have only those results be changed.)
+</p>
+<p>I always repeat the search afterwards, ignoring case, to make sure I didn’t skip anything by accident.
+</p>
+<p>Now Run the app and test its functionality once again to make sure that everything works. If it does, you are done with this particular task, finally :]
+</p>
+<h4 class="segment-chapter">Iterative development</h4>
+
+<p>If you think this approach to development we’ve taken so far is a little messy, then you’re absolutely right. You started out with one design, but as you continued development you found out that things didn’t work out so well in practice, and that you had to refactor your approach a few times to find a way that works. This is actually how software development goes in practice.
+</p>
+<p>You first build a small part of your app and everything looks and works fine. Then you add the next small part on top of that and suddenly everything breaks down. The proper thing to do is to go back and restructure your entire approach so that everything is hunky-dory again… Until the next change you make.
+</p>
+<p>Software development is a constant process of refinement. In this book I didn’t want to just give you a perfect piece of code and explain how each part works. That’s not how software development happens in the real world.
+</p>
+<p>Instead, you’re working your way from zero to a full app, exactly the way a pro developer would, including the mistakes and dead ends. (Sure, some processes, like setting up a data model, might have happened in a slightly different order if certain concepts did not have to be explained first — I did take some liberties there in order to make some concepts clear. But the basic process of building, tearing down, and re-building remains the same.)
+</p>
+<p>Isn’t it possible to create a design up-front – sometimes called a “software architecture design” – that deals with all of these situations, something like a blueprint for software?
+</p>
+<p>I don’t believe in such designs. Sure, it’s always good to plan ahead. Before writing this book, I made a few quick sketches of how I imagined each app would turn out. That was useful to envision the amount of work, but as usual, some of my assumptions and guesses turned out to be wrong and the design stopped being useful about halfway in. And this is only a simple app!
+</p>
+<p>That doesn’t mean you shouldn’t spend any time on planning and design — just not too much. Simply start somewhere and keep going until you get stuck, then backtrack and improve on your approach. This is called <i>iterative development</i> and it’s usually faster and provides better results than meticulous up-front planning.
+</p>
+<p>You can find the project files for the app up to this point under <em>14 - Edit Items</em> in the Source Code folder.
+</p></body></html>

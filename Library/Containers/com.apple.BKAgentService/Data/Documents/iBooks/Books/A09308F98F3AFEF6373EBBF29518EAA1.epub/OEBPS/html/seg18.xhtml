@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 12: Add Item Screen</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 12: Add Item Screen</h1>
+
+<p>Now that you have the navigation flow from your main screen to the Add Item screen working, it&apos;s time to actually implement the data input functionality for the Add Item screen!
+</p>
+<p>Let’s change the look of the Add Item screen. Currently it is an empty table with a navigation bar on top, but I want it to look like this:
+</p><div class="image-25"><img src="graphics/img240.png"  alt="" title="What the Add Item screen will look like when you’re done" /></div>
+<p>This chapter covers the following:
+</p>
+<ul>
+<li>
+<p><em>Static table cells:</em> Add a static table view cell to the table to display the text field for data entry.
+</p></li>
+
+<li>
+<p><em>Read from the text field:</em> Access the contents of the text field.
+</p></li>
+
+<li>
+<p><em>Polish it up:</em> Improve the look and functionality of the Add Item screen.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Static table cells</h2>
+
+<p>First, you need to add a table view cell to handle the data input for the Add Item screen. As is generally the case with UI changes, you start with the storyboard.
+</p>
+<h3 class="segment-chapter">Storyboard changes</h3>
+
+<p>➤ Open the storyboard and select the <em>Table View</em> object inside the Add Item scene.
+</p>
+<p>➤ In the <em>Attributes inspector</em>, change the <em>Content</em> setting from Dynamic Prototypes to <em>Static Cells</em>.
+</p><div class="image-55"><img src="graphics/img241.png"  alt="" title="Changing the table view to static cells" /></div>
+<p>You use static cells when you know beforehand how many sections and rows the table view will have. This is handy for screens that require the user to enter data, such as the one you’re building here.
+</p>
+<p>With static cells, you can design the rows directly in the storyboard. For a table with static cells you don’t need to provide a data source, and you can hook up the labels and other controls from the cells directly to outlets on the view controller.
+</p>
+<p>As you can see in the Document Outline, the table view now has a Table View Section object under it, and three Table View Cells in that section. (You may need to expand the Table View item first by clicking the disclosure triangle.)
+</p><div class="image-30"><img src="graphics/img242.png"  alt="" title="The table view has a section with three static cells" /></div>
+<p>➤ Select the bottom two cells and delete them (press the <em>delete</em> key on your keyboard). You only need one cell for now.
+</p>
+<p>➤ Select the Table View again and in the <em>Attributes inspector</em> set its <em>Style</em> to <em>Grouped</em>. That gives us the look we want.
+</p><div class="image-60"><img src="graphics/img243.png"  alt="" title="The table view with grouped style" /></div>
+<p>Next up, you’ll add a text field component inside the table view cell that lets the user type text.
+</p>
+<p>➤ Drag a <em>Text Field</em> object into the cell and size it up nicely. You might want to add left, top, right, and bottom Auto Layout constraints to the text field if you don&apos;t want any Xcode warnings. You know how to do that on your own, right? (Hint: use the Add New Constraints button at the bottom of the Interface Builder screen after you&apos;ve sized/positioned the field as you want.)
+</p>
+<p>➤ In the <em>Attributes inspector</em> for the text field, set the <em>Border Style</em> to <em>no border</em> (select the dotted box):
+</p><div class="image-90"><img src="graphics/img244.png"  alt="" title="Adding a text field to the table view cell" /></div>
+<p>➤ Run the app and press the <em>+</em> button to open the Add Item screen. Tap on the cell and you’ll see the keyboard slide in from the bottom of the screen.
+</p>
+<p>Any time you make a text field active, the keyboard automatically appears. You can type into the text field by tapping on the letters. (On the Simulator, you can simply type using your Mac’s keyboard.)
+</p><div class="image-25"><img src="graphics/img245.png"  alt="" title="You can now type text into the table view cell" /></div>
+<div class="note">
+<p><em>Note:</em> If the keyboard does not appear in the Simulator, press <em>⌘K</em> or use the <em>Hardware → Keyboard → Toggle Software Keyboard</em> menu option. You can also use your normal Mac keyboard to type into the text field, even if the on-screen keyboard is not visible. If that doesn&apos;t work, also select <em>Hardware → Keyboard → Connect Hardware Keyboard</em> from the menu.
+</p></div>
+
+<h3 class="segment-chapter">Disable cell selection</h3>
+
+<p>Look what happens when you tap just outside the text field’s area, but still in the cell (try tapping in the margins that surround the text field):
+</p><div class="image-30"><img src="graphics/img246.png"  alt="" title="Whoops, that looks a little weird" /></div>
+<p>The row turns gray because you selected it. Oops, that’s not what you want - you should disable selections for this row. You can do this easily via code by adding the following table view delegate method to <em>AddItemViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Table View Delegates</span>
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+          willSelectRowAt indexPath: IndexPath)</span></span> 
+          -&gt; <span class="hljs-type">IndexPath</span>? {
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+}</pre>
+<p>When the user taps on a cell, the table view sends the delegate a <code>willSelectRowAt</code> message that says: “Hi delegate, I am about to select this particular row.”
+</p>
+<p>By returning the special value <code>nil</code>, the delegate answers: “Sorry, but you’re not allowed to!”
+</p>
+<h4 class="segment-chapter">Return to sender</h4>
+
+<p>You’ve seen the <code>return</code> statement a few times now. You use <code>return</code> to send a value from a method back to the method that called it.
+</p>
+<p>Let’s take a more detailed look at what happens.
+</p><div class="image-70"><img src="graphics/img247.png"  alt="" title="" /></div>
+<p>Methods call other methods and receive values in return.
+</p>
+<p>You cannot just return any value. The value you return must be of the data type that is specified after the <code>-&gt;</code> arrow that follows the method name.
+</p>
+<p>For example, <code>tableView(_:numberOfRowsInSection:)</code> must return an <code>Int</code> value:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+      numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+}</pre>
+<p>If instead your code was like this:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+      numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-string">"1"</span>
+}</pre>
+<p>Then, the compiler would give an error message, as <code>&quot;1&quot;</code> is a string, not an <code>Int</code>. To a human reader they look similar and you can easily understand the intent, but Swift isn’t that tolerant. Data types have to match or they just aren’t allowed.
+</p>
+<p>Your most recent version of this method looks like this:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+      numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">return</span> items.<span class="hljs-built_in">count</span>
+}</pre>
+<p>That is also a valid return statement because <code>items</code> is an <code>Array</code> and the <code>count</code> property from <code>Array</code> is also of the type <code>Int</code>.
+</p>
+<p>The <code>tableView(_:cellForRowAt:)</code> method is supposed to return a <code>UITableViewCell</code> object:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(_tableView: UITableView,
+            cellForRowAt indexPath: IndexPath)</span></span> 
+            -&gt; <span class="hljs-type">UITableViewCell</span> {
+
+  <span class="hljs-keyword">let</span> cell = tableView.dequeueReusableCell(
+                    withIdentifier: <span class="hljs-string">"TheCellIdentifier"</span>, 
+                               <span class="hljs-keyword">for</span>: indexPath)
+  . . .
+  <span class="hljs-keyword">return</span> cell
+}</pre>
+<p>The local constant <code>cell</code> contains a <code>UITableViewCell</code> object, so it’s OK to return the value of <code>cell</code> from the method.
+</p>
+<p>The <code>tableView(_:willSelectRowAt:)</code> method is supposed to return an <code>IndexPath</code> object. However, you can also make it return <code>nil</code>, indicating no value/object.
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+          willSelectRowAt indexPath: IndexPath)</span></span> -&gt; <span class="hljs-type">IndexPath</span>? {
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+}</pre>
+<p>That’s what the <code>?</code> behind <code>IndexPath</code> is for: The question mark tells the Swift compiler that you can also return <code>nil</code> from this method. Note that returning <code>nil</code> from a method is only allowed if there is a question mark (or exclamation point) behind the return type. A type declaration with a question mark behind it is known as an <i>optional</i>. (You&apos;ll learn more about optionals in the next chapter.)
+</p>
+<p>The special value <code>nil</code> represents “no value” but it’s used to mean different things throughout the iOS SDK. Sometimes it means “nothing found” or “don’t do anything”. Here it means that the row should not be selected when the user taps it.
+</p>
+<p>How do you know what <code>nil</code> means for a certain method? You can find that in the documentation of the method in question.
+</p>
+<p>In the case of <code>willSelectRowAt</code>, the iOS documentation says:
+</p>
+<div class="note">
+<p>Return Value: An index-path object that confirms or alters the selected row. Return an IndexPath object other than indexPath if you want another cell to be selected. Return nil if you don’t want the row selected.
+</p></div>
+
+<p>This means you can either:
+</p>
+<ol>
+<li>
+<p>Return the same index-path you were given. This confirms that this row can be selected.
+</p></li>
+
+<li>
+<p>Return another index-path in order to select a different row.
+</p></li>
+
+<li>
+<p>Return <code>nil</code> to prevent the row from being selected, which is what you did.
+</p></li>
+</ol>
+
+<p>So remember, you need to use the <code>return</code> statement to exit a method that expects to return something. If you forget, then Xcode will give the following error: “Missing return in a function expected to return &lt;data type&gt;”.
+</p>
+<p>You’ve also seen methods that do not return anything:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">addItem</span><span class="hljs-params">()</span></span></pre>
+<p>and:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">configureCheckmark</span><span class="hljs-params">(<span class="hljs-keyword">for</span> cell: UITableViewCell,
+                       with item: ChecklistItem)</span></span></pre>
+<p>These methods do not have an arrow (<code>-&gt;</code>) indicating a return value. Such a method does not pass a value back to the caller and therefore does not need a <code>return</code> statement. (You can still use <code>return</code> to exit from such methods, but the <code>return</code> statement should not be followed by a value.)
+</p>
+<p>Strictly speaking, even methods without a return type <i>do</i> return a value, an <i>empty tuple</i>. Think of this as a special object that embodies the concept of “nothing”. (Don’t confuse this with <i>nil</i>, which is an actual value.)
+</p>
+<p>You sometimes see this written as:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">methodThatDoesNotReturnValue</span><span class="hljs-params">()</span></span> -&gt; ()
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">anotherMethodThatDoesNotReturnValue</span><span class="hljs-params">()</span></span> -&gt; <span class="hljs-type">Void</span></pre>
+<p>The notation for an empty tuple is <code>()</code>, so in this context the parentheses mean there is no return value. The term <code>Void</code> is a synonym for <code>()</code>.
+</p>
+<p>But really, if a method does not return anything it’s just as easy to leave out the <code>-&gt;</code> arrow. Also note that <code>@IBAction</code> methods never return a value - this is a rule.
+</p>
+<p>While it’s already impossible to select the row, as you’ve just told the table view you won’t allow it, there is one more thing you need to do to prevent the row from going gray. In fact, most of the time, this second change is enough to not show cell selection, even without the code change above.
+</p>
+<p>Table view cells have a selection color property. Even if you make it impossible for a row to be selected, sometimes UIKit still briefly draws the cell gray when you tap it. Therefore, it is best to also disable this selection color.
+</p>
+<p>➤ In the storyboard, select the table view cell and go to the <em>Attributes inspector</em>. Set the <em>Selection</em> attribute to <em>None</em>.
+</p>
+<p>Now if you run the app, it is impossible to select the row and make it turn gray. Try and prove me wrong! :]
+</p>
+<h2 class="segment-chapter">Read from the text field</h2>
+
+<p>You have a text field in a table view cell that the user can type into, but how do you read the text that the user has typed?
+</p>
+<h3 class="segment-chapter">Add an outlet for the text field</h3>
+
+<p>When the user taps Done, you need to get that text and somehow put it into a new <code>ChecklistItem</code> and add it to the list of to-do items. This means the <code>done()</code> action needs to be able to refer to the text field.
+</p>
+<p>You already know how to refer to controls from within your view controller: use an outlet. When you added outlets for the previous app, I told you to type in the <code>@IBOutlet</code> declaration in the source file and make the connection in the storyboard.
+</p>
+<p>I’m going to show you a trick now that will save you some typing. You can let Interface Builder do all of this automatically by Control-dragging from the control in question directly into your source code file!
+</p>
+<p>➤ First, go to the storyboard and select the <em>Add Item View Controller</em>. Then open the <em>Assistant editor</em> using the toolbar button on the top right. This button looks like two circles.
+</p><div class="image-25"><img src="graphics/img248.png"  alt="" title="Click the toolbar button to open the Assistant editor" /></div>
+<p>This may make the screen a little crowded – there might now be up to five horizontal panels open. If you’re running out of space, you might want to close the Project navigator, the Utilities pane, and/or the Document Outline using the relevant toolbar buttons.
+</p>
+<p>The Assistant editor opens a new pane on the right of the screen by default (it might give you horizontal split views instead, if you have changed your default view settings). In the Jump Bar (the bar below the toolbar) it should say <em>Automatic</em> and the Assistant editor should be displaying the <em>AddItemViewController.swift</em> file:
+</p><div class="image-90"><img src="graphics/img249.png"  alt="" title="The Assistant editor" /></div>
+<p>“Automatic” means the Assistant editor tries to figure out what other file is related to the one you’re currently editing. When you’re editing a storyboard, the related file is generally the selected view controller’s Swift file.
+</p>
+<p>(Sometimes Xcode can be a little dodgy here. If it shows you something other than <em>AddItemViewController.swift</em>, then click in the Jump Bar and manually select the correct file.)
+</p>
+<p>➤ With the storyboard and the Swift file side by side, select the text field. Then <em>Control-drag</em> from the text field into the Swift file.
+</p><div class="image-90"><img src="graphics/img250.png"  alt="" title="Control-dragging from the text field into the Swift file" /></div>
+<p>When you let go, a popup appears:
+</p><div class="image-60"><img src="graphics/img251.png"  alt="" title="The popup that lets you add a new outlet" /></div>
+<p>➤ Choose the following options:
+</p>
+<ul>
+<li>
+<p>Connection: Outlet
+</p></li>
+
+<li>
+<p>Name: <em>textField</em>
+</p></li>
+
+<li>
+<p>Type: UITextField
+</p></li>
+
+<li>
+<p>Storage: Weak
+</p></li>
+</ul>
+
+<div class="note">
+<p><em>Note:</em> If “Type” does not say UITextField, but instead says UITableViewCell or UIView, then you selected the wrong thing.
+</p>
+<p>Make sure you’re Control-dragging from the text field inside the cell, not the cell itself. Granted, it’s kinda hard to see, being white on white. If you’re having trouble selecting the text field, click that area several times in succession.
+</p>
+<p>You can also Control-drag from “No Border Style Text Field” in the Document Outline.
+</p></div>
+
+<p>➤ Press <em>Connect</em> and voila, Xcode automatically inserts an <code>@IBOutlet</code> for you and connects it to the text field object.
+</p>
+<p>In code it looks like this:
+</p><pre class="code-block"><span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> textField: <span class="hljs-type">UITextField</span>!</pre>
+<p>Just by dragging you have successfully hooked up the text field object with a new property named <code>textField</code>. How easy was that?
+</p>
+<h3 class="segment-chapter">Read the contents of the text field</h3>
+
+<p>Now you’ll modify the <code>done()</code> action to write the contents of this text field to the Xcode Console, the pane at the bottom of the screen where <code>print()</code> messages show up. This is a quick way to verify that you can actually read what the user typed.
+</p>
+<p>➤ In <em>AddItemViewController.swift</em>, change <code>done()</code> to:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">done</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-comment">// Add the following line</span>
+  <span class="hljs-built_in">print</span>(<span class="hljs-string">"Contents of the text field: <span class="hljs-subst">\(textField.text!)</span>"</span>)
+
+  navigationController?.popViewController(animated: <span class="hljs-literal">true</span>)
+}</pre>
+<p>You can make these changes directly inside the Assistant editor. It’s very handy that you can edit the source code and the storyboard side-by-side.
+</p>
+<p>➤ Run the app, press the + button and type something in the text field. When you press Done, the Add Item screen should close and Xcode should reveal the Debug pane with a message like this:
+</p><pre class="code-block">Contents of the text field: Hello, world!</pre>
+<p>Great, so that works! <code>print()</code> should be an old friend by now. It’s one of my faithful debugging companions :]
+</p>
+<p>Recall that you can print the value of a variable by placing it inside <code>\(</code> and <code>)</code> in a string. Here you used <code>\(textField.text!)</code> to print out the contents of the text field’s <code>text</code> property. (I’ll explain what the exclamation point is for later.)
+</p>
+<div class="note">
+<p><em>Note:</em> Because the iOS Simulator already outputs a lot of debug messages of its own, it may be a bit hard to find your <code>print()</code> messages in the Console. Luckily there is a Filter box at the bottom that lets you search for your own messages - just type in what you&apos;re looking for into the filter box.
+</p></div>
+
+<h2 class="segment-chapter">Polish it up</h2>
+
+<p>Before you write the code to take the text and insert it as a new item into the items list, let’s improve the design and workings of the Add Item screen a little.
+</p>
+<h3 class="segment-chapter">Give the text field focus on screen opening</h3>
+
+<p>For instance, it would be nice if you didn’t have to tap on the text field in order to bring up the keyboard. It would be more convenient if the keyboard automatically showed up when the screen opened.
+</p>
+<p>➤ To accomplish this, add a new method to <em>AddItemViewController.swift</em>.
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewWillAppear</span><span class="hljs-params">(<span class="hljs-number">_</span> animated: Bool)</span></span> {
+  <span class="hljs-keyword">super</span>.viewWillAppear(animated)
+  textField.becomeFirstResponder()
+}</pre>
+<p>The view controller receives the <code>viewWillAppear()</code> message just before it becomes visible. That is a perfect time to make the text field active. You do this by sending it the <code>becomeFirstResponder()</code> message.
+</p>
+<p>If you’ve done programming on other platforms, this is often called “giving the control focus”. In iOS terminology, the control becomes the <i>first responder</i>.
+</p>
+<p>➤ Run the app and go to the Add Item screen; you can start typing right away.
+</p>
+<p>(Again, note that the keyboard may not appear on the Simulator. Press <em>⌘+K</em> to bring it up. The keyboard will always appear when you run the app on an actual device, though.)
+</p>
+<p>It’s often little features like these that make an app a joy to use. Having to tap on the text field before you can start typing gets old really fast. In this fast-paced age, using their mobiles on the go, users don’t have the patience for that. Such minor annoyances may be reason enough for users to switch to a competitor’s app. I always put a lot of effort into making my apps as frictionless as possible.
+</p>
+<h3 class="segment-chapter">Style the text field</h3>
+
+<p>With that in mind, let’s style the input field a bit.
+</p>
+<p>➤ Open the storyboard and select the text field. Go to the <em>Attributes inspector</em> and set the following attributes:
+</p>
+<ul>
+<li>
+<p>Placeholder: <em>Name of the Item</em>
+</p></li>
+
+<li>
+<p>Font: System 17
+</p></li>
+
+<li>
+<p>Adjust to Fit: Uncheck this
+</p></li>
+
+<li>
+<p>Capitalization: Sentences
+</p></li>
+
+<li>
+<p>Return Key: Done
+</p></li>
+</ul>
+<div class="image-25"><img src="graphics/img252.png"  alt="" title="The text field attributes" /></div>
+<p>There are several options here that let you configure the keyboard that appears when the text field becomes active.
+</p>
+<p>If this were a field that only allowed numbers, for example, you would set the Keyboard Type to Number Pad. If it were an email address field, you’d set it to E-mail Address. For our purposes, the Default keyboard is appropriate.
+</p>
+<p>You can also change the text that is displayed on the keyboard’s Return Key. By default it says “return” but you set it to “Done”. This is just the text on the button; it doesn’t automatically close the screen. You still have to make the keyboard’s Done button trigger the same action as the Done button from the navigation bar.
+</p>
+<h3 class="segment-chapter">Handle the keyboard Done button</h3>
+
+<p>➤ Make sure the text field is selected and open the <em>Connections inspector</em>. Drag from the <em>Did End on Exit</em> event to the view controller and pick the <em>done</em> action.
+</p>
+<p>If you still have the Assistant editor open, you can also drag directly to the source code for the <code>done()</code> method.
+</p><div class="image-80"><img src="graphics/img253.png"  alt="" title="Connecting the text field to the done() action method" /></div>
+<p>To see the connections for the <code>done</code> action, click on the circle in the gutter next to the method name. The popup shows that <code>done()</code> is now connected to both the bar button and the text field:
+</p><div class="image-60"><img src="graphics/img254.png"  alt="" title="Viewing the connections for the done() method" /></div>
+<p>➤ Run the app. Pressing Done on the keyboard will now close the screen and print the text to the debug area.
+</p><div class="image-30"><img src="graphics/img255.png"  alt="" title="The keyboard now has a big blue Done button" /></div>
+<h3 class="segment-chapter">Disallow empty input</h3>
+
+<p>Now that you have user input working, It’s always good to validate what the user entered to make sure that the input is acceptable. For instance, what should happen if the user immediately taps the Done button on the Add Item screen without entering any text?
+</p>
+<p>Adding a to-do item to the list that has no description text is not very useful. So, in order to prevent this, you should disable the Done button when no text has been typed yet.
+</p>
+<p>Of course, you have two Done buttons to take care of, one on the keyboard, and one in the navigation bar. Let’s start with the Done button from the keyboard as this is the simplest one to fix.
+</p>
+<p>➤ On the <em>Attributes inspector</em> for the text field, check <em>Auto-enable Return Key</em>.
+</p>
+<p>That’s it. Now when you run the app, the Done button on the keyboard is disabled when there is no text in the text field. Try it out!
+</p><div class="image-30"><img src="graphics/img256.png"  alt="" title="The Auto-enable Return Key option disables the return key when there is no text" /></div>
+<p>For the Done button in the navigation bar, you have to do a little more work. You have to check the contents of the text field after every keystroke to see if it is now empty or not. If it is, then you disable the button.
+</p>
+<p>The user can always press Cancel, but Done only works when there is text.
+</p>
+<p>In order to listen to changes to the text field – which may come from taps on the keyboard but also from cut/paste – you need to make the view controller a delegate for the text field.
+</p>
+<p>The text field will send events to its delegate to let it know what is going on. The delegate, which will be the <code>AddItemViewController</code>, can then respond to these events and take appropriate actions.
+</p>
+<p>A view controller is allowed to be the delegate for more than one object. The <code>AddItemViewController</code> is already a delegate (and data source) for the <code>UITableView</code> (because it is a <code>UITableViewController</code>). Now it will also become the delegate for the text field object, <code>UITextField</code>.
+</p>
+<p>These are two different delegates and you make the view controller play both roles. Later on you’ll add even more delegates for this app.
+</p>
+<h4 class="segment-chapter">How to become a delegate</h4>
+
+<p>Delegates are used everywhere in the iOS SDK, so it’s good to remember that it always takes three steps to become a delegate.
+</p>
+<ol>
+<li>
+<p>You declare yourself capable of being a delegate. To become the delegate for <code>UITextField</code> you need to include <code>UITextFieldDelegate</code> in the <code>class</code> line for the view controller. This tells the compiler that this particular view controller can actually handle the notification messages that the text field sends to it.
+</p></li>
+
+<li>
+<p>You let the object in question, in this case the <code>UITextField</code>, know that the view controller wishes to become its delegate. If you forget to tell the text field that it has a delegate, it will never send you any notifications.
+</p></li>
+
+<li>
+<p>Implement the delegate methods. It makes no sense to become a delegate if you’re not responding to the messages you’re being sent!
+</p></li>
+</ol>
+
+<p>Often, delegate methods are optional, so you don’t need to implement all of them. For example, <code>UITextFieldDelegate</code> actually declares seven different methods but you only care about <code>textField(_:shouldChangeCharactersIn:replacementString:)</code> for this app.
+</p>
+<p>➤ In <em>AddItemViewController.swift</em>, add <code>UITextFieldDelegate</code> to the class declaration:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AddItemViewController</span>: <span class="hljs-title">UITableViewController</span>, <span class="hljs-title">UITextFieldDelegate</span> </span>{</pre>
+<p>The view controller now says, “I can be a delegate for text field objects.”
+</p>
+<p>You also have to let the text field know that you have a delegate for it.
+</p>
+<p>➤ Go to the storyboard and select the text field.
+</p>
+<p>There are several different ways in which you can hook up the text field’s delegate outlet to the view controller. I prefer to go to its <em>Connections inspector</em> and drag from <em>delegate</em> to the view controller’s little yellow icon:
+</p><div class="image-70"><img src="graphics/img257.png"  alt="" title="Drag from the Connections inspector to connect the text field delegate" /></div>
+<h4 class="segment-chapter">Configure the Done button</h4>
+
+<p>You also have to add an outlet for the Done bar button item, so you can send it messages from within the view controller in order to enable or disable it.
+</p>
+<p>➤ Open the <em>Assistant editor</em> and make sure <em>AddItemViewController.swift</em> is visible in the assistant pane.
+</p>
+<p>➤ <em>Control-drag</em> from the Done bar button into the Swift file and let go. Name the new outlet <code>doneBarButton</code>.
+</p>
+<p>This adds the following outlet:
+</p><pre class="code-block"><span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> doneBarButton: <span class="hljs-type">UIBarButtonItem</span>!</pre>
+<p>➤ Add the following to <em>AddItemViewController.swift</em>, at the bottom (before the final curly brace):
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Text Field Delegates</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">textField</span><span class="hljs-params">(<span class="hljs-number">_</span> textField: UITextField, 
+               shouldChangeCharactersIn range: NSRange, 
+               replacementString string: String)</span></span> -&gt; <span class="hljs-type">Bool</span> {
+
+  <span class="hljs-keyword">let</span> oldText = textField.text!    
+  <span class="hljs-keyword">let</span> stringRange = <span class="hljs-type">Range</span>(range, <span class="hljs-keyword">in</span>:oldText)!
+  <span class="hljs-keyword">let</span> newText = oldText.replacingCharacters(<span class="hljs-keyword">in</span>: stringRange, 
+                                          with: string)
+  <span class="hljs-keyword">if</span> newText.isEmpty {
+    doneBarButton.isEnabled = <span class="hljs-literal">false</span>
+  } <span class="hljs-keyword">else</span> {
+    doneBarButton.isEnabled = <span class="hljs-literal">true</span>
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+}</pre>
+<p>This is one of the <code>UITextField</code> delegate methods. It is invoked every time the user changes the text, whether by tapping on the keyboard or via cut/paste.
+</p>
+<p>First, you figure out what the new text will be:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> oldText = textField.text!
+<span class="hljs-keyword">let</span> stringRange = <span class="hljs-type">Range</span>(range, <span class="hljs-keyword">in</span>:oldText)!
+<span class="hljs-keyword">let</span> newText = oldText.replacingCharacters(<span class="hljs-keyword">in</span>: stringRange, with: string)</pre>
+<p>The <code>textField(_:shouldChangeCharactersIn:replacementString:)</code> delegate method doesn’t give you the new text, only which part of the text should be replaced (the range) and the text it should be replaced with (the replacement string).
+</p>
+<p>You need to calculate what the new text will be by taking the text field’s text and doing the replacement yourself. This gives you a new string object that you store in the <code>newText</code> constant.
+</p>
+<div class="note">
+<p><em>NSRange vs. Range and NSString vs. String</em>
+</p>
+<p>In the above code, you get a parameter as <code>NSRange</code> and you convert it to a <code>Range</code> value. If you&apos;re wondering what a range is, the clue is in the name :] A range object gives you a range of values, or in this case, a range of characters - with a lower bound and an upper bound.
+</p>
+<p>So, why did we convert the original <code>NSRange</code> value to a <code>Range</code> value, you ask? <code>NSRange</code> is an Objective-C structure whereas <code>Range</code> is its Swift equivalent - they are similar, but not exactly the same. So, while an <code>NSRange</code> parameter is used by the <code>UITextField</code> (which internally, and historically, is Objective-C based) in its delegate method, in our Swift code, if we wanted to do any String operations, such as <code>replacingCharacters</code>, then we need a <code>Range</code> value instead. Swift methods generally use <code>Range</code> values and do not understand <code>NSRange</code> values, which is why we converted the <code>NSRange</code> value to a Swift-understandable <code>Range</code> value.
+</p>
+<p>There was a different way to approach this problem as well - though it might not be as &quot;Swift-y&quot; :] We could have converted the Swift <code>String</code> value into its Objective-C equivalent - <code>NSString</code>. Since Swift is still young, it&apos;s <code>String</code> handling methods aren&apos;t as good … but they are getting better. <code>NSString</code> is considered by some to be more powerful and often easier to use than Swift’s own <code>String</code>.
+</p>
+<p><code>String</code> and <code>NSString</code> are “bridged”, meaning that you can use <code>NSString</code> in place of <code>String</code>. And <code>NSString</code> too has a <code>replacingCharacters(in:with:)</code> method, and that method takes an <code>NSRange</code> as a parameter!
+</p>
+<p>So, you could have simply converted the <code>String</code> value to an <code>NSString</code> value and then used the <code>NSString</code> <code>replacingCharacters(in:with:)</code> method with the passed in range value instead of the above code.
+</p>
+<p>But personally, I prefer to use Swift types and classes in my code as much as possible. So, I opted to go with the solution above :]
+</p>
+<p>By the way, <code>String</code> isn’t the only object that is bridged to an Objective-C type. Another example is <code>Array</code> and its Objective-C counterpart <code>NSArray</code>. Because the iOS frameworks are written in a different language than Swift, sometimes these little Objective-C holdovers pop up when you least expect them.
+</p></div>
+
+<p>Once you have the new text, you check if it’s empty, and enable or disable the Done button accordingly:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> newText.isEmpty {
+  doneBarButton.isEnabled = <span class="hljs-literal">false</span>
+} <span class="hljs-keyword">else</span> {
+  doneBarButton.isEnabled = <span class="hljs-literal">true</span>
+}</pre>
+<p>However, you could simplify the above code even further. Since <code>newText.isEmpty</code> returns a <code>true</code> or <code>false</code> value, you can discard the <code>if</code> condition and use the value returned by <code>newText.isEmpty</code> to decide whether the Done button should be enabled or not.
+</p><pre class="code-block">doneBarButton.isEnabled = !newText.isEmpty</pre>
+<p>Basically, if the text is not empty, enable the button. Otherwise, don&apos;t enable it. That&apos;s much more compact, and concise, right?
+</p>
+<p>Remember this trick – whenever you see code like this,
+</p><pre class="code-block">if some condition {
+  something = true
+} else {
+  something = false
+}</pre>
+<p>you can write it simply as:
+</p><pre class="code-block">something = (some condition)</pre>
+<p>In practice it doesn’t really matter which version you use. I prefer the shorter one; that’s what the pros do. Just remember that comparison operators such as <code>==</code> and <code>&gt;</code> always return <code>true</code> or <code>false</code>, so the extra <code>if</code> really isn’t necessary.
+</p>
+<p>➤ Run the app and type some text into the text field. Now remove that text and you’ll see that the Done button in the navigation bar properly gets disabled when the text field becomes empty.
+</p>
+<h4 class="segment-chapter">Fixing issues</h4>
+
+<p>One problem: The Done button is initially enabled when the Add Item screen opens, but there is no text in the text field at that point. So, it really should be disabled. This is simple enough to fix.
+</p>
+<p>➤ In the storyboard, select the <em>Done</em> bar button and go to the <em>Attributes inspector</em>. Uncheck the <em>Enabled</em> box.
+</p>
+<p>The Done button is now properly disabled when you first enter the Add Item screen:
+</p><div class="image-30"><img src="graphics/img258.png"  alt="" title="The Done button is not enabled if there is no text" /></div>
+<p>There&apos;s one other possible issue here. You won&apos;t see the issue unless you enable the Clear Button though. I hear you ask &quot;What&apos;s the Clear Button?&quot;.
+</p>
+<p>Select the text field in the Add Item scene in the storyboard and take a look at the Attributes inspector. You will note that there&apos;s a setting named <em>Clear Button</em>. This enables a handy button in text fields which allows you to clear text.
+</p><div class="image-30"><img src="graphics/img259.png"  alt="" title="The Clear Button" /></div>
+<p>The Clear Button is set to &quot;Never appears&quot; by default, but you can set it to &quot;Appear while editing&quot; to give your users a quick and easy way to clear text. This can be a very user-friendly feature.
+</p>
+<p>Unfortunately, if you enable this option and clear your text while you&apos;re in the Add Item screen, the Done button will not get disabled. This is because the Clear Button does not call the <code>textField(_:shouldChangeCharactersIn:replacementString:)</code> delegate method. Instead, the Clear Button calls a different delegate method - <code>textFieldShouldClear(_:)</code> method.
+</p>
+<p>So, if you want to handle the Clear Button correctly and disable the Done button, then you&apos;d have to add the following delegate method to <em>AddItemViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">textFieldShouldClear</span><span class="hljs-params">(<span class="hljs-number">_</span> textField: UITextField)</span></span> -&gt; <span class="hljs-type">Bool</span> {
+  doneBarButton.isEnabled = <span class="hljs-literal">false</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+}</pre>
+<h4 class="segment-chapter">Using FileMerge to compare files</h4>
+
+<p>In case you&apos;re stuck on a particular bit of code and don&apos;t know what you did wrong, you can always refer to the provided source code for each chapter. However, given that there&apos;s potentially a fair amount of code to go through, you might not know how to find what is different between your code and the provided code.
+</p>
+<p>You can compare your own work with my version of the app using the FileMerge tool. Open this tool from the Xcode menu bar, under <em>Xcode → Open Developer Tool → FileMerge</em>:
+</p><div class="image-50"><img src="graphics/img260.png"  alt="" title="" /></div>
+<p>You give FileMerge two files or folders to compare:
+</p><div class="image-60"><img src="graphics/img261.png"  alt="" title="" /></div>
+<p>After working hard for a few seconds or so, FileMerge tells you what is different:
+</p><div class="image-60"><img src="graphics/img262.png"  alt="" title="" /></div>
+<p>Double-click on a filename from the list to view the differences between the two files:
+</p><div class="image-70"><img src="graphics/img263.png"  alt="" title="" /></div>
+<p>FileMerge is a wonderful tool for spotting the differences between two files or even entire folders. I use it all the time!
+</p>
+<p>If something from the book doesn’t work as it should, then do a “diff” — that’s what the difference between two source files is called — between your own files and the ones from the Source Code folder to see if you can find any anomalies.
+</p>
+<p>You can find the project files for the app up to this point under <em>12 - Add Item Screen</em> in the Source Code folder.
+</p></body></html>

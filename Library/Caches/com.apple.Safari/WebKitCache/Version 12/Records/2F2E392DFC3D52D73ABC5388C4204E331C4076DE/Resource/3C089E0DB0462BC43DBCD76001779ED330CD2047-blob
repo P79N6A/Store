@@ -1,0 +1,501 @@
+tslib v1.9.3 - Microsoft Corp. - Apache-2.0 license (https://github.com/Microsoft/tslib.git)
+
+satcheljs v4.0.1 - MIT license
+
+react v16.8.6 - MIT license (https://github.com/facebook/react.git)
+
+mobx v4.5.2 - Michel Weststrate - MIT license (https://github.com/mobxjs/mobx.git)
+
+office-ui-fabric-react v7.22.1 - MIT license (https://github.com/OfficeDev/office-ui-fabric-react)
+
+mobx-react v5.2.8 - Michel Weststrate - MIT license (https://github.com/mobxjs/mobx-react.git)
+
+css-loader v3.0.0 - Tobias Koppers @sokra - MIT license
+
+@microsoft/loader-load-themed-styles v1.5.1 - MIT license
+
+mobx-react-lite v1.3.1 - Daniel K. - MIT license (https://github.com/mobxjs/mobx-react-lite.git)
+
+@uifabric/utilities v7.0.7 - MIT license (https://github.com/OfficeDev/office-ui-fabric-react)
+
+querystring-es3 v0.2.1 - Irakli Gozalishvili <rfobic@gmail.com> - MIT license (git://github.com/mike-spainhower/querystring.git)
+
+react-dom v16.8.6 - MIT license (https://github.com/facebook/react.git)
+
+@uifabric/styling v7.4.1 - MIT license (https://github.com/OfficeDev/office-ui-fabric-react)
+
+core-js v2.5.6 - MIT license (https://github.com/zloirock/core-js.git)
+
+webpack v4.31.0 - Tobias Koppers @sokra - MIT license (https://github.com/webpack/webpack.git)
+
+@uifabric/merge-styles v7.3.0 - MIT license (https://github.com/OfficeDev/office-ui-fabric-react)
+
+classnames v2.2.4 - Jed Watson - MIT license (https://github.com/JedWatson/classnames.git)
+
+node-libs-browser v2.1.0 - Tobias Koppers @sokra - MIT license (git+https://github.com/webpack/node-libs-browser.git)
+
+object-assign v4.1.1 - Sindre Sorhus - MIT license
+
+memory-cache v0.2.0 - Paul Tarjan <npm@paulisageek.com> - BSD-2-Clause license (git://github.com/ptarjan/node-cache.git)
+
+promise-polyfill v8.1.0 - Taylor Hakes - MIT license (https://github.com/taylorhakes/promise-polyfill.git)
+
+js-cookie v2.1.3 - Klaus Hartl - MIT license (git://github.com/js-cookie/js-cookie.git)
+
+whatwg-fetch v1.1.1 - MIT license
+
+punycode v1.4.1 - Mathias Bynens - MIT license (https://github.com/bestiejs/punycode.js.git)
+
+color v3.0.0 - MIT license
+
+lodash-es v4.17.4 - John-David Dalton <john.david.dalton@gmail.com> (http://allyoucanleet.com/) - MIT license
+
+redux v4.0.1 - MIT license
+
+prop-types v15.7.2 - MIT license
+
+@microsoft/load-themed-styles v1.9.0 - MIT license (https://github.com/Microsoft/web-build-tools/tree/master/libraries/load-themed-styles)
+
+timers-browserify v2.0.10 - J. Ryan Stinnett <jryans@gmail.com> (http://convolv.es/) - MIT license (git://github.com/jryans/timers-browserify.git)
+
+setimmediate v1.0.5 - YuzuJS - MIT license
+
+reselect v3.0.1 - MIT license (https://github.com/reactjs/reselect.git)
+
+babel-runtime v6.26.0 - Sebastian McKenzie <sebmck@gmail.com> - MIT license
+
+date-fns v1.29.0 - Sasha Koss <koss@nocorp.me> - MIT license
+
+@uifabric/set-version v7.0.1 - MIT license (https://github.com/OfficeDev/office-ui-fabric-react)
+
+raf v3.4.0 - Chris Dickinson <chris@neversaw.us> - MIT license (git://github.com/chrisdickinson/raf.git)
+
+performance-now v2.1.0 - Braveg1rl <braveg1rl@outlook.com> - MIT license (git://github.com/braveg1rl/performance-now.git)
+
+scheduler v0.13.6 - MIT license (https://github.com/facebook/react.git)
+
+recompose v0.26.0 - Andrew Clark <acdlite@me.com> - MIT license (https://github.com/acdlite/recompose.git)
+
+@babel/runtime v7.5.5 - Sebastian McKenzie <sebmck@gmail.com> - MIT license
+
+symbol-observable v1.2.0 - Ben Lesh - MIT license
+
+ts-md5 v1.2.0 - MIT license (git+https://github.com/cotag/ts-md5.git)
+
+fbjs v0.8.17 - MIT license
+
+color-convert v1.9.3 - Heather Arthur <fayearthur@gmail.com> - MIT license
+
+invariant v2.2.4 - Andres Suarez <zertosh@gmail.com> - MIT license
+
+react-virtualized v9.21.0 - Brian Vaughn <brian.david.vaughn@gmail.com> - MIT license (https://github.com/bvaughn/react-virtualized.git)
+
+array-equal v1.0.0 - Jonathan Ong - MIT license
+
+color-string v1.5.3 - Heather Arthur <fayearthur@gmail.com> - MIT license
+
+simple-swizzle v0.2.2 - Qix (http://github.com/qix-) - MIT license
+
+color-name v1.1.3 - DY <dfcreative@gmail.com> - MIT license (git@github.com:dfcreative/color-name.git)
+
+react-is v16.8.6 - MIT license (https://github.com/facebook/react.git)
+
+change-emitter v0.1.6 - Andrew Clark <acdlite@me.com> - MIT license (git+https://github.com/acdlite/change-emitter.git)
+
+react-lifecycles-compat v3.0.4 - MIT license
+
+hoist-non-react-statics v3.3.0 - Michael Ridgway <mcridgway@gmail.com> - BSD-3-Clause license (git://github.com/mridgway/hoist-non-react-statics.git)
+
+redux-thunk v2.3.0 - Dan Abramov <dan.abramov@me.com> - MIT license
+
+file-saver v1.3.8 - Eli Grey - MIT license (git+https://github.com/eligrey/FileSaver.js.git)
+
+dom-helpers v3.4.0 - Jason Quense - MIT license
+
+@uifabric/date-time v7.1.4 - MIT license (https://github.com/OfficeDev/office-ui-fabric-react)
+
+external-markjs v9.1.1 - Julian Kühnel - MIT license
+
+papaparse v4.6.2 - Matthew Holt - MIT license (https://github.com/mholt/PapaParse.git)
+
+fast-levenshtein v2.0.6 - Ramesh Nair <ram@hiddentao.com> (http://www.hiddentao.com/) - MIT license (https://github.com/hiddentao/fast-levenshtein.git)
+
+redux-immutable-state-invariant v2.1.0 - Leonardo Andres Garcia Crespo <leoasis@gmail.com> - MIT license
+
+json-stringify-safe v5.0.1 - Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me) - ISC license (git://github.com/isaacs/json-stringify-safe)
+
+@ms/items-view v2.86.1 - MIT license (https://onedrive.visualstudio.com/DefaultCollection/OneDriveWeb/_git/odsp-common)
+
+@ms/items-view-addon-sp v2.150.0-hotfix.1 - MIT license (https://onedrive.visualstudio.com/DefaultCollection/OneDriveWeb/_git/odsp-common)
+
+@o365groups/gmc-core v0.0.70 - MIT license
+
+roosterjs-editor-dom v7.5.0 - MIT license (https://github.com/Microsoft/roosterjs)
+
+react-inspector v2.3.1 - Xiaoyi Chen <cxychina@gmail.com> (http://github.com/xyc) - MIT license (https://github.com/xyc/react-inspector.git)
+
+@ms/items-view-addon-graph v1.40.1-hotfix.0 - MIT license (https://onedrive.visualstudio.com/DefaultCollection/OneDriveWeb/_git/odsp-common)
+
+@ms/shared-react-item-hover-card v0.4.37-hotfix.0 - MIT license (https://onedrive.visualstudio.com/DefaultCollection/OneDriveWeb/_git/odsp-common)
+
+roosterjs-editor-api v7.5.0 - MIT license (https://github.com/Microsoft/roosterjs)
+
+inherits v2.0.3 - ISC license
+
+@ms/scriptor v4.9.11-demo.12 - MIT license (https://office.visualstudio.com/DefaultCollection/OC/_git/office-online-ui)
+
+safe-buffer v5.1.2 - Feross Aboukhadijeh - MIT license (git://github.com/feross/safe-buffer.git)
+
+markdown-it v8.4.2 - MIT license
+
+adaptivecards v1.3.0-ci.201906.12002.0 - AdaptiveCards - MIT license (git://git@github.com/microsoft/AdaptiveCards.git)
+
+immutable v3.8.2 - Lee Byron - MIT license (git://github.com/facebook/immutable-js.git)
+
+@ms/utilities-strings v0.7.0 - MIT license (https://onedrive.visualstudio.com/DefaultCollection/OneDriveWeb/_git/odsp-common)
+
+buffer v4.9.1 - Feross Aboukhadijeh - MIT license (git://github.com/feross/buffer.git)
+
+pdfjs-dist v2.0.943 - Apache-2.0 license (https://github.com/mozilla/pdfjs-dist)
+
+roosterjs-editor-core v7.5.0 - MIT license (https://github.com/Microsoft/roosterjs)
+
+bn.js v4.11.8 - Fedor Indutny <fedor@indutny.com> - MIT license (git@github.com:indutny/bn.js)
+
+roosterjs-html-sanitizer v1.1.3 - MIT license (https://github.com/Microsoft/roosterjs)
+
+@ms/shared-react-people-picker v0.4.17-hotfix.0 - MIT license (https://onedrive.visualstudio.com/DefaultCollection/OneDriveWeb/_git/odsp-common)
+
+hash.js v1.1.7 - Fedor Indutny <fedor@indutny.com> - MIT license (git@github.com:indutny/hash.js)
+
+minimalistic-assert v1.0.1 - ISC license (https://github.com/calvinmetcalf/minimalistic-assert.git)
+
+draft-js v0.10.5 - BSD-3-Clause license
+
+elliptic v6.4.1 - Fedor Indutny <fedor@indutny.com> - MIT license (git@github.com:indutny/elliptic)
+
+@ms/items-view-utilities v0.19.2 - MIT license (https://onedrive.visualstudio.com/DefaultCollection/OneDriveWeb/_git/odsp-common)
+
+is-dom v1.0.9 - MIT license
+
+lodash v4.17.14 - John-David Dalton <john.david.dalton@gmail.com> - MIT license
+
+microsoft-speech-browser-sdk v0.0.12 - Microsoft - MIT license (https://github.com/Azure-Samples/SpeechToText-WebSockets-Javascript.git)
+
+assert v1.4.1 - MIT license (git://github.com/defunctzombie/commonjs-assert.git)
+
+cipher-base v1.0.4 - Calvin Metcalf <calvin.metcalf@gmail.com> - MIT license (git+https://github.com/crypto-browserify/cipher-base.git)
+
+@ms/utilities-error v0.7.0 - MIT license (https://onedrive.visualstudio.com/DefaultCollection/OneDriveWeb/_git/odsp-common)
+
+@ms/telemetry-manager v0.12.1 - MIT license (https://onedrive.visualstudio.com/DefaultCollection/OneDriveWeb/_git/odsp-common)
+
+readable-stream v2.3.6 - MIT license (git://github.com/nodejs/readable-stream)
+
+consent-string v1.3.2 - MIT license
+
+sha.js v2.4.11 - Dominic Tarr <dominic.tarr@gmail.com> (dominictarr.com) - (MIT AND BSD-3-Clause) license (git://github.com/crypto-browserify/sha.js.git)
+
+randombytes v2.0.6 - MIT license (git@github.com:crypto-browserify/randombytes.git)
+
+axios v0.18.0 - Matt Zabriskie - MIT license (https://github.com/axios/axios.git)
+
+roosterjs-editor-plugins v7.5.0 - MIT license (https://github.com/Microsoft/roosterjs)
+
+debug v3.2.6 - TJ Holowaychuk <tj@vision-media.ca> - MIT license (git://github.com/visionmedia/debug.git)
+
+@ms/utilities-objects v0.9.0 - MIT license (https://onedrive.visualstudio.com/DefaultCollection/OneDriveWeb/_git/odsp-common)
+
+core-util-is v1.0.2 - Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/) - MIT license (git://github.com/isaacs/core-util-is)
+
+create-hash v1.2.0 - MIT license (git@github.com:crypto-browserify/createHash.git)
+
+buffer-xor v1.0.3 - Daniel Cousens - MIT license (https://github.com/crypto-browserify/buffer-xor.git)
+
+asn1.js v4.10.1 - Fedor Indutny - MIT license (git@github.com:indutny/asn1.js)
+
+stream-browserify v2.0.1 - James Halliday - MIT license (git://github.com/substack/stream-browserify.git)
+
+uuid v3.3.2 - MIT license (https://github.com/kelektiv/node-uuid.git)
+
+uc.micro v1.0.5 - MIT license
+
+browserify-aes v1.2.0 - MIT license (git://github.com/crypto-browserify/browserify-aes.git)
+
+evp_bytestokey v1.0.3 - Calvin Metcalf <calvin.metcalf@gmail.com> - MIT license (https://github.com/crypto-browserify/EVP_BytesToKey.git)
+
+parse-asn1 v5.1.1 - ISC license (git://github.com/crypto-browserify/parse-asn1.git)
+
+@uifabric/foundation v0.8.2 - MIT license (https://github.com/OfficeDev/office-ui-fabric-react)
+
+@uifabric/file-type-icons v6.5.3 - MIT license (https://github.com/OfficeDev/office-ui-fabric-react)
+
+@ms/sp-resource-path v0.7.0 - MIT license (https://onedrive.visualstudio.com/DefaultCollection/OneDriveWeb/_git/odsp-common)
+
+global v4.3.2 - Raynos <raynos2@gmail.com> - MIT license
+
+@ms/utilities-guid v0.8.0 - MIT license (https://onedrive.visualstudio.com/DefaultCollection/OneDriveWeb/_git/odsp-common)
+
+util v0.10.4 - Joyent - MIT license (git://github.com/defunctzombie/node-util)
+
+md5.js v1.3.5 - Kirill Fomichev <fanatid@ya.ru> (https://github.com/fanatid) - MIT license (https://github.com/crypto-browserify/md5.js.git)
+
+ripemd160 v2.0.2 - MIT license (https://github.com/crypto-browserify/ripemd160)
+
+des.js v1.0.0 - Fedor Indutny <fedor@indutny.com> - MIT license (git+ssh://git@github.com/indutny/des.js.git)
+
+browserify-rsa v4.0.1 - MIT license (git@github.com:crypto-browserify/browserify-rsa.git)
+
+smartcompose-tslibrary v1.4.5 - Zhem - ISC license
+
+react-transition-group v4.2.1 - BSD-3-Clause license (https://github.com/reactjs/react-transition-group.git)
+
+react-modal v3.8.2 - MIT license (https://github.com/reactjs/react-modal.git)
+
+component-emitter v1.2.1 - MIT license (https://github.com/component/emitter.git)
+
+engine.io-parser v2.1.3 - MIT license (git@github.com:socketio/engine.io-parser.git)
+
+@ms/utilities-date-time v0.7.0 - MIT license (https://onedrive.visualstudio.com/DefaultCollection/OneDriveWeb/_git/odsp-common)
+
+underscore v1.8.3 - Jeremy Ashkenas <jeremy@documentcloud.org> - MIT license (git://github.com/jashkenas/underscore.git)
+
+@ms/utilities-custom-formatter v0.15.7 - MIT license (https://onedrive.visualstudio.com/DefaultCollection/OneDriveWeb/_git/odsp-common)
+
+linkify-it v2.0.3 - MIT license
+
+react-intl-universal v1.15.5 - chiawei.tcw@alibaba-inc.com - BSD-3-Clause license (https://github.com/alibaba/react-intl-universal.git)
+
+intl-messageformat v2.2.0 - Eric Ferraiuolo <eferraiuolo@gmail.com> - BSD-3-Clause license (git@github.com:yahoo/intl-messageformat.git)
+
+escape-html v1.0.3 - MIT license
+
+roosterjs-plugin-picker v7.5.0 - MIT license (https://github.com/Microsoft/roosterjs)
+
+hash-base v3.0.4 - Kirill Fomichev <fanatid@ya.ru> (https://github.com/fanatid) - MIT license (https://github.com/crypto-browserify/hash-base.git)
+
+create-hmac v1.1.7 - MIT license (https://github.com/crypto-browserify/createHmac.git)
+
+browserify-sign v4.0.4 - ISC license (https://github.com/crypto-browserify/browserify-sign.git)
+
+pbkdf2 v3.0.17 - Daniel Cousens - MIT license (https://github.com/crypto-browserify/pbkdf2.git)
+
+diffie-hellman v5.0.3 - Calvin Metcalf - MIT license (https://github.com/crypto-browserify/diffie-hellman.git)
+
+miller-rabin v4.0.1 - Fedor Indutny <fedor@indutny.com> - MIT license (git@github.com:indutny/miller-rabin)
+
+brorand v1.1.0 - Fedor Indutny <fedor@indutny.com> - MIT license (git@github.com:indutny/brorand)
+
+minimalistic-crypto-utils v1.0.1 - Fedor Indutny <fedor@indutny.com> - MIT license (git+ssh://git@github.com/indutny/minimalistic-crypto-utils.git)
+
+public-encrypt v4.0.3 - Calvin Metcalf - MIT license (https://github.com/crypto-browserify/publicEncrypt.git)
+
+mdurl v1.0.1 - MIT license
+
+@ms/utilities-encoding v0.8.0 - MIT license (https://onedrive.visualstudio.com/DefaultCollection/OneDriveWeb/_git/odsp-common)
+
+@notes/aria-common-schema-logger v0.1.8 - Microsoft - MIT license (ssh://office@vs-ssh.visualstudio.com:22/DefaultCollection/OneNote/_ssh/aria-common-schema-logger-web)
+
+socket.io-client v2.2.0 - MIT license (https://github.com/Automattic/socket.io-client.git)
+
+parseqs v0.0.5 - Gal Koren - MIT license (https://github.com/get/querystring.git)
+
+engine.io-client v3.3.2 - MIT license (https://github.com/socketio/engine.io-client.git)
+
+jsonwebtoken v8.5.1 - auth0 - MIT license (https://github.com/auth0/node-jsonwebtoken)
+
+@ms/telemetry-addon-aria v0.14.2 - MIT license (https://onedrive.visualstudio.com/DefaultCollection/OneDriveWeb/_git/odsp-common)
+
+@ms/aria-private v3.0.2 - The aria team - MIT license
+
+@uifabric/experiments v7.4.0 - MIT license (https://github.com/OfficeDev/office-ui-fabric-react)
+
+dexie v1.5.1 - David Fahlander - Apache-2.0 license (https://github.com/dfahlander/Dexie.js.git)
+
+redux-batched-subscribe v0.1.6 - Terry Appleby <terry.appleby@gmail.com> - MIT license (https://github.com/tappleby/redux-batched-subscribe.git)
+
+intl v1.2.5 - Andy Earnshaw - MIT license (https://github.com/andyearnshaw/Intl.js)
+
+intl-messageformat-parser v1.4.0 - Eric Ferraiuolo <eferraiuolo@gmail.com> - BSD-3-Clause license (git://github.com/yahoo/intl-messageformat-parser.git)
+
+cookie v0.3.1 - Roman Shtylman <shtylman@gmail.com> - MIT license
+
+load-script v1.0.0 - MIT license (git://github.com/eldargab/load-script)
+
+console-polyfill v0.3.0 - Paul Miller (paulmillr.com) - MIT license (https://github.com/paulmillr/console-polyfill)
+
+lodash.merge v4.6.1 - John-David Dalton <john.david.dalton@gmail.com> (http://allyoucanleet.com/) - MIT license
+
+is-electron v2.2.0 - Cheton Wu <cheton@gmail.com> - MIT license (git@github.com:cheton/is-electron.git)
+
+isarray v1.0.0 - Julian Gruber - MIT license (git://github.com/juliangruber/isarray.git)
+
+socket.io-parser v3.3.0 - MIT license (https://github.com/Automattic/socket.io-parser.git)
+
+isomorphic-ws v4.0.1 - @heineiuo - MIT license (git+https://github.com/heineiuo/isomorphic-ws.git)
+
+jws v3.2.2 - Brian J Brennan - MIT license (git://github.com/brianloveswords/node-jws.git)
+
+util-deprecate v1.0.2 - Nathan Rajlich <nathan@tootallnate.net> (http://n8.io/) - MIT license (git://github.com/TooTallNate/util-deprecate.git)
+
+crypto-browserify v3.12.0 - Dominic Tarr <dominic.tarr@gmail.com> (dominictarr.com) - MIT license (git://github.com/crypto-browserify/crypto-browserify.git)
+
+browserify-cipher v1.0.1 - Calvin Metcalf <calvin.metcalf@gmail.com> - MIT license (git@github.com:crypto-browserify/browserify-cipher.git)
+
+browserify-des v1.0.2 - Calvin Metcalf <calvin.metcalf@gmail.com> - MIT license (git+https://github.com/crypto-browserify/browserify-des.git)
+
+hmac-drbg v1.0.1 - Fedor Indutny <fedor@indutny.com> - MIT license (git+ssh://git@github.com/indutny/hmac-drbg.git)
+
+vm-browserify v0.0.4 - James Halliday - MIT license (http://github.com/substack/vm-browserify.git)
+
+create-ecdh v4.0.3 - Calvin Metcalf - MIT license (https://github.com/crypto-browserify/createECDH.git)
+
+randomfill v1.0.4 - MIT license (https://github.com/crypto-browserify/randomfill.git)
+
+entities v1.1.2 - Felix Boehm <me@feedic.com> - BSD-2-Clause license (git://github.com/fb55/entities.git)
+
+redux-actions v2.6.5 - Andrew Clark <acdlite@me.com> - MIT license (https://github.com/redux-utilities/redux-actions.git)
+
+ms v2.1.1 - MIT license
+
+direction v0.1.5 - Titus Wormer <tituswormer@gmail.com> - MIT license (https://github.com/wooorm/direction.git)
+
+merge v1.2.0 - yeikos (http://www.yeikos.com) - MIT license (https://github.com/yeikos/js.merge.git)
+
+hellojs v1.18.1 - Andrew Dodson - MIT license (git@github.com/MrSwitch/hello.js)
+
+double-ended-queue v2.1.0-0 - Petka Antonov - MIT license (git://github.com/petkaantonov/deque.git)
+
+parseuri v0.0.5 - MIT license (https://github.com/get/parseuri.git)
+
+has-binary2 v1.0.3 - Kevin Roark - MIT license
+
+yeast v0.1.2 - Arnout Kazemier - MIT license (https://github.com/unshiftio/yeast.git)
+
+jwa v1.4.1 - Brian J. Brennan <brianloveswords@gmail.com> - MIT license (git://github.com/brianloveswords/node-jwa.git)
+
+mustache v3.0.1 - mustache.js Authors <http://github.com/janl/mustache.js> - MIT license (https://github.com/janl/mustache.js.git)
+
+path-browserify v0.0.0 - James Halliday - MIT license (git://github.com/substack/path-browserify.git)
+
+mobx-react-devtools v4.2.15 - Michel Weststrate - MIT license (https://github.com/mobxjs/mobx-react-devtools.git)
+
+adal-angular v1.0.15 - Microsoft - Apache-2.0 license (https://github.com/AzureAD/azure-activedirectory-library-for-js.git)
+
+jquery v3.4.0 - JS Foundation and other contributors - MIT license (https://github.com/jquery/jquery.git)
+
+base-64 v0.1.0 - Mathias Bynens - MIT license (https://github.com/mathiasbynens/base64.git)
+
+fuse.js v3.3.0 - Kirollos Risk - Apache-2.0 license (https://github.com/krisk/Fuse.git)
+
+is-plain-object v2.0.4 - Jon Schlinkert (https://github.com/jonschlinkert) - MIT license
+
+isobject v3.0.1 - Jon Schlinkert (https://github.com/jonschlinkert) - MIT license
+
+esrever v0.2.0 - Mathias Bynens - MIT license (https://github.com/mathiasbynens/esrever.git)
+
+tlds v1.203.1 - Stephen Mathieson <me@stephenmathieson.com> - MIT license (git://github.com/stephenmathieson/node-tlds.git)
+
+node-html-parser v1.1.12 - Xiaoyi Shi <ashi009@gmail.com> - MIT license (https://github.com/taoqf/node-fast-html-parser.git)
+
+lock v1.1.0 - Dominic Tarr <dominic.tarr@gmail.com> (http://dominictarr.com) - MIT license (git://github.com/dominictarr/lock.git)
+
+justified-layout v2.1.1 - Flickr Open Source <flickr-open-source@yahoo-inc.com> - ISC license (git@github.com:flickr/justified-layout.git)
+
+warning v4.0.3 - Berkeley Martinez <berkeley@berkeleytrue.com> (http://www.berkeleytrue.com) - MIT license (https://github.com/BerkeleyTrue/warning.git)
+
+exenv v1.2.2 - Jed Watson - BSD-3-Clause license (https://github.com/JedWatson/exenv.git)
+
+is-mobile v1.0.0 - Julian Gruber - MIT license (git://github.com/juliangruber/is-mobile.git)
+
+get-window v1.1.2 - MIT license (https://github.com/webmodules/get-window.git)
+
+isomorphic-base64 v1.0.2 - Ken Sheedlo <ovrkenthousand@gmail.com> - MIT license (https://github.com/ksheedlo/isomorphic-base64.git)
+
+is-hotkey v0.1.4 - MIT license
+
+react-immutable-proptypes v2.1.0 - James Burnett <HurricaneJamesEsq@gmail.com> (https://github.com/HurricaneJames/react-immutable-proptypes) - MIT license (https://github.com/HurricaneJames/react-immutable-proptypes)
+
+selection-is-backward v1.0.0 - Nathan Rajlich <nathan@tootallnate.net> (http://n8.io/) - MIT license (git://github.com/webmodules/selection-is-backward.git)
+
+base64-js v1.3.0 - T. Jameson Little <t.jameson.little@gmail.com> - MIT license (git://github.com/beatgammit/base64-js.git)
+
+ieee754 v1.1.12 - Feross Aboukhadijeh - BSD-3-Clause license (git://github.com/feross/ieee754.git)
+
+is-buffer v1.1.6 - Feross Aboukhadijeh - MIT license (git://github.com/feross/is-buffer.git)
+
+has-cors v1.1.0 - Nathan Rajlich <nathan@tootallnate.net> (http://n8.io/) - MIT license (git://github.com/component/has-cors.git)
+
+arraybuffer.slice v0.0.7 - MIT license (git@github.com:rase-/arraybuffer.slice.git)
+
+after v0.8.2 - Raynos <raynos2@gmail.com> - MIT license
+
+base64-arraybuffer v0.1.5 - Niklas von Hertzen - MIT license (https://github.com/niklasvh/base64-arraybuffer)
+
+blob v0.0.5 - MIT license (git://github.com/webmodules/blob.git)
+
+to-array v0.1.4 - Raynos <raynos2@gmail.com> - MIT license
+
+backo2 v1.0.2 - MIT license
+
+jwt-decode v2.2.0 - Jose F. Romaniello <jfromaniello@gmail.com> (http://joseoncode.com) - MIT license (git://github.com/auth0/jwt-decode)
+
+url-parse v1.4.5 - Arnout Kazemier - MIT license (https://github.com/unshiftio/url-parse.git)
+
+requires-port v1.0.0 - Arnout Kazemier - MIT license (https://github.com/unshiftio/requires-port)
+
+querystringify v2.1.0 - Arnout Kazemier - MIT license (https://github.com/unshiftio/querystringify)
+
+buffer-equal-constant-time v1.0.1 - GoInstant Inc., a salesforce.com company - BSD-3-Clause license
+
+ecdsa-sig-formatter v1.0.11 - D2L Corporation - Apache-2.0 license (git+ssh://git@github.com/Brightspace/node-ecdsa-sig-formatter.git)
+
+semver v5.6.0 - ISC license
+
+lodash.includes v4.3.0 - John-David Dalton <john.david.dalton@gmail.com> (http://allyoucanleet.com/) - MIT license
+
+lodash.isboolean v3.0.3 - John-David Dalton <john.david.dalton@gmail.com> (http://allyoucanleet.com/) - MIT license
+
+lodash.isinteger v4.0.4 - John-David Dalton <john.david.dalton@gmail.com> (http://allyoucanleet.com/) - MIT license
+
+lodash.isnumber v3.0.3 - John-David Dalton <john.david.dalton@gmail.com> (http://allyoucanleet.com/) - MIT license
+
+lodash.isplainobject v4.0.6 - John-David Dalton <john.david.dalton@gmail.com> (http://allyoucanleet.com/) - MIT license
+
+lodash.isstring v4.0.1 - John-David Dalton <john.david.dalton@gmail.com> (http://allyoucanleet.com/) - MIT license
+
+lodash.once v4.1.1 - John-David Dalton <john.david.dalton@gmail.com> (http://allyoucanleet.com/) - MIT license
+
+fast-json-stable-stringify v2.0.0 - James Halliday - MIT license (git://github.com/epoberezkin/fast-json-stable-stringify.git)
+
+cross-fetch v2.1.0 - Leonardo Quixada <lquixada@gmail.com> - MIT license (https://github.com/lquixada/cross-fetch.git)
+
+react-phone-input-2 v2.9.4 - Nikita Lebedev <bloomber111@gmail.com> (http://github.com/bl00mber) - MIT license (git+https://github.com/bl00mber/react-phone-input-2.git)
+
+@ms/utilities-office-apps v0.10.2 - MIT license (https://onedrive.visualstudio.com/DefaultCollection/OneDriveWeb/_git/odsp-common)
+
+@ms/odsp-shared-sharing-prefetch v0.1.17-hotfix.0 - MIT license (https://onedrive.visualstudio.com/DefaultCollection/OneDriveWeb/_git/odsp-common)
+
+@ms/speech-client v3.7.2 - MIT license (https://office.visualstudio.com/DefaultCollection/OC/_git/office-online-ui)
+
+@uifabric/fluent-theme v0.16.17 - MIT license (https://github.com/OfficeDev/office-ui-fabric-react)
+
+mousetrap v1.6.0 - Craig Campbell - Apache 2.0 license (git://github.com/ccampbell/mousetrap.git)
+
+@uifabric/variants v6.15.1 - MIT license (https://github.com/OfficeDev/office-ui-fabric-react)
+
+decode-uri-component v0.2.0 - Sam Verschueren - MIT license
+
+just-curry-it v3.1.0 - Angus Croll - MIT license
+
+query-string v5.1.1 - Sindre Sorhus - MIT license
+
+reduce-reducers v0.4.3 - Andrew Clark <acdlite@me.com> - MIT license
+
+strict-uri-encode v1.1.0 - Kevin Mårtensson - MIT license
+
+to-camel-case v1.0.0 - MIT license
+
+to-no-case v1.0.2 - MIT license
+
+to-space-case v1.0.0 - MIT license

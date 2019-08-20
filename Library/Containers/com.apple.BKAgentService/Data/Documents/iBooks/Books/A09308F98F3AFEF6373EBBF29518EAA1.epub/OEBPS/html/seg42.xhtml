@@ -1,0 +1,896 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 34: Networking</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 34: Networking</h1>
+
+<p>Now that the preliminaries are out of the way, you can finally get to the good stuff: adding networking to the app so that you can download actual data from the iTunes Store!
+</p>
+<p>The iTunes Store sells a lot of products: songs, e-books, movies, software, TV episodes… you name it. You can sign up as an affiliate and earn a commission on each sale that happens because you recommended a product — it can be even your own apps!
+</p>
+<p>To make it easier for affiliates to find products, Apple made available a web service that queries the iTunes store. You’re not going to sign up as an affiliate for <i>StoreSearch</i>, but you will use that free web service to perform searches.
+</p>
+<p>In this chapter you will learn the following:
+</p>
+<ul>
+<li>
+<p><em>Query the iTunes web service:</em> An introduction to web services and the specifics about querying Apple&apos;s iTunes Store web service.
+</p></li>
+
+<li>
+<p><em>Send an HTTP request:</em> How to create a proper URL for querying a web service and how to send a request to the server.
+</p></li>
+
+<li>
+<p><em>Parse JSON:</em> How to make sense of the JSON information sent from the server and convert that to objects with properties that can be used in your app.
+</p></li>
+
+<li>
+<p><em>Sort the search results:</em> Explore different ways to sort the search results alphabetically so as to write the most concise and compact code.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Query the iTunes web service</h2>
+
+<p>So what is a <i>web service</i>? Your app — also known as the “client” — will send a message over the network to the iTunes store — the “server” — using the HTTP protocol.
+</p>
+<p>Because the iPhone can be connected to different types of networks — Wi-Fi or a cellular network such as LTE, 3G, or GPRS — the app has to “speak” a variety of networking protocols to communicate with other computers on the Internet.
+</p><div class="image-90"><img src="graphics/img580.png"  alt="" title="The HTTP requests fly over the network" /></div>
+<p>Fortunately you don’t have to worry about any of that as the iPhone firmware will take care of this complicated process. All you need to know is that you’re using HTTP.
+</p>
+<p>HTTP is the same protocol that your web browser uses when you visit a web site. In fact, you can play with the iTunes web service using a web browser. That’s a great way to figure out how this web service works.
+</p>
+<p>This trick won’t work with all web services — some require POST requests instead of GET requests and if you don&apos;t know what that means, don&apos;t worry about it for now — but often, you can get quite far with just a web browser.
+</p>
+<p>Open your favorite web browser — I’m using Safari — and go to the following URL:
+</p><pre class="code-block">http://itunes.apple.com/search?term=metallica</pre>
+<p>The browser will download a file. If you open the file in a text editor, it should contain something like this:
+</p><pre class="code-block">{
+ &quot;resultCount&quot;:50,
+ &quot;results&quot;: [
+{&quot;wrapperType&quot;:&quot;track&quot;, &quot;kind&quot;:&quot;song&quot;, &quot;artistId&quot;:3996865, &quot;collectionId&quot;:579372950, &quot;trackId&quot;:579373079, &quot;artistName&quot;:&quot;Metallica&quot;, &quot;collectionName&quot;:&quot;Metallica&quot;, &quot;trackName&quot;:&quot;Enter Sandman&quot;, &quot;collectionCensoredName&quot;:&quot;Metallica&quot;, &quot;trackCensoredName&quot;:&quot;Enter Sandman&quot;, &quot;artistViewUrl&quot;:&quot;https://itunes.apple.com/us/artist/metallica/id3996865?uo=4&quot;, &quot;collectionViewUrl&quot;:&quot;https://itunes.apple.com/us/album/enter-sandman/id579372950?i=579373079&amp;uo=4&quot;, &quot;trackViewUrl&quot;:&quot;https://itunes.apple.com/us/album/enter-sandman/id579372950?i=579373079&amp;uo=4&quot;, &quot;previewUrl&quot;:&quot;http://a38.phobos.apple.com/us/r30/Music7/v4/bd/fd/e4/bdfde4e4-5407-9bb0-e632-edbf079bed21/mzaf_907706799096684396.plus.aac.p.m4a&quot;, &quot;artworkUrl30&quot;:&quot;http://is1.mzstatic.com/image/thumb/Music/v4/0b/9c/d2/0b9cd2e7-6e76-8912-0357-14780cc2616a/source/30x30bb.jpg&quot;, &quot;artworkUrl60&quot;:&quot;http://is1.mzstatic.com/image/thumb/Music/v4/0b/9c/d2/0b9cd2e7-6e76-8912-0357-14780cc2616a/source/60x60bb.jpg&quot;, &quot;artworkUrl100&quot;:&quot;http://is1.mzstatic.com/image/thumb/Music/v4/0b/9c/d2/0b9cd2e7-6e76-8912-0357-14780cc2616a/source/100x100bb.jpg&quot;, &quot;collectionPrice&quot;:9.99, &quot;trackPrice&quot;:1.29, &quot;releaseDate&quot;:&quot;1991-07-29T07:00:00Z&quot;, &quot;collectionExplicitness&quot;:&quot;notExplicit&quot;, &quot;trackExplicitness&quot;:&quot;notExplicit&quot;, &quot;discCount&quot;:1, &quot;discNumber&quot;:1, &quot;trackCount&quot;:12, &quot;trackNumber&quot;:1, &quot;trackTimeMillis&quot;:331560, &quot;country&quot;:&quot;USA&quot;, &quot;currency&quot;:&quot;USD&quot;, &quot;primaryGenreName&quot;:&quot;Metal&quot;, &quot;isStreamable&quot;:true}, 
+. . .</pre>
+<p>Those are the search results that the iTunes web service gives you. The data is in a format named JSON, which stands for <em>J</em>ava<em>S</em>cript <em>O</em>bject <em>N</em>otation.
+</p>
+<p>JSON is commonly used to send structured data back-and-forth between servers and clients, i.e. apps. Another data format that you may have heard of is XML, but that’s being fast replaced by JSON.
+</p>
+<p>There are a variety of tools that you can use to make the JSON output more readable for mere humans. I have a Quick Look plug-in installed that renders JSON files in a colorful view (<a href="http://www.sagtau.com/quicklookjson.html">www.sagtau.com/quicklookjson.html</a>).
+</p>
+<p>You do need to save the output from the server to a file with a <em>.</em><em>json</em> extension first, and then open it from Finder by pressing the space bar:
+</p><div class="image-80"><img src="graphics/img581.png"  alt="" title="A more readable version of the output from the web service" /></div>
+<p>That makes a lot more sense.
+</p>
+<div class="note">
+<p><em>Note:</em> You can find extensions for Safari (and most other browsers) that can prettify JSON directly inside the browser. <a href="https://github.com/rfletcher/safari-json-formatter">github.com/rfletcher/safari-json-formatter</a> is a good one.
+</p>
+<p>There are also dedicated tools on the Mac App Store, for example Visual JSON, that let you directly perform the request on the server and show the output in a structured and readable format.
+</p>
+<p>A great online tool is <a href="http://codebeautify.org/jsonviewer">codebeautify.org/jsonviewer</a>.
+</p></div>
+
+<p>Browse through the JSON text for a bit. You’ll see that the server gave back a list of items, some of which are songs; others are audiobooks, or music videos.
+</p>
+<p>Each item has a bunch of data associated with it, such as an artist name — “Metallica”, which is what you searched for —, a track name, a genre, a price, a release date, and so on.
+</p>
+<p>You’ll store some of these fields in the <code>SearchResult</code> class so you can display them on the screen.
+</p>
+<p>The results you get from the iTunes store might be different from mine. By default, the search returns at most 50 items and since the store has quite a bit more than fifty entries that match “metallica”, each time you do the search you may get back a different set of 50 results.
+</p>
+<p>Also notice that some of these fields, such as <code>artistViewUrl</code> and <code>artworkUrl100</code> and <code>previewUrl</code> are links/URLs. Go ahead and copy-paste these URLs in your browser and see what happens.
+</p>
+<p>The <code>artistViewUrl</code> will open an iTunes Preview page for the artist, the <code>artworkUrl100</code> loads a thumbnail image, and the <code>previewUrl</code> opens a 30-second audio preview.
+</p>
+<p>This is how the server tells you about additional resources. The images and so on are not embedded directly into the search results, but you’re given a URL that allows you to download each item separately. Try some of the other URLs from the JSON data and see what they do!
+</p>
+<p>Back to the original HTTP request. You made the web browser go to the following URL:
+</p><pre class="code-block">http://itunes.apple.com/search?term=the search term</pre>
+<p>You can add other parameters as well to make the search more specific. For example:
+</p><pre class="code-block">http://itunes.apple.com/search?term=metallica&amp;entity=song</pre>
+<p>Now the results won’t contain any music videos or podcasts, only songs.
+</p>
+<p>If the search term has a space in it you should replace it with a <code>+</code> sign, as in:
+</p><pre class="code-block">http://itunes.apple.com/search?term=pokemon+go&amp;entity=software</pre>
+<p>This searches for all apps that have something to do with Pokemon Go — you may have heard of some of them.
+</p>
+<p>The fields in the JSON results for this particular query are slightly different than before. There is no <code>previewUrl</code> but there are several screenshot URLs per entry. Different kinds of products — songs, movies, software — return different types of data.
+</p>
+<p>That’s all there is to it. You construct a URL to itunes.apple.com with the search parameters and then use that URL to make an HTTP request. The server will send some JSON gobbledygook back to the app and you’ll have to somehow turn that into <code>SearchResult</code> objects and put them in the table view. Let’s get on it!
+</p>
+<h4 class="segment-chapter">Synchronous networking = bad</h4>
+
+<p>Before you begin, I should point out that there is a bad way to do networking in your apps and a good way.
+</p>
+<p>The bad way is to perform the HTTP requests on your app’s <em>main thread</em> — it is simple to program, but it will block the user interface and make your app unresponsive while the networking is taking place. Because it blocks the rest of the app, this is called synchronous networking.
+</p>
+<p>Unfortunately, many programmers insist on doing networking the wrong way in their apps, which makes for apps that are slow and prone to crashing.
+</p>
+<p>I will begin by demonstrating the easy-but-bad way, just to show you how <i>not</i> to do this. It’s important that you realize the consequences of synchronous networking, so you will avoid it in your own apps.
+</p>
+<p>After I have convinced you of the evilness of this approach, I will show you how to do it the right way — it only requires a small modification to the code, but may require a big change in how you think about these problems.
+</p>
+<p>Asynchronous networking — the right kind, with an “a” — makes your apps much more responsive, but also brings with it additional complexity that you need to deal with.
+</p>
+<h2 class="segment-chapter">Send an HTTP request</h2>
+
+<p>In order to query the iTunes Store web service, the very first thing you must do is send an HTTP request to the iTunes server. This involves several steps such as creating a URL with the correct search parameters, sending the request to the server, getting a response back etc.
+</p>
+<p>You&apos;ll take these step-by-step.
+</p>
+<h3 class="segment-chapter">Create the URL for the request</h3>
+
+<p>➤ Add a new method to <em>SearchViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Helper Methods</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">iTunesURL</span><span class="hljs-params">(searchText: String)</span></span> -&gt; <span class="hljs-type">URL</span> {
+  <span class="hljs-keyword">let</span> urlString = <span class="hljs-type">String</span>(format: 
+      <span class="hljs-string">"https://itunes.apple.com/search?term=%@"</span>, searchText)
+  <span class="hljs-keyword">let</span> url = <span class="hljs-type">URL</span>(string: urlString)
+  <span class="hljs-keyword">return</span> url!
+}</pre>
+<p>This first builds a URL string by placing the search text behind the “term=” parameter, and then turns this string into a <code>URL</code> object.
+</p>
+<p>Because <code>URL(string:)</code> is a failable initializer, it returns an optional. You force unwrap that using <code>url!</code> to return an actual <code>URL</code> object.
+</p>
+<div class="note">
+<p><em>HTTPS vs. HTTP</em>
+</p>
+<p>Previously you used <code>http://</code> but here you’re using <code>https://</code>. The difference is that HTTPS is the secure, encrypted version of HTTP. It protects your users from eavesdropping. The underlying protocol is the same, but any bytes that you’re sending or receiving are encrypted before they go out on the network.
+</p>
+<p>As of iOS 9, Apple recommends that apps should always use HTTPS. In fact, even if you specify an unprotected <code>http://</code> URL, iOS will still try to connect using HTTPS. If the server isn’t configured to use HTTPS, then the network connection will fail.
+</p>
+<p>You can ask to be exempt from this behavior in your Info.plist file, but that is generally not recommended. Later on, you’ll learn how to do this because the artwork images are hosted on a server that does not support HTTPS.
+</p></div>
+
+<p>➤ Change <code>searchBarSearchButtonClicked(_:)</code> to:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">searchBarSearchButtonClicked</span><span class="hljs-params">(<span class="hljs-number">_</span> searchBar: UISearchBar)</span></span> {
+  <span class="hljs-keyword">if</span> !searchBar.text!.isEmpty {
+    searchBar.resignFirstResponder()
+
+    hasSearched = <span class="hljs-literal">true</span>
+    searchResults = []
+
+    <span class="hljs-keyword">let</span> url = iTunesURL(searchText: searchBar.text!)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"URL: '<span class="hljs-subst">\(url)</span>'"</span>)
+
+    tableView.reloadData()
+  }
+}</pre>
+<p>You’ve removed the code that created fake <code>SearchResult</code> items, and instead, call the new <code>iTunesURL(searchText:)</code> method. For testing purposes, you log the <code>URL</code> object that this method returns.
+</p>
+<p>This logic sits inside an <code>if</code> statement so that none of this happens unless the user actually typed text into the search bar — it doesn’t make much sense to search the iTunes store for “nothing”.
+</p>
+<div class="note">
+<p><em>Note:</em> Don’t get confused by all the exclamation points in the line,
+</p>
+<p><code>if !searchBar.text!.isEmpty</code>
+</p>
+<p>The first one is the “logical not” operator because you want to go inside the <code>if</code> statement only if the text is not empty. The second exclamation point is for force unwrapping the value of <code>searchBar.text</code>, which is an optional — it will never actually be <code>nil</code>, so it being an optional is a bit silly, but whaddya gonna do?
+</p></div>
+
+<p>➤ Run the app and type in some search text that is a single word, for example “metallica”, or one of your other favorite metal bands, and press the Search button.
+</p>
+<p>Xcode should now show this in its Debug pane:
+</p><pre class="code-block">URL: &apos;https://itunes.apple.com/search?term=metallica&apos;</pre>
+<p>That looks good.
+</p>
+<p>➤ Now type in a search term with one or more spaces, like “pokemon go”, into the search box.
+</p>
+<p>Whoops, the app crashes!
+</p>
+<p>![bordered width=80%](images/34-Networking/The-crash-after-searching.png &quot;The crash after searching for &quot;pokemon go&quot;&quot;)
+</p>
+<p>Look at the left-hand pane, the <em>Variables view</em>, of the Xcode debugger and you’ll see that the value of the <code>url</code> constant is <code>nil</code> — this may also show up as 0x0000… followed by a whole bunch of zeros.
+</p>
+<p>The app apparently did not create a valid <code>URL</code> object. But why?
+</p>
+<p>A space is not a valid character in a URL. Many other characters aren’t valid either — such as the <code>&lt;</code> or <code>&gt;</code> signs — and therefore must be <em>escaped</em>. Another term for this is <em>URL encoding</em>.
+</p>
+<p>A space, for example, can be encoded as the <code>+</code> sign — you did that earlier when you typed the URL into the web browser — or as the character sequence <code>%20</code>.
+</p>
+<p>➤ Fortunately, <code>String</code> can do this encoding already. So, you only have to add one extra statement to the app to make this work:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">iTunesURL</span><span class="hljs-params">(searchText: String)</span></span> -&gt; <span class="hljs-type">URL</span> {
+  <span class="hljs-keyword">let</span> encodedText = searchText.addingPercentEncoding(
+      withAllowedCharacters: <span class="hljs-type">CharacterSet</span>.urlQueryAllowed)!
+  <span class="hljs-keyword">let</span> urlString = <span class="hljs-type">String</span>(format: 
+      <span class="hljs-string">"https://itunes.apple.com/search?term=%@"</span>, encodedText)
+  <span class="hljs-keyword">let</span> url = <span class="hljs-type">URL</span>(string: urlString)
+  <span class="hljs-keyword">return</span> url!
+}</pre>
+<p>This calls the <code>addingPercentEncoding(withAllowedCharacters:)</code> method to create a new string where all the special characters are escaped, and you use that string for the search term.
+</p>
+<div class="note">
+<p><em>UTF-8 string encoding</em>
+</p>
+<p>This new string treats the special characters as being “UTF-8 encoded”. It’s important to know what that means because you’ll run into this UTF-8 thing every once in a while when dealing with text.
+</p>
+<p>There are many different ways to encode text. You’ve probably heard of ASCII and Unicode, the two most common encodings.
+</p>
+<p>UTF-8 is a version of Unicode that is very efficient for storing regular text, but less so for special symbols or non-Western alphabets. Still, it’s the most popular way to deal with Unicode text today.
+</p>
+<p>Normally, you don’t have to worry about how your strings are encoded. But when sending requests to a web service you need to transmit the text with the proper encoding. Tip: When in doubt, use UTF-8, it will almost always work.
+</p></div>
+
+<p>➤ Run the app and search for “pokemon go” again. This time a valid <code>URL</code> object can be created, and it looks like this:
+</p><pre class="code-block">URL: &apos;https://itunes.apple.com/search?term=pokemon%20go&apos;</pre>
+<p>The space has been turned into the character sequence <code>%20</code>. The <code>%</code> indicates an escaped character and 20 is the UTF-8 value for a space. Also try searching for terms with other special characters, such as <code>#</code> and <code>*</code> or even Emoji, and see what happens.
+</p>
+<h3 class="segment-chapter">Perform the search request</h3>
+
+<p>Now that you have a valid <code>URL</code> object, you can do some actual networking!
+</p>
+<p>➤ Add a new method to <em>SearchViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">performStoreRequest</span><span class="hljs-params">(with url: URL)</span></span> -&gt; <span class="hljs-type">String</span>? {
+  <span class="hljs-keyword">do</span> {
+   <span class="hljs-keyword">return</span> <span class="hljs-keyword">try</span> <span class="hljs-type">String</span>(contentsOf: url, encoding: .utf8)
+  } <span class="hljs-keyword">catch</span> {
+   <span class="hljs-built_in">print</span>(<span class="hljs-string">"Download Error: <span class="hljs-subst">\(error.localizedDescription)</span>"</span>)
+   <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+  }
+}</pre>
+<p>The meat of this method is the call to <code>String(contentsOf:encoding:)</code> which returns a new string object with the data it receives from the server pointed to by the URL.
+</p>
+<p>Note that you’re telling the app to interpret the data as UTF-8 text. Should the server send back the text in a different encoding, then it will look like a garbled mess to your app. It’s important that the sending and receiving sides agree on the encoding they are using!
+</p>
+<p>Because things can go wrong — for example, the network may be down and the server cannot be reached — you enclose this in a <code>do-try-catch</code> block. If there is a problem, the code jumps to the <code>catch</code> branch and the <code>error</code> variable will contain more details about the error. If this happens, you print out a user-understandable form of the error and return <code>nil</code> to signal that the request failed.
+</p>
+<p>➤ Add the following lines to <code>searchBarSearchButtonClicked(_:)</code>, after the <code>print()</code> line:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> jsonString = performStoreRequest(with: url) {
+  <span class="hljs-built_in">print</span>(<span class="hljs-string">"Received JSON string '<span class="hljs-subst">\(jsonString)</span>'"</span>)
+}</pre>
+<p>This invokes <code>performStoreRequest(with:)</code> with the <code>URL</code> object as a parameter and returns the JSON data that is received from the server. If everything goes according to plan, this method returns a new string containing the JSON data that you’re after. Let’s try it out!
+</p>
+<p>➤ Run the app and search for your favorite band. After a second or so, a whole bunch of data will be dumped to the Xcode Console:
+</p><pre class="code-block">URL: &apos;http://itunes.apple.com/search?term=metallica&apos;
+
+Received JSON string &apos;
+
+
+{
+ &quot;resultCount&quot;:50,
+ &quot;results&quot;: [
+{&quot;wrapperType&quot;:&quot;track&quot;, &quot;kind&quot;:&quot;song&quot;, &quot;artistId&quot;:3996865, &quot;collectionId&quot;:579372950, &quot;trackId&quot;:579373079, &quot;artistName&quot;:&quot;Metallica&quot;, &quot;collectionName&quot;:&quot;Metallica&quot;, &quot;trackName&quot;:&quot;Enter Sandman&quot;, &quot;collectionCensoredName&quot;:&quot;Metallica&quot;, &quot;trackCensoredName&quot;:&quot;Enter Sandman&quot;, 
+. . . and so on . . .</pre>
+<p>Congratulations, your app has successfully talked to a web service!
+</p>
+<p>This prints the same stuff that you saw in the web browser earlier. Right now it’s all contained in a single <code>String</code> object, which isn’t really useful for our purposes, but you’ll convert it to a more useful format in a minute.
+</p>
+<p>Of course, it’s possible that you received an error. In that case, the output should be something like this:
+</p><pre class="code-block">URL: &apos;https://itunes.apple.com/search?term=Metallica&apos;
+HTTP load failed (error code: -1009 [1:50]) for Task &lt;F5199AB7-5011-42FB-91B5-656244861482&gt;.&lt;0&gt;
+NSURLConnection finished with error - code -1009
+Download Error: The file “search” couldn’t be opened.</pre>
+<p>You’ll add better error handling to the app later, but if you get such an error at this point, then make sure your computer — or your iPhone in case you’re running the app on a device and not in the Simulator — is connected to the Internet. Also try the URL directly in your web browser and see if that works.
+</p>
+<h2 class="segment-chapter">Parse JSON</h2>
+
+<p>Now that you have managed to download a chunk of JSON data from the server, what do you do with it?
+</p>
+<p>JSON is a <i>structured</i> data format. It typically consists of arrays and dictionaries that contain other arrays and dictionaries, as well as regular data such as strings and numbers.
+</p>
+<h3 class="segment-chapter">An overview of the JSON data</h3>
+
+<p>The JSON from the iTunes store roughly looks like this:
+</p><pre class="code-block">{
+  &quot;resultCount&quot;: 50,
+  &quot;results&quot;: [ . . . a bunch of other stuff . . . ]
+}</pre>
+<p>The <code>{ }</code> brackets surround a dictionary. This particular dictionary has two keys: <code>resultCount</code> and <code>results</code>. The first one, <code>resultCount</code>, has a numeric value. This is the number of items that matched your search query. By default the limit is a maximum of 50 items, but as you will see later, you can increase this upper limit.
+</p>
+<p>The results key contains an array, which is indicated by the <code>[ ]</code> brackets. Inside that array are more dictionaries, each of which describes a single product from the store. You can tell these things are dictionaries because they have the <code>{ }</code> brackets again.
+</p>
+<p>Here are two of these items from the array:
+</p><pre class="code-block">{
+  &quot;wrapperType&quot;: &quot;track&quot;,
+  &quot;kind&quot;: &quot;song&quot;,
+  &quot;artistId&quot;: 3996865,
+  &quot;artistName&quot;: &quot;Metallica&quot;,
+  &quot;trackName&quot;: &quot;Enter Sandman&quot;,
+  . . . and so on . . .
+},
+{
+  &quot;wrapperType&quot;: &quot;track&quot;,
+  &quot;kind&quot;: &quot;song&quot;,
+  &quot;artistId&quot;: 3996865,
+  &quot;artistName&quot;: &quot;Metallica&quot;,
+  &quot;trackName&quot;: &quot;Nothing Else Matters&quot;,
+  . . . and so on . . .
+},</pre>
+<p>Each product is represented by a dictionary made up of several keys. The values of the <code>kind</code> and <code>wrapperType</code> keys determine what sort of product this is: a song, a music video, an audiobook, and so on. The other keys describe the artist and the song itself.
+</p><div class="image-35"><img src="graphics/img582.png"  alt="" title="The structure of the JSON data" /></div>
+<p>To summarize, the JSON data represents a dictionary and inside that dictionary is an array of more dictionaries. Each of the dictionaries from the array represents one search result.
+</p>
+<p>Currently, all of this sits in a <code>String</code>, which isn’t very handy, but using a <em>JSON parser</em> you can turn this data into Swift <code>Dictionary</code> and <code>Array</code> objects.
+</p>
+<h4 class="segment-chapter">JSON or XML?</h4>
+
+<p>JSON is not the only structured data format out there. XML, which stands for E<em>X</em>tensible <em>M</em>arkup <em>L</em>anguage, is a slightly more formal standard. Both formats serve the same purpose, but they look a bit different. If the iTunes store returned its results as XML, the output would look more like this:
+</p><pre class="code-block">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;iTunesSearch&gt;
+  &lt;resultCount&gt;5&lt;/resultCount&gt;
+  &lt;results&gt;
+    &lt;song&gt;
+      &lt;artistName&gt;Metallica&lt;/artistName&gt;
+      &lt;trackName&gt;Enter Sandman&lt;/trackName&gt;
+    &lt;/song&gt;
+    &lt;song&gt;
+      &lt;artistName&gt;Metallica&lt;/artistName&gt;
+      &lt;trackName&gt;Nothing Else Matters&lt;/trackName&gt;
+    &lt;/song&gt;
+    . . . and so on . . .
+  &lt;/results&gt;
+&lt;/iTunesSearch&gt;</pre>
+<p>These days, most developers prefer JSON because it’s simpler than XML and easier to parse. But it’s certainly possible that if you want your app to talk to a particular web service, you’ll be expected to deal with XML data.
+</p>
+<h3 class="segment-chapter">Prepare to parse JSON data</h3>
+
+<p>In the past, if you wanted to parse JSON, it used to be necessary to include a third-party framework into your apps, or to manually walk through the data structure using the built-in iOS JSON parser. But with Swift 4, there&apos;s a new way to do things — your old pal <code>Codable</code>.
+</p>
+<p>Remember how you used a <code>PropertyListDecoder</code> to decode plist data that supported the <code>Codable</code> protocol for reading — and saving — data in <i>Checklists</i>? Well, propertly lists aren&apos;t the only format supported by <code>Codable</code> out of the box — JSON is supported too!
+</p>
+<p>All you need to do in order to allow your app to read JSON data directly into the relevant data structures is to set them up to conform to <code>Codable</code>!
+</p>
+<p>&quot;Now hold on there&quot;, I hear you saying. &quot;How does <code>Codable</code> know how an arbitrary data structure from the Internet is set up in order to correctly extract the right bits of data?&quot; Ah, it&apos;s all in how you set your data structures up. You&apos;ll understand as you proceed to parse the data you received from the iTunes server.
+</p>
+<p>The trick to using <code>Codable</code> to parse JSON data is to set up your classes — or structs — to reflect the structure of the data that you&apos;ll parse. As you noticed above, there are two parts to the JSON response received from the iTunes server:
+</p>
+<ol>
+<li>
+<p>The response wrapper which contains the number of results and an array of results.
+</p></li>
+
+<li>
+<p>The array itself which is made up of individual search result items.
+</p></li>
+</ol>
+
+<p>We need to model both of the above in order to parse the JSON data correctly. We&apos;ve already made some headway in terms of modeling the search results by way of the <code>SearchResult</code> object, but we need to do some modifications in order to get the object ready for JSON parsing.
+</p>
+<p>But first, let&apos;s add a new data model for the results wrapper.
+</p>
+<p>➤ Open <em>SearchResult.swift</em> and replace its contents with the following:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ResultArray</span>:<span class="hljs-title">Codable</span> </span>{
+    <span class="hljs-keyword">var</span> resultCount = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">var</span> results = [<span class="hljs-type">SearchResult</span>]()
+}
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SearchResult</span>:<span class="hljs-title">Codable</span> </span>{
+  <span class="hljs-keyword">var</span> artistName: <span class="hljs-type">String</span>? = <span class="hljs-string">""</span>
+  <span class="hljs-keyword">var</span> trackName: <span class="hljs-type">String</span>? = <span class="hljs-string">""</span>
+  
+  <span class="hljs-keyword">var</span> name:<span class="hljs-type">String</span> {
+    <span class="hljs-keyword">return</span> trackName ?? <span class="hljs-string">""</span>
+  }
+}</pre>
+<p>There are a few changes here:
+</p>
+<ol>
+<li>
+<p>The <code>ResultArray</code> class models the response wrapper by containing a results count and an array of <code>SearchResult</code> objects. Note that this class supports the <code>Codable</code> protocol.
+</p>
+<p>If you are wondering why this class is within the same file as <code>SearchResult</code>, it is simply for the sake of expediency. This class is not used anywhere else except as a temporary holder during the JSON parsing process. So I put it in the same file as <code>SearchResult</code>, which is the actual class you&apos;ll be using. But if you prefer, you can put this class in a separate Swift file by itself — it doesn&apos;t make any difference to the app functionality.
+</p></li>
+
+<li>
+<p>The <code>SearchResult</code> class now supports the <code>Codable</code> protocol too.
+</p></li>
+
+<li>
+<p>It also has a new property named <code>trackName</code> and the <code>artistName</code> property has been changed to an optional one — the optional properties are to make <code>Codable</code>&apos;s work easier since <code>Codable</code> expects non-optional values to be always present in the JSON data. Unfortunately, since the response from the iTunes server might not always have these properties and you have to allow for that.
+</p></li>
+
+<li>
+<p>The existing property for <code>name</code> has been converted to a computed property which returns the value of the <code>trackName</code> property, or an empty string if <code>trackName</code> is <code>nil</code>.
+</p></li>
+</ol>
+
+<p>The reason for changes #3 and #4 might not be obvious immediately. Take a look at the response data you received from the server. Did you notice the &quot;kind&quot; key?
+</p>
+<p>The search results from iTunes can be for multiple types of items — songs, videos, movies, tv shows, books etc. That key indicates the type of item the search result is for. And depending on the item type, you might want to vary how you display an item name. For example, you might not always want to use the &quot;trackName&quot; key as the item name — in fact, as we mention above, &quot;trackName&quot; might not even be there in the returned data. The computed <code>name</code> property is simply preparation for the future in case you want to display different names depending on the result type.
+</p>
+<p>Also, notice that now all the property names in the class match actual keys in the JSON data — you can parse JSON even without the property names matching the key names, but that&apos;s a bit more complicated. So let&apos;s take the easy route here. Remember, baby steps ...
+</p>
+<p>And that&apos;s all you need in order to prepare for JSON parsing. Onwards!
+</p>
+<h3 class="segment-chapter">Parse the JSON data</h3>
+
+<p>You will be using the <code>JSONDecoder</code> class, appropriately enough, to parse JSON data. Only trouble is, <code>JSONDecoder</code> needs its input to be a <code>Data</code> object. You currently have the JSON response from the server as a <code>String</code>.
+</p>
+<p>You can convert the <code>String</code> to <code>Data</code> pretty easily, but it would be better to get the response from the server as <code>Data</code> in the first place — you got the response from the server as <code>String</code> initially only to ensure that the response was correct.
+</p>
+<p>➤ Switch to <em>SearchViewController.swift</em> and modify <code>performStoreRequest(with:)</code> as follows:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">performStoreRequest</span><span class="hljs-params">(with url: URL)</span></span> -&gt; <span class="hljs-type">Data</span>? {  <span class="hljs-comment">// Change to Data?</span>
+  <span class="hljs-keyword">do</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">try</span> <span class="hljs-type">Data</span>(contentsOf:url)   <span class="hljs-comment">// Change this line</span>
+  } <span class="hljs-keyword">catch</span> {
+    . . .
+  }
+}</pre>
+<p>You simply change the request method to fetch the response from the server as <code>Data</code> instead of a <code>String</code> — the method now returns the value as an optional <code>Data</code> value instead of an optional <code>String</code> value.
+</p>
+<p>➤ Add the following method to <em>SearchViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">parse</span><span class="hljs-params">(data: Data)</span></span> -&gt; [<span class="hljs-type">SearchResult</span>] {
+  <span class="hljs-keyword">do</span> {
+    <span class="hljs-keyword">let</span> decoder = <span class="hljs-type">JSONDecoder</span>()
+    <span class="hljs-keyword">let</span> result = <span class="hljs-keyword">try</span> decoder.decode(<span class="hljs-type">ResultArray</span>.<span class="hljs-keyword">self</span>, from:data)
+    <span class="hljs-keyword">return</span> result.results
+  } <span class="hljs-keyword">catch</span> {
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"JSON Error: <span class="hljs-subst">\(error)</span>"</span>)
+    <span class="hljs-keyword">return</span> []
+  }
+}</pre>
+<p>You use a <code>JSONDecoder</code> object to convert the response data from the server to a temporary  <code>ResultArray</code> object from which you exctract the <code>results</code> property. Or at least, you <i>hope</i> you can convert the data without any issues…
+</p>
+<h4 class="segment-chapter">Assumptions cause trouble</h4>
+
+<p>When you write apps that talk to other computers on the Internet, one thing to keep in mind is that your conversational partners may not always say the things you expect them to say.
+</p>
+<p>There could be an error on the server and instead of valid JSON data, it may send back some error message. In that case, <code>JSONDecoder</code> will not be able to parse the data and the app will return an empty array from <code>parse(data:)</code>.
+</p>
+<p>Another thing that could happen is that the owner of the server changes the format of the data they send back. Usually, this is done in a new version of the web service that is accessible via a different URL. Or, they might require you to send along a “version” parameter. But not everyone is careful like that, and by changing what the server does, they may break apps that depend on the data coming back in a specific format.
+</p>
+<p>In the case of the iTunes store web service, the top-level object <i>should</i> be a dictionary with two keys — one for the count, the other for the array of results — but you can’t control what happens on the server. If for some reason the server programmers decide to put <code>[ ]</code> brackets around the JSON data, then the top-level object will no longer be a <code>Dictionary</code> but an <code>Array</code>. This in turn will cause <code>JSONDecoder</code> to fail parsing the data since it is no longer in the expected format.
+</p>
+<p>Being paranoid about these kinds of things and showing an error message in the unlikely event this happens is a lot better than your application suddenly crashing when something changes on a server that is outside of your control.
+</p>
+<p>Just to be sure, you’re using the <code>do-try-catch</code> block to check that the JSON parsing goes through fine. Should the conversion fail, then the app doesn’t burst into flames but simply returns an empty results array.
+</p>
+<p>It’s good to add checks like these to the app to make sure you get back what you expect. If you don’t own the servers you’re talking to, it’s best to program defensively.
+</p>
+<p>➤ Modify  <code>searchBarSearchButtonClicked(_:)</code> as follows:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">searchBarSearchButtonClicked</span><span class="hljs-params">(<span class="hljs-number">_</span> searchBar: UISearchBar)</span></span> {
+  <span class="hljs-keyword">if</span> !searchBar.text!.isEmpty {
+    . . .
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"URL: '<span class="hljs-subst">\(url)</span>'"</span>)
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> data = performStoreRequest(with: url) {  <span class="hljs-comment">// Modified</span>
+      <span class="hljs-keyword">let</span> results = parse(data: data)               <span class="hljs-comment">// New line</span>
+      <span class="hljs-built_in">print</span>(<span class="hljs-string">"Got results: <span class="hljs-subst">\(results)</span>"</span>)              <span class="hljs-comment">// New line</span>
+    }
+    tableView.reloadData()
+  }
+}</pre>
+<p>You simply change the constant for the result from the call to <code>performStoreRequest(with:)</code> from <code>jsonString</code> to <code>data</code>, call the new <code>parse(data:)</code> method, and print the return value.
+</p>
+<p>➤ Run the app and search for something. The Xcode Console now prints the following:
+</p><pre class="code-block">URL: &apos;https://itunes.apple.com/search?term=Metallica&apos;
+Got results: [StoreSearch.SearchResult, StoreSearch.SearchResult, StoreSearch.SearchResult, StoreSearch.SearchResult, StoreSearch.SearchResult, StoreSearch.SearchResult, StoreSearch.SearchResult, StoreSearch.SearchResult, StoreSearch.SearchResult, StoreSearch.SearchResult, StoreSearch.SearchResult, StoreSearch.SearchResult, StoreSearch.SearchResult, StoreSearch.SearchResult, 
+. . . ]</pre>
+<p>Hmm … that certainly <i>looks</i> like an array of 50 items, but it doesn&apos;t really tell you anything much about the actual data — just that the array consists of <code>SearchResult</code> objects. That&apos;s not much good to you, is it?
+</p>
+<h3 class="segment-chapter">Print object contents</h3>
+
+<p>➤ Modify the <code>SearchResult</code> class in <em>SearchResult.swift</em> to conform to the <code>CustomStringConvertible</code> protocol:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SearchResult</span>: <span class="hljs-title">Codable</span>, <span class="hljs-title">CustomStringConvertible</span> </span>{</pre>
+<p>The <code>CustomStringConvertible</code> protocol allows an object to have a custom string representation. Or, to put it another way, the protocol allows objects to have a custom string describing the object, or its contents.
+</p>
+<p>So, how does the protocol provide this string description? That is done via the protocol&apos;s <code>description</code> property.
+</p>
+<p>➤ Add the following code to the <code>SearchResult</code> class:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> description: <span class="hljs-type">String</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-string">"Name: <span class="hljs-subst">\(name)</span>, Artist Name: <span class="hljs-subst">\(artistName ?? "None")</span>"</span>
+}</pre>
+<p>The above is your implementation of the <code>description</code> property to conform to the <code>CustomStringConvertible</code>. For your <code>SearchResult</code> class, the description consists of the values of the <code>name</code> and <code>artistName</code> properties — but since <code>artistName</code> is an optional value, you have to account for when it might be <code>nil</code> and output &quot;None&quot; when that happens.
+</p>
+<p>Notice the <code>??</code> operator in the above code — it&apos;s called the <i>nil-coalescing operator</i> and you probably remember it from previous chapters. The nil-coalescing operator unwraps the variable to the left of the operator if it has a value, if not, it returns the value to the right of the operator as the default value.
+</p>
+<p>➤ Run the app again and search for something. The Xcode Console should now print something like the following:
+</p><pre class="code-block">URL: &apos;https://itunes.apple.com/search?term=Metallica&apos;
+Got results: [Name: Enter Sandman, Artist Name: Metallica, Name: Nothing Else Matters, Artist Name: Metallica, Name: The Unforgiven, Artist Name: Metallica, Name: One, Artist Name: Metallica, Name: Wherever I May Roam, Artist Name: Metallica,
+. . .</pre>
+<p>Yep, that looks more like it!
+</p>
+<p>You have converted a bunch of JSON that didn&apos;t make a lot of sense, into actual objects that you can use.
+</p>
+<h3 class="segment-chapter">Error handling</h3>
+
+<p>Let’s add an alert to handle potential errors. It’s inevitable that something goes wrong somewhere and it’s best to be prepared.
+</p>
+<p>➤ Add the following method to <em>SearchViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showNetworkError</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> alert = <span class="hljs-type">UIAlertController</span>(title: <span class="hljs-string">"Whoops..."</span>,
+    message: <span class="hljs-string">"There was an error accessing the iTunes Store."</span> + 
+    <span class="hljs-string">" Please try again."</span>, preferredStyle: .alert)
+  
+  <span class="hljs-keyword">let</span> action = <span class="hljs-type">UIAlertAction</span>(title: <span class="hljs-string">"OK"</span>, style: .<span class="hljs-keyword">default</span>, 
+                           handler: <span class="hljs-literal">nil</span>)
+  alert.addAction(action)
+  present(alert, animated: <span class="hljs-literal">true</span>, completion: <span class="hljs-literal">nil</span>)
+}</pre>
+<p>Nothing you haven’t seen before; it simply presents an alert controller with an error message.
+</p>
+<div class="note">
+<p><em>Note:</em> The <code>message</code> variable is split into two separate strings and concatenated, or added together, using the plus (<code>+</code>) operator just so that the string would display nicely for this book. You can feel free to type out the whole string as a single string instead.
+</p></div>
+
+<p>➤ Add the following line to <code>performStoreRequest(with:)</code> just before the <code>return nil</code>:
+</p><pre class="code-block">showNetworkError()</pre>
+<p>Simply put, if something goes wrong with the request to the iTunes store, you call <code>showNetworkError()</code> to show an alert box.
+</p>
+<p>If you did everything correctly up to this point, then the web service should always have worked. Still it’s a good idea to test a few error situations, just to make sure the error handling is working for those unlucky users with bad network connections.
+</p>
+<p>➤ Try this: In <code>iTunesURL(searchText:)</code> method, temporarily change the &quot;itunes.apple.com&quot; part of the URL  to “NOMOREitunes.apple.com”.
+</p>
+<p>You should now get an error alert when you try a search because no such server exists at that address. This simulates the iTunes server being down. Don’t forget to change the URL back when you’re done testing.
+</p>
+<p><em>Tip:</em> To simulate no network connection you can pull the network cable and/or disable Wi-Fi on your Mac, or run the app on your device in Airplane Mode.
+</p><div class="image-30"><img src="graphics/img583.png"  alt="" title="The app shows an alert when there is a network error" /></div>
+<p>It should be obvious that when you’re doing networking, things can — and will! — go wrong, often in unexpected ways. So, it&apos;s always good to be prepared for surprises.
+</p>
+<h2 class="segment-chapter">Work with the JSON results</h2>
+
+<p>So far you’ve managed to send a request to the iTunes web service and you parsed the JSON data into an array of <code>SearchResult</code> objects.  However, we are not quite done.
+</p>
+<p>The iTunes Store sells different kinds of products — songs, e-books, software, movies, and so on — and each of these has its own structure in the JSON data. A software product will have screenshots but a movie will have a video preview. The app will have to handle these different kinds of data.
+</p>
+<p>You’re not going to support everything the iTunes store has to offer, only these items:
+</p>
+<ul>
+<li>
+<p>Songs, music videos, movies, TV shows, podcasts
+</p></li>
+
+<li>
+<p>Audio books
+</p></li>
+
+<li>
+<p>Software (apps)
+</p></li>
+
+<li>
+<p>E-books
+</p></li>
+</ul>
+
+<p>The reason I have split them up like this is because that’s how the iTunes store does it. Songs and music videos, for example, share the same set of fields, but audiobooks and software have different data structures. The JSON data makes this distinction using the <code>kind</code> field.
+</p>
+<p>Let&apos;s modify our data model to load the value for the above key.
+</p>
+<p>➤ Add the following property to <code>SearchResult</code> (<em>SearchResult.swift</em>):
+</p><pre class="code-block"><span class="hljs-keyword">var</span> kind: <span class="hljs-type">String</span>? = <span class="hljs-string">""</span></pre>
+<p>You might think that the &quot;kind&quot; property would always be there in the iTunes data and so it need not be an optional. I thought so too, but unfortunately, iTunes proved me wrong :] So we go with an optional value there...
+</p>
+<p>➤ Also modify the <code>return</code> line for <code>description</code> to:
+</p><pre class="code-block"><span class="hljs-keyword">return</span> <span class="hljs-string">"Kind: <span class="hljs-subst">\(kind ?? "None")</span>, Name: <span class="hljs-subst">\(name)</span>, Artist Name: <span class="hljs-subst">\(artistName ?? "None")</span>\n"</span></pre>
+<p>That makes sense given that <code>kind</code> is optional, right?
+</p>
+<p>➤ Run the app and do a search. Look at the Xcode output.
+</p>
+<p>When I did this, Xcode showed three different types of products, with the majority of the results being songs. What you see may vary, depending on what you search for.
+</p><pre class="code-block">URL: &apos;https://itunes.apple.com/search?term=Beaches&apos;
+Got results: [Kind: feature-movie, Name: Beaches, Artist Name: Garry Marshall
+, Kind: song, Name: Wind Beneath My Wings, Artist Name: Bette Midler
+, Kind: tv-episode, Name: Beaches, Artist Name: Dora the Explorer
+. . .</pre>
+<p>Now, let’s add some new properties to the <code>SearchResult</code> object.
+</p>
+<h4 class="segment-chapter">Always check the documentation</h4>
+
+<p>If you were wondering how I knew how to interpret the data from the iTunes web service, or even how to set up the URLs to use the service in the first place, then you should realize there is no way you can be expected to use a web service if there is no documentation.
+</p>
+<p>Fortunately, for the iTunes store web service, there is some good documentation here:
+</p>
+<p><a href="https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/">affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api</a>
+</p>
+<p>Just reading the docs is often not enough though. You have to play with the web service a bit to know what you can and cannot do.
+</p>
+<p>There are some things that the <i>StoreSearch</i> app needs to do with the search results that were not clear from reading the documentation. So, first read the docs and then play with it. That goes for any API, really, whether it’s something from the iOS SDK or a web service.
+</p>
+<h3 class="segment-chapter">Load more properties</h3>
+
+<p>The current <code>SearchResult</code> class only has a few properties As you’ve seen, the iTunes store returns a lot more information than that, so you’ll need to add a few new properties.
+</p>
+<p>➤ Add the following properties to <em>SearchResult.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> trackPrice: <span class="hljs-type">Double</span>? = <span class="hljs-number">0.0</span>
+<span class="hljs-keyword">var</span> currency = <span class="hljs-string">""</span>
+<span class="hljs-keyword">var</span> artworkUrl60 = <span class="hljs-string">""</span>
+<span class="hljs-keyword">var</span> artworkUrl100 = <span class="hljs-string">""</span>
+<span class="hljs-keyword">var</span> trackViewUrl: <span class="hljs-type">String</span>? = <span class="hljs-string">""</span>
+<span class="hljs-keyword">var</span> primaryGenreName = <span class="hljs-string">""</span></pre>
+<p>You’re not including <i>everything</i> that the iTunes store returns, only the fields that are interesting to this app. Also, note that you&apos;ve named the properties to match the keys in the JSON data exactly and that only some have been marked as optional.
+</p>
+<div class="note">
+<p><em>Note:</em> The optionality of the properties was based on my own results. It is possible that with the above code, you still find that the app barfs all over the place with an error like this:
+</p></div>
+<pre class="code-block"><span class="hljs-type">URL</span>: 'https:<span class="hljs-comment">//itunes.apple.com/search?term=Macky'</span>
+<span class="hljs-type">JSON</span> <span class="hljs-type">Error</span>: keyNotFound(<span class="hljs-type">CodingKeys</span>(stringValue: <span class="hljs-string">"trackViewUrl"</span>, intValue: <span class="hljs-literal">nil</span>), <span class="hljs-type">Swift</span>.<span class="hljs-type">DecodingError</span>.<span class="hljs-type">Context</span>(codingPath: [<span class="hljs-type">CodingKeys</span>(stringValue: <span class="hljs-string">"results"</span>, intValue: <span class="hljs-literal">nil</span>), _JSONKey(stringValue: <span class="hljs-string">"Index 1"</span>, intValue: <span class="hljs-number">1</span>)], debugDescription: <span class="hljs-string">"No value associated with key CodingKeys(stringValue: \"trackViewUrl\", intValue: nil) (\"trackViewUrl\")."</span>, underlyingError: <span class="hljs-literal">nil</span>))</pre>
+<div class="note">
+<p>If this happens to you, look at the error message to figure out the property in <code>SearchResult</code> which is missing and then mark it as optional — problem solved!
+</p></div>
+
+<p><code>SearchResult</code> stores the item&apos;s price and the currency — US dollar, Euro, British Pounds, etc. It also stores two artwork URLs, one for a 60×60 pixel image and the other for a 100×100 pixel image, a link to the product’s page on the iTunes store, and the genre of the item.
+</p>
+<p>Provided the class supports <code>Codable</code>, with just the simple addition of new properties — as long at they are named the same as the JSON keys and have the right optionality — you are now able to load these new values into your class.
+</p>
+<p>But what if you don&apos;t want to use the not-quite-user-friendly names from the JSON data such as artworkUrl60 or artworkUrl100 but instead want to use more descriptive names such as artworkSmall and artworkLarge?
+</p>
+<p>Never fear, <code>Codable</code> has support for that too :]
+</p>
+<p>But before we get to that, you should run your app once to make sure that the above code changes didn&apos;t break anything. So, run your app, make a search, and verify that you still get output in the Xcode Console indicating that the search was successful.
+</p>
+<p>All working fine? Great! Let&apos;s move on to naming the <code>SearchResults</code> properties to be as you want them and not as the JSON data sets them ...
+</p>
+<h3 class="segment-chapter">Support better property names</h3>
+
+<p>➤ Replace the following lines of code in <em>SearchResult.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> artworkUrl60 = <span class="hljs-string">""</span>
+<span class="hljs-keyword">var</span> artworkUrl100 = <span class="hljs-string">""</span>
+<span class="hljs-keyword">var</span> trackViewUrl: <span class="hljs-type">String</span>? = <span class="hljs-string">""</span>
+<span class="hljs-keyword">var</span> primaryGenreName = <span class="hljs-string">""</span></pre>
+<p>With this:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> imageSmall = <span class="hljs-string">""</span>
+<span class="hljs-keyword">var</span> imageLarge = <span class="hljs-string">""</span>
+<span class="hljs-keyword">var</span> storeURL: <span class="hljs-type">String</span>? = <span class="hljs-string">""</span>
+<span class="hljs-keyword">var</span> genre = <span class="hljs-string">""</span>
+
+<span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">CodingKeys</span>: <span class="hljs-title">String</span>, <span class="hljs-title">CodingKey</span> </span>{
+  <span class="hljs-keyword">case</span> imageSmall = <span class="hljs-string">"artworkUrl60"</span>
+  <span class="hljs-keyword">case</span> imageLarge = <span class="hljs-string">"artworkUrl100"</span>
+  <span class="hljs-keyword">case</span> storeURL = <span class="hljs-string">"trackViewUrl"</span>
+  <span class="hljs-keyword">case</span> genre = <span class="hljs-string">"primaryGenreName"</span>
+  <span class="hljs-keyword">case</span> kind, artistName, trackName 
+  <span class="hljs-keyword">case</span> trackPrice, currency
+}</pre>
+<p>As you&apos;ll notice, you&apos;ve changed the property names to be more descriptive, but what does the <code>enum</code> do?
+</p>
+<p>As you&apos;ve seen previously, an <code>enum</code> (or enumeration), is a way to have a list of values and names for those values. Here, you use the <code>CodingKeys</code> enumeration to let the <code>Codable</code> protocol know how you want the <code>SearchResult</code> properties matched to the JSON data.
+</p>
+<p>Do note that if you do use the <code>CodingKeys</code> enumeration, it has to provide a <code>case</code> for all your properties in the class — the ones which map to a JSON key with the same name are the last two cases in the <code>enum</code>, you&apos;ll notice that they don&apos;t have a value specified.
+</p>
+<p>That&apos;s all there is to it :] Run your app again (and maybe change the <code>description</code> property to return one of the new values to test they display correctly) and verify that the code still works with the new properties.
+</p>
+<h3 class="segment-chapter">Use the results</h3>
+
+<p>With these latest changes, <code>searchBarSearchButtonClicked(_:)</code> retrieves an array of <code>SearchResult</code> objects populated with useful information, but you’re not doing anything with that array yet.
+</p>
+<p>➤ Switch to <em>SearchViewController.swift</em> and in <code>searchBarSearchButtonClicked(_:)</code>, replace the  following lines:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> results = parse(data: data)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">"Got results: <span class="hljs-subst">\(results)</span>"</span>))</pre>
+<p>With:
+</p><pre class="code-block">searchResults = parse(data: data)</pre>
+<p>Instead of placing the results in a local variable and printing them out, you now place the returned array into the <code>searchResults</code> instance variable so that the table view can show the actual search result objects.
+</p>
+<p>➤ Run the app and search for your favorite musician. After a second or so, you should see a whole bunch of results appear in the table. Cool!
+</p><div class="image-30"><img src="graphics/img584.png"  alt="" title="The results from the search now show up in the table" /></div>
+<h3 class="segment-chapter">Differing data structures</h3>
+
+<p>Remember how I said that some items, such as audiobooks have different data structures? Let&apos;s talk about that a bit more in detail...
+</p>
+<p>The biggest differences currently between the other item types and audiobooks is that audibooks do not have certain JSON keys that are present for other items. Here&apos;s a breakdown:
+</p>
+<ol>
+<li>
+<p><em>kind:</em> This value is not present at all.
+</p></li>
+
+<li>
+<p><em>trackName:</em> Instead of &quot;trackName&quot;, you get &quot;collectionName&quot;.
+</p></li>
+
+<li>
+<p><em>trackviewUrl:</em> Instead of this value, you have &quot;collectionViewUrl&quot; — which provides the iTunes link to the item.
+</p></li>
+
+<li>
+<p><em>trackPrice:</em> Instead of &quot;trackPrice&quot;, you get &quot;collectionPrice&quot;.
+</p></li>
+</ol>
+
+<p>Interestingly enough, you&apos;ll notice that in <code>SearchResult</code> these are all properties that we had marked as optional. You grok now why we had to mark them optional, right? If your search results included an audiobook item, those properties would not have been there and so <code>Codable</code> would have had a fit :]
+</p>
+<p>Additionally, there are a few other JSON differences for a couple of item types:
+</p>
+<ol>
+<li>
+<p>Software and e-book items do not have &quot;trackPrice&quot; key, instead they have a &quot;price&quot; key.
+</p></li>
+
+<li>
+<p>E-books don&apos;t have a “primaryGenreName” key — they have an array of genres.
+</p></li>
+</ol>
+
+<p>So how can you fix things so that the <code>JSONDecoder</code> can correctly decode the JSON datat from the iTunes Store server no matter the type of item? How do you handle the situations where the same property — for example, &quot;trackPrice&quot; — can be present as a different property — like &quot;collectionPrice&quot; or &quot;price&quot; — depending on the type of item?
+</p>
+<p>Remember how you added a computed variable called <code>name</code> which returns the <code>trackName</code>? This is where that comes into play ... If you add another variable to store <code>collectionName</code> — the name of the item when it is an audiobook — then you can return the correct value from <code>name</code> depending on the case. You can do something similar for the store URL and price as well.
+</p>
+<p>Let&apos;s make the necessary changes.
+</p>
+<p>➤ Remove the <code>storeURL</code> property from <code>SearchResult</code> — you&apos;ll add two separate optional properties for the audiobook and non-audiobook types. Also remove the <code>storeURL</code> case from <code>CodingKeys</code>.
+</p>
+<p>➤ Remove the <code>genre</code> property from <code>SearchResult</code> — you&apos;ll add two separate optional properties for the e-book and non-e-book types. Also remove the <code>genre</code> case from <code>CodingKeys</code>.
+</p>
+<p>➤ Add new optional properties for the variant keys present in the special items mentioned above:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> trackViewUrl: <span class="hljs-type">String</span>?
+<span class="hljs-keyword">var</span> collectionName: <span class="hljs-type">String</span>?
+<span class="hljs-keyword">var</span> collectionViewUrl: <span class="hljs-type">String</span>?
+<span class="hljs-keyword">var</span> collectionPrice: <span class="hljs-type">Double</span>?
+<span class="hljs-keyword">var</span> itemPrice: <span class="hljs-type">Double</span>?
+<span class="hljs-keyword">var</span> itemGenre: <span class="hljs-type">String</span>?
+<span class="hljs-keyword">var</span> bookGenre: [<span class="hljs-type">String</span>]?</pre>
+<p>➤ Replace the <code>name</code> computed property with the following:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> name: <span class="hljs-type">String</span> {
+  <span class="hljs-keyword">return</span> trackName ?? collectionName ?? <span class="hljs-string">""</span>
+}</pre>
+<p>The change is simple enough, except for the <i>chaining</i> of the nil-coalescing operator. You check to see if <code>trackName</code> is <code>nil</code> — if not, you return the unwrapped value of <code>trackName</code>. If <code>trackName</code> is <code>nil</code>, you move on to <code>collectionName</code> and do the same check. If both values are <code>nil</code>, you return an empty string.
+</p>
+<p>➤ Add the following three new computed properties:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> storeURL: <span class="hljs-type">String</span> {
+  <span class="hljs-keyword">return</span> trackViewUrl ?? collectionViewUrl ?? <span class="hljs-string">""</span>
+}
+
+<span class="hljs-keyword">var</span> price: <span class="hljs-type">Double</span> {
+  <span class="hljs-keyword">return</span> trackPrice ?? collectionPrice ?? itemPrice ?? <span class="hljs-number">0.0</span>
+}
+
+<span class="hljs-keyword">var</span> genre: <span class="hljs-type">String</span> {
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> genre = itemGenre {
+    <span class="hljs-keyword">return</span> genre
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> genres = bookGenre {
+    <span class="hljs-keyword">return</span> genres.joined(separator: <span class="hljs-string">", "</span>)
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-string">""</span>
+}</pre>
+<p>The first two computed properties work similar to how the <code>name</code> computed property works. So nothing new there. The <code>genre</code> property simply returns the genre for items which are not e-books. For e-books, the method combines all the genre values in the array seprated by commas and then returns the combined string.
+</p>
+<p>All that remains is to add all the new properties to the <code>CodingKeys</code> enumeration — if you don&apos;t, some of the values might not be populated correctly during JSON decoding. Once you&apos;re done, <code>CodingKeys</code> should look like this:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">CodingKeys</span>: <span class="hljs-title">String</span>, <span class="hljs-title">CodingKey</span> </span>{
+  <span class="hljs-keyword">case</span> imageSmall = <span class="hljs-string">"artworkUrl60"</span>
+  <span class="hljs-keyword">case</span> imageLarge = <span class="hljs-string">"artworkUrl100"</span>
+  <span class="hljs-keyword">case</span> itemGenre = <span class="hljs-string">"primaryGenreName"</span>
+  <span class="hljs-keyword">case</span> bookGenre = <span class="hljs-string">"genres"</span>
+  <span class="hljs-keyword">case</span> itemPrice = <span class="hljs-string">"price"</span>
+  <span class="hljs-keyword">case</span> kind, artistName, currency
+  <span class="hljs-keyword">case</span> trackName, trackPrice, trackViewUrl
+  <span class="hljs-keyword">case</span> collectionName, collectionViewUrl, collectionPrice
+}</pre>
+<p>➤ Run the app again, and search for something like &quot;Stephen King&quot; to be sure to get some results which include audibooks for the master of horror! In case you wonder why that specific search term, we are looking for audiobooks specifically because that is one of the item types with variations in the data structures...
+</p>
+<h3 class="segment-chapter">Show the product type</h3>
+
+<p>The search results may include podcasts, songs, or other related products. It would be useful to make the table view display what type of product it is showing.
+</p>
+<p>➤ Still in <em>SearchResult.swift</em>, add the following computed properties:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> type: <span class="hljs-type">String</span> {
+  <span class="hljs-keyword">return</span> kind ?? <span class="hljs-string">"audiobook"</span>
+}
+
+<span class="hljs-keyword">var</span> artist: <span class="hljs-type">String</span> {
+    <span class="hljs-keyword">return</span> artistName ?? <span class="hljs-string">""</span>
+} </pre>
+<p>Remember that <code>kind</code> could be <code>nil</code> if the item type is an audiobook and that we&apos;ve marked <code>artistName</code> as an optional. You hedge against that with these new computed properties.
+</p>
+<p>➤ Open <em>SearchViewController.swift</em> and in <code>tableView(_:cellForRowAt:)</code>, change the line that sets <code>cell.artistNameLabel</code> to the following:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> searchResult.artist.isEmpty {
+  cell.artistNameLabel.text = <span class="hljs-string">"Unknown"</span>
+} <span class="hljs-keyword">else</span> {
+  cell.artistNameLabel.text = <span class="hljs-type">String</span>(format: <span class="hljs-string">"%@ (%@)"</span>, 
+            searchResult.artist, searchResult.type)
+}</pre>
+<p>The first change is that you now check that the <code>SearchResult</code>’s <code>artist</code> is not empty. When testing the app I noticed that sometimes a search result did not include an artist name. In that case you make the cell say “Unknown”.
+</p>
+<p>You also add the value of the new <code>type</code> property to the artist name label, which should tell the user what kind of product they’re looking at:
+</p><div class="image-30"><img src="graphics/img585.png"  alt="" title="They’re not books…" /></div>
+<p>There is one problem with this. The value of <code>kind</code> comes straight from the server and it is more of an internal name than something you’d want to show directly to the user.
+</p>
+<p>What if you want it to say “Movie” instead, or maybe you want to translate the app to another language — something you’ll do later for <i>StoreSearch</i>. It’s better to convert this internal identifier, “feature-movie”, into the text that you want to show to the user, “Movie”.
+</p>
+<p>➤ Replace the <code>type</code> computed property in <em>SearchResult.swift</em> with this one:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> type:<span class="hljs-type">String</span> {
+  <span class="hljs-keyword">let</span> kind = <span class="hljs-keyword">self</span>.kind ?? <span class="hljs-string">"audiobook"</span>
+  <span class="hljs-keyword">switch</span> kind {
+  <span class="hljs-keyword">case</span> <span class="hljs-string">"album"</span>: <span class="hljs-keyword">return</span> <span class="hljs-string">"Album"</span>
+  <span class="hljs-keyword">case</span> <span class="hljs-string">"audiobook"</span>: <span class="hljs-keyword">return</span> <span class="hljs-string">"Audio Book"</span>
+  <span class="hljs-keyword">case</span> <span class="hljs-string">"book"</span>: <span class="hljs-keyword">return</span> <span class="hljs-string">"Book"</span>
+  <span class="hljs-keyword">case</span> <span class="hljs-string">"ebook"</span>: <span class="hljs-keyword">return</span> <span class="hljs-string">"E-Book"</span>
+  <span class="hljs-keyword">case</span> <span class="hljs-string">"feature-movie"</span>: <span class="hljs-keyword">return</span> <span class="hljs-string">"Movie"</span>
+  <span class="hljs-keyword">case</span> <span class="hljs-string">"music-video"</span>: <span class="hljs-keyword">return</span> <span class="hljs-string">"Music Video"</span>
+  <span class="hljs-keyword">case</span> <span class="hljs-string">"podcast"</span>: <span class="hljs-keyword">return</span> <span class="hljs-string">"Podcast"</span>
+  <span class="hljs-keyword">case</span> <span class="hljs-string">"software"</span>: <span class="hljs-keyword">return</span> <span class="hljs-string">"App"</span>
+  <span class="hljs-keyword">case</span> <span class="hljs-string">"song"</span>: <span class="hljs-keyword">return</span> <span class="hljs-string">"Song"</span>
+  <span class="hljs-keyword">case</span> <span class="hljs-string">"tv-episode"</span>: <span class="hljs-keyword">return</span> <span class="hljs-string">"TV Episode"</span>
+  <span class="hljs-keyword">default</span>: <span class="hljs-keyword">break</span>
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-string">"Unknown"</span>
+}</pre>
+<p>These are the types of products that this app understands.
+</p>
+<p>It’s possible that I missed one or that the iTunes Store adds a new product type at some point. If that happens, the <code>switch</code> jumps to the <code>default:</code> case and you’ll simply return a string saying &quot;Unknown&quot; — and hopefully help identify and fix the unknown type in an update of the app.
+</p>
+<div class="note">
+<p><em>Default and break</em>
+</p>
+<p>Switch statements often have a <code>default:</code> case at the end that just says <code>break</code>.
+</p>
+<p>In Swift, a <code>switch</code> must be exhaustive, meaning that it must have a <code>case</code> for all possible values of the thing that you’re looking at.
+</p>
+<p>Here you’re looking at <code>kind</code>. Swift needs to know what to do when <code>kind</code> is not any of the known values. That’s why you’re required to include the <code>default:</code> case, as a catchall for any other possible values of <code>kind</code>.
+</p>
+<p>By the way: unlike in other languages, the <code>case</code> statements in Swift do not need to say <code>break</code> at the end. They do not automatically “fall through” from one case to the other as they do in Objective-C.
+</p></div>
+
+<p>Now the item type should display not as a value from the web service, but instead, as the value you set for each item type:
+</p><div class="image-30"><img src="graphics/img586.png"  alt="" title="The product type is a bit more human-friendly" /></div>
+<p>➤ Run the app and search for software, audio books or e-books to see that the parsing code works. It can take a few tries before you find some because of the enormous quantity of products on the store.
+</p>
+<p>Later on, you’ll add a control that lets you pick the type of products that you want to search for, which makes it a bit easier to find just e-books or audiobooks.
+</p><div class="image-20"><img src="graphics/img587.png"  alt="" title="The app shows a varied range of products now" /></div>
+<h2 class="segment-chapter">Sort the search results</h2>
+
+<p>It’d be nice to sort the search results alphabetically. That’s actually quite easy. A Swift <code>Array</code> already has a method to sort itself. All you have to do is tell it what to sort on.
+</p>
+<p>➤ In <em>SearchViewController.swift</em>, in <code>searchBarSearchButtonClicked(_:)</code>, right after the call to <code>parse(data:)</code> add the following:
+</p><pre class="code-block">searchResults.<span class="hljs-built_in">sort</span>(by: { result1, result2 <span class="hljs-keyword">in</span>
+  <span class="hljs-keyword">return</span> result1.name.localizedStandardCompare(
+         result2.name) == .orderedAscending
+})</pre>
+<p>After the results array is fetched, you call <code>sort(by:)</code> on the <code>searchResults</code> array with a closure that determines the sorting rules. This is identical to what you did in <i>Checklists</i> to sort the to-do lists.
+</p>
+<p>In order to sort the contents of the <code>searchResults</code> array, the closure will compare the <code>SearchResult</code> objects with each other and return <code>true</code> if <code>result1</code> comes before <code>result2</code>. The closure is called repeatedly on different pairs of <code>SearchResult</code> objects until the array is completely sorted.
+</p>
+<p>The comparison of the two objects uses <code>localizedStandardCompare()</code> to compare the names of the <code>SearchResult</code> objects. Because you used <code>.orderedAscending</code>, the closure returns <code>true</code> only if <code>result1.name</code> comes before <code>result2.name</code> — in other words, the array gets sorted from A to Z.
+</p>
+<p>➤ Run the app and verify that the search results are sorted alphabetically.
+</p><div class="image-30"><img src="graphics/img588.png"  alt="" title="The search results are sorted by name" /></div>
+<p>Sorting was pretty easy to add, but there is an even easier way to write this.
+</p>
+<h3 class="segment-chapter">Improve the sorting code</h3>
+
+<p>➤ Change the sorting code you just added to:
+</p><pre class="code-block">searchResults.<span class="hljs-built_in">sort</span> { $<span class="hljs-number">0</span>.name.localizedStandardCompare($<span class="hljs-number">1</span>.name) 
+                     == .orderedAscending }</pre>
+<p>This uses the <i>trailing</i> closure syntax to put the closure after the method name, rather than inside the traditional <code>( )</code> parentheses as a parameter. It’s a small improvement in readability.
+</p>
+<p>More importantly, inside the closure you no longer refer to the two <code>SearchResult</code> objects by name but as the special <code>$0</code> and <code>$1</code> variables. Using this shorthand instead of full parameter names is common in Swift closures. There is also no longer a <code>return</code> statement.
+</p>
+<p>➤ Verify that this works.
+</p>
+<p>Believe it or not, you can do even better. Swift has a very cool feature called <em>operator overloading</em>. It allows you to take the standard operators such as <code>+</code> or <code>*</code> and apply them to your own objects. You can even create completely new operator symbols.
+</p>
+<p>It’s not a good idea to go overboard with this feature and make operators do something completely unexpected — don’t overload <code>/</code> to do multiplications, eh? — but it comes in very handy for sorting.
+</p>
+<p>➤ Open <em>SearchResult.swift</em> and add the following code, outside of the class:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> &lt; (lhs: SearchResult, rhs: SearchResult) -&gt; <span class="hljs-title">Bool</span> </span>{
+  <span class="hljs-keyword">return</span> lhs.name.localizedStandardCompare(rhs.name) == 
+         .orderedAscending
+}</pre>
+<p>This should look familiar! You’re creating a function named <code>&lt;</code> that contains the same code as the closure from earlier. This time, the two <code>SearchResult</code> objects are called <code>lhs</code> and <code>rhs</code>, for left-hand side and right-hand side, respectively.
+</p>
+<p>You have now overloaded the less-than operator so that it takes two <code>SearchResult</code> objects and returns <code>true</code> if the first one should come before the second, and <code>false</code> otherwise. Like so:
+</p><pre class="code-block">searchResultA.name = <span class="hljs-string">"Waltz for Debby"</span>
+searchResultB.name = <span class="hljs-string">"Autumn Leaves"</span>
+
+searchResultA &lt; searchResultB  <span class="hljs-comment">// false</span>
+searchResultB &lt; searchResultA  <span class="hljs-comment">// true</span></pre>
+<p>➤ Back in <em>SearchViewController.swift</em>, change the sorting code to:
+</p><pre class="code-block">searchResults.<span class="hljs-built_in">sort</span> { $<span class="hljs-number">0</span> &lt; $<span class="hljs-number">1</span> }</pre>
+<p>That’s pretty sweet. Using the <code>&lt;</code> operator makes it very clear that you’re sorting the items from the array in ascending order.
+</p>
+<p>But wait, you can write it even shorter:
+</p><pre class="code-block">searchResults.<span class="hljs-built_in">sort</span>(by: &lt;)</pre>
+<p>Wow, it doesn’t get much simpler than that! This line literally says, “Sort this array in ascending order”. Of course, this only works because you added your own <code>func &lt;</code> to overload the less-than operator so it takes two <code>SearchResult</code> objects and compares them.
+</p>
+<p>➤ Run the app again and make sure everything is still sorted.
+</p>
+<div class="note">
+<p><em>Exercise.</em> See if you can make the app sort by the artist name instead.
+</p></div>
+
+<div class="note">
+<p><em>Exercise</em>. Try to sort in descending order, from Z to A. Tip: use the <code>&gt;</code> operator.
+</p></div>
+
+<p>Excellent! You made the app talk to a web service and you were able to convert the data that was received into your own data model object.
+</p>
+<p>The app may not support every product that’s shown on the iTunes store, but I hope it illustrates the principle of how you can take data that comes in slightly different forms and convert it to objects that are more convenient to use in your own apps.
+</p>
+<p>Feel free to dig through the web service API documentation to add the remaining items that the iTunes store sells: <a href="https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/">https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/</a>
+</p>
+<p>➤ Commit your changes with a message such as &quot;Add fetching data from web service using synchronous network request&quot;.
+</p>
+<p>You can find the project files for this chaper under <em>34 – Networking</em> in the Source Code folder.
+</p></body></html>

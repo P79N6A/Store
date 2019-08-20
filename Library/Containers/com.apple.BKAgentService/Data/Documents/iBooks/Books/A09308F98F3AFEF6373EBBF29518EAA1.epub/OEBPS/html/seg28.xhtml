@@ -1,0 +1,863 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 21: Swift Review</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 21: Swift Review</h1>
+
+<p>You have made great progress! You&apos;ve learnt the basics of Swift programming and created two applications from scratch. You are on the threshold of creating your next app.
+</p>
+<p>But, a good building needs a good foundation. And in order to strengthen the foundations of your Swift knowledge, you first need some additional theory. There is still a lot more to learn about Swift and object-oriented programming!
+</p>
+<p>In the previous chapters I’ve shown you a fair bit of the Swift programming language already, but not quite everything. Previously, it was good enough if you could more-or-less follow along with what we were doing, but now is the time to fill in the gaps in theory. So, let’s do a little refresher on what we’ve talked about so far.
+</p>
+<p>In this chapter, you will cover the following:
+</p>
+<ul>
+<li>
+<p><em>Variables, constants, and types:</em> the difference between variables and constants, and what a type is.
+</p></li>
+
+<li>
+<p><em>Methods and functions:</em> what are methods and functions — are they the same thing?
+</p></li>
+
+<li>
+<p><em>Making decisions:</em> an explanation of the various programming constructs that can be used in the decision making process for your programs.
+</p></li>
+
+<li>
+<p><em>Loops:</em> how do you loop through a list of items?
+</p></li>
+
+<li>
+<p><em>Objects:</em> all you ever wanted to know about Objects — what they are, their component parts, how to use them, and how not to abuse them.
+</p></li>
+
+<li>
+<p><em>Protocols:</em> the nitty, gritty details about protocols.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Variables, constants, and types</h2>
+
+<h3 class="segment-chapter">Variables and types</h3>
+
+<p>A <em>variable</em> is a temporary container for a specific type of value:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> <span class="hljs-built_in">count</span>: <span class="hljs-type">Int</span>
+<span class="hljs-keyword">var</span> shouldRemind: <span class="hljs-type">Bool</span>
+<span class="hljs-keyword">var</span> text: <span class="hljs-type">String</span>
+<span class="hljs-keyword">var</span> list: [<span class="hljs-type">ChecklistItem</span>]</pre>
+<p>The <em>data type</em>, or just <em>type</em>, of a variable determines what kind of values it can contain. Some variables hold simple values such as <code>Int</code> or <code>Bool</code>, others hold more complex objects such as <code>String</code> or <code>Array</code>.
+</p>
+<p>The basic types you’ve used so far are: <code>Int</code> for whole numbers, <code>Float</code> for numbers with decimals (also known as <i>floating-point</i> numbers), and <code>Bool</code> for boolean values (<code>true</code> or <code>false</code>).
+</p>
+<p>There are a few other fundamental types as well:
+</p>
+<ul>
+<li>
+<p><code>Double</code>. Similar to a <code>Float</code> but with more precision. You will use <code>Double</code>s later on for storing latitude and longitude data.
+</p></li>
+
+<li>
+<p><code>Character</code>. Holds a single character. A <code>String</code> is a collection of <code>Character</code>s.
+</p></li>
+
+<li>
+<p><code>UInt</code>. A variation on <code>Int</code> that you may encounter occasionally. The U stands for <i>unsigned</i>, meaning the data type can hold positive values only. It’s called unsigned because it cannot have a negative sign (-) in front of the number. <code>UInt</code> can store numbers between 0 and 18 quintillion, but no negative numbers.
+</p></li>
+
+<li>
+<p><code>Int8</code>, <code>UInt8</code>, <code>Int16</code>, <code>UInt16</code>, <code>Int32</code>, <code>UInt32</code>, <code>Int64</code>, <code>UInt64</code>. These are all variations on <code>Int</code>. The difference is in how many bytes they have available to store their values. The more bytes, the bigger the values they can store. In practice, you almost always use <code>Int</code>, which uses 8 bytes for storage on a 64-bit platform (a fact that you may immediately forget) and can fit positive and negative numbers up to about 19 digits. Those are big numbers!
+</p></li>
+
+<li>
+<p><code>CGFloat</code>. This isn’t really a Swift type but a type defined by the iOS SDK. It’s a decimal point number like <code>Float</code> and <code>Double</code>. For historical reasons, this is used throughout UIKit for floating-point values. (The “CG” prefix stands for the <em>C</em>ore <em>G</em>raphics framework.)
+</p></li>
+</ul>
+
+<p>Swift is very strict about types, more so than many other languages. If the type of a variable is <code>Int</code>, you cannot put a <code>Float</code> value into it. The other way around also won’t work: an <code>Int</code> won&apos;t go into a <code>Float</code>.
+</p>
+<p>Even though both types represent numbers of some sort, Swift won’t automatically convert between different number types. You always need to convert the values explicitly.
+</p>
+<p>For example:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> i = <span class="hljs-number">10</span>
+<span class="hljs-keyword">var</span> f: <span class="hljs-type">Float</span>
+f = i         <span class="hljs-comment">// error</span>
+f = <span class="hljs-type">Float</span>(i)  <span class="hljs-comment">// OK</span></pre>
+<p>You don’t always need to specify the type when you create a new variable. If you give the variable an initial value, Swift uses <em>type inference</em> to determine the type:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> i = <span class="hljs-number">10</span>              <span class="hljs-comment">// Int</span>
+<span class="hljs-keyword">var</span> d = <span class="hljs-number">3.14</span>            <span class="hljs-comment">// Double</span>
+<span class="hljs-keyword">var</span> b = <span class="hljs-literal">true</span>            <span class="hljs-comment">// Bool</span>
+<span class="hljs-keyword">var</span> s = <span class="hljs-string">"Hello, world"</span>  <span class="hljs-comment">// String</span></pre>
+<p>The integer value <code>10</code>, the floating-point value <code>3.14</code>, the boolean <code>true</code> and the string <code>&quot;Hello, world&quot;</code> are named <em>literal constants</em> or just <em>literals</em>.
+</p>
+<p>Note that using the value 3.14 in the example above leads Swift to conclude that you want to use a <code>Double</code> here. If you intended to use a <code>Float</code> instead, you’d have to write:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> f: <span class="hljs-type">Float</span> = <span class="hljs-number">3.14</span></pre>
+<p>The <code>: Float</code> bit is called a <em>type annotation</em>. You use it to override the guess made by Swift’s type inference mechanism, since it doesn&apos;t always get things right.
+</p>
+<p>Likewise, if you wanted the variable <code>i</code> to be a <code>Double</code> instead of an <code>Int</code>, you’d write:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> i: <span class="hljs-type">Double</span> = <span class="hljs-number">10</span></pre>
+<p>Or a little shorter, by giving the value 10 a decimal point:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> i = <span class="hljs-number">10.0</span></pre>
+<p>These simple literals such as <code>10</code>, <code>3.14</code>, or <code>&quot;Hello world&quot;</code>, are useful only for creating variables of the basic types — <code>Int</code>, <code>Double</code>, <code>String</code>, and so on. To use more complex types, you’ll need to <em>instantiate</em> an object first.
+</p>
+<p>When you write the following,
+</p><pre class="code-block"><span class="hljs-keyword">var</span> item: <span class="hljs-type">ChecklistItem</span></pre>
+<p>it only tells Swift you want to store a <code>ChecklistItem</code> object into the <code>item</code> variable, but it does not create that <code>ChecklistItem</code> object itself. For that you need to write:
+</p><pre class="code-block">item = <span class="hljs-type">ChecklistItem</span>()</pre>
+<p>This first reserves memory to hold the object’s data, followed by a call to <code>init()</code> to properly set up the object for use. Reserving memory is also called <em>allocation</em>; filling up the object with its initial value(s) is <em>initialization</em>.
+</p>
+<p>The whole process is known as <em>instantiating</em> the object — you’re making an object <em>instance</em>. The instance is the block of memory that holds the values of the object’s variables (that’s why they are called “instance variables”, get it?).
+</p>
+<p>Of course, you can combine the above into a single line:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> item = <span class="hljs-type">ChecklistItem</span>()</pre>
+<p>Here you left out the <code>: ChecklistItem</code> type annotation because Swift is smart enough to realize that the type of <code>item</code> should be <code>ChecklistItem</code>.
+</p>
+<p>However, you can’t leave out the <code>()</code> parentheses — this is how Swift knows that you want to make a new <code>ChecklistItem</code> instance.
+</p>
+<p>Some objects allow you to pass <em>parameters</em> to their <code>init</code> method. For example:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> item = <span class="hljs-type">ChecklistItem</span>(text: <span class="hljs-string">"Charge my iPhone"</span>, checked: <span class="hljs-literal">false</span>)</pre>
+<p>This calls the corresponding <code>init(text:checked:)</code> method to prepare the newly allocated <code>ChecklistItem</code> object for usage.
+</p>
+<p>You’ve seen two types of variables: <em>local variables</em>, whose existence is limited to the method they are declared in, and <em>instance variables</em> (also known as “ivars”, or properties) that belong to the object and therefore can be used from within any method in the object.
+</p>
+<p>The lifetime of a variable is called its <em>scope</em>. The scope of a local variable is smaller than that of an instance variable. Once the method ends, any local variables are destroyed.
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyObject</span> </span>{
+  <span class="hljs-keyword">var</span> <span class="hljs-built_in">count</span> = <span class="hljs-number">0</span>      <span class="hljs-comment">// an instance variable</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">myMethod</span><span class="hljs-params">()</span></span> {
+    <span class="hljs-keyword">var</span> temp: <span class="hljs-type">Int</span>    <span class="hljs-comment">// a local variable</span>
+    temp = <span class="hljs-built_in">count</span>     <span class="hljs-comment">// OK to use the instance variable here</span>
+  }
+
+  <span class="hljs-comment">// the local variable “temp” doesn’t exist outside the method</span>
+}</pre>
+<p>If you have a local variable with the same name as an instance variable, then it is said to <em>shadow</em> (or <em>hide</em>) the instance variable. You should avoid these situations as they can lead to subtle bugs where you may not be using the variable that you think you are:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyObject</span> </span>{
+  <span class="hljs-keyword">var</span> <span class="hljs-built_in">count</span> = <span class="hljs-number">7</span>      <span class="hljs-comment">// an instance variable</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">myMethod</span><span class="hljs-params">()</span></span> {
+    <span class="hljs-keyword">var</span> <span class="hljs-built_in">count</span> = <span class="hljs-number">42</span>   <span class="hljs-comment">// local variable “hides” instance variable</span>
+    <span class="hljs-built_in">print</span>(<span class="hljs-built_in">count</span>)     <span class="hljs-comment">// prints 42</span>
+  }
+}</pre>
+<p>Some developers place an underscore in front of their instance variable names to avoid this problem: <code>_count</code> instead of <code>count</code>. An alternative is to use the keyword <code>self</code> whenever you want to access an instance variable:
+</p><pre class="code-block">  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">myMethod</span><span class="hljs-params">()</span></span> {
+    <span class="hljs-keyword">var</span> <span class="hljs-built_in">count</span> = <span class="hljs-number">42</span>
+    <span class="hljs-built_in">print</span>(<span class="hljs-keyword">self</span>.<span class="hljs-built_in">count</span>)   <span class="hljs-comment">// prints 7</span>
+  }</pre>
+<h3 class="segment-chapter">Constants</h3>
+
+<p>Variables are not the only code elements that can hold values. A variable is a container for a value that is allowed to <i>change</i> over the course of the app being run.
+</p>
+<p>For example, in a note-taking app, the user can change the text of the note. So, you’d place that text into a <code>String</code> variable. Every time the user edits the text, the variable is updated.
+</p>
+<p>Sometimes, you’ll just want to store the result of a calculation or a method call into a temporary container, after which this value will never change. In that case, it is better to make this container a <em>constant</em> rather than a variable.
+</p>
+<p>The following values cannot change once they’ve been set:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> pi = <span class="hljs-number">3.141592</span>
+<span class="hljs-keyword">let</span> difference = <span class="hljs-built_in">abs</span>(targetValue - currentValue)
+<span class="hljs-keyword">let</span> message = <span class="hljs-string">"You scored <span class="hljs-subst">\(points)</span> points"</span>
+<span class="hljs-keyword">let</span> image = <span class="hljs-type">UIImage</span>(named: <span class="hljs-string">"SayCheese"</span>)</pre>
+<p>If a constant is local to a method, it’s allowed to give the constant a new value the next time the method is called. The value from the previous method invocation is destroyed when that method ends, and the next time the app enters that method you’re creating a new constant with a new value (but with the same name). Of course, for the duration of that method call, the constant’s value must remain the same.
+</p>
+<p>Tip: My suggestion is to use <code>let</code> for everything — that&apos;s the right solution 90% of the time. When you get it wrong, the Swift compiler will warn that you’re trying to change a constant. Only then should you change it to a <code>var</code>. This ensures you’re not making things variable that don’t need to be.
+</p>
+<h3 class="segment-chapter">Value types vs. reference types</h3>
+
+<p>When working with basic values such as integers and strings — which are <em>value types</em> — a constant created with <code>let</code> cannot be changed once it has been given a value:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> pi = <span class="hljs-number">3.141592</span>
+pi = <span class="hljs-number">3</span>                <span class="hljs-comment">// not allowed</span></pre>
+<p>However, with objects that are <em>reference types</em>, it is only the reference that is constant. The object itself can still be changed:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> item = <span class="hljs-type">ChecklistItem</span>()
+item.text = <span class="hljs-string">"Do the laundry"</span>
+item.checked = <span class="hljs-literal">false</span>
+item.dueDate = yesterday</pre>
+<p>But this is not allowed:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> anotherItem = <span class="hljs-type">ChecklistItem</span>()
+item = anotherItem   <span class="hljs-comment">// cannot change the reference</span></pre>
+<p>So how do you know what is a reference type and what is a value type?
+</p>
+<p>Objects defined as <code>class</code> are reference types, while objects defined as <code>struct</code> or <code>enum</code> are value types. In practice, this means most of the objects from the iOS SDK are reference types but things that are built into the Swift language, such as <code>Int</code>, <code>String</code>, and <code>Array</code>, are value types. (More about this important difference later.)
+</p>
+<h3 class="segment-chapter">Collections</h3>
+
+<p>A variable stores only a single value. To keep track of multiple objects, you can use a <em>collection</em> object. Naturally, I’m talking about arrays (<code>Array</code>) and dictionaries (<code>Dictionary</code>), both of which you’ve seen previously.
+</p>
+<p>An <em>array</em> stores a list of objects. The objects it contains are ordered sequentially and you retrieve them by index.
+</p><pre class="code-block"><span class="hljs-comment">// An array of ChecklistItem objects:</span>
+<span class="hljs-keyword">var</span> items: <span class="hljs-type">Array</span>&lt;<span class="hljs-type">ChecklistItem</span>&gt;
+
+<span class="hljs-comment">// Or, using shorthand notation:</span>
+<span class="hljs-keyword">var</span> items: [<span class="hljs-type">ChecklistItem</span>]
+
+<span class="hljs-comment">// Making an instance of the array:</span>
+items = [<span class="hljs-type">ChecklistItem</span>]()
+
+<span class="hljs-comment">// Accessing an object from the array:</span>
+<span class="hljs-keyword">let</span> item = items[<span class="hljs-number">3</span>]</pre>
+<p>You can write an array as <code>Array&lt;Type&gt;</code> or <code>[Type]</code>. The first one is the official version, the second is “syntactic sugar” that is a bit easier to read. (Unlike other languages, in Swift you don’t write <code>Type[]</code>. The type name goes inside the brackets.)
+</p>
+<p>A <em>dictionary</em> stores key-value pairs. An object, usually a string, is the key that retrieves another object.
+</p><pre class="code-block"><span class="hljs-comment">// A dictionary that stores (String, Int) pairs, for example a</span>
+<span class="hljs-comment">// list of people’s names and their ages:</span>
+<span class="hljs-keyword">var</span> ages: <span class="hljs-type">Dictionary</span>&lt;<span class="hljs-type">String</span>, <span class="hljs-type">Int</span>&gt;
+
+<span class="hljs-comment">// Or, using shorthand notation:</span>
+<span class="hljs-keyword">var</span> ages: [<span class="hljs-type">String</span>: <span class="hljs-type">Int</span>]
+
+<span class="hljs-comment">// Making an instance of the dictionary:</span>
+ages = [<span class="hljs-type">String</span>: <span class="hljs-type">Int</span>]()
+
+<span class="hljs-comment">// Accessing an object from the dictionary:</span>
+<span class="hljs-keyword">var</span> age = dict[<span class="hljs-string">"Jony Ive"</span>]</pre>
+<p>The notation for retrieving an object from a dictionary looks very similar to reading from an array — both use the <code>[ ]</code> brackets. For indexing an array, you always use a positive integer, but for a dictionary you typically use a string.
+</p>
+<p>There are other sorts of collections as well, but array and dictionary are the most common ones.
+</p>
+<h3 class="segment-chapter">Generics</h3>
+
+<p><code>Array</code> and <code>Dictionary</code> are known as <em>generics</em>, meaning that they are independent of the type of thing you want to store inside these collections.
+</p>
+<p>You can have an <code>Array</code> of <code>Int</code> objects, but also an <code>Array</code> of <code>String</code> objects — or an <code>Array</code> of any kind of object, really (even an array of other arrays).
+</p>
+<p>That’s why you have to specify the type of object to store inside the array, before you can use it. In other words, you cannot write this:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> items: <span class="hljs-type">Array</span>  <span class="hljs-comment">// error: should be Array&lt;TypeName&gt;</span>
+<span class="hljs-keyword">var</span> items: []     <span class="hljs-comment">// error: should be [TypeName]</span></pre>
+<p>There should always be the name of a type inside the <code>[ ]</code> brackets or following the word <code>Array</code> in <code>&lt; &gt;</code> brackets. (If you’re coming from Objective-C, be aware that the <code>&lt; &gt;</code> mean something completely different there.)
+</p>
+<p>For <code>Dictionary</code>, you need to supply two type names: one for the type of the keys and one for the type of the values.
+</p>
+<p>Swift requires that all variables and constants have a value. You can either specify a value when you declare the variable or constant, or by assigning a value inside an <code>init</code> method.
+</p>
+<h3 class="segment-chapter">Optionals</h3>
+
+<p>Sometimes it’s useful to have a variable that can have no value, in which case you need to declare it as an <em>optional</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> checklistToEdit: <span class="hljs-type">Checklist</span>?</pre>
+<p>You cannot use this variable immediately; you must always first test whether it has a value or not. This is called <em>unwrapping</em> the optional:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> checklist = checklistToEdit {
+  <span class="hljs-comment">// “checklist” now contains the real object</span>
+} <span class="hljs-keyword">else</span> {
+  <span class="hljs-comment">// the optional was nil</span>
+}</pre>
+<p>The <code>age</code> variable from the dictionary example in the previous section is actually an optional, because there is no guarantee that the dictionary contains the key “Jony Ive”. Therefore, the type of <code>age</code> is <code>Int?</code> instead of just <code>Int</code>.
+</p>
+<p>Before you can use a value from a dictionary, you need to unwrap it first using <code>if let</code>:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> age = dict[<span class="hljs-string">"Jony Ive"</span>] {
+  <span class="hljs-comment">// use the value of age</span>
+}</pre>
+<p>If you are 100% sure that the dictionary contains a given key, you can also use <em>force unwrapping</em> to read the corresponding value:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> age = dict[<span class="hljs-string">"Jony Ive"</span>]!</pre>
+<p>With the <code>!</code> you tell Swift, “This value will not be <code>nil</code>. I’ll stake my reputation on it!” Of course, if you’re wrong and the value <i>is</i> <code>nil</code>, the app will crash and your reputation is down the drain. Be careful with force unwrapping!
+</p>
+<p>A slightly safer alternative to force unwrapping is <em>optional chaining</em>. For example, the following will crash the app if the <code>navigationController</code> property is <code>nil</code>:
+</p><pre class="code-block">navigationController!.delegate = <span class="hljs-keyword">self</span></pre>
+<p>But this won’t:
+</p><pre class="code-block">navigationController?.delegate = <span class="hljs-keyword">self</span></pre>
+<p>Anything after the <code>?</code> will simply be ignored if <code>navigationController</code> does not have a value. It’s equivalent to writing:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> navigationController != <span class="hljs-literal">nil</span> {
+  navigationController!.delegate = <span class="hljs-keyword">self</span>
+}</pre>
+<p>It is also possible to declare an optional using an exclamation point instead of a question mark. This makes it an <em>implicitly unwrapped</em> optional:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> dataModel: <span class="hljs-type">DataModel</span>!</pre>
+<p>Such a value is potentially unsafe because you can use it as a regular variable without having to unwrap it first. If this variable has the value <code>nil</code> when you don’t expect it — and don’t they always — your app will crash.
+</p>
+<p>Optionals exist to guard against such crashes, and using <code>!</code> undermines the safety of using optionals.
+</p>
+<p>However, sometimes using implicitly unwrapped optionals is more convenient than using pure optionals. Use them when you cannot give the variable an initial value at the time of declaration, nor in <code>init()</code>.
+</p>
+<p>But once you’ve given the variable a value, you really ought not to make it <code>nil</code> again. If the value can become <code>nil</code> again, it’s better to use a true optional with a question mark.
+</p>
+<h2 class="segment-chapter">Methods and functions</h2>
+
+<p>You’ve learned that objects, the basic building blocks of all apps, have both data and functionality. Instance variables and constants provide the data, <em>methods</em> provide the functionality.
+</p>
+<p>When you call a method, the app jumps to that section of the code and executes all the statements in the method one-by-one. When the end of the method is reached, the app jumps back to where it left off:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> result = performUselessCalculation(<span class="hljs-number">314</span>)
+<span class="hljs-built_in">print</span>(result)
+
+. . .
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">performUselessCalculation</span><span class="hljs-params">(<span class="hljs-number">_</span> a: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">var</span> b = <span class="hljs-type">Int</span>(arc4random_uniform(<span class="hljs-number">100</span>))
+  <span class="hljs-keyword">var</span> <span class="hljs-built_in">c</span> = a / <span class="hljs-number">2</span>
+  <span class="hljs-keyword">return</span> (a + b) * <span class="hljs-built_in">c</span>
+}</pre>
+<p>Methods often return a value to the caller, usually the result of a computation or looking up something in a collection. The data type of the result value is written after the <code>-&gt;</code> arrow. In the example above, it is <code>Int</code>. If there is no <code>-&gt;</code> arrow, the method does not return a value (also known as returning <code>Void</code>).
+</p>
+<p>Methods are <em>functions</em> that belong to an object, but there are also standalone functions such as <code>print()</code>.
+</p>
+<p>Functions serve the same purpose as methods — they bundle functionality into small re-usable units — but live outside of any objects. Such functions are also called <i>free</i> functions or <i>global</i> functions.
+</p>
+<p>These are examples of methods:
+</p><pre class="code-block"><span class="hljs-comment">// Method with no parameters, no return a value.</span>
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span>
+
+<span class="hljs-comment">// Method with one parameter, slider. No return a value.</span>
+<span class="hljs-comment">// The keyword @IBAction means that this method can be connected</span>
+<span class="hljs-comment">// to a control in Interface Builder.</span>
+<span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">sliderMoved</span><span class="hljs-params">(<span class="hljs-number">_</span> slider: UISlider)</span></span>
+
+<span class="hljs-comment">// Method with no parameters, returns an Int value.</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">countUncheckedItems</span><span class="hljs-params">()</span></span> -&gt; <span class="hljs-type">Int</span>
+
+<span class="hljs-comment">// Method with two parameters, cell and item, no return value.</span>
+<span class="hljs-comment">// Note that the first parameter has an extra label, for, </span>
+<span class="hljs-comment">// and the second parameter has an extra label, with.</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">configureCheckmarkFor</span><span class="hljs-params">(<span class="hljs-keyword">for</span> cell: UITableViewCell, 
+                          with item: ChecklistItem)</span></span>
+
+<span class="hljs-comment">// Method with two parameters, tableView and section. </span>
+<span class="hljs-comment">// Returns an Int. The _ means the first parameter does not </span>
+<span class="hljs-comment">// have an external label.</span>
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+      numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span>
+
+<span class="hljs-comment">// Method with two parameters, tableView and indexPath.</span>
+<span class="hljs-comment">// The question mark means it returns an optional IndexPath </span>
+<span class="hljs-comment">// object (may also return nil).</span>
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+          willSelectRowAt indexPath: IndexPath)</span></span> -&gt; <span class="hljs-type">IndexPath</span>?</pre>
+<p>To call a method on an object, you write <code>object.method(parameters)</code>. For example:
+</p><pre class="code-block"><span class="hljs-comment">// Calling a method on the lists object:</span>
+lists.append(checklist)
+
+<span class="hljs-comment">// Calling a method with more than one parameter:</span>
+tableView.insertRows(at: indexPaths, with: .fade)</pre>
+<p>You can think of calling a method as <i>sending a message</i> from one object to another: “Hey <code>lists</code>, I’m sending you the <code>append</code> message for this <code>checklist</code> object.”
+</p>
+<p>The object whose method you’re calling is known as the <i>receiver</i> of the message.
+</p>
+<p>It is very common to call a method from the same object. Here, <code>loadChecklists()</code> calls the <code>sortChecklists()</code> method. Both are members of the <code>DataModel</code> object.
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DataModel</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">loadChecklists</span><span class="hljs-params">()</span></span> {
+    . . .   
+    sortChecklists()  <span class="hljs-comment">// this method also lives in DataModel</span>
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">sortChecklists</span><span class="hljs-params">()</span></span> { 
+    . . . 
+  }
+}</pre>
+<p>Sometimes this is written as:
+</p><pre class="code-block">  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">loadChecklists</span><span class="hljs-params">()</span></span> {
+    . . .   
+    <span class="hljs-keyword">self</span>.sortChecklists()
+  }</pre>
+<p>The <code>self</code> keyword makes it clear that the <code>DataModel</code> object itself is the receiver of this message.
+</p>
+<div class="note">
+<p><em>Note:</em> In this book I leave out the <code>self</code> keyword for method calls, because it’s not necessary to have it. Objective-C developers are very attached to <code>self</code>, so you’ll probably see it used a lot in Swift too. It is a topic of heated debate in developer circles, but except for a few specific scenarios, the compiler doesn’t really care whether you use <code>self</code> or not.
+</p></div>
+
+<p>Inside a method you can also use <code>self</code> to get a reference to the object itself:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">cancel</span><span class="hljs-params">()</span></span> {
+  delegate?.itemDetailViewControllerDidCancel(<span class="hljs-keyword">self</span>)
+}</pre>
+<p>Here <code>cancel()</code> sends a reference to the object (i.e. <code>self</code>) along to the delegate, so the delegate knows who sent this <code>itemDetailViewControllerDidCancel()</code> message.
+</p>
+<p>Also note the use of <em>optional chaining</em> here. The <code>delegate</code> property is an optional, so it can be <code>nil</code>. Using the question mark before the method call will ensure nothing bad happens if <code>delegate</code> is not set.
+</p>
+<h3 class="segment-chapter">Parameters</h3>
+
+<p>Often methods have one or more <em>parameters</em>, so they can work with multiple data items. A method that is limited to a fixed set of data is not very useful or reusable. Consider <code>sumValuesFromArray()</code>, a method that has no parameters:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyObject</span> </span>{
+  <span class="hljs-keyword">var</span> numbers = [<span class="hljs-type">Int</span>]()
+
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">sumValuesFromArray</span><span class="hljs-params">()</span></span> -&gt; <span class="hljs-type">Int</span> {
+    <span class="hljs-keyword">var</span> total = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> number <span class="hljs-keyword">in</span> numbers {
+      total += number
+    }
+    <span class="hljs-keyword">return</span> total
+  }
+}</pre>
+<p>Here, <code>numbers</code> is an instance variable. The <code>sumValuesFromArray()</code> method is tied closely to that instance variable, and is useless without it.
+</p>
+<p>Suppose you add a second array to the app that you also want to apply this calculation to. One approach is to copy-paste the above method and change the name of the variable to that of the new array. That certainly works, but it’s not smart programming!
+</p>
+<p>It is better to give the method a parameter that allows you to pass in the array object that you wish to examine. Then, the method becomes independent from any instance variables:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">sumValues</span><span class="hljs-params">(from array: [Int])</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">var</span> total = <span class="hljs-number">0</span>
+  <span class="hljs-keyword">for</span> number <span class="hljs-keyword">in</span> array {
+    total += number
+  }
+  <span class="hljs-keyword">return</span> total
+}</pre>
+<p>Now you can call this method with any <code>[Int]</code> (or <code>Array&lt;Int&gt;</code>) object as its parameter.
+</p>
+<p>This doesn’t mean methods should never use instance variables, but if you can make a method more general by giving it a parameter, then that is usually a good idea.
+</p>
+<p>Often methods use two names for their parameters, the <em>external label</em> and the <em>internal label</em>. For example:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">downloadImage</span><span class="hljs-params">(<span class="hljs-keyword">for</span> searchResult: SearchResult,  
+                withTimeout timeout: TimeInterval, 
+                  andPlaceOn button: UIButton)</span></span> {
+  . . .
+}</pre>
+<p>This method has three parameters: <code>searchResult</code>, <code>timeout</code>, and <code>button</code>. Those are the internal parameter names you’d use in the code inside the method.
+</p>
+<p>The external labels become part of the method name. The full name for the method is <code>downloadImage(for:withTimeout:andPlaceOn:)</code> — method names in Swift are often quite long!
+</p>
+<p>To call this method, you’d use the external labels:
+</p><pre class="code-block">downloadImage(<span class="hljs-keyword">for</span>: result, withTimeout: <span class="hljs-number">10</span>, 
+                            andPlaceOn: imageButton)</pre>
+<p>Sometimes you’ll see a method whose first parameter does not have an external label, but has an <code>_</code> underscore instead:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+      numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span></pre>
+<p>This is often the case with delegate methods. It’s a holdover from the Objective-C days, where the label for the first parameter was embedded in the first part of the method name. For example, in Objective-C the <code>downloadImage()</code> method example above would be named <code>downloadImageForSearchResult()</code>. These kinds of names should become less and less common in the near future.
+</p>
+<p>Swift is pretty flexible with how it lets you name your methods, but it’s smart to stick to the established conventions.
+</p>
+<p>Inside a method you can do the following things:
+</p>
+<ul>
+<li>
+<p>Create local variables and constants.
+</p></li>
+
+<li>
+<p>Do basic arithmetic with mathematical operators such as <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, and <code>%</code>.
+</p></li>
+
+<li>
+<p>Put new values into variables (both local and instance variables).
+</p></li>
+
+<li>
+<p>Call other methods.
+</p></li>
+
+<li>
+<p>Make decisions with <code>if</code> or <code>switch</code> statements.
+</p></li>
+
+<li>
+<p>Perform repetitions with the <code>for</code> or <code>while</code> statements.
+</p></li>
+
+<li>
+<p>Return a value to the caller.
+</p></li>
+</ul>
+
+<p>Let’s look at the <code>if</code> and <code>for</code> statements in more detail.
+</p>
+<h2 class="segment-chapter">Making decisions</h2>
+
+<p>The <code>if</code> statement looks like this:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> <span class="hljs-built_in">count</span> == <span class="hljs-number">0</span> {
+  text = <span class="hljs-string">"No Items"</span>
+} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> <span class="hljs-built_in">count</span> == <span class="hljs-number">1</span> {
+  text = <span class="hljs-string">"1 Item"</span>
+} <span class="hljs-keyword">else</span> {
+  text = <span class="hljs-string">"<span class="hljs-subst">\(<span class="hljs-built_in">count</span>)</span> Items"</span>
+}</pre>
+<p>The expression after <code>if</code> is called the <em>condition</em>. If a condition is true then the statements in the following <code>{ }</code> block are executed. The <code>else</code> section gets performed if none of the conditions are true.
+</p>
+<h3 class="segment-chapter">Comparison Operators</h3>
+
+<p>You use <em>comparison operators</em> to perform comparisons between two values:
+</p>
+<p><code>==</code>    equal to
+</p>
+<p><code>!=</code>    not equal
+</p>
+<p><code>&gt;</code>     greater than
+</p>
+<p><code>&gt;=</code>    greater than or equal
+</p>
+<p><code>&lt;</code>     less than
+</p>
+<p><code>&lt;=</code>    less than or equal
+</p><pre class="code-block"><span class="hljs-keyword">let</span> a = <span class="hljs-string">"Hello, world"</span>
+<span class="hljs-keyword">let</span> b = <span class="hljs-string">"Hello,"</span> + <span class="hljs-string">" world"</span>
+<span class="hljs-built_in">print</span>(a == b)             <span class="hljs-comment">// prints true</span></pre>
+<p>When you use the <code>==</code> operator, the contents of the objects are compared. The above code only returns true if <code>a</code> and <code>b</code> have the same value:
+</p>
+<p>This is different from Objective-C, where <code>==</code> is only <code>true</code> if the two objects are the exact same instance in memory. However, in Swift <code>==</code> compares the values of the objects, not whether they actually occupy the same spot in memory. (If you need to do that use <code>===</code>, the identity operator.)
+</p>
+<h3 class="segment-chapter">Logical Operators</h3>
+
+<p>You can use <em>logical</em> operators to combine two expressions:
+</p>
+<p><code>a &amp;&amp; b</code> is true if both <code>a</code> <i>and</i> <code>b</code> are true
+</p>
+<p><code>a || b</code> is true when either <code>a</code> <i>or</i> <code>b</code> is true (or both)
+</p>
+<p>There is also the logical <em>not</em> operator, <code>!</code>, that turns <code>true</code> into <code>false</code>, and <code>false</code> into <code>true</code>. (Don’t confuse this with the <code>!</code> that is used with optionals.)
+</p>
+<p>You can group expressions with <code>( )</code> parentheses:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> ((this &amp;&amp; that) || (such &amp;&amp; so)) &amp;&amp; !other {
+  <span class="hljs-comment">// statements</span>
+}</pre>
+<p>This reads as:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> ((this and that) or (such and so)) and not other {
+  <span class="hljs-comment">// statements</span>
+}</pre>
+<p>Or if you want to see clearly in which order these operations are performed:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> ( 
+      (this and that)
+            or
+      (such and so)
+   )
+   and
+      (not other)</pre>
+<p>Of course, the more complicated you make it, the harder it is to remember exactly what you’re doing!
+</p>
+<h3 class="segment-chapter"><code>switch</code> statement</h3>
+
+<p>Swift has another very powerful construct in the language for making decisions, the <code>switch</code> statement:
+</p><pre class="code-block"><span class="hljs-keyword">switch</span> condition {
+  <span class="hljs-keyword">case</span> value1:
+    <span class="hljs-comment">// statements</span>
+
+  <span class="hljs-keyword">case</span> value2:
+    <span class="hljs-comment">// statements</span>
+
+  <span class="hljs-keyword">case</span> value3:
+    <span class="hljs-comment">// statements</span>
+
+  <span class="hljs-keyword">default</span>:
+    <span class="hljs-comment">// statements</span>
+}</pre>
+<p>It works the same way as an <code>if</code> statement with a bunch of <code>else if</code>s. The following is equivalent:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> condition == value1 {
+  <span class="hljs-comment">// statements</span>
+} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> condition == value2 {
+  <span class="hljs-comment">// statements</span>
+} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> condition == value3 {
+  <span class="hljs-comment">// statements</span>
+} <span class="hljs-keyword">else</span> {
+  <span class="hljs-comment">// statements</span>
+}</pre>
+<p>In such a situation, the <code>switch</code> statement would be more convenient to use. Swift’s version of <code>switch</code> is much more powerful than the one in Objective-C. For example, you can match on ranges and other patterns:
+</p><pre class="code-block"><span class="hljs-keyword">switch</span> difference {
+  <span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:
+    title = <span class="hljs-string">"Perfect!"</span>
+  <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>..&lt;<span class="hljs-number">5</span>:
+    title = <span class="hljs-string">"You almost had it!"</span>
+  <span class="hljs-keyword">case</span> <span class="hljs-number">5</span>..&lt;<span class="hljs-number">10</span>:
+    title = <span class="hljs-string">"Pretty good!"</span>
+  <span class="hljs-keyword">default</span>:
+    title = <span class="hljs-string">"Not even close..."</span>
+}</pre>
+<p>The <code>..&lt;</code> is the <em>half-open range</em> operator. It creates a range between the two numbers, but the top number is exclusive. So the half-open range <code>1..&lt;5</code> is the same as the <em>closed range</em> <code>1...4</code>.
+</p>
+<p>You’ll see the <code>switch</code> statement in action a little later on.
+</p>
+<h3 class="segment-chapter"><code>return</code> statement</h3>
+
+<p>Note that <code>if</code> and <code>return</code> can be used to return early from a method:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">divide</span><span class="hljs-params">(<span class="hljs-number">_</span> a: Int, by b: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">if</span> b == <span class="hljs-number">0</span> {
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"You really shouldn't divide by zero"</span>)
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+  }
+  <span class="hljs-keyword">return</span> a / b
+}</pre>
+<p>This can even be done for methods that don’t return a value:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">performDifficultCalculation</span><span class="hljs-params">(list: [Double])</span></span> {
+  <span class="hljs-keyword">if</span> list.<span class="hljs-built_in">count</span> &lt; <span class="hljs-number">2</span> {
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"Too few items in list"</span>)
+    <span class="hljs-keyword">return</span>
+  }
+
+  <span class="hljs-comment">// perform the very difficult calculation here</span>
+}</pre>
+<p>In this case, <code>return</code> simply means: “We’re done with the method”. Any statements following the <code>return</code> are skipped and execution immediately returns to the caller.
+</p>
+<p>You could also have written it like this:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">performDifficultCalculation</span><span class="hljs-params">(list: [Double])</span></span> {
+  <span class="hljs-keyword">if</span> list.<span class="hljs-built_in">count</span> &lt; <span class="hljs-number">2</span> {
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"Too few items in list"</span>)
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-comment">// perform the very difficult calculation here</span>
+  }
+}</pre>
+<p>Which approach you use is up to you. I prefer an early <code>return</code> when it avoids multiple nested blocks of code with multiple levels of indentation — the code just looks cleaner :]
+</p>
+<p>For example, sometimes you see code like this:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">someMethod</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">if</span> condition1 {
+    <span class="hljs-keyword">if</span> condition2 {
+      <span class="hljs-keyword">if</span> condition3 {
+        <span class="hljs-comment">// statements</span>
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">// statements</span>
+      }
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-comment">// statements</span>
+    }
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-comment">// statements</span>
+  }
+}</pre>
+<p>This can become very hard to read. So, I like to restructure that kind of code as follows:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">someMethod</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">if</span> !condition1 {
+    <span class="hljs-comment">// statements</span>
+    <span class="hljs-keyword">return</span>
+  }
+
+  <span class="hljs-keyword">if</span> !condition2 {
+    <span class="hljs-comment">// statements</span>
+    <span class="hljs-keyword">return</span>
+  }
+
+  <span class="hljs-keyword">if</span> !condition3 {
+    <span class="hljs-comment">// statements</span>
+    <span class="hljs-keyword">return</span>
+  }
+
+  <span class="hljs-comment">// statements</span>
+}</pre>
+<p>Both do exactly the same thing, but I find the second one much easier to understand. (Note that the conditions now use the <code>!</code> operator to invert their meaning.)
+</p>
+<p>Swift even has a dedicated feature, <code>guard</code>, to help write this kind of code. It looks like this:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">someMethod</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">guard</span> condition1 <span class="hljs-keyword">else</span> {
+    <span class="hljs-comment">// statements</span>
+    <span class="hljs-keyword">return</span>
+  }
+  <span class="hljs-keyword">guard</span> condition2 <span class="hljs-keyword">else</span> {
+    <span class="hljs-comment">// statements</span>
+    <span class="hljs-keyword">return</span>
+  }
+  . . .</pre>
+<p>As you become more experienced, you’ll start to develop your own taste for what looks good and what is readable code.
+</p>
+<h2 class="segment-chapter">Loops</h2>
+
+<p>You’ve seen the <code>for...in</code> statement for looping through an array:
+</p><pre class="code-block"><span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> items {
+  <span class="hljs-keyword">if</span> !item.checked {
+    <span class="hljs-built_in">count</span> += <span class="hljs-number">1</span>
+  }
+}</pre>
+<p>Which can also be written as:
+</p><pre class="code-block"><span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> items <span class="hljs-keyword">where</span> !item.checked {
+  <span class="hljs-built_in">count</span> += <span class="hljs-number">1</span>
+}</pre>
+<p>This performs the statements inside the <code>for...in</code> block once for each object from the <code>items</code> array matching the condition provided by the <code>where</code> clause.
+</p>
+<p>Note that the scope of the variable <code>item</code> is limited to just this <code>for</code> statement. You can’t use it outside this statement, so its lifetime is even shorter than a local variable.
+</p>
+<h3 class="segment-chapter">Looping through number ranges</h3>
+
+<p>Some languages, including Swift 2, have a <code>for</code> statement that looks like this:
+</p><pre class="code-block"><span class="hljs-keyword">for</span> <span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; ++i {
+  <span class="hljs-built_in">print</span>(i)
+}</pre>
+<p>When you run this code, it should print:
+</p><pre class="code-block"><span class="hljs-number">0</span>
+<span class="hljs-number">1</span>
+<span class="hljs-number">2</span>
+<span class="hljs-number">3</span>
+<span class="hljs-number">4</span></pre>
+<p>However, as of Swift 3.0 this kind of <code>for</code> loop was removed from the language. Instead, you can loop over a range. This has the same output as above:
+</p><pre class="code-block"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">0</span>...<span class="hljs-number">4</span> {   <span class="hljs-comment">// or 0..&lt;5</span>
+  <span class="hljs-built_in">print</span>(i)
+}</pre>
+<p>By the way, you can also write this loop as:
+</p><pre class="code-block"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">stride</span>(from: <span class="hljs-number">0</span>, to: <span class="hljs-number">5</span>, by: <span class="hljs-number">1</span>) {
+  <span class="hljs-built_in">print</span>(i)
+}</pre>
+<p>The <code>stride()</code> function creates a special object that represents the range 0 to 5 in increments of 1. If you wanted to show just the even numbers, you could change the <code>by</code> parameter to 2. You can even use <code>stride()</code> to count backwards if you pass the <code>by</code> parameter a negative number.
+</p>
+<h3 class="segment-chapter"><code>while</code> statement</h3>
+
+<p>The <code>for</code> statement is not the only way to perform loops. Another very useful looping construct is the <code>while</code> statement:
+</p><pre class="code-block"><span class="hljs-keyword">while</span> something <span class="hljs-keyword">is</span> <span class="hljs-literal">true</span> {
+  <span class="hljs-comment">// statements</span>
+}</pre>
+<p>The <code>while</code> loop keeps repeating the statements until its condition becomes false. You can also write it as follows:
+</p><pre class="code-block"><span class="hljs-keyword">repeat</span> {
+  <span class="hljs-comment">// statements</span>
+} <span class="hljs-keyword">while</span> something <span class="hljs-keyword">is</span> <span class="hljs-literal">true</span></pre>
+<p>In the latter case, the condition is evaluated after the statements have been executed at least once.
+</p>
+<p>You can rewrite the loop that counts the <code>ChecklistItem</code>s as follows using a <code>while</code> statement:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> <span class="hljs-built_in">count</span> = <span class="hljs-number">0</span>
+<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>
+<span class="hljs-keyword">while</span> i &lt; items.<span class="hljs-built_in">count</span> {
+  <span class="hljs-keyword">let</span> item = items[i]
+  <span class="hljs-keyword">if</span> !item.checked {
+    <span class="hljs-built_in">count</span> += <span class="hljs-number">1</span>
+  }
+  i += <span class="hljs-number">1</span>
+}</pre>
+<p>Most of these looping constructs are really the same, they just look different. Each of them lets you repeat a bunch of statements until some ending condition is met.
+</p>
+<p>Still, using a <code>while</code> is slightly more cumbersome than “<code>for item in items</code>”, which is why you’ll see <code>for...in</code> used most of the time.
+</p>
+<p>There really is no significant difference between using a <code>for</code>, <code>while</code>, or <code>repeat...while</code> loop, except that one may be easier to read than the others, depending on what you’re trying to do.
+</p>
+<div class="note">
+<p><em>Note:</em> <code>items.count</code> and <code>count</code> in this example are two different things with the same name. The first <code>count</code> is a property on the <code>items</code> array that returns the number of elements in that array; the second <code>count</code> is a local variable that contains the number of unchecked to-do items counted so far.
+</p></div>
+
+<p>Just like you can prematurely exit from a method using the <code>return</code> statement, you can exit a loop at any time using the <code>break</code> statement:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> found = <span class="hljs-literal">false</span>
+<span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> array {
+  <span class="hljs-keyword">if</span> item == searchText {
+    found = <span class="hljs-literal">true</span>
+    <span class="hljs-keyword">break</span>
+  }
+}</pre>
+<p>This example loops through the array until it finds an <code>item</code> that is equal to the value of <code>searchText</code> (presumably both are strings). Then it sets the variable <code>found</code> to <code>true</code> and jumps out of the loop using <code>break</code>. You’ve found what you were looking for, so it makes no sense to look at the other objects in that array — for all you know there could be hundreds of items.
+</p>
+<p>There is also a <code>continue</code> statement that is somewhat the opposite of <code>break</code>. It doesn’t exit the loop but immediately skips to the next iteration. You use <code>continue</code> to say, “I’m done with the current item, let’s look at the next one.”
+</p>
+<p>Loops can often be replaced by <i>functional programming</i> constructs such as <code>map</code>, <code>filter</code>, or <code>reduce</code>. These are known as <i>higher order functions</i> and they operate on a collection, performing some code for each element, and return a new collection (or single value, in the case of <code>reduce</code>) with the results.
+</p>
+<p>For example, using <code>filter</code> on an array will return items that satisfy a certain condition. To get a list of all the unchecked <code>ChecklistItem</code> objects, you’d write:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> uncheckedItems = items.<span class="hljs-built_in">filter</span> { item <span class="hljs-keyword">in</span> !item.checked }</pre>
+<p>That’s a lot simpler than writing a loop. Functional programming is an advanced topic so we won’t spend too much time on it here.
+</p>
+<h2 class="segment-chapter">Objects</h2>
+
+<p>Objects are what it’s all about. They combine data with functionality into coherent, reusable units — that is, if you write them properly!
+</p>
+<p>The data is made up of the object’s instance variables and constants. We often refer to these as the object’s <em>properties</em>. The functionality is provided by the object’s methods.
+</p>
+<p>In your Swift programs you will use existing objects, such as <code>String</code>, <code>Array</code>, <code>Date</code>, <code>UITableView</code>, and you’ll also make your own.
+</p>
+<p>To define a new object, you need a bit of code that contains a <code>class</code> section:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyObject</span> </span>{
+  <span class="hljs-keyword">var</span> text: <span class="hljs-type">String</span>
+  <span class="hljs-keyword">var</span> <span class="hljs-built_in">count</span> = <span class="hljs-number">0</span>
+  <span class="hljs-keyword">let</span> maximum = <span class="hljs-number">100</span>
+
+  <span class="hljs-keyword">init</span>() {
+    text = <span class="hljs-string">"Hello world"</span>
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">doSomething</span><span class="hljs-params">()</span></span> {
+    <span class="hljs-comment">// statements</span>
+  }
+}</pre>
+<p>Inside the brackets for the class, you add properties (the instance variables and constants) and methods.
+</p>
+<h3 class="segment-chapter">Properties</h3>
+
+<p>There are two types of properties:
+</p>
+<ul>
+<li>
+<p><em>Stored properties</em> are the usual instance variables and constants.
+</p></li>
+
+<li>
+<p><em>Computed properties</em> don’t store a value, but perform logic when you read from, or write to, their values.
+</p></li>
+</ul>
+
+<p>This is an example of a computed property:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> indexOfSelectedChecklist: <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">get</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-type">UserDefaults</span>.standard.integer(
+                forKey: <span class="hljs-string">"ChecklistIndex"</span>)
+  }
+  <span class="hljs-keyword">set</span> {
+    <span class="hljs-type">UserDefaults</span>.standard.<span class="hljs-keyword">set</span>(newValue, 
+                                forKey: <span class="hljs-string">"ChecklistIndex"</span>)
+  }
+}</pre>
+<p>The <code>indexOfSelectedChecklist</code> property does not store a value like a normal variable would. Instead, every time someone uses this property, it performs the code from the <code>get</code> or <code>set</code> block.
+</p>
+<p>The alternative would be to write separate <code>setIndexOfSelectedChecklist()</code> and <code>getIndexOfSelectedChecklist()</code> methods, but that doesn’t read as nicely.
+</p>
+<p>If a property name is preceded by the keyword <code>@IBOutlet</code>, that means that the property can refer to a user interface element in Interface Builder, such as a label or button. Such properties are usually declared <code>weak</code> and optional.
+</p>
+<p>Similarly, the keyword <code>@IBAction</code> is used for methods that will be performed when the user interacts with the app.
+</p>
+<h3 class="segment-chapter">Methods</h3>
+
+<p>There are three kinds of methods:
+</p>
+<ul>
+<li>
+<p>Instance methods
+</p></li>
+
+<li>
+<p>Class methods
+</p></li>
+
+<li>
+<p>Init methods
+</p></li>
+</ul>
+
+<p>As mentioned previously, a method is a function that belongs to an object. To call such a method you first need to have an instance of the object:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> myInstance = <span class="hljs-type">MyObject</span>()   <span class="hljs-comment">// create the object instance</span>
+. . .
+myInstance.doSomething()      <span class="hljs-comment">// call the method</span></pre>
+<p>You can also have <em>class methods</em>, which can be used without an object instance. In fact, they are often used as “factory” methods, to create new object instances:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyObject</span> </span>{
+  . . .
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">func</span> <span class="hljs-title">makeObject</span>(<span class="hljs-title">text</span>: <span class="hljs-title">String</span>) -&gt; <span class="hljs-title">MyObject</span> </span>{
+    <span class="hljs-keyword">let</span> m = <span class="hljs-type">MyObject</span>()
+    m.text = text
+    <span class="hljs-keyword">return</span> m
+  }
+}
+
+<span class="hljs-keyword">let</span> myInstance = <span class="hljs-type">MyObject</span>.makeObject(text: <span class="hljs-string">"Hello world"</span>)</pre>
+<p>Init methods, or <em>initializers</em>, are used during the creation of new object instances. Instead of the above factory method, you might as well use a custom <code>init</code> method:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyObject</span> </span>{
+  . . .
+
+  <span class="hljs-keyword">init</span>(text: <span class="hljs-type">String</span>) {
+    <span class="hljs-keyword">self</span>.text = text
+  }
+}
+
+<span class="hljs-keyword">let</span> myInstance = <span class="hljs-type">MyObject</span>(text: <span class="hljs-string">"Hello world"</span>)</pre>
+<p>The main purpose of an <code>init</code> method is to set up (or, initialize) the object’s properties. Any instance variables or constants that do not have a value yet must be given one in the <code>init</code> method.
+</p>
+<p>Swift does not allow variables or constants to have no value (except for optionals), and <code>init</code> is your last chance to make this happen.
+</p>
+<p>Objects can have more than one <code>init</code> method; which one you use depends on the circumstances.
+</p>
+<p>A <code>UITableViewController</code>, for example, can be initialized either with <code>init?(coder:)</code> when automatically loaded from a storyboard, with <code>init(nibName:bundle:)</code> when manually loaded from a nib file, or with <code>init(style:)</code> when constructed without a storyboard or nib — sometimes you use one, sometimes the other. You can also provide a <code>deinit</code> method that gets called just before the object is destroyed.
+</p>
+<p>By the way, <code>class</code> isn’t the only way to define an object in Swift. It also supports other types of objects such as <code>struct</code>s and <code>enum</code>s. You’ll learn more about these later, so I won’t give away the whole plot here (no spoilers!).
+</p>
+<h2 class="segment-chapter">Protocols</h2>
+
+<p>Besides objects, you can also define <em>protocols</em>. A protocol is simply a list of method names (and possibly, properties):
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">protocol</span> <span class="hljs-title">MyProtocol</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">someMethod</span><span class="hljs-params">(value: Int)</span></span>
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">anotherMethod</span><span class="hljs-params">()</span></span> -&gt; <span class="hljs-type">String</span>
+}</pre>
+<p>A protocol is like a job ad. It lists all the things that a candidate for a certain position in your company should be able to do.
+</p>
+<p>But the ad itself doesn’t do the job — it’s just words printed in the careers section of the newspaper. So, you need to hire an actual employee who can get the job done. That would be an object.
+</p>
+<p>Objects need to indicate that they conform to a protocol:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyObject</span>: <span class="hljs-title">MyProtocol</span> </span>{
+  . . .
+}</pre>
+<p>This object now has to provide an implementation for the methods listed in the protocol. (If not, it’s fired!)
+</p>
+<p>From then on, you can refer to this object as a <code>MyObject</code> (because that is its class name) but also as a <code>MyProtocol</code> object:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> m1: <span class="hljs-type">MyObject</span> = <span class="hljs-type">MyObject</span>()
+<span class="hljs-keyword">var</span> m2: <span class="hljs-type">MyProtocol</span> = <span class="hljs-type">MyObject</span>()</pre>
+<p>To any part of the code using the <code>m2</code> variable, it doesn’t matter that the object is really a <code>MyObject</code> under the hood. The type of <code>m2</code> is <code>MyProtocol</code>, not <code>MyObject</code>.
+</p>
+<p>All your code sees is that <code>m2</code> is <i>some</i> object conforming to <code>MyProtocol</code>, but it’s not important what sort of object that is.
+</p>
+<p>In other words, you don’t really care that your employee may also have another job on the side, as long as it doesn’t interfere with the duties you’ve hired him, or her, for.
+</p>
+<p>Protocols are often used to define <em>delegates</em>, but they come in handy for other uses as well, as you’ll find out later on.
+</p>
+<p>This concludes the quick recap of what you’ve seen so far of the Swift language. After all that theory, it’s time to write some code!
+</p></body></html>

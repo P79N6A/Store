@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 29: Maps</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 29: Maps</h1>
+
+<p>Showing the locations in a table view is useful, but not very visually appealing. Given that the iOS SDK comes with an awesome map view control, it would be a shame not to use it :]
+</p>
+<p>In this chapter, you will add a third tab to the app that will look like this when you are finished:
+</p><div class="image-30"><img src="graphics/img455.png"  alt="" title="The completed Map screen" /></div>
+<p>This is what you&apos;ll do in this chapter:
+</p>
+<ul>
+<li>
+<p><em>Add a map view:</em> Learn how to add a map view to your app and get it to show the current user location or pins for a given set of locations.
+</p></li>
+
+<li>
+<p><em>Make your own pins:</em> Learn to create custom pins to display information about points on a map.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Add a map view</h2>
+
+<p>First visit: the storyboard.
+</p>
+<p>➤ From the Objects Library, drag a <em>View Controller</em> on to the canvas.
+</p>
+<p>➤ Control-drag from the Tab Bar Controller to this new View Controller to add it to the tabs (choose <em>Relationship segue – view controllers</em>).
+</p>
+<p>➤ The new view controller now has a <em>Tab Bar Item</em>. Change its title to <em>Map</em> (via the Attributes inspector).
+</p>
+<p>➤ Drag a <em>Map Kit View</em> into the view controller. Make it cover the entire area of the screen, so that the lower part of the map view sits under the tab bar. (The size of the Map View should be 320 × 568 points.)
+</p>
+<p>➤ Add left, top, right, and bottom Auto Layout consraints to the Map View via the <em>Add New Constraints</em> menu, pinning it to the main view.
+</p>
+<p>➤ In the <em>Attributes inspector</em> for the Map View, enable <em>Shows: User Location</em>. That will put a blue dot on the map at the user’s current coordinates.
+</p><div class="image-30"><img src="graphics/img456.png"  alt="" title="Enable show user location for the Map View" /></div>
+<p>➤ Select the new view controller and select <em>Editor → Embed In → Navigation Controller</em>. This wraps your view controller in a navigation controller, and makes the new navigation controller the view controller displayed by the Tab Bar Controller.
+</p>
+<p>➤ Change the view controller&apos;s (not the new navigation controller, but its root view controller) Navigation Item title to <em>Map</em>.
+</p>
+<p>➤ Drag a <em>Bar Button Item</em> into the left-hand slot of the navigation bar and set the title to <em>Locations</em>. Drag another into the right-hand slot and set its title to <em>User</em>. Later on you’ll use nice icons for these buttons, but for now these labels will do.
+</p>
+<p>This part of the storyboard should look like this:
+</p><div class="image-25"><img src="graphics/img457.png"  alt="" title="The design of the Map screen" /></div>
+<p>In older versions of Xcode, the app would compile without any problems at this point, but would crash when you switched to the Map tab. This does not appear to be the case with the latest version of Xcode, but if you do run into this issue, here&apos;s what you need to do:
+</p>
+<p>➤ Go to the <em>Project Settings</em> screen and select the <em>Capabilities</em> tab. Scroll down to where it says <em>Maps</em> and toggle the switch to ON.
+</p><div class="image-100"><img src="graphics/img458.png"  alt="" title="Enabling the app to use maps" /></div>
+<p>➤ Run the app. Choose a location in the Simulator’s Debug menu and switch to the Map. The screen should look something like this – the blue dot shows the current location:
+</p><div class="image-25"><img src="graphics/img459.png"  alt="" title="The map shows the user’s location" /></div>
+<p>Sometimes, the map might show a different location than the current user location and you might not see the blue dot. If that happens, you can pan the map by clicking the mouse and dragging it across the Simulator window. Also, to zoom in or out, hold down the Alt/Option key while dragging the mouse.
+</p>
+<h3 class="segment-chapter">Zoom in</h3>
+
+<p>Next, you’re going to show the user’s location in a little more detail because that blue dot could be almost anywhere in California!
+</p>
+<p>➤ Add a new Swift source file to the project and name it <em>MapViewController</em>.
+</p>
+<p>➤ Replace the contents of <em>MapViewController.swift</em> with the following:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> UIKit
+<span class="hljs-keyword">import</span> MapKit
+<span class="hljs-keyword">import</span> CoreData
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MapViewController</span>: <span class="hljs-title">UIViewController</span> </span>{
+  <span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> mapView: <span class="hljs-type">MKMapView</span>!
+
+  <span class="hljs-keyword">var</span> managedObjectContext: <span class="hljs-type">NSManagedObjectContext</span>!
+  
+  <span class="hljs-comment">// MARK:- Actions</span>
+  <span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showUser</span><span class="hljs-params">()</span></span> {
+    <span class="hljs-keyword">let</span> region = <span class="hljs-type">MKCoordinateRegion</span>(
+      center: mapView.userLocation.coordinate, 
+      latitudinalMeters: <span class="hljs-number">1000</span>,longitudinalMeters: <span class="hljs-number">1000</span>)
+    mapView.setRegion(mapView.regionThatFits(region), 
+                      animated: <span class="hljs-literal">true</span>)
+  }
+
+  <span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showLocations</span><span class="hljs-params">()</span></span> {
+  }
+}
+
+<span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">MapViewController</span>: <span class="hljs-title">MKMapViewDelegate</span> </span>{
+}</pre>
+<p>This is a standard view controller — not one of the specialized types like a table view controller. It has an outlet for the map view and two action methods that will be connected to the buttons in the navigation bar. The view controller is also the delegate of the map view, courtesy of the extension.
+</p>
+<p>➤ In the storyboard, select the Map scene (the one with the view controller, not the one with the navigation controller) and in the <em>Identity inspector</em> set its <em>Class</em> to <em>MapViewController</em>.
+</p>
+<p>➤ Connect the Locations button to the <code>showLocations</code> action and the User button to the <code>showUser</code> action. (In case you forgot how, Control-drag from the button to the yellow circle for the view controller.)
+</p>
+<p>➤ Connect the Map View with the <code>mapView</code> outlet (Control-drag from the view controller to the Map View), and its delegate with the view controller (Control-drag the other way around).
+</p>
+<p>Currently the view controller only implements the <code>showUser()</code> action method. When you press the <em>User</em> button, it zooms in the map to a region that is 1000 by 1000 meters (a little more than half a mile in both directions) around the user’s position.
+</p>
+<p>Try it out:
+</p><div class="image-20"><img src="graphics/img460.png"  alt="" title="Pressing the User button zooms in to the user’s location" /></div>
+<h3 class="segment-chapter">Show pins for locations</h3>
+
+<p>The other button, Locations, is going to show the region that contains all the user’s saved locations. Before you can do that, you first have to fetch those locations from the data store.
+</p>
+<p>Even though this screen doesn’t have a table view, you could still use an <code>NSFetchedResultsController</code> object to handle all the fetching and automatic change detection. But this time, we&apos;re going to do this the hard way — you’ll do the fetching by hand.
+</p>
+<p>➤ Add a new array to <em>MapViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> locations = [<span class="hljs-type">Location</span>]()</pre>
+<p>➤ Also add this new method:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Helper methods</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">updateLocations</span><span class="hljs-params">()</span></span> {
+  mapView.removeAnnotations(locations)
+  
+  <span class="hljs-keyword">let</span> entity = <span class="hljs-type">Location</span>.entity()
+
+  <span class="hljs-keyword">let</span> fetchRequest = <span class="hljs-type">NSFetchRequest</span>&lt;<span class="hljs-type">Location</span>&gt;()
+  fetchRequest.entity = entity
+  
+  locations = <span class="hljs-keyword">try</span>! managedObjectContext.fetch(fetchRequest)
+  mapView.addAnnotations(locations)
+}</pre>
+<p>The fetch request is nothing new, except this time you’re not sorting the <code>Location</code> objects. The order of the <code>Location</code> objects in the array doesn’t really matter to the map view — only their latitude and longitude coordinates matters.
+</p>
+<p>You’ve already seen how to handle errors with a <code>do-try-catch</code> block. But if you’re certain that a particular method call will never fail, you can dispense with the <code>do</code> and <code>catch</code> and just write <code>try!</code> with an exclamation point. As with other things in Swift that have exclamation points, if it turns out that you were wrong, the app will crash without mercy. But in this case there isn’t much that can go wrong. So, you can choose to live a little more dangerously.
+</p>
+<p>Once you’ve obtained the <code>Location</code> objects, you call <code>mapView.addAnnotations()</code> to add a pin for each location on the map.
+</p>
+<p>The idea is that <code>updateLocations()</code> will be executed every time there is a change in the data store. How you’ll do that is of later concern, but the point is that when this happens, the <code>locations</code> array may already exist and may contain <code>Location</code> objects. If so, you first remove the pins for these old objects with <code>removeAnnotations()</code>.
+</p>
+<p>Xcode says the lines with <code>mapView.addAnnotations()</code> and <code>removeAnnotations()</code> have errors. This is to be expected and you’ll fix it in a minute.
+</p>
+<p>➤ First, add the <code>viewDidLoad()</code> method:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">super</span>.viewDidLoad()
+  updateLocations()
+}</pre>
+<p>This fetches the <code>Location</code> objects and shows them on the map when the view loads. Nothing special here.
+</p>
+<p>Before this class can use the <code>managedObjectContext</code>, you have to give it a reference to that object first. As before, that happens in <code>AppDelegate</code>.
+</p>
+<p>➤ In <em>AppDelegate.swift</em>, extend <code>application(_:didFinishLaunchingWithOptions:)</code> to pass the context object to the <code>MapViewController</code> as well. This goes inside the <code>if let</code> statement:
+</p><pre class="code-block"><span class="hljs-comment">// Third tab</span>
+navController = tabViewControllers[<span class="hljs-number">2</span>] <span class="hljs-keyword">as</span>! <span class="hljs-type">UINavigationController</span>
+<span class="hljs-keyword">let</span> controller3 = navController.viewControllers.first 
+                  <span class="hljs-keyword">as</span>! <span class="hljs-type">MapViewController</span>
+controller3.managedObjectContext = managedObjectContext</pre>
+<p>You’re not quite done yet. In <code>updateLocations()</code> you told the map view to add the <code>Location</code> objects as annotations — an annotation is a pin on the map — but <code>MKMapView</code> expects an array of <code>MKAnnotation</code> objects, not your own <code>Location</code> class.
+</p>
+<p>Luckily, <code>MKAnnotation</code> is a protocol. So, you can turn the <code>Location</code> objects into map annotations by making the class conform to that protocol.
+</p>
+<p>➤ Change the <code>class</code> line from <em>Location+CoreDataClass.swift</em> to:
+</p><pre class="code-block"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Location</span>: <span class="hljs-title">NSManagedObject</span>, <span class="hljs-title">MKAnnotation</span> </span>{</pre>
+<p>Just because <code>Location</code> is an object that is managed by Core Data doesn’t mean you can’t add your own stuff to it. It’s still an object!
+</p>
+<div class="note">
+<p><em>Exercise.</em> Xcode now says “Use of undeclared type MKAnnotation”. Why is that?
+</p></div>
+
+<p>Answer: You still need to <code>import MapKit</code>. Add that line at the top of the file.
+</p>
+<div class="note">
+<p><em>Exercise.</em> Xcode still shows an error about the class not conforming to the MKAnnotation protocol. What is wrong now?
+</p></div>
+
+<p>Answer: You said <code>Location</code> conforms to the <code>MKAnnotation</code> protocol — you have to provide all the required features from that protocol in the <code>Location</code> class. Xcode makes this easy since it provides a &quot;Fix&quot; option to add protocol stubs.
+</p>
+<div class="note">
+<p><em>Note:</em> If you use the &quot;Fix&quot; option, you&apos;ll still get errors since the stubs are just that — empty placeholders. So you still have to actually do some work to flesh things out.
+</p></div>
+
+<p>The <code>MKAnnotation</code> protocol requires the class to implement the <code>coordinate</code> property. There are two other properties — <code>title</code> and <code>subtitle</code> — which are optional, but we&apos;ll implement those as well.
+</p>
+<p>The annotation needs to know the coordinate in order to place the pin in the correct place on the map. The title and subtitle are used to display additional information about the location for each pin.
+</p>
+<p>➤ Add the following code to <em>Location+CoreDataClass.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">public</span> <span class="hljs-keyword">var</span> coordinate: <span class="hljs-type">CLLocationCoordinate2D</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-type">CLLocationCoordinate2DMake</span>(latitude, longitude)
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">var</span> title: <span class="hljs-type">String</span>? {
+  <span class="hljs-keyword">if</span> locationDescription.isEmpty {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">"(No Description)"</span>
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">return</span> locationDescription
+  }
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">var</span> subtitle: <span class="hljs-type">String</span>? {
+  <span class="hljs-keyword">return</span> category
+}</pre>
+<p>Do you notice anything special here? All three items are instance variables — because of <code>var</code> — but they also have a block of source code associated with them.
+</p>
+<p>These variables are <em>read-only computed properties</em>. That means they don’t actually store a value in a memory location. Whenever you access the <code>coordinate</code>, <code>title</code>, or <code>subtitle</code> variables, they perform the logic from their code blocks. That’s why they are <i>computed</i> properties: they compute something.
+</p>
+<p>These properties are read-only because they only return a value — you can’t assign them a new value using the assignment operator.
+</p>
+<p>The following is OK because it reads the value of the property:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> s = location.title</pre>
+<p>But you cannot do this:
+</p><pre class="code-block">location.title = <span class="hljs-string">"Time for a change"</span></pre>
+<p>The only way the <code>title</code> property can change is if the <code>locationDescription</code> value changes. You could also have written this as a method:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">title</span><span class="hljs-params">()</span></span> -&gt; <span class="hljs-type">String</span>? {
+  <span class="hljs-keyword">if</span> locationDescription.isEmpty {
+    <span class="hljs-keyword">return</span> <span class="hljs-string">"(No Description)"</span>
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">return</span> locationDescription
+  }
+}</pre>
+<p>This is equivalent to using the computed property. Whether to use a method or a computed property is often a matter of taste and you’ll see both ways used throughout the iOS frameworks.
+</p>
+<p>(By the way, it is also possible to make <i>read-write</i> computed properties that <i>can</i> be changed, but the <code>MKAnnotation</code> protocol doesn’t use those.)
+</p>
+<p>One more thing that you might have noticed about the variables above is the fact that they all have a <code>public</code> attribute. You&apos;ve never used a <code>public</code> attribute for variables before. So why here?
+</p>
+<p>That&apos;s because the <code>MKAnnotation</code> protocol delcares all three properties as <code>public</code>. You have to match the protocol declaration exactly and so your properties must have the <code>public</code> attribute as well. If you don&apos;t, Xcode will start whining :] Try removing the <code>public</code> attribute from one variable and see what happens ...
+</p>
+<p>➤ Run the app and switch to the Map screen. It should now show pins for all the saved locations. Below each pin you should see the value of the <code>title</code>  property from the <code>MKAnnotation</code> protocol.
+</p><div class="image-30"><img src="graphics/img461.png"  alt="" title="The map shows pins for the saved locations" /></div>
+<p>If you tap on a pin, the category for the location, which comes from the <code>subtitle</code> property, would be added below the title while the pin itself would scale up to indicate that it is currently selected.
+</p>
+<div class="note">
+<p><em>Note:</em> So far, all the protocols you’ve seen were used for making delegates. But that’s not the case here — <code>Location</code> is not a delegate of anything.
+</p>
+<p>The <code>MKAnnotation</code> protocol simply lets you pretend that <code>Location</code> is an annotation that can be placed on a map view. You can use this trick with any object you want; as long as the object implements the <code>MKAnnotation</code> protocol, it can be shown on a map.
+</p>
+<p>Protocols let objects wear different hats.
+</p></div>
+
+<h3 class="segment-chapter">Show a region</h3>
+
+<p>Tapping the User button makes the map zoom to the user’s current coordinates, but the same thing doesn’t happen yet for the location pins.
+</p>
+<p>By looking at the highest and lowest values for the latitude and longitude of all the <code>Location</code> objects, you can calculate a region and then tell the map view to zoom to that region.
+</p>
+<p>➤ In <em>MapViewController.swift</em>, add the following new method:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">region</span><span class="hljs-params">(<span class="hljs-keyword">for</span> annotations: [MKAnnotation])</span></span> -&gt; 
+     <span class="hljs-type">MKCoordinateRegion</span> {
+  <span class="hljs-keyword">let</span> region: <span class="hljs-type">MKCoordinateRegion</span>
+  
+  <span class="hljs-keyword">switch</span> annotations.<span class="hljs-built_in">count</span> {
+  <span class="hljs-keyword">case</span> <span class="hljs-number">0</span>:
+    region = <span class="hljs-type">MKCoordinateRegion</span>(
+      center: mapView.userLocation.coordinate, 
+      latitudinalMeters: <span class="hljs-number">1000</span>, longitudinalMeters: <span class="hljs-number">1000</span>)
+    
+  <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:
+    <span class="hljs-keyword">let</span> annotation = annotations[annotations.<span class="hljs-built_in">count</span> - <span class="hljs-number">1</span>]
+    region = <span class="hljs-type">MKCoordinateRegion</span>(
+      center: annotation.coordinate, 
+      latitudinalMeters: <span class="hljs-number">1000</span>, longitudinalMeters: <span class="hljs-number">1000</span>)
+    
+  <span class="hljs-keyword">default</span>:
+    <span class="hljs-keyword">var</span> topLeft = <span class="hljs-type">CLLocationCoordinate2D</span>(latitude: -<span class="hljs-number">90</span>, 
+                                        longitude: <span class="hljs-number">180</span>)
+    <span class="hljs-keyword">var</span> bottomRight = <span class="hljs-type">CLLocationCoordinate2D</span>(latitude: <span class="hljs-number">90</span>,
+                                            longitude: -<span class="hljs-number">180</span>)
+    
+    <span class="hljs-keyword">for</span> annotation <span class="hljs-keyword">in</span> annotations {
+      topLeft.latitude = <span class="hljs-built_in">max</span>(topLeft.latitude, 
+               annotation.coordinate.latitude)
+      topLeft.longitude = <span class="hljs-built_in">min</span>(topLeft.longitude, 
+                annotation.coordinate.longitude)
+      bottomRight.latitude = <span class="hljs-built_in">min</span>(bottomRight.latitude, 
+                       annotation.coordinate.latitude)
+      bottomRight.longitude = <span class="hljs-built_in">max</span>(bottomRight.longitude, 
+                        annotation.coordinate.longitude)
+    }
+    
+    <span class="hljs-keyword">let</span> center = <span class="hljs-type">CLLocationCoordinate2D</span>(
+      latitude: topLeft.latitude - 
+               (topLeft.latitude - bottomRight.latitude) / <span class="hljs-number">2</span>,
+      longitude: topLeft.longitude - 
+             (topLeft.longitude - bottomRight.longitude) / <span class="hljs-number">2</span>)
+    
+    <span class="hljs-keyword">let</span> extraSpace = <span class="hljs-number">1.1</span>
+    <span class="hljs-keyword">let</span> span = <span class="hljs-type">MKCoordinateSpan</span>(
+      latitudeDelta: <span class="hljs-built_in">abs</span>(topLeft.latitude - 
+                     bottomRight.latitude) * extraSpace,
+      longitudeDelta: <span class="hljs-built_in">abs</span>(topLeft.longitude - 
+                      bottomRight.longitude) * extraSpace)
+    
+    region = <span class="hljs-type">MKCoordinateRegion</span>(center: center, span: span)
+  }
+  
+  <span class="hljs-keyword">return</span> mapView.regionThatFits(region)
+}</pre>
+<p><code>region(for:)</code> has three situations to handle. It uses a <code>switch</code> statement to look at the number of annotations and then chooses the corresponding case:
+</p>
+<ol>
+<li>
+<p>There are no annotations. You center the map on the user’s current position.
+</p></li>
+
+<li>
+<p>There is only one annotation. You center the map on that one annotation.
+</p></li>
+
+<li>
+<p>There are two or more annotations. You calculate the extent of their reach and add a little padding. See if you can make sense of those calculations. The <code>max()</code> function looks at two values and returns the larger of the two; <code>min()</code> returns the smaller; <code>abs()</code> always makes a number positive — absolute value.
+</p></li>
+</ol>
+
+<p>Note that this method does not use <code>Location</code> objects for anything. It assumes that all the objects in the array conform to the <code>MKAnnotation</code> protocol and it only looks at that part of the object. As far as <code>region(for:)</code> is concerned, what it deals with are annotations. It just so happens that these annotations are represented by your <code>Location</code> objects.
+</p>
+<p>That is the power of using protocols. It also allows you to use this method in any app that uses Map Kit, without modifications. Pretty neat.
+</p>
+<p>➤ Add the following code to <code>showLocations()</code>:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showLocations</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> theRegion = region(<span class="hljs-keyword">for</span>: locations)
+  mapView.setRegion(theRegion, animated: <span class="hljs-literal">true</span>)
+}</pre>
+<p>This calls <code>region(for:)</code> to calculate a reasonable region that fits all the <code>Location</code> objects and then sets that region on the map view.
+</p>
+<p>➤ Finally, change <code>viewDidLoad()</code>:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  . . .
+  <span class="hljs-keyword">if</span> !locations.isEmpty {
+    showLocations()
+  }
+}</pre>
+<p>It’s a good idea to show the user’s locations the first time you switch to the Map tab. So <code>viewDidLoad()</code> calls <code>showLocations()</code> if the user has any saved locations.
+</p>
+<p>➤ Run the app and switch to the Map tab, the map view should be zoomed in on your saved locations - because you have the code in <code>viewDidLoad</code>, remember? (This only works well if the locations aren’t too far apart, of course.)
+</p><div class="image-30"><img src="graphics/img462.png"  alt="" title="The map view zooms in to fit all your saved locations" /></div>
+<h2 class="segment-chapter">Make your own pins</h2>
+
+<p>You made the <code>MapViewController</code> conform to the <code>MKMapViewDelegate</code> protocol, but so far, you haven’t done anything with that.
+</p>
+<p>This delegate is useful for creating your own annotation views. Currently, a default pin is displayed with a title below it, but you can change this to anything you like.
+</p>
+<h3 class="segment-chapter">Create custom annotations</h3>
+
+<p>➤ Add the following code to the extension at the bottom of <em>MapViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">mapView</span><span class="hljs-params">(<span class="hljs-number">_</span> mapView: MKMapView, 
+    viewFor annotation: MKAnnotation)</span></span> -&gt; 
+    <span class="hljs-type">MKAnnotationView</span>? {
+  <span class="hljs-comment">// 1</span>
+  <span class="hljs-keyword">guard</span> annotation <span class="hljs-keyword">is</span> <span class="hljs-type">Location</span> <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+  }
+  <span class="hljs-comment">// 2</span>
+  <span class="hljs-keyword">let</span> identifier = <span class="hljs-string">"Location"</span>
+  <span class="hljs-keyword">var</span> annotationView = mapView.dequeueReusableAnnotationView(
+                                  withIdentifier: identifier)
+  <span class="hljs-keyword">if</span> annotationView == <span class="hljs-literal">nil</span> {
+    <span class="hljs-keyword">let</span> pinView = <span class="hljs-type">MKPinAnnotationView</span>(annotation: annotation,
+                                 reuseIdentifier: identifier)
+    <span class="hljs-comment">// 3</span>
+    pinView.isEnabled = <span class="hljs-literal">true</span>
+    pinView.canShowCallout = <span class="hljs-literal">true</span>
+    pinView.animatesDrop = <span class="hljs-literal">false</span>
+    pinView.pinTintColor = <span class="hljs-type">UIColor</span>(red: <span class="hljs-number">0.32</span>, green: <span class="hljs-number">0.82</span>,
+                                  blue: <span class="hljs-number">0.4</span>, alpha: <span class="hljs-number">1</span>)
+    
+    <span class="hljs-comment">// 4</span>
+    <span class="hljs-keyword">let</span> rightButton = <span class="hljs-type">UIButton</span>(type: .detailDisclosure)
+    rightButton.addTarget(<span class="hljs-keyword">self</span>,
+                    action: #selector(showLocationDetails(<span class="hljs-number">_</span>:)),
+                       <span class="hljs-keyword">for</span>: .touchUpInside)
+    pinView.rightCalloutAccessoryView = rightButton
+    
+    annotationView = pinView
+  }
+  
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> annotationView = annotationView {
+    annotationView.annotation = annotation
+  
+    <span class="hljs-comment">// 5</span>
+    <span class="hljs-keyword">let</span> button = annotationView.rightCalloutAccessoryView 
+                 <span class="hljs-keyword">as</span>! <span class="hljs-type">UIButton</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> index = locations.index(of: annotation 
+                                       <span class="hljs-keyword">as</span>! <span class="hljs-type">Location</span>) {
+      button.tag = index
+    }
+  }
+
+  <span class="hljs-keyword">return</span> annotationView
+}</pre>
+<p>This is very similar to what a table view data source does in <code>cellForRowAt</code>, except that you’re not dealing with table view cells here but with <code>MKAnnotationView</code> objects. This is what happens step-by-step :
+</p>
+<ol>
+<li>
+<p>Because <code>MKAnnotation</code> is a protocol, there may be other objects apart from the <code>Location</code> object that want to be annotations on the map. An example is the blue dot that represents the user’s current location.
+</p>
+<p>You should leave such annotations alone. So, you use the special <code>is</code> type check operator to determine whether the annotation is really a <code>Location</code> object. If it isn’t, you return <code>nil</code> to signal that you’re not making an annotation for this other kind of object. The <code>guard</code> statement you’re using here works like an <code>if</code>: it only continues if the condition — <code>annotation is Location</code> — is true.
+</p></li>
+
+<li>
+<p>This is similar to creating a table view cell. You ask the map view to re-use an annotation view object. If it cannot find a recyclable annotation view, then you create a new one.
+</p>
+<p>Note that you’re not limited to using <code>MKPinAnnotationView</code> for your annotations. This is the standard annotation view class, but you can also create your own <code>MKAnnotationView</code> subclass and make it look like anything you want. Pins are only one option.
+</p></li>
+</ol>
+
+<ol>
+<li>
+<p>This sets some properties to configure the look and feel of the annotation view. Previously the pins were red, but you make them green here.
+</p></li>
+
+<li>
+<p>This is where it gets interesting. You create a new <code>UIButton</code> object that looks like a detail disclosure button — ⓘ. You use the target-action pattern to hook up the button’s “Touch Up Inside” event with a new method <code>showLocationDetails()</code>, and add the button to the annotation view’s accessory view.
+</p></li>
+
+<li>
+<p>Once the annotation view is constructed and configured, you obtain a reference to that detail disclosure button again and set its <code>tag</code> to the index of the <code>Location</code> object in the <code>locations</code> array. That way, you can find the <code>Location</code> object later in <code>showLocationDetails()</code> when the button is pressed.
+</p></li>
+</ol>
+
+<p>➤ Add the <code>showLocationDetails()</code> method but leave it empty for now. Put it in the main class, not the extension.
+</p><pre class="code-block"><span class="hljs-meta">@objc</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showLocationDetails</span><span class="hljs-params">(<span class="hljs-number">_</span> sender: UIButton)</span></span> {
+}</pre>
+<p>Because you’ve told the button its <code>#selector</code> is <code>showLocationDetails</code>, the app won’t compile unless you add at least an empty version of this method.
+</p>
+<p>This method takes one parameter, <code>sender</code>, that refers to the control that sent the action message. In this case, the sender will be the ⓘ button. That’s why the type of the <code>sender</code> parameter is <code>UIButton</code>.
+</p>
+<p>➤ Run the app. The pins don&apos;t look the same as the standard pins from before, and are green. There&apos;s no title below each pin, but there&apos;s a callout when you tap a pin, and the callout has a custom button. (If the pins don&apos;t change, then make sure you connected the view controller as the delegate of the map view in the storyboard.)
+</p><div class="image-40"><img src="graphics/img463.png"  alt="" title="The annotations use your own view" /></div>
+<h4 class="segment-chapter">Guard</h4>
+
+<p>In the map view delegate method, you wrote the following:
+</p><pre class="code-block"><span class="hljs-keyword">guard</span> annotation <span class="hljs-keyword">is</span> <span class="hljs-type">Location</span> <span class="hljs-keyword">else</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+}</pre>
+<p>The <code>guard</code> statement lets you try something. If the result is <code>nil</code> or <code>false</code>, the code from the <code>else</code> block is performed.
+</p>
+<p>If everything works like it’s supposed to, the code simply skips the <code>else</code> block and continues.
+</p>
+<p>You could also have written it as follows:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> annotation <span class="hljs-keyword">is</span> <span class="hljs-type">Location</span> {
+  <span class="hljs-comment">// do all the other things</span>
+  . . .
+} <span class="hljs-keyword">else</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+}</pre>
+<p>This uses the familiar <code>if</code> statement. But notice how the code that handles the situation when <code>annotation</code> is <i>not</i> a <code>Location</code> is now all the way at the bottom of the method. If you have several of these <code>if</code> statements, your code ends up looking like this:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> condition1 {
+  <span class="hljs-keyword">if</span> condition2 {
+    <span class="hljs-keyword">if</span> condition3 {
+      . . .
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>  <span class="hljs-comment">// condition3 is false</span>
+    }
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>    <span class="hljs-comment">// condition2 is false</span>
+  }
+} <span class="hljs-keyword">else</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>      <span class="hljs-comment">// condition1 is false</span>
+}</pre>
+<p>This kind of structure is known as the “Pyramid of Doom”. There’s nothing wrong with it per se, but it can make the program flow hard to decipher. With <code>guard</code> you can write this as:
+</p><pre class="code-block"><span class="hljs-keyword">guard</span> condition1 <span class="hljs-keyword">else</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>             <span class="hljs-comment">// condition1 is false</span>
+}
+<span class="hljs-keyword">guard</span> condition2 <span class="hljs-keyword">else</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>             <span class="hljs-comment">// condition2 is false</span>
+}
+<span class="hljs-keyword">guard</span> condition3 <span class="hljs-keyword">else</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>             <span class="hljs-comment">// condition3 is false</span>
+}
+. . .</pre>
+<p>Now all the conditions are checked first and any errors or unexpected situations are handled straight away. Many programmers find this easier to read.
+</p>
+<h3 class="segment-chapter">Add annotation actions</h3>
+
+<p>Tapping a pin on the map now brings up a callout with a blue ⓘ button. What should this button do? Show the Edit Location screen, of course!
+</p>
+<p>➤ Open the storyboard. Find the Map View Controller, and <em>Control-drag</em> from the yellow cirlce at the top to the Tag Location scene, which is the Location Details View Controller.
+</p>
+<p>Make this a new <em>Show</em> segue named <em>EditLocation</em>.
+</p>
+<p><em>Tip:</em> If making this connection gives you problems because the storyboard won’t fit on your screen, then try Control-dragging from (or to) the Document Outline. You can also zoom out to show more of the storyboard.
+</p>
+<p>The storyboard should now look something like this:
+</p><div class="image-80"><img src="graphics/img464.png"  alt="" title="The Location Details screen is connected to all three screens" /></div>
+<p>I had to zoom out the Storyboard in order to make the screen capture. Not sure if you can see very clearly at this level, but you should see that there are now three segues going to the Tag Location scene.
+</p>
+<p>➤ Back in <em>MapViewController.swift</em>, change <code>showLocationDetails(_:)</code> to trigger the segue:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showLocationDetails</span><span class="hljs-params">(sender: UIButton)</span></span> {
+  performSegue(withIdentifier: <span class="hljs-string">"EditLocation"</span>, sender: sender)
+}</pre>
+<p>Because the segue isn’t connected to any particular control in the view controller, you have to perform the segue manually. You pass along the button object as the <code>sender</code>, so you can read its <code>tag</code> property later.
+</p>
+<p>➤ Add the <code>prepare(for:sender:)</code> method:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Navigation</span>
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">prepare</span><span class="hljs-params">(<span class="hljs-keyword">for</span> segue: UIStoryboardSegue, 
+                         sender: Any?)</span></span> {
+  <span class="hljs-keyword">if</span> segue.identifier == <span class="hljs-string">"EditLocation"</span> {
+    <span class="hljs-keyword">let</span> controller = segue.destination 
+                     <span class="hljs-keyword">as</span>! <span class="hljs-type">LocationDetailsViewController</span>
+    controller.managedObjectContext = managedObjectContext
+
+    <span class="hljs-keyword">let</span> button = sender <span class="hljs-keyword">as</span>! <span class="hljs-type">UIButton</span>
+    <span class="hljs-keyword">let</span> location = locations[button.tag]
+    controller.locationToEdit = location
+  }
+}</pre>
+<p>This is very similar to what you did in the Locations screen, except that now you get the <code>Location</code> object to edit from the <code>locations</code> array, using the <code>tag</code> property of the <code>sender</code> button as the index in that array.
+</p>
+<p>➤ Run the app, tap on a pin and edit the location.
+</p>
+<p>It works, except ... the annotation’s callout doesn’t change until you tap the pin again. Likewise, changes on the other screens, such as adding or deleting a location, have no effect on the map.
+</p>
+<p>This is the same problem you had earlier with the Locations screen. Because the list of <code>Location</code> objects is only fetched once in <code>viewDidLoad()</code>, any changes that happen afterwards are overlooked.
+</p>
+<h3 class="segment-chapter">Live-updating annotations</h3>
+
+<p>The way you’re going to fix this for the Map screen is by using notifications. Recall that you have already put <code>NotificationCenter</code> to use for dealing with Core Data save errors.
+</p>
+<p>As it happens, Core Data also sends out a bunch of notifications when changes are made to the data store. You can subscribe to these notifications and update the map view when you receive them.
+</p>
+<p>➤ In <em>MapViewController.swift</em>, change the <code>managedObjectContext</code> property declaration to:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> managedObjectContext: <span class="hljs-type">NSManagedObjectContext</span>! {
+  <span class="hljs-keyword">didSet</span> {
+    <span class="hljs-type">NotificationCenter</span>.<span class="hljs-keyword">default</span>.addObserver(forName: 
+       <span class="hljs-type">Notification</span>.<span class="hljs-type">Name</span>.<span class="hljs-type">NSManagedObjectContextObjectsDidChange</span>, 
+       object: managedObjectContext, 
+       queue: <span class="hljs-type">OperationQueue</span>.main) { notification <span class="hljs-keyword">in</span>
+      <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.isViewLoaded {
+        <span class="hljs-keyword">self</span>.updateLocations()
+      }
+    }
+  }
+}</pre>
+<p>This is another example of a property observer put to good use.
+</p>
+<p>As soon as <code>managedObjectContext</code> is given a value — which happens in <code>AppDelegate</code> during app startup — the <code>didSet</code> block tells the <code>NotificationCenter</code> to add an observer for the <code>NSManagedObjectContextObjectsDidChange</code> notification.
+</p>
+<p>This notification with the very long name is sent out by the <code>managedObjectContext</code> whenever the data store changes. In response you would like the following closure to be called. For clarity, here’s what happens in the closure:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.isViewLoaded {
+ <span class="hljs-keyword">self</span>.updateLocations()
+}</pre>
+<p>This couldn’t be simpler: you just call <code>updateLocations()</code> to fetch all the <code>Location</code> objects again. This throws away all the old pins and it makes new pins for all the newly fetched <code>Location</code> objects. Granted, it’s not a very efficient method if there are hundreds of annotation objects, but for now it gets the job done.
+</p>
+<div class="note">
+<p><em>Note:</em> You use <code>isViewLoaded</code> to make sure <code>updateLocations()</code> only gets called when the map view is loaded. Because this screen sits in a tab, the view from <code>MapViewController</code> does not actually get loaded from the storyboard until the user switches to the Map tab.
+</p>
+<p>So the view may not be loaded yet when the user tags a new location. In that case, it makes no sense to call <code>updateLocations()</code> — it could even crash the app since the <code>MKMapView</code> object doesn’t exist at that point!
+</p></div>
+
+<p>➤ Run the app. First go to the Map screen to see your existing location pins. Then tag a new location. The map should have added a new pin for it, although you may have to press the Locations bar button to make the new pin appear if it’s outside the visible range.
+</p>
+<p>Have another look at that closure. The <code>notification in</code> bit is the parameter for the closure. Like functions and methods, closures can take parameters.
+</p>
+<p>Because this particular closure gets called by <code>NotificationCenter</code>, you’re given a <code>Notification</code> object in the <code>notification</code> parameter. Since you’re not using this <code>notification</code> object anywhere in the closure, you could also write it like this:
+</p><pre class="code-block">{ <span class="hljs-number">_</span> <span class="hljs-keyword">in</span>
+  . . .
+}</pre>
+<p>You’ve already seen the <code>_</code> underscore used in a few places in the code. This symbol is called the <i>wildcard</i> and you can use it whenever a name is expected but you don’t really care about it.
+</p>
+<p>Here, the <code>_</code> tells Swift you’re not interested in the closure’s parameter. It also helps to reduce visual clutter in the source code; it’s obvious at a glance that this parameter — whatever it may be — isn’t being used in the closure.
+</p>
+<p>So whenever you see the <code>_</code> used in Swift source code it just means, “there’s something here but the programmer has chosen to ignore it”.
+</p>
+<div class="note">
+<p><em>Exercise.</em> The <code>Notification</code> object has a <code>userInfo</code> dictionary. From that dictionary it is possible to figure out which objects were inserted/deleted/updated. For example, use the following <code>print()</code>s to examine this dictionary:
+</p></div>
+<pre class="code-block"><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> dictionary = notification.userInfo {
+  <span class="hljs-built_in">print</span>(dictionary[<span class="hljs-type">NSInsertedObjectsKey</span>])
+  <span class="hljs-built_in">print</span>(dictionary[<span class="hljs-type">NSUpdatedObjectsKey</span>])
+  <span class="hljs-built_in">print</span>(dictionary[<span class="hljs-type">NSDeletedObjectsKey</span>])
+}</pre>
+<div class="note">
+<p>This will print out an (optional) collection of <code>Location</code> objects or <code>nil</code> if there were no changes. Your mission, should you choose to accept it: try to make the reloading of the locations more efficient by only inserting or deleting the items that have changed. Good luck! If you get stuck, you can find the solutions from other readers on the raywenderlich.com forums.
+</p></div>
+
+<p>That’s it for the Map screen.
+</p>
+<p>You can find the project files for this chapter under <em>29 – Maps</em> in the Source Code folder.
+</p></body></html>

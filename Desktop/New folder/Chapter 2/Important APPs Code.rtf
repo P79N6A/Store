@@ -1,0 +1,319 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 LucidaGrande;\f2\fnil\fcharset178 GeezaPro;
+\f3\fnil\fcharset0 Menlo-Bold;\f4\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue255;\red33\green255\blue6;\red0\green0\blue0;
+\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c1680\c19835\c100000;\cssrgb\c0\c97680\c0;\cssrgb\c0\c0\c0;
+\csgenericrgb\c100000\c100000\c100000;\csgenericrgb\c0\c0\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11100\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs36 \cf0 1- to make a view controller is a data source for a table view \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs24 \cf0 \
+\cf2   \'93// MARK:- Table View Data Source\
+override func tableView(_ tableView: UITableView,\
+      numberOfRowsInSection section: Int) -> Int \{\
+  return 1\
+\}\
+\
+override func tableView(_ tableView: UITableView, \
+             cellForRowAt indexPath: IndexPath) -> \
+             UITableViewCell \{\
+  let cell = tableView.dequeueReusableCell(\
+                        withIdentifier: "ChecklistItem", \
+                                   for: indexPath)\
+let label = cell.viewWithTag(1000) as! UILabel  \cf3 //\'93Here you ask the table view cell for the view with  \
+                                                                                     tag 1000\cf2  \
+  return cell\
+\}\cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs36 \cf0 2- to make a view controller as a delegate\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs24 \cf0 \
+\cf2 // MARK:- Table View Delegate\
+override func tableView(_ tableView: UITableView,\
+           didSelectRowAt indexPath: IndexPath) \{\
+  tableView.deselectRow(at: indexPath, animated: true) //\cf3  \'93The purpose of tableView.cellForRow(at:)       \
+  is also to return a cell object, but this is an existing cell for a row that is currently being displayed. It won\'92t create any new cells\'94
+\f1 \cf3 but
+\f2  
+\f1 the
+\f2  
+\f1 other
+\f2  
+\f1 function
+\f2  
+\f1 is
+\f2  
+\f1 aimed
+\f2  
+\f1 to
+\f2  
+\f1 create
+\f2  
+\f1 a
+\f2  
+\f1 new cell
+\f0 \cf3 \
+\
+\cf2 \}\cf0 \
+\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs36 \cf0 3- \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs28 \cf0 1-to change the navigation item title to large \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs24 \cf2 navigationController?.navigationBar.prefersLargeTitles = true \cf3 // \'93 this code snippet simply uses the view controller's reference to the navigation controller to access the navigation bar for the app\'94\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs28 \cf4 2-To make cancel button in VC back to previous screen after tapping on\cf3 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs24 \cf2  navigationController?.popViewController(animated: true) //\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs28 \cf4 3
+\fs24 \cf2 - 
+\fs28 \cf4 To make keyboard showed up automatically when the screen opened\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs26 \cf2 override func viewWillAppear(_ animated: Bool) \{\
+  super.viewWillAppear(animated)\
+  textField.becomeFirstResponder()  \cf3 // \'93The view controller receives the viewWillAppear() message just before it becomes visible. That is a perfect time to make the text field active. You do this by sending it the becomeFirstResponder() message.\'94\
+\
+\cf4 4- To disable cell selection when user tapes on \
+\cf2 \'93override func tableView(_ tableView: UITableView, \
+          willSelectRowAt indexPath: IndexPath) \
+          -> IndexPath? \{\
+  return nil\
+\}\'94\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs28 \cf4 \
+\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs24 \cf2 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs48 \cf0 3- to delete row from the table view\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs26 \cf2 override func tableView(\
+                _ tableView: UITableView, \
+        commit editingStyle: UITableViewCell.EditingStyle,\
+         forRowAt indexPath: IndexPath) \{\
+  \
+  items.remove(at: indexPath.row) \cf3 // to remove item from data model\cf2 \
+  \
+    \
+  let indexPaths = [indexPath]\
+  tableView.deleteRows(at: indexPaths, with: .automatic) \cf3 // to remove item from table view
+\fs48 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs24 \cf0 //\cf3  note when you delete object from the array , the reference for that object goes a way , 
+\f1 \cf3 and
+\f2  
+\f1 there
+\f2  
+\f1 for
+\f2  
+\f1 the
+\f2  
+\f1 object
+\f2  
+\f1 is
+\f2  
+\f1 destroyed
+\f2  
+\f1 or
+\f2  
+\f1 deallocated
+\f0 \cf0 \
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs36 \cf0 4- Text Field Delegates\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs24 \cf2 func textField(_ textField: UITextField, \
+               shouldChangeCharactersIn range: NSRange, \
+               replacementString string: String) -> Bool \{\
+\
+  let oldText = textField.text!    \
+  let stringRange = Range(range, in:oldText)!\
+  let newText = oldText.replacingCharacters(in: stringRange, \
+                                          with: string)\cf0 \
+\cf2 doneBarButton.isEnabled = !newText.isEmpty\
+\}\cf0 \
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs36 \cf0 5- Savin File
+\fs24 \
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf2 1-func documentsDirectory() -> URL \{\
+  let paths = FileManager.default.urls(for: .documentDirectory, \
+                                        in: .userDomainMask)\
+  return paths[0]\
+\}\
+\
+func dataFilePath() -> URL \{\
+  return documentsDirectory().appendingPathComponent(\
+                                  "Checklists.plist\'94)\cf3 //  data file path uses the document directory to construct the \cf2 \
+\}							\cf3 full path to the file that will store the checklist items , this file is named checklist.plist and it will lives inside the document folder\cf0 \
+\
+2- \cf2 func saveChecklistItems() \{\
+  // 1\
+  let encoder = PropertyListEncoder()\
+  // 2\
+  do \{\
+    // 3\
+    let data = try encoder.encode(items)\
+    // 4\
+    try data.write(to: dataFilePath(), \
+              options: Data.WritingOptions.atomic)\
+    // 5\
+  \} catch \{\
+    // 6\
+    print("Error encoding item array: \\(error.localizedDescription)")\
+  \}\
+\}\cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs28 \cf0 \
+3- load files
+\fs24 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf2 func loadChecklistItems() \{\
+  // 1\
+  let path = dataFilePath()\
+  // 2\
+  if let data = try? Data(contentsOf: path) \{  \cf3 //\'93you can have a try? statement which indicates that the try								could fail and if it does, that it will return nil\
+   \cf2 // 3\
+    let decoder = PropertyListDecoder()\
+    do \{\
+      // 4\
+      items = try decoder.decode([ChecklistItem].self, \
+                                 from: data)\
+    \} catch \{\
+      print("Error decoding item array: \\(error.localizedDescription)")\
+    \}\
+  \}\
+\}\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f1\fs28 \cf4 4-
+\f2  
+\f1 to
+\f2  
+\f1 create
+\f2  
+\f1 new
+\f2  
+\f1 cell
+\f2  
+\f1 by
+\f2  
+\f1 hand
+\f2 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f1\fs24 \cf2 let
+\f2 \cf2  
+\f1 \cf2 cellIdentifier
+\f2 \cf2  
+\f1 \cf2 =
+\f2 \cf2  
+\f1 \cf2 "ChecklistCell"\
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+
+\f3\b \cf2 \cb5 let
+\f4\b0  cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath\cf6 \cb5 )
+\f2 \cf2 \cb1 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f1 \cf2 let cellIdentifier = "ChecklistCell"\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf3 //\'93the
+\f2  
+\f1 table
+\f2  
+\f1 view
+\f2  
+\f1 knows
+\f2  
+\f1 which
+\f2  
+\f1 cell
+\f2  
+\f1 class
+\f2  
+\f1 should
+\f2  
+\f1 be
+\f2  
+\f1 used
+\f2  
+\f1 to
+\f2  
+\f1 create
+\f2  
+\f1 a
+\f2  
+\f1 new
+\f2  
+\f1 table
+\f2  
+\f1 view
+\f2  
+\f1 cell
+\f2  
+\f1 instance
+\f2  
+\f1 when
+\f2  
+\f1 a
+\f2  
+\f1 dequeue
+\f2  
+\f1 request
+\f2  
+\f1 comes
+\f2  
+\f1 in
+\f2  
+\f1 with
+\f2  
+\f1 that
+\f2  
+\f1 cell
+\f2  
+\f1 identifier
+\f2 .
+\f1 \'94\cf2 \
+tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)\
+// In tableView(_:cellForRowAt:)\
+let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath\'94\
+701
+\f2\fs28 \cf3 \
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \
+}

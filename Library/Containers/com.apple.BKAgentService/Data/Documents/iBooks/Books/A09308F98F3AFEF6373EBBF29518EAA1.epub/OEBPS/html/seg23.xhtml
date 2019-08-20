@@ -1,0 +1,674 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 17: Improved Data Model</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 17: Improved Data Model</h1>
+
+<p>Everything you’ve done up to this point is all well and good, but your checklists don’t actually contain any to-do items yet. Or rather, if you select a checklist, you see the same old items for every list! There is no connection between the selected list and the items displayed for that list.
+</p>
+<p>It&apos;s time for you to fix that. You&apos;ll do so by way of the following steps:
+</p>
+<ul>
+<li>
+<p><em>The new data model:</em> Update the data model so that the to-do items for a list are saved along with the list.
+</p></li>
+
+<li>
+<p><em>Fake it &apos;til you make it:</em> Add some fake data to test that the new changes work correctly.
+</p></li>
+
+<li>
+<p><em>Do saves differently:</em> Change your data saving strategy so that your data is only saved when the app is paused or terminated, not each time a change is made.
+</p></li>
+
+<li>
+<p><em>Improve the data model:</em> Hand over data saving/loading to the data model itself.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">The new data model</h2>
+
+<p>So far, the list of to-do items and the actual checklists have been separate from each other.
+</p>
+<p>Let’s change the data model to look like this:
+</p><div class="image-70"><img src="graphics/img314.png"  alt="" title="Each Checklist object has an array of ChecklistItem objects" /></div>
+<p>There will still be the <code>lists</code> array that contains all the <code>Checklist</code> objects, but each of these <code>Checklist</code> instances will have its own array of <code>ChecklistItem</code> objects.
+</p>
+<h3 class="segment-chapter">The to-do item array</h3>
+
+<p>➤ Add a new property to <em>Checklist.swift</em>:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Checklist</span>: <span class="hljs-title">NSObject</span> </span>{
+  <span class="hljs-keyword">var</span> name = <span class="hljs-string">""</span>
+  <span class="hljs-keyword">var</span> items = [<span class="hljs-type">ChecklistItem</span>]()     <span class="hljs-comment">// add this line</span>
+  . . .</pre>
+<p>This creates a new empty array that can hold <code>ChecklistItem</code> objects and assigns it to the <code>items</code> property.
+</p>
+<p>If you’re a stickler for completeness, you can also write it as follows:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> items: [<span class="hljs-type">ChecklistItem</span>] = [<span class="hljs-type">ChecklistItem</span>]()</pre>
+<p>I personally don’t like this way of declaring variables because it violates the “DRY” principle – Don’t Repeat Yourself. Fortunately, thanks to Swift’s type inference, you can save yourself some keystrokes.
+</p>
+<p>Another way you&apos;ll see it written sometimes is:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> items: [<span class="hljs-type">ChecklistItem</span>] = []</pre>
+<p>The notation <code>[]</code> means: make an empty array of the specified type. There is no type inference at play there since you have to specify the type explicitly. If you don&apos;t specify a type and write the above line as:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> items = []</pre>
+<p>You will get an error since the compiler cannot determine the type of the array. That makes sense, right? Regardless of the way you choose to write it, the <code>Checklist</code> object now contains an array of <code>ChecklistItem</code> objects. Initially, that array is empty.
+</p>
+<h3 class="segment-chapter">Pass the array</h3>
+
+<p>Earlier you fixed <code>prepare(for:sender:)</code> in AllListsViewController.swift so that tapping a row makes the app display <code>ChecklistViewController</code>, passing along the <code>Checklist</code> object that belongs to that row.
+</p>
+<p>Currently <code>ChecklistViewController</code> still gets the <code>ChecklistItem</code> objects that it displays from its own private <code>items</code> array. You will change that so it reads from the <code>items</code> array inside the <code>Checklist</code> object instead.
+</p>
+<p>➤ Remove the <code>items</code> instance variable from <em>ChecklistViewController.swift.</em>
+</p>
+<p>➤ Then, anywhere it says <code>items</code>, change it to say <code>checklist.items</code> instead.
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+      numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">return</span> checklist.items.<span class="hljs-built_in">count</span>
+}</pre><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+             cellForRowAt indexPath: IndexPath)</span></span> 
+             -&gt; <span class="hljs-type">UITableViewCell</span> {
+  . . .
+  <span class="hljs-keyword">let</span> item = checklist.items[indexPath.row]
+  . . .
+}</pre><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+           didSelectRowAt indexPath: IndexPath)</span></span> {
+  . . .
+  <span class="hljs-keyword">let</span> item = checklist.items[indexPath.row]
+  . . . 
+}</pre><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(
+              <span class="hljs-number">_</span> tableView: UITableView, 
+      commit editingStyle: UITableViewCellEditingStyle, 
+       forRowAt indexPath: IndexPath)</span></span> {
+
+  checklist.items.remove(at: indexPath.row)
+  . . .
+}</pre><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">itemDetailViewController</span><span class="hljs-params">(
+                  <span class="hljs-number">_</span> controller: ItemDetailViewController, 
+          didFinishAdding item: ChecklistItem)</span></span> {
+  <span class="hljs-keyword">let</span> newRowIndex = checklist.items.<span class="hljs-built_in">count</span>
+  checklist.items.append(item)
+  . . .
+}</pre><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">itemDetailViewController</span><span class="hljs-params">(
+                  <span class="hljs-number">_</span> controller: ItemDetailViewController, 
+         didFinishEditing item: ChecklistItem)</span></span> {
+
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> index = checklist.items.index(of:item) {
+  . . .
+}</pre><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">prepare</span><span class="hljs-params">(<span class="hljs-keyword">for</span> segue: UIStoryboardSegue, 
+                         sender: Any?)</span></span> {
+    . . .
+    controller.itemToEdit = checklist.items[indexPath.row]
+    . . .
+}</pre>
+<p>➤ Delete the following methods from <em>ChecklistViewController.swift</em>. (Tip: You may want to set aside the code from these methods in a temporary file somewhere; shortly you’ll be using them again in a slightly modified form.)
+</p>
+<ul>
+<li>
+<p><code>func documentsDirectory()</code>
+</p></li>
+
+<li>
+<p><code>func dataFilePath()</code>
+</p></li>
+
+<li>
+<p><code>func saveChecklistItems()</code>
+</p></li>
+
+<li>
+<p><code>func loadChecklistItems()</code>
+</p></li>
+</ul>
+
+<p>You added these methods to load and save the checklist items from a file. That is no longer the responsibility of this view controller. It is better, from a design perspective, for the <code>Checklist</code> object to do that.
+</p>
+<p>Loading and saving data model objects really belongs in the data model itself, rather than in a controller.
+</p>
+<p>But before you get to that, let’s first test whether these changes were successful. Xcode is throwing up a few errors because you still call <code>saveChecklistItems()</code> and <code>loadChecklistItems()</code> from several places in the code. You should remove those lines, as you will soon be saving the items from a different place.
+</p>
+<p>➤ Remove the lines that call <code>saveChecklistItems()</code> and <code>loadChecklistItems()</code>.
+</p>
+<p>➤ Press <em>⌘+B</em> to make sure the app builds without errors.
+</p>
+<h2 class="segment-chapter">Fake it ‘til you make it</h2>
+
+<p>Let’s add some fake data to the various <code>Checklist</code> objects so that you can test whether this new design actually works.
+</p>
+<h3 class="segment-chapter">Add fake to-do data</h3>
+
+<p>In <code>AllListsViewController</code>’s <code>viewDidLoad()</code> you already put fake <code>Checklist</code> objects into the <code>lists</code> array. It’s time to add something new to this method.
+</p>
+<p>➤ Add the following to the bottom of <em>AllListsViewController.swift</em>’s <code>viewDidLoad()</code>:
+</p><pre class="code-block"><span class="hljs-comment">// Add placeholder item data</span>
+<span class="hljs-keyword">for</span> list <span class="hljs-keyword">in</span> lists {
+  <span class="hljs-keyword">let</span> item = <span class="hljs-type">ChecklistItem</span>()
+  item.text = <span class="hljs-string">"Item for <span class="hljs-subst">\(list.name)</span>"</span>
+  list.items.append(item)
+}</pre>
+<p>This introduces something you haven’t seen before: the <code>for in</code> statement. Like <code>if</code>, this is a special language construct.
+</p>
+<h4 class="segment-chapter">Programming language constructs</h4>
+
+<p>For the sake of review, let’s go over the programming language stuff you’ve already seen. Most modern programming languages offer at least the following basic building blocks:
+</p>
+<ul>
+<li>
+<p>The ability to remember values by storing things into variables. Some variables are simple, such as <code>Int</code> and <code>Bool</code>. Others can store objects (<code>ChecklistItem</code>, <code>UIButton</code>) or even collections of objects (<code>Array</code>).
+</p></li>
+
+<li>
+<p>The ability to read values from variables and use them for basic arithmetic (multiply, add) and comparisons (greater than, not equals, etc).
+</p></li>
+
+<li>
+<p>The ability to make decisions. You’ve already seen the <code>if</code> statement, but there is also a <code>switch</code> statement that is shorthand for <code>if</code> with many <code>else if</code>s.
+</p></li>
+</ul>
+
+<ul>
+<li>
+<p>The ability to group functionality into units such as methods and functions. You can call those methods and receive back a result value that you can then use in further computations.
+</p></li>
+
+<li>
+<p>The ability to bundle functionality (methods) and data (variables) together into objects.
+</p></li>
+
+<li>
+<p>The ability to execute one or more lines of code inside a <code>do</code> block and to <code>catch</code> any errors thrown via a <code>try</code> statement. (Or, to simply bypass the <code>do</code> block by using a <code>try?</code> statement instead.)
+</p></li>
+
+<li>
+<p>The ability to repeat a set of statements more than once. This is what the <code>for in</code> statement does. There are other ways to perform repetitions as well: <code>while</code> and <code>repeat</code>. Endlessly repeating things is what computers are good at.
+</p></li>
+</ul>
+
+<p>Everything else is built on top of these building blocks. You’ve seen most of these already, but repetitions (or <em>loops</em> in programmer talk) are new.
+</p>
+<p>If you grok the concepts from this list, you’re well on your way to becoming a software developer. And if not, well, just hang in there!
+</p>
+<p>Let’s go through that <code>for</code> loop line-by-line:
+</p><pre class="code-block"><span class="hljs-keyword">for</span> list <span class="hljs-keyword">in</span> lists {
+  . . . 
+}</pre>
+<p>This means the following: for every <code>Checklist</code> object in the <code>lists</code> array, perform the statements between the curly braces.
+</p>
+<p>The first time through the loop, the temporary <code>list</code> variable will hold a reference to the Birthdays checklist, as that is the first <code>Checklist</code> object that you created and added to the <code>lists</code> array.
+</p>
+<p>Inside the loop you do:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> item = <span class="hljs-type">ChecklistItem</span>()
+item.text = <span class="hljs-string">"Item for <span class="hljs-subst">\(list.name)</span>"</span>
+list.items.append(item)</pre>
+<p>This should be familiar. You first create a new <code>ChecklistItem</code> object. Then you set its <code>text</code> property to “Item for Birthdays” because the <code>\(…)</code> placeholder gets replaced with the name of the <code>Checklist</code> object, <code>list.name</code>, which is “Birthdays”.
+</p>
+<p>Finally, you add this new <code>ChecklistItem</code> to the Birthdays <code>Checklist</code> object, or rather, to its <code>items</code> array.
+</p>
+<p>That concludes the first pass through this loop. Now the <code>for in</code> statement will look at the <code>lists</code> array again and sees that there are three more <code>Checklist</code> objects in that array. So it puts the next one, Groceries, into the <code>list</code> variable and the process repeats.
+</p>
+<p>This time the text is “Item for Groceries”, which is put into its own <code>ChecklistItem</code> object that goes into the <code>items</code> array of the Groceries <code>Checklist</code> object.
+</p>
+<p>After that, the loop adds a new <code>ChecklistItem</code> with the text “Item for Cool Apps” to the Cool Apps checklist, and “Item for To Do” to the To Do checklist.
+</p>
+<p>Then there are no more objects left to look at in the <code>lists</code> array and the loop ends.
+</p>
+<p>Using loops will often save you a lot of time. You could have written this code as follows:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> item = <span class="hljs-type">ChecklistItem</span>()
+item.text = <span class="hljs-string">"Item for Birthdays"</span>
+lists[<span class="hljs-number">0</span>].items.append(item)
+
+item = <span class="hljs-type">ChecklistItem</span>()
+item.text = <span class="hljs-string">"Item for Groceries"</span>
+lists[<span class="hljs-number">1</span>].items.append(item)
+
+item = <span class="hljs-type">ChecklistItem</span>()
+item.text = <span class="hljs-string">"Item for Cool Apps"</span>
+lists[<span class="hljs-number">2</span>].items.append(item)
+
+item = <span class="hljs-type">ChecklistItem</span>()
+item.text = <span class="hljs-string">"Item for To Do"</span>
+lists[<span class="hljs-number">3</span>].items.append(item)</pre>
+<p>That’s very repetitive, which is a good sign it’s better to use a loop. Imagine if you had 100 <code>Checklist</code> objects… would you be willing to copy-paste that code a hundred times? I’d rather use a loop.
+</p>
+<p>Most of the time you won’t even know in advance how many objects you’ll have, so it’s impossible to write it all out by hand. By using a loop you don’t need to worry about that. The loop will work just as well for three items as for three hundred.
+</p>
+<p>As you can imagine, loops and arrays work quite well together.
+</p>
+<p>➤ Run the app. You’ll see that each checklist now has its own set of items.
+</p>
+<p>Play with it for a minute, remove items, add items, and verify that each list indeed is completely separate from the others.
+</p><div class="image-30"><img src="graphics/img315.png"  alt="" title="Each Checklist now has its own items" /></div>
+<h3 class="segment-chapter">The new load/save code</h3>
+
+<p>Let’s put the load/save code back in. This time you’ll make <code>AllListsViewController</code> do the loading and saving. (Yes, I know I said that <code>Checklist</code> should handle its own loading/saving and we&apos;ll get to that soon ...)
+</p>
+<p>➤ Add the following to <em>AllListsViewController.swift</em> (you may want to copy this from that temporary file you might (or might not) have created, but be sure to make the changes mentioned in the comments):
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Data Saving</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">documentsDirectory</span><span class="hljs-params">()</span></span> -&gt; <span class="hljs-type">URL</span> {
+  <span class="hljs-keyword">let</span> paths = <span class="hljs-type">FileManager</span>.<span class="hljs-keyword">default</span>.urls(<span class="hljs-keyword">for</span>: .documentDirectory, 
+                                        <span class="hljs-keyword">in</span>: .userDomainMask)
+  <span class="hljs-keyword">return</span> paths[<span class="hljs-number">0</span>]
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">dataFilePath</span><span class="hljs-params">()</span></span> -&gt; <span class="hljs-type">URL</span> {
+  <span class="hljs-keyword">return</span> documentsDirectory().appendingPathComponent(
+                                  <span class="hljs-string">"Checklists.plist"</span>)
+}
+
+<span class="hljs-comment">// this method is now called saveChecklists()</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">saveChecklists</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> encoder = <span class="hljs-type">PropertyListEncoder</span>()
+  <span class="hljs-keyword">do</span> {
+    <span class="hljs-comment">// You encode lists instead of "items"</span>
+    <span class="hljs-keyword">let</span> data = <span class="hljs-keyword">try</span> encoder.encode(lists)
+    <span class="hljs-keyword">try</span> data.write(to: dataFilePath(), 
+              options: <span class="hljs-type">Data</span>.<span class="hljs-type">WritingOptions</span>.atomic)
+  } <span class="hljs-keyword">catch</span> {
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"Error encoding list array: <span class="hljs-subst">\(error.localizedDescription)</span>"</span>)
+  }
+}
+
+<span class="hljs-comment">// this method is now called loadChecklists()</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">loadChecklists</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> path = dataFilePath()
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> data = <span class="hljs-keyword">try</span>? <span class="hljs-type">Data</span>(contentsOf: path) {
+    <span class="hljs-keyword">let</span> decoder = <span class="hljs-type">PropertyListDecoder</span>()
+    <span class="hljs-keyword">do</span> {
+      <span class="hljs-comment">// You decode to an object of [Checklist] type to lists</span>
+      lists = <span class="hljs-keyword">try</span> decoder.decode([<span class="hljs-type">Checklist</span>].<span class="hljs-keyword">self</span>, from: data)
+    } <span class="hljs-keyword">catch</span> {
+      <span class="hljs-built_in">print</span>(<span class="hljs-string">"Error decoding list array: <span class="hljs-subst">\(error.localizedDescription)</span>"</span>)
+    }
+  }
+}</pre>
+<p>This is mostly identical to what you had before in <code>ChecklistViewController</code>, except that you load and save the <code>lists</code> array instead of the <code>items</code> array. Note that the decode type is now <code>[Checklist].self</code> instead of <code>[ChecklistItem].self</code>. Also, the names of the methods changed slightly, as well as the error messages for the <code>catch</code> blocks.
+</p>
+<p>➤ Change <code>viewDidLoad()</code> to:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">super</span>.viewDidLoad()
+  tableView.register(<span class="hljs-type">UITableViewCell</span>.<span class="hljs-keyword">self</span>, 
+                     forCellReuseIdentifier: cellIdentifier)
+  <span class="hljs-comment">// Load data</span>
+  loadChecklists()
+}</pre>
+<p>This gets rid of the test data you put there earlier and makes the <code>loadChecklists()</code> method do all the work.
+</p>
+<p>You also have to make the <code>Checklist</code> object support the <code>Codable</code> protocol - but as you know, that&apos;s just a simple change.
+</p>
+<p>➤ Add the <code>Codable</code> protocol in <em>Checklist.swift</em>:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Checklist</span>: <span class="hljs-title">NSObject</span>, <span class="hljs-title">Codable</span> </span>{</pre>
+<p>➤ <em>Important:</em> Before you run the app, remove the old <em>Checklists.plist</em> file from the Simulator’s Documents folder.
+</p>
+<p>If you don’t, the app will most probably throw up an error message in the Console about a decoding error because the internal format of the file no longer corresponds to the new data you’re loading and saving. This is because the Swift <code>Codable</code> protocol handles data encoding/decoding in a safe fashion.
+</p>
+<div class="note">
+<p><em>Weird crashes</em>
+</p>
+<p>When I first wrote this book, I didn’t think to remove the Checklists.plist file before running the app. That was a mistake, but the app appeared to work fine… until I added a new checklist. At that point the app aborted with a strange error message from <code>UITableView</code> that made no sense at all.
+</p>
+<p>I started to wonder whether I tested the code properly. But then I thought of the old file, removed it and ran the app again. It worked perfectly. Just to make sure it was the fault of that file, I put a copy of the old file back and ran the app again. Sure enough, when I tried to add a new checklist it crashed.
+</p>
+<p>The explanation for this kind of error is that somehow the code managed to load the old file, even though its format no longer corresponded to the new data model. This put the table view into a bad state. Any subsequent operations on the table view caused the app to crash. Do note though that this was before <code>Codable</code> when the book used a different mechanism for saving/loading data.
+</p>
+<p>You’ll run into this type of bug every so often, where the crash isn’t directly caused by what you’re doing but by something that went wrong earlier on. These kinds of bugs can be tricky to solve, because you can’t fix them until you find the true cause.
+</p>
+<p>There is a section devoted to debugging techniques towards the end of the book because it’s inevitable that you’ll introduce bugs in your code. Knowing how to find and eradicate bugs is an essential skill that any programmer should master – if only to save you a lot of time and aggravation!
+</p></div>
+
+<p>➤ Run the app and add a checklist and a few to-do items.
+</p>
+<p>➤ Exit the app (with the Stop button) and run it again. You’ll see that the list is empty again. All your to-do items are gone!
+</p>
+<p>You can add all the checklists and items you want, but nothing gets saved anymore. What’s going on here?
+</p>
+<h2 class="segment-chapter">Do saves differently</h2>
+
+<p>Previously, you saved the data whenever the user changed something: adding a new item, deleting an item, and toggling a checkmark all caused Checklists.plist to be re-saved. That used to happen in <code>ChecklistViewController</code>.
+</p>
+<p>However, you just moved the saving logic to <code>AllListsViewController</code>. How do you make sure changes to the to-do items get saved now? The <code>AllListsViewController</code> doesn’t know when a checkmark is toggled on or off.
+</p>
+<p>You could give <code>ChecklistViewController</code> a reference to the <code>AllListsViewController</code> and have it call its <code>saveChecklists()</code> method whenever the user changes something, but that introduces a <i>child-parent dependency</i> and you’ve been trying hard to avoid those (ownership cycles, remember?).
+</p>
+<h4 class="segment-chapter">Parents and their children</h4>
+
+<p>The terms <i>parent</i> and <i>child</i> are common in software development.
+</p>
+<p>A parent is an object higher up in some hierarchy; a child is an object lower in the hierarchy.
+</p>
+<p>In this case, the “hierarchy” represents the navigation flow between the different screens of the app.
+</p>
+<p>The All Lists screen is the parent of the Checklist screen, because All Lists was “born” first. It creates a new <code>ChecklistViewController</code> “baby” every time the user views the item list for a checklist.
+</p>
+<p>Likewise, All Lists is also the parent of the List Detail screen. The Item Detail screen, however, is the child of the Checklist view controller.
+</p><div class="image-90"><img src="graphics/img316.png"  alt="" title="" /></div>
+<p>Generally speaking, it’s OK if the parent knows everything about its children, but not the other way around (just like in real life, every parent has horrible secrets they don’t want their kids to know about… or so I’ve been told).
+</p>
+<p>As a result, you don’t want parent objects to be dependent on their child objects, but the other way around is fine. So <code>ChecklistViewController</code> asking <code>AllListsViewController</code> to do things is a big no-no.
+</p>
+<h3 class="segment-chapter">The new saving strategy</h3>
+
+<p>You may think: ah, I could use a delegate for this. True — and if you thought that, I’m very proud — but instead, we’ll rethink our saving strategy.
+</p>
+<p>Is it really necessary to save changes all the time? While the app is running, the data model sits in working memory and is always up-to-date.
+</p>
+<p>The only time you have to load anything from the file (the long-term storage memory) is when the app first starts up, but never afterwards. From then on you always make the changes to the objects in the working memory.
+</p>
+<p>But when changes are made, the file becomes out-of-date. That is why you save those changes – to keep the file in sync with what is in memory.
+</p>
+<p>The reason you save to a file is so that you can restore the data model in working memory after the app gets terminated. But until that happens, the data in the short-term working memory will do just fine.
+</p>
+<p>You just need to make sure that you save the data to the file just before the app is terminated. In other words, the only time you save is when you actually need to keep the data safe.
+</p>
+<p>Not only is this more efficient, especially if you have a lot of data, it also is simpler to program. You no longer need to worry about saving every time the user makes a change to the data, only right before the app terminates.
+</p>
+<p>There are three situations in which an app can terminate:
+</p>
+<ol>
+<li>
+<p>While the user is running the app. This doesn’t happen very often anymore, but earlier versions of iOS did not support multitasking apps. Receiving an incoming phone call, for example, would kill the currently running app. As of iOS 4, the app will simply be suspended and sent to the background when that happens.
+</p>
+<p>There are still situations where iOS may forcefully terminate a running app, for example, if the app becomes unresponsive or runs out of memory.
+</p></li>
+</ol>
+
+<ol>
+<li>
+<p>When the app is suspended. Most of the time iOS keeps running apps around for a long time. Their data is frozen in memory and no computations are taking place. (When you resume a suspended app, it literally continues from where it left off.)
+</p>
+<p>Sometimes the OS needs to make room for an app that requires a lot of working memory — often a game — and then it simply kills the suspended apps and wipes them from memory. The suspended apps are not notified when this happens.
+</p></li>
+</ol>
+
+<ol>
+<li>
+<p>The app crashes. There are ways to detect crashes, but handling them can be very tricky. Trying to deal with the crash may actually make things worse. The best way to avoid crashes is to make no programming mistakes! :]
+</p></li>
+</ol>
+
+<p>Fortunately for us, iOS will inform the app about significant changes such as, “you are about to be terminated”, and, “you are about to be suspended”. You can listen for these events and save your data at that point. That will ensure the on-file representation of the data model is always up-to-date when the app does terminate.
+</p>
+<h3 class="segment-chapter">Save changes on app termination</h3>
+
+<p>The ideal place for handling app termination notifications is inside the <em>application delegate</em>. You haven’t spent much time with this object before, but every app has one. As its name implies, it is the delegate object for notifications that concern the app as a whole.
+</p>
+<p>This is where you receive the “app will terminate” and “app will be suspended” notifications.
+</p>
+<p>In fact, if you look inside <em>AppDelegate.swift</em>, you’ll see the methods:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">applicationDidEnterBackground</span><span class="hljs-params">(<span class="hljs-number">_</span> application: UIApplication)</span></span></pre>
+<p>And:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">applicationWillTerminate</span><span class="hljs-params">(<span class="hljs-number">_</span> application: UIApplication)</span></span></pre>
+<p>There are a few others, but these are the ones you need. (The Xcode template puts helpful comments inside these methods, so you know what to do with them.)
+</p>
+<p>Now the trick is, how do you call <code>AllListsViewController</code>’s <code>saveChecklists()</code> method from these delegate methods? The app delegate does not know anything about <code>AllListsViewController</code> — at least, not yet.
+</p>
+<p>You have to use some trickery to find the All Lists View Controller from within the app delegate.
+</p>
+<p>➤ Add this new method to <em>AppDelegate.swift</em>:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Helper Methods</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">saveData</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> navigationController = window!.rootViewController 
+                             <span class="hljs-keyword">as</span>! <span class="hljs-type">UINavigationController</span>
+  <span class="hljs-keyword">let</span> controller = navigationController.viewControllers[<span class="hljs-number">0</span>] 
+                   <span class="hljs-keyword">as</span>! <span class="hljs-type">AllListsViewController</span>
+  controller.saveChecklists()
+}</pre>
+<p>The <code>saveData()</code> method looks at the app&apos;s — or rather, the app delegate&apos;s —  <code>window</code> property to find the <code>UIWindow</code> object that contains the storyboard.
+</p>
+<p><code>UIWindow</code> is the top-level container for all your app’s views. There is only one <code>UIWindow</code> object in your iOS app (unlike desktop apps, which can have multiple windows).
+</p>
+<div class="note">
+<p><em>Exercise:</em> Can you explain why you wrote <code>window!</code> with an exclamation point?
+</p></div>
+
+<h4 class="segment-chapter">Unwrapping optionals</h4>
+
+<p>At the top of AppDelegate.swift you can see that <code>window</code> is declared as an optional:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> window: <span class="hljs-type">UIWindow</span>?</pre>
+<p>To <i>unwrap</i> an optional you normally use the <code>if let</code> syntax:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> w = window {
+  <span class="hljs-comment">// if window is not nil, w is the real UIWindow object</span>
+  <span class="hljs-keyword">let</span> navigationController = w.rootViewController
+}</pre>
+<p>As a shorthand you can use <i>optional chaining</i>:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> navigationController = window?.rootViewController</pre>
+<p>If window is <code>nil</code>, then the app won’t even bother to look at the rest of the statement and <code>navigationController</code> will also be <code>nil</code>.
+</p>
+<p>For apps that use a storyboard (and most of them do), you’re guaranteed that <code>window</code> is never <code>nil</code>, even though it is an optional. UIKit promises that it will put a valid reference to the app’s <code>UIWindow</code> object inside the <code>window</code> variable when the app starts up.
+</p>
+<p>So why is it an optional? There is a brief moment between when the app is launched and the storyboard is loaded where the <code>window</code> property does not have a valid value yet. And if a variable can be <code>nil</code> – no matter how briefly – then Swift requires it to be an optional.
+</p>
+<p>If you’re <i>sure</i> an optional will not be <code>nil</code> when you’re going to use it, you can <i>force unwrap</i> it by adding an exclamation point:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> navigationController = window!.rootViewController</pre>
+<p>That’s exactly what you’re doing in the <code>saveData()</code> method. Force unwrapping is the simplest way to deal with optionals, but it comes with some danger: if you’re wrong and the optional <i>is</i> <code>nil</code>, the app will crash. Use with caution!
+</p>
+<p>(You’ve actually used force unwrapping already when you read the text from the <code>UITextField</code> objects in the Item Detail and List Detail view controllers. The <code>UITextField</code> <code>text</code> property is an optional <code>String</code> but it will never be <code>nil</code>, which is why you can read it with <code>textField.text!</code> – the exclamation point converts the optional <code>String</code> value to a regular <code>String</code>.)
+</p>
+<p>Normally you don’t need to do anything with your <code>UIWindow</code>, but in cases such as this you ask it for its <code>rootViewController</code>. The “root” or “initial” view controller is the very first scene from the storyboard — the navigation controller all the way over on the left.
+</p>
+<p>You can see this in Interface Builder because this navigation controller has the big arrow pointing at it. This is the one:
+</p><div class="image-40"><img src="graphics/img317.png"  alt="" title="The navigation controller is the window’s root view controller" /></div>
+<p>(The Attributes inspector for this navigation controller also has the <em>Is Initial View Controller</em> box checked, that’s the same thing. In the Document Outline the arrow is called the Storyboard Entry Point.)
+</p>
+<p>Once you have the navigation controller, you can find the <code>AllListsViewController</code>. After all, that’s the view controller that is embedded in the navigation controller.
+</p>
+<p>Unfortunately, the <code>UINavigationController</code> does not have a “rootViewController” property of its own, so you have to look into its <code>viewControllers</code> array to find it:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> controller = navigationController.viewControllers[<span class="hljs-number">0</span>] 
+                 <span class="hljs-keyword">as</span>! <span class="hljs-type">AllListsViewController</span></pre>
+<p>As usual, a type cast is necessary because the <code>viewControllers</code> array does not know anything about the exact types of your own view controllers. Once you have a reference to <code>AllListsViewController</code> you can call its <code>saveChecklists()</code>method.
+</p>
+<p>It’s a bit of work to dig through the window and navigation controller to find the view controller you need, but that’s life as an iOS developer.
+</p><div class="image-75"><img src="graphics/img318.png"  alt="" title="From the root view controller to the AllListsViewController" /></div>
+<div class="note">
+<p><em>Note:</em> By the way, the <code>UINavigationController</code> does have a <code>topViewController</code> property, but you cannot use it here: the “top” view controller is the screen that is currently displaying, which may be the <code>ChecklistViewController</code> if the user is looking at to-do items. You don’t want to send the <code>saveChecklists()</code> message to that screen — it has no method to handle that message and the app will crash!
+</p></div>
+
+<p>➤ Change the <code>applicationDidEnterBackground()</code> and <code>applicationWillTerminate()</code> methods in <em>ApplDelegate.swift</em> to call <code>saveData()</code>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">applicationDidEnterBackground</span><span class="hljs-params">(<span class="hljs-number">_</span> application: UIApplication)</span></span> {
+  saveData()
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">applicationWillTerminate</span><span class="hljs-params">(<span class="hljs-number">_</span> application: UIApplication)</span></span> {
+  saveData()
+}</pre>
+<p>➤ Run the app, add some checklists, add items to those lists, and set some checkmarks.
+</p>
+<p>➤ Press the Simulator&apos;s home button, or press <em>Shift+⌘+H</em>, or pick <em>Hardware → Home</em> from the Simulator’s menu bar, to make the app go to the background. This simulates what happens when a user taps the home button on their iPhone.
+</p>
+<p>Look inside the app’s Documents folder using Finder. There should be a new Checklists.plist file there.
+</p>
+<p>➤ Press Stop in Xcode to terminate the app. Run the app again and your data should still be there. Awesome!
+</p>
+<div class="note">
+<p><em>Xcode’s Stop button</em>
+</p>
+<p>Important note: When you press Xcode’s Stop button, the application delegate will <i>not</i> receive the <code>applicationWillTerminate(_:)</code> notification. Xcode kills the app immediately, without mercy.
+</p>
+<p>Therefore, to test the saving behavior, always simulate a tap on the home button to make the app go into the background before you press Stop. If you don’t to that, you’ll lose your data. <i>Caveat developer.</i>
+</p></div>
+
+<h2 class="segment-chapter">Improve the data model</h2>
+
+<p>The above code works, but you can still do a little better. You have made data model objects for <code>Checklist</code> and <code>ChecklistItem</code> but the code for loading and saving the Checklists.plist file currently lives in <code>AllListsViewController</code>. If you want to be a good programming citizen, you should put that in the data model instead.
+</p>
+<h3 class="segment-chapter">The DataModel class</h3>
+
+<p>I prefer to create a top-level <code>DataModel</code> object for many of my apps. For this app, <code>DataModel</code> will contain the array of <code>Checklist</code> objects. You can move the code for loading and saving data to this new <code>DataModel</code> object as well.
+</p>
+<p>➤ Add a new file to the project using the <em>Swift File</em> template. Save it as <em>DataModel.swift</em> (you don’t need to make this a subclass of anything).
+</p>
+<p>➤ Change <em>DataModel.swift</em> to the following:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> Foundation
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DataModel</span> </span>{
+  <span class="hljs-keyword">var</span> lists = [<span class="hljs-type">Checklist</span>]()
+}</pre>
+<p>This defines the new <code>DataModel</code> object and gives it a <code>lists</code> property.
+</p>
+<p>Unlike <code>Checklist</code> and <code>ChecklistItem</code>, <code>DataModel</code> does not need to be built on top of <code>NSObject</code>. It also does not need to conform to the <code>Codable</code> protocol since we will not be serializing <code>DataModel</code> objects, just the array of <code>Checklist</code> instances that a <code>DataModel</code> instance holds.
+</p>
+<p><code>DataModel</code> will take over the responsibilities for loading and saving the to-do lists from <code>AllListsViewController</code>.
+</p>
+<p>➤ Cut the following methods out of <em>AllListsViewController.swift</em> and paste them into <em>DataModel.swift</em>:
+</p>
+<ul>
+<li>
+<p><code>func documentsDirectory()</code>
+</p></li>
+
+<li>
+<p><code>func dataFilePath()</code>
+</p></li>
+
+<li>
+<p><code>func saveChecklists()</code>
+</p></li>
+
+<li>
+<p><code>func loadChecklists()</code>
+</p></li>
+</ul>
+
+<p>➤ Add an <code>init()</code> method to <em>DataModel.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">init</span>() {
+  loadChecklists()
+}</pre>
+<p>This makes sure that as soon as the <code>DataModel</code> object is created, it will attempt to load Checklists.plist.
+</p>
+<p>You don’t have to call <code>super.init()</code> because <code>DataModel</code> does not have a superclass (it is not built on <code>NSObject</code> or any other existing class).
+</p>
+<p>Switch to <em>AllListsViewController.swift</em> and make the following changes:
+</p>
+<p>➤ Remove the <code>lists</code> instance variable.
+</p>
+<p>➤ Remove the call to <code>loadChecklists()</code> in <code>viewDidLoad</code>.
+</p>
+<p>➤ Add a new instance variable:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> dataModel: <span class="hljs-type">DataModel</span>!</pre>
+<p>The <code>!</code> is necessary because <code>dataModel</code> will temporarily be <code>nil</code> when the app starts up. It doesnʼt have to be a true optional – with <code>?</code> – because once <code>dataModel</code> is given a value, it will never become <code>nil</code> again.
+</p>
+<p>You might be tempted to simply create a new instance of <code>DataModel</code> in the above line instead of declaring an instance variable which has to be populated later. There&apos;s a good reason for not doing it this way. You&apos;ll see why soon.
+</p>
+<p>Xcode will find a number of errors in <em>AllListsViewController.swift</em>. You can no longer reference the <code>lists</code> variable directly, because it no longer exists. Instead, you’ll have to ask the <code>DataModel</code> for its <code>lists</code> property.
+</p>
+<p>➤ Wherever the code for <code>AllListsViewController</code> says <code>lists</code>, replace it with <code>dataModel.lists</code>. You need to do this in the following methods:
+</p>
+<ul>
+<li>
+<p><code>tableView(_:numberOfRowsInSection:)</code>
+</p></li>
+
+<li>
+<p><code>tableView(_:cellForRowAt:)</code>
+</p></li>
+
+<li>
+<p><code>tableView(_:didSelectRowAt:)</code>
+</p></li>
+
+<li>
+<p><code>tableView(_:commit:forRowAt:)</code>
+</p></li>
+
+<li>
+<p><code>tableView(_:accessoryButtonTappedForRowWith:)</code>
+</p></li>
+
+<li>
+<p><code>listDetailViewController(_:didFinishAdding:)</code>
+</p></li>
+
+<li>
+<p><code>listDetailViewController(_:didFinishEditing:)</code>
+</p></li>
+</ul>
+
+<p>Phew, that’s a big list! Fortunately, the change is very simple.
+</p>
+<p>To recap, you created a new <code>DataModel</code> object that owns the array of <code>Checklist</code> objects and knows how to load and save the checklists and their items.
+</p>
+<p>Instead of its own array, the <code>AllListsViewController</code> now uses this <code>DataModel</code> object, which it accesses through the <code>dataModel</code> property.
+</p>
+<h3 class="segment-chapter">Create the DataModel object</h3>
+
+<p>But where/how does the <code>dataModel</code> instance varaible get populated? There is no place in the code that currently says <code>dataModel = DataModel()</code>.
+</p>
+<p>That&apos;s because the best place for that is in the app delegate. You can consider the app delegate to be the top-level object in your app. Therefore, it makes sense to make it the “owner” of the data model. Plus, since you do the data saving in the app delegate, you need a reference to the data model from the app delegate anyway. So makes sense to create the data model instance in app delegate and then pass it on to any view controllers that needs it.
+</p>
+<p>➤ In <em>AppDelegate.swift</em>, add a new property:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> dataModel = <span class="hljs-type">DataModel</span>()</pre>
+<p>This creates the <code>DataModel</code> object and puts it in a constant named <code>dataModel</code>.
+</p>
+<p>Even though <code>AllListsViewController</code> also has an instance variable named <code>dataModel</code>, these two things are totally separate from each other. Here you’re only putting the <code>DataModel</code> object into <code>AppDelegate</code>’s <code>dataModel</code> property.
+</p>
+<p>➤ Simplify the <code>saveData()</code> method to just this:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">saveData</span><span class="hljs-params">()</span></span> {
+  dataModel.saveChecklists()
+}</pre>
+<p>If you run the app now, it will crash at once because <code>AllListsViewController</code>’s own reference to <code>DataModel</code> is still <code>nil</code>. I told you those <code>nil</code>s were no-gooders!
+</p>
+<p>The best place to share the <code>DataModel</code> instance with <code>AllListsViewController</code> is in the <code>application(_:didFinishLaunchingWithOptions:)</code> method, which gets called as soon as the app starts up.
+</p>
+<p>➤ Change that method to:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">application</span><span class="hljs-params">(<span class="hljs-number">_</span> application: UIApplication, 
+     didFinishLaunchingWithOptions launchOptions: 
+     [UIApplication.LaunchOptionsKey: Any]?)</span></span> -&gt; <span class="hljs-type">Bool</span> {
+  <span class="hljs-keyword">let</span> navigationController = window!.rootViewController 
+                             <span class="hljs-keyword">as</span>! <span class="hljs-type">UINavigationController</span>
+  <span class="hljs-keyword">let</span> controller = navigationController.viewControllers[<span class="hljs-number">0</span>] 
+                   <span class="hljs-keyword">as</span>! <span class="hljs-type">AllListsViewController</span>
+  controller.dataModel = dataModel
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+}</pre>
+<p>This finds the <code>AllListsViewController</code> by looking in the storyboard (as before) and then sets its <code>dataModel</code> property. Now the All Lists screen can access the array of <code>Checklist</code> objects again.
+</p>
+<p>➤ Do a clean build (<em>Product → Clean</em>) and run the app. Verify that everything still works. It does? Great!
+</p>
+<h4 class="segment-chapter">Still confused about var and let?</h4>
+
+<p>If <code>var</code> makes a variable and <code>let</code> makes a constant, then why were you able to do this in AppDelegate.swift:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> dataModel = <span class="hljs-type">DataModel</span>()</pre>
+<p>You’d think that when something is constant it cannot change, right? Then how come the app lets you add new <code>Checklist</code> objects to <code>DataModel</code>? Obviously the <code>DataModel</code> object <i>can</i> be changed…
+</p>
+<p>Here’s the thing: Swift makes a distinction between <em>value types</em> and <em>reference types</em>, and <code>let</code> works differently for value types as opposed to reference types.
+</p>
+<p>An example of a value type is <code>Int</code>. Once you create a constant of type <code>Int</code> you can never change it afterwards:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> i = <span class="hljs-number">100</span>
+i = <span class="hljs-number">200</span>       <span class="hljs-comment">// not allowed</span>
+i += <span class="hljs-number">1</span>        <span class="hljs-comment">// not allowed</span>
+
+<span class="hljs-keyword">var</span> j = <span class="hljs-number">100</span>
+j = <span class="hljs-number">200</span>       <span class="hljs-comment">// allowed</span>
+j += <span class="hljs-number">1</span>        <span class="hljs-comment">// allowed</span></pre>
+<p>The same goes for other value types such as <code>Float</code>, <code>String</code>, and even <code>Array</code>. They are called value types because the variable or constant directly stores their value.
+</p>
+<p>When you assign the contents of one variable to another, the value is copied into the new variable:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> s = <span class="hljs-string">"hello"</span>
+<span class="hljs-keyword">var</span> u = s         <span class="hljs-comment">// u has its own copy of "hello"</span>
+s += <span class="hljs-string">" there"</span>     <span class="hljs-comment">// s and u are now different</span></pre>
+<p>But objects that you define with the keyword <code>class</code> (such as <code>DataModel</code>) are reference types. The variable or constant does not contain the actual object, only a reference to the object — the reference is simply the memory location where the object is stored.
+</p><pre class="code-block"><span class="hljs-keyword">var</span> d = <span class="hljs-type">DataModel</span>()
+<span class="hljs-keyword">var</span> e = d                 <span class="hljs-comment">// e refers to the same object as d</span>
+d.lists.remove(at: <span class="hljs-number">0</span>)     <span class="hljs-comment">// this also changes e</span></pre>
+<p>You can also write this using <code>let</code> and it would do the exact same thing:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> d = <span class="hljs-type">DataModel</span>()
+<span class="hljs-keyword">let</span> e = d                 <span class="hljs-comment">// e refers to the same object as d</span>
+d.lists.remove(at: <span class="hljs-number">0</span>)     <span class="hljs-comment">// this also changes e</span></pre>
+<p>So what is the difference between <code>var</code> and <code>let</code> for reference types?
+</p>
+<p>When you use <code>let</code> it is not the object that is constant but the <i>reference</i> to the object. That means you cannot do this:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> d = <span class="hljs-type">DataModel</span>()
+d = someOtherDataModel   <span class="hljs-comment">// error: cannot change the reference</span></pre>
+<p>The constant <code>d</code> can never point to another object, but the object itself can still change.
+</p>
+<p>It’s OK if you have trouble wrapping your head around this. The distinction between value types and reference types is an important idea in software development, but it&apos;s also something which takes a while to understand.
+</p>
+<p>My suggestion is that you use <code>let</code> whenever you can and change to <code>var</code> when the compiler complains. Note that optionals always need to be <code>var</code>, because being an optional implies that it can change its value at some point.
+</p>
+<p>You can find the project files for the app up to this point under <em>17 - Improved Data Model</em> in the Source Code folder.
+</p></body></html>

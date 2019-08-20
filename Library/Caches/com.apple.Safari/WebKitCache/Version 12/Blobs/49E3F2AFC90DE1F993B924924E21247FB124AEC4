@@ -1,0 +1,1314 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta property="fb:admins" content="724580831" />
+
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta name="description" content="     How to ReName a File or Folder in Mac OS X"   />
+<meta name="keywords" content="OS X Daily, OSXDaily, Apple, Mac, iPhone, iPad, Mac OS X, iOS, Mac, tips, tricks, tutorials, news" />
+
+<link rel="shortcut icon" href="/images/favicon.ico" />
+<link rel="stylesheet" type="text/css" href="http://cdn.osxdaily.com/wp-content/themes/osxdaily-left2/style.css" />
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://osxdaily.com/feed/" />
+<link rel="alternate" type="text/xml" title="RSS .92" href="http://osxdaily.com/feed/rss/" />
+<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="http://osxdaily.com/feed/atom/" />
+<link rel="pingback" href="http://osxdaily.com/xmlrpc.php" />
+
+
+
+<title>   How to ReName a File or Folder in Mac OS X   </title>
+
+
+
+
+<link rel='dns-prefetch' href='//s0.wp.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel="alternate" type="application/rss+xml" title="OS X Daily &raquo; How to ReName a File or Folder in Mac OS X Comments Feed" href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/feed/" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/cdn.osxdaily.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.2.2"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55357,56424,55356,57342,8205,55358,56605,8205,55357,56424,55356,57340],[55357,56424,55356,57342,8203,55358,56605,8203,55357,56424,55356,57340]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel='stylesheet' id='wp-block-library-css'  href='http://cdn.osxdaily.com/wp-includes/css/dist/block-library/style.min.css?ver=5.2.2' type='text/css' media='all' />
+<link rel='stylesheet' id='cookie-notice-front-css'  href='http://cdn.osxdaily.com/wp-content/plugins/cookie-notice/css/front.min.css?ver=5.2.2' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-syntax-css-css'  href='http://cdn.osxdaily.com/wp-content/plugins/wp-syntax/css/wp-syntax.css?ver=1.1' type='text/css' media='all' />
+<link rel='stylesheet' id='social-logos-css'  href='http://cdn.osxdaily.com/wp-content/plugins/jetpack/_inc/social-logos/social-logos.min.css?ver=1' type='text/css' media='all' />
+<link rel='stylesheet' id='jetpack_css-css'  href='http://cdn.osxdaily.com/wp-content/plugins/jetpack/css/jetpack.css?ver=6.2.1' type='text/css' media='all' />
+<script type='text/javascript' src='http://cdn.osxdaily.com/wp-includes/js/jquery/jquery.js?ver=1.12.4-wp'></script>
+<script type='text/javascript' src='http://cdn.osxdaily.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var related_posts_js_options = {"post_heading":"h4"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://cdn.osxdaily.com/wp-content/plugins/jetpack/_inc/build/related-posts/related-posts.min.js?ver=20150408'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var cnArgs = {"ajaxurl":"http:\/\/osxdaily.com\/wp-admin\/admin-ajax.php","hideEffect":"fade","onScroll":"yes","onScrollOffset":"100","cookieName":"cookie_notice_accepted","cookieValue":"true","cookieTime":"31536000","cookiePath":"\/","cookieDomain":"","redirection":"","cache":"1","refuse":"no","revoke_cookies":"0","revoke_cookies_opt":"automatic","secure":"0"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://cdn.osxdaily.com/wp-content/plugins/cookie-notice/js/front.min.js?ver=1.2.43'></script>
+<link rel='https://api.w.org/' href='http://osxdaily.com/wp-json/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://osxdaily.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://cdn.osxdaily.com/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='Seven Amazing Apple Themed Photo Mosaics' href='http://osxdaily.com/2010/03/17/seven-amazing-apple-themed-photo-mosaics/' />
+<link rel='next' title='Anti-Piracy Message in Mac OS X Kernel Extension' href='http://osxdaily.com/2010/03/19/anti-piracy-message-in-mac-os-x-kernel-extension/' />
+<link rel="canonical" href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/" />
+<link rel='shortlink' href='http://osxdaily.com/?p=2849' />
+<link rel="alternate" type="application/json+oembed" href="http://osxdaily.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fosxdaily.com%2F2010%2F03%2F18%2Fhow-to-rename-a-file-or-folder-in-mac-os-x%2F" />
+<link rel="alternate" type="text/xml+oembed" href="http://osxdaily.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fosxdaily.com%2F2010%2F03%2F18%2Fhow-to-rename-a-file-or-folder-in-mac-os-x%2F&#038;format=xml" />
+<script type='text/javascript'>
+	(function () {
+		var pl_beacon = document.createElement('script');
+		pl_beacon.type = 'text/javascript';
+		pl_beacon.async = true;
+		var host = 'http://osxdaily.com';
+		if ('https:' == document.location.protocol) {
+			host = host.replace('http://', 'https://');
+		}
+		pl_beacon.src = host + '/un6up8Rl5Bi9.js?ts=' + Math.floor((Math.random() * 100000) + 1);
+		var first_script_tag = document.getElementsByTagName('script')[0];
+		first_script_tag.parentNode.insertBefore(pl_beacon, first_script_tag);
+	})();
+</script><style type='text/css'>img#wpstats{display:none}</style>
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article" />
+<meta property="og:title" content="How to ReName a File or Folder in Mac OS X" />
+<meta property="og:url" content="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/" />
+<meta property="og:description" content="Renaming a folder in Mac OS X is very easy, and there&#8217;s a few different ways you can do it. We&#8217;ll focus on the three most common tricks to quickly rename any file or directory folder on…" />
+<meta property="article:published_time" content="2010-03-18T13:19:27+00:00" />
+<meta property="article:modified_time" content="2015-10-30T19:24:06+00:00" />
+<meta property="og:site_name" content="OS X Daily" />
+<meta property="og:image" content="http://cdn.osxdaily.com/wp-content/uploads/2015/04/finder-mac.jpg" />
+<meta property="og:image:width" content="650" />
+<meta property="og:image:height" content="603" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:site" content="@osxdaily" />
+<meta name="twitter:text:title" content="How to ReName a File or Folder in Mac OS X" />
+<meta name="twitter:image" content="http://cdn.osxdaily.com/wp-content/uploads/2015/04/finder-mac.jpg?w=640" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<!-- End Jetpack Open Graph Tags -->
+
+
+</head>
+
+<body>
+
+
+<div id="wrap">
+
+<div id="header">
+
+<div id="topline">
+
+
+<div id="space">
+
+
+<div id="logobox">
+<a href="http://osxdaily.com"><img src="http://cdn.osxdaily.com/wp-content/themes/osxdaily-left2/img/osxdaily-logo-l.png" alt="OS X Daily"  border="0" width="250" height="75" /></a>
+</div>
+
+<div id="top_block">
+
+<script type="text/javascript"><!--
+	e9 = new Object();
+    e9.size = "728x90,468x60";
+	e9.noAd = 1;
+//--></script>
+<script type="text/javascript" src="http://tags.expo9.exponential.com/tags/OSXDailycom/ROS/tags.js"></script>
+
+</div>
+
+
+<div id="top_wide_block">
+
+<div class="underlinemenu">
+<ul>
+
+<li style="margin-left:none !important;"><a href="/">Home</a></li>
+<li><a href="/category/mac-os-x/">Mac OS</a></li>
+<li><a href="/category/iphone/">iPhone</a></li>
+<li><a href="/category/ipad/">iPad</a></li>
+<li><a href="/category/tips-tricks/">Tips & Tricks</a></li>
+<li><a href="/tag/news/">News</a></li>
+<li><a href="/tag/ios/">iOS</a></li>
+<li><a href="/category/troubleshooting/">Troubleshooting</a></li>
+<li></li>
+<li style="border-right:none!important;"><div id="gsearch_box" style="width:220px;">
+
+<script>
+  (function() {
+    var cx = '000140732189139953166:WMX-1131898171';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<gcse:searchbox-only resultsUrl="//osxdaily.com/gsearch/"></gcse:searchbox-only>
+
+</div></li>
+</ul>
+</div>
+
+
+
+
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+</div>
+
+<div id="content">
+
+
+
+<div class="post">
+<h1>How to ReName a File or Folder in Mac OS X</h1>
+
+
+<div id="subhead_block">
+<span class="subhead_lefty">Mar 18, 2010 - <a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comments">39 Comments</a></span>
+<span class="subhead_righty"></span>
+</div>
+
+
+
+<div class="contenttext">
+<p><img src="http://osxdaily.com/wp-content/uploads/2010/02/rename-file-folder-mac-os-x.JPG" alt="rename file folder mac os x" title="rename file folder mac os x" width="234" height="130" class="alignright size-full wp-image-2850" /> Renaming a folder in Mac OS X is very easy, and there&#8217;s a few different ways you can do it. We&#8217;ll focus on the three most common tricks to quickly rename any file or directory folder on the Mac, two of which are done through the familiar graphical interface of the Finder file system, and another which is a bit more advanced for technically inclined users who like the command line approach.</p>
+<p><span id="more-2849"></span></p>
+<!-- Quick Adsense WordPress Plugin: http://quickadsense.com/ -->
+<div style="float: left; margin: 10px 10px 10px 0;">
+<div style="padding:5px 20px 10px 0;" ><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 336x280 in page article -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:336px;height:280px"
+     data-ad-client="ca-pub-7321635426958037"
+     data-ad-slot="4239339108"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>
+</div>
+
+<h3>Method 1: Rename a file or folder by selecting it and hitting the &#8216;return&#8217; key</h3>
+<p>Just click on the icon of the file/folder from the OS X Finder, and then hit the return key, then type in the new name. This is quick and simple, and likely the most traditional method of renaming on the Mac.</p>
+<h3>Method 2: Rename a file or folder by selecting it and clicking on the filename with your cursor</h3>
+<p>Super simple and done through the Finder, here&#8217;s what you want to do: after you have selected the icon, click on the actual filename text and hover for a moment with the mouse cursor, you&#8217;ll see the text highlight which indicates that you can then rename the item. Type in the new name, then hit return or click away with the mouse cursor to set the change.</p>
+<h3>Method 3: Using right-click and choosing &#8220;Rename&#8221; from the menu</h3>
+<p>If you right-click (or control+click) on a file name in the Finder of modern versions of OS X, you can choose a &#8220;Rename&#8221; option to rename a specific file, or use it to rename multiple files at a time if multiple files are selected. This works great, but it&#8217;s only available to the newest versions of OS X.</p>
+<h3>Advanced Method 4: Rename a file or folder via command line</h3>
+<p>The command line is a bit more advanced, but you can also rename any file or directory via the Terminal. To do this from the command line, type the following syntax replacing with your files and filenames as desired: </p>
+<p><code>mv oldfilename newfilename</code></p>
+<h4>A note on renaming files, and file extensions:</h4>
+<p>Do be aware when renaming certain files that changing the file extension (.jpg or .txt, etc)  can effect the behavior of that file and how applications respond to it. Generally speaking, you should leave the file extension the same. This is all the more important if you have <a href="http://osxdaily.com/2012/01/13/show-filename-extensions-in-mac-os-x/">file extensions visible in the Mac Finder</a>, because it becomes easier to rename them.</p>
+<p>I realize this may appear as pretty rudimentary stuff to many of our more advanced readers, but two recent switchers have asked me this question so surely they can&#8217;t be alone in wondering, both were trying to do the Windows right-click -> rename method which is sure to cause some confusion in Mac OS X.</p>
+<!-- Quick Adsense WordPress Plugin: http://quickadsense.com/ -->
+<div style="float: none; margin:10px 0 10px 0; text-align:center;">
+<!--- gads -->
+<div style="padding:5px 20px 10px 0;" id="lower_content_ad_box">
+
+<script type="text/javascript"><!--
+google_ad_client = "pub-7321635426958037";
+/* 336x280, created 8/6/09 */
+google_ad_slot = "3803516584";
+google_ad_width = 336;
+google_ad_height = 280;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
+</div>
+
+
+<div style="font-size: 0px; height: 0px; line-height: 0px; margin: 0; padding: 0; clear: both;"></div><div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-icon-text sd-sharing"><div class="sd-content"><ul><li class="share-facebook"><a rel="nofollow" data-shared="sharing-facebook-2849" class="share-facebook sd-button share-icon" href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?share=facebook" target="_blank" title="Click to share on Facebook"><span>Facebook</span></a></li><li class="share-twitter"><a rel="nofollow" data-shared="sharing-twitter-2849" class="share-twitter sd-button share-icon" href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?share=twitter" target="_blank" title="Click to share on Twitter"><span>Twitter</span></a></li><li><a href="#" class="sharing-anchor sd-button share-more"><span>More</span></a></li><li class="share-end"></li></ul><div class="sharing-hidden"><div class="inner" style="display: none;"><ul><li class="share-linkedin"><a rel="nofollow" data-shared="sharing-linkedin-2849" class="share-linkedin sd-button share-icon" href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?share=linkedin" target="_blank" title="Click to share on LinkedIn"><span>LinkedIn</span></a></li><li class="share-print"><a rel="nofollow" data-shared="" class="share-print sd-button share-icon" href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#print" target="_blank" title="Click to print"><span>Print</span></a></li><li class="share-end"></li><li class="share-tumblr"><a rel="nofollow" data-shared="" class="share-tumblr sd-button share-icon" href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?share=tumblr" target="_blank" title="Click to share on Tumblr"><span>Tumblr</span></a></li><li class="share-pinterest"><a rel="nofollow" data-shared="sharing-pinterest-2849" class="share-pinterest sd-button share-icon" href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?share=pinterest" target="_blank" title="Click to share on Pinterest"><span>Pinterest</span></a></li><li class="share-end"></li><li class="share-pocket"><a rel="nofollow" data-shared="" class="share-pocket sd-button share-icon" href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?share=pocket" target="_blank" title="Click to share on Pocket"><span>Pocket</span></a></li><li class="share-reddit"><a rel="nofollow" data-shared="" class="share-reddit sd-button share-icon" href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?share=reddit" target="_blank" title="Click to share on Reddit"><span>Reddit</span></a></li><li class="share-end"></li><li class="share-telegram"><a rel="nofollow" data-shared="" class="share-telegram sd-button share-icon" href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?share=telegram" target="_blank" title="Click to share on Telegram"><span>Telegram</span></a></li><li class="share-jetpack-whatsapp"><a rel="nofollow" data-shared="" class="share-jetpack-whatsapp sd-button share-icon" href="https://api.whatsapp.com/send?text=How%20to%20ReName%20a%20File%20or%20Folder%20in%20Mac%20OS%20X%20http%3A%2F%2Fosxdaily.com%2F2010%2F03%2F18%2Fhow-to-rename-a-file-or-folder-in-mac-os-x%2F" target="_blank" title="Click to share on WhatsApp"><span>WhatsApp</span></a></li><li class="share-end"></li><li class="share-skype"><a rel="nofollow" data-shared="sharing-skype-2849" class="share-skype sd-button share-icon" href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?share=skype" target="_blank" title="Click to share on Skype"><span>Skype</span></a></li><li class="share-google-plus-1"><a rel="nofollow" data-shared="sharing-google-2849" class="share-google-plus-1 sd-button share-icon" href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?share=google-plus-1" target="_blank" title="Click to share on Google+"><span>Google</span></a></li><li class="share-end"></li><li class="share-end"></li></ul></div></div></div></div></div>
+<div id='jp-relatedposts' class='jp-relatedposts' >
+	<h3 class="jp-relatedposts-headline"><em>Related</em></h3>
+</div>
+</div>
+
+
+
+
+
+
+
+<div style="clear:both;display:block;margin:20px 0;">
+
+
+<form style="width: 560px; border: 12px solid #2266BB;padding: 10px;text-align:center;box-shadow: 0 1px 10px #444;" action="https://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open('https://feedburner.google.com/fb/a/mailverify?uri=osxdaily', 'popupwindow', 'scrollbars=yes,width=550,height=520');return true">
+<p style="font-size: 25px;">Enjoy this tip? <strong>Subscribe to the OSXDaily newsletter</strong> to get more of our great Apple tips, tricks, and important news delivered to your inbox! Enter your email address below:</p>
+<p><input type="text" style="width:200px" name="email"></p>
+<input type="hidden" value="osxdaily" name="uri"><input type="hidden" name="loc" value="en_US"><input type="submit" value="Subscribe">
+</form>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+<!--matched content-->
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:inline-block;width:600px;height:400px"
+     data-ad-client="ca-pub-7321635426958037"
+     data-ad-slot="5790820468"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<h3 style="margin-top:30px;">Related articles:</h3>
+<ul style="margin:0 0 0 20px;color:#555;font-size:1.1em;">
+<li><a href="http://osxdaily.com/2011/02/21/rename-a-folder-iphone-ipad-ios/" rel="bookmark" title="Permanent Link: How to Rename a Folder in iOS for iPhone and iPad">How to Rename a Folder in iOS for iPhone and iPad</a></li><li><a href="http://osxdaily.com/2018/02/16/rename-files-folders-icloud-drive-ios/" rel="bookmark" title="Permanent Link: How to Rename Files &#038; Folders in Files App for iPhone &#038; iPad">How to Rename Files &#038; Folders in Files App for iPhone &#038; iPad</a></li><li><a href="http://osxdaily.com/2012/08/01/rename-file-mac-os-x-easy-way-title-bar/" rel="bookmark" title="Permanent Link: Rename a File from an Applications Title Bar in Mac OS X">Rename a File from an Applications Title Bar in Mac OS X</a></li><li><a href="http://osxdaily.com/2015/05/28/batch-rename-files-mac-os-x-finder/" rel="bookmark" title="Permanent Link: How to Batch Rename Files on Mac OS X Easily from Finder">How to Batch Rename Files on Mac OS X Easily from Finder</a></li></ul>
+
+<div style="margin:20px 0 30px 0;">
+<strong style="font-size:14px;color:#555 !important;padding-top:10px;paddin-bottom:10px;">Posted by: William Pearson in <a href="http://osxdaily.com/category/mac-os-x/" rel="category tag">Mac OS X</a>, <a href="http://osxdaily.com/category/tips-tricks/" rel="category tag">Tips &amp; Tricks</a></strong>
+</div>
+
+
+<a name="comments"></a>
+
+
+<!-- You can start editing here. -->
+
+	<h4 id="comments">39 Comments</h4>
+<p class="smaller-font"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/feed/">&raquo; Comments RSS Feed</a></p>
+
+	<ol class="commentlist">
+			<li class="comment even thread-even depth-1" id="comment-5896631">
+				<div id="div-comment-5896631" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">Jim</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-5896631">
+			April 4, 2018 at 5:36 am				</a>
+						</div>
+
+		<p>No it is not simple.if it were simple it could be done as on a PC but ios have to complicate things.</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=5896631#respond' data-commentid="5896631" data-postid="2849" data-belowelement="div-comment-5896631" data-respondelement="respond" aria-label='Reply to Jim'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-3381069">
+				<div id="div-comment-3381069" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">eleanor</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-3381069">
+			March 15, 2017 at 11:07 am				</a>
+						</div>
+
+		<p>when I go to rename a file I get a red dot with an X,  do you know why?<br />
+  what am I doing wrong</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=3381069#respond' data-commentid="3381069" data-postid="2849" data-belowelement="div-comment-3381069" data-respondelement="respond" aria-label='Reply to eleanor'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment even thread-even depth-1" id="comment-3137693">
+				<div id="div-comment-3137693" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">Boris</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-3137693">
+			December 25, 2016 at 6:45 pm				</a>
+						</div>
+
+		<p>Recently started working with Mac Pro 13 and did not know how to work and save MW files in Mac. One of my files was automatically saved by Mac with the word &#8220;pages&#8221; in the name of the file: something like &#8220;My workday schedule.pages&#8221; or &#8220;Book report.pages&#8221;.  Because of my stupidity, I removed the word &#8220;pages&#8221; trying to rename the file and the renamed document could not be opened after this (it was shown as a corrupted file). I was devastated and spent two hours, looking for a way to open it. Finally, I again added the word &#8220;pages&#8221; into the name of the document and, lo and behold, the document could be opened! It might be a good tip fro those who never worked with Mac and just started educating themselves about the ways of the &#8220;Mac land.&#8221;</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=3137693#respond' data-commentid="3137693" data-postid="2849" data-belowelement="div-comment-3137693" data-respondelement="respond" aria-label='Reply to Boris'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-2970899">
+				<div id="div-comment-2970899" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">Aditya</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-2970899">
+			November 15, 2016 at 10:51 pm				</a>
+						</div>
+
+		<p>How do you change mode or rename a file &#8220;Google Drive&#8221;, I have tried everything and this is the error I get </p>
+<p>mv: rename Google to GD/Google: No such file or directory<br />
+mv: rename Drive to GD/Drive: No such file or directory</p>
+<p>Please advise.</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=2970899#respond' data-commentid="2970899" data-postid="2849" data-belowelement="div-comment-2970899" data-respondelement="respond" aria-label='Reply to Aditya'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment even thread-even depth-1" id="comment-2780751">
+				<div id="div-comment-2780751" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">wrightsanches</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-2780751">
+			October 7, 2016 at 9:54 pm				</a>
+						</div>
+
+		<p>For this kind of problems you can solve your problems by using Long Path Tools&#8230;&#8230;&#8230;</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=2780751#respond' data-commentid="2780751" data-postid="2849" data-belowelement="div-comment-2780751" data-respondelement="respond" aria-label='Reply to wrightsanches'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-2233137">
+				<div id="div-comment-2233137" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">Arif</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-2233137">
+			April 24, 2016 at 11:18 pm				</a>
+						</div>
+
+		<p>Why does everything have to be so tedious in Mac?</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=2233137#respond' data-commentid="2233137" data-postid="2849" data-belowelement="div-comment-2233137" data-respondelement="respond" aria-label='Reply to Arif'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment even thread-even depth-1" id="comment-2199350">
+				<div id="div-comment-2199350" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">OP</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-2199350">
+			April 13, 2016 at 3:28 pm				</a>
+						</div>
+
+		<p>&gt;can effect the behavior of that file</p>
+<p>*affect</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=2199350#respond' data-commentid="2199350" data-postid="2849" data-belowelement="div-comment-2199350" data-respondelement="respond" aria-label='Reply to OP'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-2131587">
+				<div id="div-comment-2131587" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">Jon</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-2131587">
+			March 28, 2016 at 2:40 pm				</a>
+						</div>
+
+		<p>I have renamed a load of music files in a folder on my desktop.<br />
+They were originally labelled &#8216;audio track 1&#8217;<br />
+&#8216;audio track 2&#8217; etc and have now been changed to the actual track names. </p>
+<p>When I try and import them into Traktor or a music library they only transfer with the original names and not the renamed file. </p>
+<p>Does anyone have an answer as to how to stop this?</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=2131587#respond' data-commentid="2131587" data-postid="2849" data-belowelement="div-comment-2131587" data-respondelement="respond" aria-label='Reply to Jon'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment even thread-even depth-1 parent" id="comment-1787588">
+				<div id="div-comment-1787588" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">Jacob Palme</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-1787588">
+			December 30, 2015 at 4:52 am				</a>
+						</div>
+
+		<p>I wanted to rename a finder window, in particular a window containing a common search operation. All your answers are only on remaning files or folders. So that did not help me.</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=1787588#respond' data-commentid="1787588" data-postid="2849" data-belowelement="div-comment-1787588" data-respondelement="respond" aria-label='Reply to Jacob Palme'>Reply</a></div>
+				</div>
+				<ul class="children">
+		<li class="comment byuser comment-author-admin odd alt depth-2" id="comment-1788702">
+				<div id="div-comment-1788702" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">No</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-1788702">
+			December 30, 2015 at 1:52 pm				</a>
+						</div>
+
+		<p>Renaming a Finder window is done by renaming the folder of. A Finder window gets its name from the folder it is, so you would need to rename the folder as described in these answers to  rename the Finder window for that folder.</p>
+<p>If the name is for folder of a smart search, rename the Smart Search.</p>
+<p>All of this works exactly as described here. PEBCAK issue.</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=1788702#respond' data-commentid="1788702" data-postid="2849" data-belowelement="div-comment-1788702" data-respondelement="respond" aria-label='Reply to No'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+		<li class="comment even thread-odd thread-alt depth-1" id="comment-1638982">
+				<div id="div-comment-1638982" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">johnny</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-1638982">
+			November 8, 2015 at 6:44 pm				</a>
+						</div>
+
+		<p>If I rename a photo file name, why wouldn&#8217;t the &#8220;get info&#8221; file name changed also?<br />
+Where does mac get this information from? the &#8220;get info&#8221; title.</p>
+<p>thanks</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=1638982#respond' data-commentid="1638982" data-postid="2849" data-belowelement="div-comment-1638982" data-respondelement="respond" aria-label='Reply to johnny'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment odd alt thread-even depth-1" id="comment-732561">
+				<div id="div-comment-732561" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">Charles Black</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-732561">
+			November 21, 2014 at 9:46 am				</a>
+						</div>
+
+		<p>I am using OSX Yosemite 10.10.1 . Question. How do I obtain an &#8220;Administrater Password &#8220;? I am the sole user of my OSX. I am asked for it when I try to get into &#8220;Terminal&#8221;<br />
+Please Help!!!</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=732561#respond' data-commentid="732561" data-postid="2849" data-belowelement="div-comment-732561" data-respondelement="respond" aria-label='Reply to Charles Black'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment even thread-odd thread-alt depth-1" id="comment-726862">
+				<div id="div-comment-726862" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">hannahs</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-726862">
+			November 12, 2014 at 2:45 am				</a>
+						</div>
+
+		<p>do you know how to change the author and title name in get info?<br />
+because whatever you put in name &amp; extensions is just renaming the outside file not the internal file name.<br />
+is there a way to change the album name, title name and authors??</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=726862#respond' data-commentid="726862" data-postid="2849" data-belowelement="div-comment-726862" data-respondelement="respond" aria-label='Reply to hannahs'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment odd alt thread-even depth-1 parent" id="comment-710747">
+				<div id="div-comment-710747" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">Ben</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-710747">
+			October 20, 2014 at 10:12 am				</a>
+						</div>
+
+		<p>This &#8220;answer&#8221; is exactly why I hate Macs.  I never had to look up how to rename files on a Windows computer. Right click, choose rename file, and move on. Since switching a Mac a few years ago, when I need to rename a file I find it&#8217;s completely non-intuitive. It kills me that one has to wander the internet in search of &#8220;answers&#8221; on how to do a basic function.</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=710747#respond' data-commentid="710747" data-postid="2849" data-belowelement="div-comment-710747" data-respondelement="respond" aria-label='Reply to Ben'>Reply</a></div>
+				</div>
+				<ul class="children">
+		<li class="comment even depth-2" id="comment-2199354">
+				<div id="div-comment-2199354" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">OP</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-2199354">
+			April 13, 2016 at 3:30 pm				</a>
+						</div>
+
+		<p>What are you talking about? You press enter and type it in. This is no different from a PC. No one has to look it up. The person just wrote this article to be thorough.</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=2199354#respond' data-commentid="2199354" data-postid="2849" data-belowelement="div-comment-2199354" data-respondelement="respond" aria-label='Reply to OP'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-679934">
+				<div id="div-comment-679934" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">Surabhi</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-679934">
+			June 19, 2014 at 10:44 am				</a>
+						</div>
+
+		<p>Thanks so much for the tip!! V.useful!!</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=679934#respond' data-commentid="679934" data-postid="2849" data-belowelement="div-comment-679934" data-respondelement="respond" aria-label='Reply to Surabhi'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment even thread-even depth-1" id="comment-607583">
+				<div id="div-comment-607583" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">Nilesh Parmar</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-607583">
+			January 30, 2014 at 5:26 am				</a>
+						</div>
+
+		<p>IS there any way using automator to create a hot watched folder. to change file names within the folder, say i had a file BR13 and i want all to be BR14. Can this be done automatically?</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=607583#respond' data-commentid="607583" data-postid="2849" data-belowelement="div-comment-607583" data-respondelement="respond" aria-label='Reply to Nilesh Parmar'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-594474">
+				<div id="div-comment-594474" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">Vlad</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-594474">
+			December 30, 2013 at 2:13 am				</a>
+						</div>
+
+		<p>Thanks. It helped me.</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=594474#respond' data-commentid="594474" data-postid="2849" data-belowelement="div-comment-594474" data-respondelement="respond" aria-label='Reply to Vlad'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment even thread-even depth-1" id="comment-505709">
+				<div id="div-comment-505709" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">Prem Dass</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-505709">
+			March 1, 2013 at 8:00 am				</a>
+						</div>
+
+		<p>Thank you very much, your post was very helpful for me. again thank you very much.</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=505709#respond' data-commentid="505709" data-postid="2849" data-belowelement="div-comment-505709" data-respondelement="respond" aria-label='Reply to Prem Dass'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment odd alt thread-odd thread-alt depth-1 parent" id="comment-470881">
+				<div id="div-comment-470881" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">Carmen</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-470881">
+			December 30, 2012 at 12:15 pm				</a>
+						</div>
+
+		<p>for those of us who are not &#8220;tech-savy&#8221;&#8230;but have a MAC computer&#8230;and used to always use PCs&#8230;how the heck do you change file names??? It used to be you could just highlight the file name&#8230;for example if I created a file in Microsoft WORD&#8230;I could look it up&#8230;right click on the name and then find &#8220;rename&#8221; in my menu options and then change the name and be done. Nice, simple and easy. Now I can&#8217;t do that with a MAC. If I follow those SIMPLE steps&#8230;there is NO &#8220;rename&#8221; menu option ANYWHERE. And, like with a PC&#8230;you can&#8217;t click on the file name you want to change until you get the blinking cursor behind your file name and change it that way either. So&#8230;what &#8230; in simple terms&#8230;do you do? Everyone also talks about how user friendly a MAC is vs PCs&#8230;but there are little things like this&#8230;that often times are NOT easy and NOT user friendly! Ugh&#8230;help! ;o)</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=470881#respond' data-commentid="470881" data-postid="2849" data-belowelement="div-comment-470881" data-respondelement="respond" aria-label='Reply to Carmen'>Reply</a></div>
+				</div>
+				<ul class="children">
+		<li class="comment even depth-2" id="comment-561491">
+				<div id="div-comment-561491" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">Derrick</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-561491">
+			November 9, 2013 at 7:03 am				</a>
+						</div>
+
+		<p>Simply double-click the name &#8212; a quick double click &#8212; and if not right-click and press Get Info and in the box you should be able to change the name.</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=561491#respond' data-commentid="561491" data-postid="2849" data-belowelement="div-comment-561491" data-respondelement="respond" aria-label='Reply to Derrick'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+		<li class="comment odd alt thread-even depth-1" id="comment-447185">
+				<div id="div-comment-447185" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">SDe</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-447185">
+			November 6, 2012 at 9:29 am				</a>
+						</div>
+
+		<p>Hi Everyone,</p>
+<p>I am a New Switcher and I would like to first say, I have been using PC&#8217;s for quite some time and I taught myself everything that I believe was needed to not only navigate and execute through them and softwares, as well as repair and upgrade them hardware wise as well, and I just decided recently, through many times just hemming and Horning, to make the Switch to Mac and have only dabbed into and around it for just about 1 week now, and let me just finish up in saying, &#8220;I Will Never Go Back.&#8221; It far Superior to PC&#8217;s in Every Single aspect imaginable and I just suggest to anyone who is or was on the fence as I, just be Patient and Learn it, through Great forums such as this and search engines.</p>
+<p>In regards to original question and poster, I can definitely see the need for choosing multiple files and or folders to move, copy, or delete, yet i just have Never had the Need to rename multiple files or folders at the same time and i believe that there are many that will attest to that as well, yet on the other hand I am firm believer in: If everyone was Plumbers, then we would not Electricians, as each and everyone has there own wants and needs, yet in this world of ours: Majority Always Rules, and Apple just did not see or hear of any Great Need to rename multiple files and or folders in their software as a A Shortcut and I emphasize Shortcut because the following is a way to do what you want:</p>
+<p>Holding down the Left Clicker of your mouse drag all in the middle of each Icon what you want to choose and once you have done that, then Right Click on any Icon and choose: Get Info and each and every folder will then open up in a small description view window. Once you are there, merely navigate down on each window to: Name &amp; Extension and then rename them there.</p>
+<p>In renaming One Icon and or Folder, which I know is way of life for PC and Mac users and a necessity, you can do it a few ways, One: Pick the file or folder you want by Left Clicking it and Highlighting it and then hit: enter/Return and then rename it. Two: Left Click the file or folder and Highlight it, then left Click it again and rename it, and Lastly: The multiple file or folder way, which I described above.</p>
+<p>I hope this somehow Helped you and anyone else who may need it and remember: No One ever became Great or Good by just asking for answers, it is OJT (On the Job Training) that makes that happen, by getting your Head and Hands into the Game!!!</p>
+<p>From just what i have shortly seen, there is A Whole BIG World of Good things on the Mac side and you need to just be Patient and Not make First Hand Irrational Statements, as I Try to live my Life by This One saying which is: Don&#8217;t Lose your Head to Gain a Minute, You Need Your Head Your Brains are in It!!! If we act on and make decisions on mere emotions then they will Usually be the Wrong One Always. Relax and Think Things Through Thoroughly before you REACT!!!</p>
+<p>Thanks Everyone for a Great Venue and the very Best to All my Fellow Mac&#8217;rs!!!<br />
+SDe</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=447185#respond' data-commentid="447185" data-postid="2849" data-belowelement="div-comment-447185" data-respondelement="respond" aria-label='Reply to SDe'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment even thread-odd thread-alt depth-1" id="comment-417328">
+				<div id="div-comment-417328" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">tj4jones</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-417328">
+			August 14, 2012 at 10:54 pm				</a>
+						</div>
+
+		<p>wow, that worked. you can click on the folder once and enter to allow renaming.</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=417328#respond' data-commentid="417328" data-postid="2849" data-belowelement="div-comment-417328" data-respondelement="respond" aria-label='Reply to tj4jones'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment odd alt thread-even depth-1" id="comment-416154">
+				<div id="div-comment-416154" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">srinivas</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-416154">
+			August 11, 2012 at 4:03 am				</a>
+						</div>
+
+		<p>In my mac a name of file is -old is created it self in trash when i go to open another by same name file opend in trash like this folders are generated continously but it is not totally deleted in trash.How to deleted permanantly from trash</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=416154#respond' data-commentid="416154" data-postid="2849" data-belowelement="div-comment-416154" data-respondelement="respond" aria-label='Reply to srinivas'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment even thread-odd thread-alt depth-1 parent" id="comment-414425">
+				<div id="div-comment-414425" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">anna</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-414425">
+			August 6, 2012 at 10:30 am				</a>
+						</div>
+
+		<p>Would someone clarify this for me? If I rename a picture that is a .jpg, say, IMG_334.jpg to sally&#8217;s birthday 08, do I have to have no spaces and leave the .jpg, or does title not affect file format that way? It may be a silly elementary question, but hope someone can let me know! Thanks!</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=414425#respond' data-commentid="414425" data-postid="2849" data-belowelement="div-comment-414425" data-respondelement="respond" aria-label='Reply to anna'>Reply</a></div>
+				</div>
+				<ul class="children">
+		<li class="comment byuser comment-author-admin odd alt depth-2" id="comment-414433">
+				<div id="div-comment-414433" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn"><a href='http://osxdaily.com' rel='external nofollow' class='url'>Paul</a></cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-414433">
+			August 6, 2012 at 10:55 am				</a>
+						</div>
+
+		<p>file name title does not effect the file format, though if you have file extensions shown and you try to change it, the Finder will warn you.</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=414433#respond' data-commentid="414433" data-postid="2849" data-belowelement="div-comment-414433" data-respondelement="respond" aria-label='Reply to Paul'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+		<li class="comment even thread-even depth-1" id="comment-412940">
+				<div id="div-comment-412940" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">George</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-412940">
+			August 2, 2012 at 3:59 am				</a>
+						</div>
+
+		<p>Thank you. For years I have been frustrated by not knowing how to do this.</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=412940#respond' data-commentid="412940" data-postid="2849" data-belowelement="div-comment-412940" data-respondelement="respond" aria-label='Reply to George'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="pingback odd alt thread-odd thread-alt depth-1" id="comment-412703">
+				<div id="div-comment-412703" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn"><a href='http://osxdaily.com/2012/08/01/rename-file-mac-os-x-easy-way-title-bar/' rel='external nofollow' class='url'>Rename a File from an Applications Title Bar in OS X Mountain Lion</a></cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-412703">
+			August 1, 2012 at 12:37 pm				</a>
+						</div>
+
+		<p>[&#8230;] file extension remains consistent with the files format, and unlike renaming things in the Finder you can&#8217;t accidentally change the file extension [&#8230;]</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=412703#respond' data-commentid="412703" data-postid="2849" data-belowelement="div-comment-412703" data-respondelement="respond" aria-label='Reply to Rename a File from an Applications Title Bar in OS X Mountain Lion'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment even thread-even depth-1" id="comment-388243">
+				<div id="div-comment-388243" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn"><a href='http://iphonezone.dk' rel='external nofollow' class='url'>Fred</a></cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-388243">
+			May 14, 2012 at 11:46 am				</a>
+						</div>
+
+		<p>Thanks :) I would never have found out!</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=388243#respond' data-commentid="388243" data-postid="2849" data-belowelement="div-comment-388243" data-respondelement="respond" aria-label='Reply to Fred'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-384816">
+				<div id="div-comment-384816" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">Vincent</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-384816">
+			May 3, 2012 at 6:11 am				</a>
+						</div>
+
+		<p>Thanks, had my mac for 10 years and could never figure out how to name an untitled folder&#8230;&#8230;thanks to you I now know!!!! Duhhhhh!!!</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=384816#respond' data-commentid="384816" data-postid="2849" data-belowelement="div-comment-384816" data-respondelement="respond" aria-label='Reply to Vincent'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment even thread-even depth-1" id="comment-242609">
+				<div id="div-comment-242609" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">Pete</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-242609">
+			September 24, 2011 at 2:45 am				</a>
+						</div>
+
+		<p>Nice tip, but in addition, you can&#8217;t rename a shared file, until its been &#8216;unshared&#8217;.</p>
+<p>Took me a while to figure that out, but makes sense&#8230;.</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=242609#respond' data-commentid="242609" data-postid="2849" data-belowelement="div-comment-242609" data-respondelement="respond" aria-label='Reply to Pete'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-118557">
+				<div id="div-comment-118557" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">fitch shirt</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-118557">
+			September 26, 2010 at 12:13 pm				</a>
+						</div>
+
+		<p>I&#8217;d like to subscribe for your great RSS feeds.nevertheless i can&#8217;t uncover any right here.Do may possibly good RSS feeds for being applied?cheers,Anna</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=118557#respond' data-commentid="118557" data-postid="2849" data-belowelement="div-comment-118557" data-respondelement="respond" aria-label='Reply to fitch shirt'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment even thread-even depth-1" id="comment-102275">
+				<div id="div-comment-102275" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn"><a href='http://proganica.com' rel='external nofollow' class='url'>Syd Salmon</a></cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-102275">
+			May 31, 2010 at 7:10 pm				</a>
+						</div>
+
+		<p>If you need to rename many folder &amp;/or files, you can use the AppleScript Utility. Check off &#8220;Show Script menu in menu bar.&#8221; Under Finder scripts, you will a variety of scripts to help you manage files and folders more efficiently.</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=102275#respond' data-commentid="102275" data-postid="2849" data-belowelement="div-comment-102275" data-respondelement="respond" aria-label='Reply to Syd Salmon'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-101627">
+				<div id="div-comment-101627" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">Cat_se7en</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-101627">
+			May 15, 2010 at 9:05 am				</a>
+						</div>
+
+		<p>It&#8217;s also worth setting up an automator action to batch rename files, and adding it as a &#8220;service&#8221; so that it can be accessed via the drop-down menu in the Finder.</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=101627#respond' data-commentid="101627" data-postid="2849" data-belowelement="div-comment-101627" data-respondelement="respond" aria-label='Reply to Cat_se7en'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment even thread-even depth-1" id="comment-100514">
+				<div id="div-comment-100514" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">Armando</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-100514">
+			April 7, 2010 at 9:55 am				</a>
+						</div>
+
+		<p>@Steve Zoni,</p>
+<p>I&#8217;m guessing that the folder is locked or has restrictions beyond what you have permission to edit. The easiest way to change the name of a locked folder or file is by using the Administrator account on the Mac, or by going into the terminal and using sudo like:</p>
+<p>sudo mv Project OldProject</p>
+<p>which will require an admin password but will definitely change it</p>
+<p>hope that helps</p>
+<p>armando</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=100514#respond' data-commentid="100514" data-postid="2849" data-belowelement="div-comment-100514" data-respondelement="respond" aria-label='Reply to Armando'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment odd alt thread-odd thread-alt depth-1" id="comment-100500">
+				<div id="div-comment-100500" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">Steve Zoni</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-100500">
+			April 6, 2010 at 5:10 pm				</a>
+						</div>
+
+		<p>I have never seen this before. I have always been able to change the name the way you described, however, this folder &#8220;Projects&#8221; will not let me change the name. I tred going into the Info mini menu as described and could not see an option to change the name either.</p>
+<p>Thanks,</p>
+<p>S</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=100500#respond' data-commentid="100500" data-postid="2849" data-belowelement="div-comment-100500" data-respondelement="respond" aria-label='Reply to Steve Zoni'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+		<li class="comment even thread-even depth-1 parent" id="comment-100181">
+				<div id="div-comment-100181" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">BeckleMic</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-100181">
+			March 19, 2010 at 2:51 pm				</a>
+						</div>
+
+		<p>Thanks very much. I have been a switcher for over a year now, and to change a file name I have been using the &#8220;Get Info&#8221; mini menu option. I always knew there was an easier way but just could not figure it out. Great stuff</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=100181#respond' data-commentid="100181" data-postid="2849" data-belowelement="div-comment-100181" data-respondelement="respond" aria-label='Reply to BeckleMic'>Reply</a></div>
+				</div>
+				<ul class="children">
+		<li class="comment odd alt depth-2" id="comment-434196">
+				<div id="div-comment-434196" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">Lisa</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-434196">
+			October 4, 2012 at 3:18 pm				</a>
+						</div>
+
+		<p>That&#8217;s exactly what I&#8217;ve been doing. Switched to Macs at work 14 months ago and just now learned I don&#8217;t have to do it the cumbersome &#8220;Get Info&#8221; way!</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=434196#respond' data-commentid="434196" data-postid="2849" data-belowelement="div-comment-434196" data-respondelement="respond" aria-label='Reply to Lisa'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+		<li class="comment even thread-odd thread-alt depth-1" id="comment-100151">
+				<div id="div-comment-100151" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn"><a href='http://www.daedana.co.uk/' rel='external nofollow' class='url'>daedana</a></cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#comment-100151">
+			March 18, 2010 at 6:25 am				</a>
+						</div>
+
+		<p>Nice tricks even though I knew these, but these are something that you just use, use and use after learning.</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/?replytocom=100151#respond' data-commentid="100151" data-postid="2849" data-belowelement="div-comment-100151" data-respondelement="respond" aria-label='Reply to daedana'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+	</ol>
+
+
+ 
+
+
+<div id="respond">
+
+<h3>Leave a Reply</h3>
+
+<div class="cancel-comment-reply">
+	<small><a rel="nofollow" id="cancel-comment-reply-link" href="/2010/03/18/how-to-rename-a-file-or-folder-in-mac-os-x/#respond" style="display:none;">Click here to cancel reply.</a></small>
+</div>
+
+
+<form action="https://osxdaily.com/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" aria-required='true' />
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" aria-required='true' />
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<label for="url"><small>Website</small></label></p>
+
+
+<p><textarea autocomplete="nope"  id="d008feb566"  name="d008feb566"   cols="58" rows="10" tabindex="4"></textarea><textarea id="comment" aria-hidden="true" name="comment" autocomplete="nope" style="padding:0;clip:rect(1px, 1px, 1px, 1px);position:absolute !important;white-space:nowrap;height:1px;width:1px;overflow:hidden;" tabindex="-1"></textarea><script type="text/javascript">document.getElementById("comment").setAttribute( "id", "dcbb47b07ea64a01cc79486791ba2e17" );document.getElementById("d008feb566").setAttribute( "id", "comment" );</script></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="5" value="Submit Comment" />
+<input type="hidden" name="comment_post_ID" value="2849" />
+
+<input type='hidden' name='comment_post_ID' value='2849' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+</p>
+<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="e22948df48" /></p><p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="68"/></p>
+</form>
+
+
+</div>
+
+
+
+<div class="navigation">
+<div class="aleft">
+&laquo; <a href="http://osxdaily.com/2010/03/17/seven-amazing-apple-themed-photo-mosaics/">Seven Amazing Apple Themed Photo Mosaics</a></div>
+<div class="aright">
+<a href="http://osxdaily.com/2010/03/19/anti-piracy-message-in-mac-os-x-kernel-extension/">Anti-Piracy Message in Mac OS X Kernel Extension</a> &raquo;</div>
+</div> <!-- end navigation -->
+
+
+<p>&nbsp;</p>
+<div class="below_article_amzn_adlink" style="background-color:#F4F4F4;border:5px solid #2266BB;box-shadow: 0 2px 3px #777777;color:#606060;margin:55px 0;display:block;padding:15px;clear:both;font-size:1.4em;text-align:center;">
+<a target="_blank" rel="nofollow" href="https://www.amazon.com/Apple-Computers/b/ref=as_li_ss_tl?ie=UTF8&node=565124&linkCode=ll2&tag=oxd-20&linkId=fff1f4b70b63770f7842cbf241018a29&language=en_US">Shop on Amazon.com and help support OSXDaily!</a><img src="https://www.assoc-amazon.com/e/ir?t=oxd-20&l=ur2&o=1" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+</div>
+
+
+</div>
+
+<div id="right_column">
+
+<div id="subscribe_box">
+<h3 class="sidebarstyle" id="subscribe_box_head">Subscribe to OSXDaily</h3>
+<a rel="nofollow" target="_blank" target="_blank" href="http://feeds.feedburner.com/osxdaily"><img src="http://cdn.osxdaily.com/wp-content/themes/osxdaily-left2/img/socialicons/rss-icon.png" border="0" height="48" width="48" alt="Subscribe to RSS" /></a>
+
+<a rel="nofollow" target="_blank" href="http://twitter.com/osxdaily"><img src="http://cdn.osxdaily.com/wp-content/themes/osxdaily-left2/img/socialicons/twitter-icon.png" border="0" height="48" width="48" alt="Subscribe to Twitter Feed" /></a>
+
+<a rel="nofollow" target="_blank" href="http://www.facebook.com/osxdaily"><img src="http://cdn.osxdaily.com/wp-content/themes/osxdaily-left2/img/socialicons/facebook-icon.png" border="0" height="48" width="48" alt="Follow on Facebook" /></a>
+
+<a rel="nofollow" target="_blank" href="http://feedburner.google.com/fb/a/mailverify?uri=osxdaily&amp;loc=en_US"><img src="http://cdn.osxdaily.com/wp-content/themes/osxdaily-left2/img/socialicons/mail-icon.png" border="0" height="48" width="48" alt="Subscribe to eMail Updates" /></a>
+
+<div style="padding:10px 0 20px 25px;">
+
+<div style="width:125px;float:left;">
+<iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Ffacebook.com%2Fosxdaily&amp;send=false&amp;layout=button_count&amp;width=90&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:90px; height:21px;" allowTransparency="true"></iframe>
+</div>
+
+<div style="width:100px;float:left;">
+<a href="https://twitter.com/OSXDaily" class="twitter-follow-button" data-show-count="false">Follow @OSXDaily</a>
+<script defer async src="//platform.twitter.com/widgets.js" type="text/javascript"></script>
+</div>
+
+</div>
+
+</div>
+
+
+
+
+<div style="margin:20px 0;">
+
+<!-- BuySellAds Zone Code -->
+<div id="bsap_1278263" class="bsarocks bsap_95cb8853ab792f424634d57b5de28eed"></div>
+<!-- End BuySellAds Zone Code -->
+</div>
+
+<div style="margin:20px 0;">
+
+<!-- tf -->
+<script type="text/javascript"><!--
+	e9 = new Object();
+    e9.size = "300x250,160x600,300x600";
+	e9.noAd = 1;
+//--></script>
+<script type="text/javascript" src="http://tags.expo9.exponential.com/tags/OSXDailycom/ROS/tags.js"></script>
+</div>
+
+
+
+
+<!--posts-->
+<div style="margin:20px 0; border:1px solid #ccc; border-radius:4px;background-color:#f3f3f3;padding:15px;">
+<h3 class="sidebarstyle">Tips & Tricks</h3>
+<ul>
+ 
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/18/how-disable-passcode-iphone-ipad/" rel="bookmark">How to Disable Passcode on iPhone or iPad</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/17/mac-stuck-screensaver-fix/" rel="bookmark">Screen Saver Stuck on Mac? How to Fix It</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/16/show-all-devices-disk-utility-mac/" rel="bookmark">How to Show All Drive Devices in Disk Utility for MacOS</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/14/change-screen-brightness-mac-terminal/" rel="bookmark">How to Adjust Screen Brightness on Mac from Command Line</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/13/how-opt-out-beta-macos-system-software-updates/" rel="bookmark">How to Opt Out of MacOS Catalina Beta Updates</a></li>
+</ul>
+</div>
+<!--endposts-->
+
+
+<div style="margin:20px 0;">
+<!-- tf -->
+<script type="text/javascript"><!--
+	e9 = new Object();
+    e9.size = "300x250,160x600,300x600";
+	e9.noAd = 1;
+//--></script>
+<script type="text/javascript" src="http://tags.expo9.exponential.com/tags/OSXDailycom/ROS/tags.js"></script>
+
+</div>
+
+<!--posts-->
+<div style="margin:20px 0; border:1px solid #ccc; border-radius:4px;background-color:#f3f3f3;padding:15px;">
+<h3 class="sidebarstyle">News</h3>
+<ul>
+ 
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/16/you-can-download-ios-13-ipados-13-public-beta-6-now/" rel="bookmark">You Can Download iOS 13 &#038; iPadOS 13 Public Beta 6 Now</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/15/ios-13-beta-7-ipados-13-beta-7-available-to-download-for-developers/" rel="bookmark">iOS 13 Beta 7 &#038; iPadOS 13 Beta 7 Available to Download for Developers</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/08/enjoy-four-asmr-videos-from-apple-crunching-whispering-woodworking-rain/" rel="bookmark">Enjoy Four ASMR Videos from Apple &#8211; Crunching, Whispering, Woodworking, Rain</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/08/public-beta-5-of-ios-13-ipados-13-download-available/" rel="bookmark">Public Beta 5 of iOS 13 &#038; iPadOS 13 Available to Download Now</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/07/download-ios-13-beta-6-ipados-13-beta-6-now-available/" rel="bookmark">Download iOS 13 Beta 6 &#038; iPadOS 13 Beta 6 Now Available</a></li>
+</ul>
+</div>
+<!--endposts-->
+
+<!-- matchedcontent -->
+<div style="margin:20px 0;">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:600px"
+     data-ad-client="ca-pub-7321635426958037"
+     data-ad-slot="5553666864"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+
+<!--posts-->
+<div style="margin:20px 0; border:1px solid #ccc; border-radius:4px;background-color:#f3f3f3;padding:15px;">
+<h3 class="sidebarstyle">iPhone / iPad</h3>
+<ul>
+ 
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/18/how-disable-passcode-iphone-ipad/" rel="bookmark">How to Disable Passcode on iPhone or iPad</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/15/ios-13-beta-7-ipados-13-beta-7-available-to-download-for-developers/" rel="bookmark">iOS 13 Beta 7 &#038; iPadOS 13 Beta 7 Available to Download for Developers</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/10/how-make-facetime-call-iphone-ipad/" rel="bookmark">How to Make a FaceTime Call from iPhone &#038; iPad</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/07/download-ios-13-beta-6-ipados-13-beta-6-now-available/" rel="bookmark">Download iOS 13 Beta 6 &#038; iPadOS 13 Beta 6 Now Available</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/06/convert-numbers-file-to-excel-ipad-iphone/" rel="bookmark">How to Convert Numbers File to Excel on iPad or iPhone</a></li>
+</ul>
+</div>
+<!--endposts-->
+
+<div style="margin:20px 0;">
+
+<!-- tf -->
+<script type="text/javascript"><!--
+	e9 = new Object();
+    e9.size = "300x250";
+    e9.noAd = 1;
+//--></script>
+<script type="text/javascript" src="http://tags.expo9.exponential.com/tags/OSXDailycom/ROS/tags.js"></script>
+
+</div>
+
+
+<!--posts-->
+<div style="margin:20px 0; border:1px solid #ccc; border-radius:4px;background-color:#f3f3f3;padding:15px;">
+<h3 class="sidebarstyle">Mac</h3>
+<ul>
+ 
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/17/mac-stuck-screensaver-fix/" rel="bookmark">Screen Saver Stuck on Mac? How to Fix It</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/16/show-all-devices-disk-utility-mac/" rel="bookmark">How to Show All Drive Devices in Disk Utility for MacOS</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/14/change-screen-brightness-mac-terminal/" rel="bookmark">How to Adjust Screen Brightness on Mac from Command Line</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/13/how-opt-out-beta-macos-system-software-updates/" rel="bookmark">How to Opt Out of MacOS Catalina Beta Updates</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/12/open-vmdk-virtualbox/" rel="bookmark">How to Open a VMDK File in VirtualBox</a></li>
+</ul>
+</div>
+<!--endposts-->
+
+
+
+
+<div style="margin:20px auto;text-align:center;">
+<!-- tf sidebar-->
+<script type="text/javascript"><!--
+	e9 = new Object();
+    e9.size = "300x250";
+	e9.noAd = 1;
+//--></script>
+<script type="text/javascript" src="//tags.expo9.exponential.com/tags/OSXDailycom/ROS/tags.js"></script>
+</div>
+
+	<!--posts-->
+<div style="margin:20px 0; border:1px solid #ccc; border-radius:4px;background-color:#f3f3f3;padding:15px;">
+<h3 class="sidebarstyle">Troubleshooting</h3>
+<ul>
+ 
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/17/mac-stuck-screensaver-fix/" rel="bookmark">Screen Saver Stuck on Mac? How to Fix It</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/13/how-opt-out-beta-macos-system-software-updates/" rel="bookmark">How to Opt Out of MacOS Catalina Beta Updates</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/09/how-uninstall-malwarebytes-mac/" rel="bookmark">How to Uninstall Malwarebytes on Mac</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/05/how-install-malwarebytes-mac-scan-malware/" rel="bookmark">How to Install Malwarebytes on Mac to Scan for Malware &#038; Adware</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/04/how-update-email-password-iphone-ipad/" rel="bookmark">How to Update an Email Password on iPhone &#038; iPad</a></li>
+</ul>
+</div>
+<!--endposts-->
+
+
+
+<div style="margin:20px auto;text-align:center;">
+	<a target="_blank" rel="nofollow" href="https://www.amazon.com/ref=as_li_ss_tl?ie=UTF8&linkCode=ll2&tag=oxd-20&linkId=64d3941a2a40f30b13accdf967a25940&language=en_US"><img src="http://cdn.osxdaily.com/wp-content/uploads/2019/06/support-shop-amazon.jpeg" height="250" width="300" alt="Shop on Amazon to help support this site" border="0"/></a>
+	</div>
+
+
+</div>
+
+
+<div id="footer">
+
+
+
+<div id="footer_item_container">
+
+
+
+<h4>OSXDaily</h4>
+<p><a href="http://osxdaily.com/about/">About OSXDaily</a> | <a href="http://www.osxdaily.com/contact-os-x-daily/">Contact Us</a> | <a href="http://osxdaily.com/osxdailycom-privacy-policy/">Privacy Policy</a> | <a href="http://osxdaily.com/sitemap-all/">Sitemap</a> </p>
+<p>This website is unrelated to Apple Inc</p>
+<p>All trademarks and copyrights on this website are property of their respective owners.</p>
+
+
+</div>
+
+<div id="footer_text">
+<p>&copy; 2019 OS X Daily. All Rights Reserved. Reproduction without explicit permission is prohibited.</p>
+</div>
+
+
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-428992-6";
+urchinTracker();
+</script>
+
+
+
+<!-- Powered by WPtouch Pro: 3.8.3 -->
+	<script type="text/javascript">
+		window.WPCOM_sharing_counts = {"http:\/\/osxdaily.com\/2010\/03\/18\/how-to-rename-a-file-or-folder-in-mac-os-x\/":2849};
+	</script>
+		<script type='text/javascript' src='http://cdn.osxdaily.com/wp-includes/js/comment-reply.min.js?ver=5.2.2'></script>
+<script type='text/javascript' src='https://s0.wp.com/wp-content/js/devicepx-jetpack.js?ver=201933'></script>
+<script type='text/javascript' src='http://cdn.osxdaily.com/wp-content/plugins/wp-syntax/js/wp-syntax.js?ver=1.1'></script>
+<script type='text/javascript' src='http://cdn.osxdaily.com/wp-includes/js/wp-embed.min.js?ver=5.2.2'></script>
+<script async="async" type='text/javascript' src='http://cdn.osxdaily.com/wp-content/plugins/akismet/_inc/form.js?ver=4.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var sharing_js_options = {"lang":"en","counts":"1"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://cdn.osxdaily.com/wp-content/plugins/jetpack/_inc/build/sharedaddy/sharing.min.js?ver=6.2.1'></script>
+<script type='text/javascript'>
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-facebook', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-twitter', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomtwitter', 'menubar=1,resizable=1,width=600,height=350' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-linkedin', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomlinkedin', 'menubar=1,resizable=1,width=580,height=450' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-tumblr', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomtumblr', 'menubar=1,resizable=1,width=450,height=450' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-pocket', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcompocket', 'menubar=1,resizable=1,width=450,height=450' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-telegram', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomtelegram', 'menubar=1,resizable=1,width=450,height=450' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-skype', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomskype', 'menubar=1,resizable=1,width=305,height=665' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-google-plus-1', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomgoogle-plus-1', 'menubar=1,resizable=1,width=480,height=550' );
+				return false;
+			});
+</script>
+<script type='text/javascript' src='https://stats.wp.com/e-201933.js' async='async' defer='defer'></script>
+<script type='text/javascript'>
+	_stq = window._stq || [];
+	_stq.push([ 'view', {v:'ext',j:'1:6.2.1',blog:'6690815',post:'2849',tz:'-7',srv:'osxdaily.com'} ]);
+	_stq.push([ 'clickTrackerInit', '6690815', '2849' ]);
+</script>
+
+			<div id="cookie-notice" role="banner" class="cn-bottom wp-default" style="color: #fff; background-color: #000;"><div class="cookie-notice-container"><span id="cn-notice-text">This website and third-party tools use cookies for functional, analytical, and advertising purposes. By continuing to browse the site, closing this banner, scrolling this webpage, or clicking a link, you agree to these cookies. You can review our privacy policy for additional information.</span><a href="#" id="cn-accept-cookie" data-cookie-set="accept" class="cn-set-cookie cn-button wp-default button">I Accept</a><a href="http://osxdaily.com/osxdailycom-privacy-policy/" target="_blank" id="cn-more-info" class="cn-more-info cn-button wp-default button">Privacy Policy</a>
+				</div>
+				
+			</div></div>
+
+</div>
+
+<!-- BuySellAds Ad Code -->
+<script type="text/javascript">
+(function(){
+  var bsa = document.createElement('script');
+     bsa.type = 'text/javascript';
+     bsa.async = true;
+     bsa.src = 'http://s3.buysellads.com/ac/bsa.js';
+  (document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(bsa);
+})();
+</script>
+<!-- End BuySellAds Ad Code -->
+
+</body>
+</html>

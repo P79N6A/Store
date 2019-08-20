@@ -1,0 +1,841 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 27: Saving Locations</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 27: Saving Locations</h1>
+
+<p>At this point, you have an app that can obtain GPS coordinates for the user’s current location. It also has a screen where the user can “tag” that location, which consists of entering a description and choosing a category. Later on, you’ll also allow the user to pick a photo.
+</p>
+<p>The next feature is to make the app remember the locations that the user has tagged.
+</p>
+<p>This chapter covers the following:
+</p>
+<ul>
+<li>
+<p><em>Core Data overview:</em> A brif overview of what Core Data is and how it works.
+</p></li>
+
+<li>
+<p><em>Add Core Data:</em> Add the Core Data framework to the app and use it.
+</p></li>
+
+<li>
+<p><em>The data store:</em> Initializing the data store used by Core Data.
+</p></li>
+
+<li>
+<p><em>Pass the context:</em> How to pass the context object used to access Core Data between view controllers.
+</p></li>
+
+<li>
+<p><em>Browse the data:</em> Looking through the saved data.
+</p></li>
+
+<li>
+<p><em>Save the locations:</em> Saving entered location information using Core Data.
+</p></li>
+
+<li>
+<p><em>Handle Core Data errors:</em> Handling Core Data errors when there&apos;s an issue with saving.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Core Data overview</h2>
+
+<p>You have to persist the data for these captured locations somehow — they need to be remembered even when the app terminates.
+</p>
+<p>The last time you did this, you made data model objects that conformed to the <code>Codable</code> protocol and saved them to a .plist file. That works fine, but in this chapter I want to introduce you to a framework that can take a lot of work out of your hands: Core Data.
+</p>
+<p>Core Data is an object persistence framework for iOS apps. If you’ve looked at Core Data before, you may have found the official documentation a little daunting, but the principle is quite simple.
+</p>
+<p>You’ve learned that objects get destroyed when there are no more references to them. In addition, all objects get destroyed when the app terminates.
+</p>
+<p>With Core Data, you can designate some objects as being persistent so they will always be saved to a <em>data store</em>. Even when all references to such a <em>managed object</em> are gone and the instance gets destroyed, its data is still safely stored in Core Data and you can retrieve the data at any time.
+</p>
+<p>If you’ve worked with databases before, you might be tempted to think of Core Data as a database, but that’s a little misleading. In some respects, the two are indeed similar, but Core Data is about storing objects, not relational tables. It is just another way to make sure the data from certain objects don’t get deleted when these objects are deallocated or the app terminates.
+</p>
+<h2 class="segment-chapter">Add Core Data</h2>
+
+<p>Core Data requires the use of a data model. This is a special file that you add to your project to describe the objects that you want to persist. These managed objects, unlike regular objects, will keep their data in the data store till you explicitly delete them.
+</p>
+<h3 class="segment-chapter">Create the data model</h3>
+
+<p>➤ Add a new file to the project. Choose the <em>Data Model</em> template under the <em>Core Data</em> section (scroll down in the template chooser):
+</p><div class="image-50"><img src="graphics/img422.png"  alt="" title="Adding a Data Model file to the project" /></div>
+<p>➤ Save it as <em>DataModel</em>.
+</p>
+<p>This will add a new file to the project, DataModel.xcdatamodeld.
+</p>
+<p>➤ Click <em>DataModel.xcdatamodeld</em> in the Project navigator to open the Data Model editor:
+</p><div class="image-80"><img src="graphics/img423.png"  alt="" title="The empty data model" /></div>
+<p>For each object that you want Core Data to manage, you have to add an <em>entity</em>.
+</p>
+<p>An entity describes which data fields your objects will have. In a sense, it serves the same purpose as a class, but specifically for Core Data’s data store — if you’ve worked with SQL databases before, you can think of an entity as a table.
+</p>
+<p>This app will have one entity, Location, which stores all the properties for a location that the user tagged. Each Location will keep track of the following data:
+</p>
+<ul>
+<li>
+<p>Latitude and longitude
+</p></li>
+
+<li>
+<p>Placemark (the street address)
+</p></li>
+
+<li>
+<p>The date when the location was tagged
+</p></li>
+
+<li>
+<p>The user’s description
+</p></li>
+
+<li>
+<p>Category
+</p></li>
+</ul>
+
+<p>These are the items from the Tag Location screen, except for the photo. Photos can potentially be very big and can take up several megabytes of storage space. Even though the Core Data store can handle big “blobs” of data, it is usually better to store photos as separate files in the app’s Documents directory. More about that later.
+</p>
+<p>➤ Click the <em>Add Entity</em> button at the bottom of the data model editor. This adds a new entity under the ENTITIES heading. Name it <em>Location</em> — you can rename the entity by clicking its name or from the Data Model inspector pane on the right.
+</p><div class="image-70"><img src="graphics/img424.png"  alt="" title="The new Location entity" /></div>
+<p>The entity detail pane in the center shows three sections: Attributes, Relationships and Fetched Properties. The Attributes are the entity’s data fields.
+</p>
+<p>This app only has one entity, but generally, apps will have many entities that are all related to each other somehow. With Relationships and Fetched Properties, you can tell Core Data how your objects depend on each other.
+</p>
+<p>For this app, you will only use the Attributes section.
+</p>
+<p>➤ Click the <em>Add Attribute</em> button at the bottom of the editor, or the small <em>+</em> button below the Attributes section. Name the new attribute <em>latitude</em> and set its <em>Type</em> to <em>Double</em>:
+</p><div class="image-50"><img src="graphics/img425.tiff"  alt="" title="Choosing the attribute type" /></div>
+<p>Attributes are basically the same as properties, and therefore they have a type. You’ve seen earlier that the latitude and longitude coordinates really have the data type <code>Double</code>. So, that’s what you’re choosing for the attribute as well.
+</p>
+<div class="note">
+<p><em>Note:</em> Don’t let the change in terminology scare you. Just think:
+</p>
+<p>entity = object (or class)
+</p>
+<p>attribute = property
+</p>
+<p>If you’re wondering where you’ll define methods in Core Data, then the answer is: you don’t. Core Data is only for storing the data portion of objects. That is what an entity describes: the data of an object, and optionally, how that object relates to other objects if you use Relationships and Fetched Properties.
+</p>
+<p>In a short while, you&apos;re going to define your own <code>Location</code> class by creating a Swift file, just as you’ve been doing all along. Because it describes a managed object, this class will be associated with the Location entity in the data model. But it’s still a regular class, so you can add your own methods to it.
+</p></div>
+
+<p>➤ Add the rest of the attributes for the Location entity:
+</p>
+<ul>
+<li>
+<p>longitude, type Double
+</p></li>
+
+<li>
+<p>date, type Date
+</p></li>
+
+<li>
+<p>locationDescription, type String
+</p></li>
+
+<li>
+<p>category, type String
+</p></li>
+
+<li>
+<p>placemark, type Transformable
+</p></li>
+</ul>
+
+<p>The data model should look like this when you’re done:
+</p><div class="image-70"><img src="graphics/img426.png"  alt="" title="All the attributes of the Location entity" /></div>
+<p>Why didn’t you just call the description value “description” instead of “locationDescription”? As it turns out, <code>description</code> is the name of a method from <code>NSObject</code>. If you try to name an attribute “description”, then it will cause a naming conflict with the <code>NSObject</code> method since Core Data managed objects are derived from <code>NSObject</code>. Xcode will give you an error message if you try to do this.
+</p>
+<p>The type of the placemark attribute is Transformable. Core Data only supports a limited number of data types right out the box, such as <code>String</code>, <code>Double</code>, and <code>Date</code>. The placemark is a <code>CLPlacemark</code> object and is not in the list of supported data types.
+</p>
+<p>Fortunately, Core Data has a provision for handling arbitrary data types. Any class that conforms to the <code>NSCoding</code> protocol can be stored in a Transformable attribute without additional work. Fortunately for us, <code>CLPlacemark</code> does conform to <code>NSCoding</code>, so you can store it in Core Data with no trouble. (And in case you are wondering, <code>NSCoding</code> is the Objective-C equivalent of the Swift <code>Codable</code> protocol — it allows classes to encode and decode themselves if they support it.)
+</p>
+<p>By default, entity attributes are optional, meaning they can be <code>nil</code>. In our app, the only thing that can be <code>nil</code> is the placemark, in case reverse geocoding failed. It’s a good idea to embed this constraint in the data model.
+</p>
+<p>➤ Select the category attribute. In the inspectors panel, switch to the Data Model inspector (third tab). Uncheck the Optional setting:
+</p><div class="image-70"><img src="graphics/img427.png"  alt="" title="Making the category attribute non-optional" /></div>
+<p>➤ Repeat this for the other attributes, except for placemark. (Tip: you can select multiple attributes at the same time, either by Command+clicking to select individually, or Shift+Clicking to select a range. However, I was unable to get multiple selection for attributes working correctly with the Xcode 10 betas — so this might or might not work in later builds of Xcode 10 either.)
+</p>
+<p>➤ Press <em>⌘+S</em> to save your changes. Xcode is supposed to do this automatically, but I’ve found the data model editor to be a little unreliable at times. Better safe than sorry!
+</p>
+<p>You’re done with the data model, but there’s one more thing to do.
+</p>
+<h3 class="segment-chapter">Generate the code</h3>
+
+<p>➤ Click on the Location entity to select it and go to the Data Model inspector.
+</p><div class="image-30"><img src="graphics/img428.png"  alt="" title="The Data Model inspector" /></div>
+<p>The <em>Class &gt; Name</em> field says “Location”. When you retrieve a Location entity from Core Data, it gives you an instance of the <code>Location</code> class which is derived from <code>NSManagedObject</code>. <code>NSManagedObject</code> is the base class for all objects that are managed by Core Data. Regular objects inherit from <code>NSObject</code>, but Core Data objects extend <code>NSManagedObject</code>.
+</p>
+<p>Because using <code>NSManagedObject</code> directly is a bit limiting, Xcode helpfully sets you up to use your own <code>Location</code> class instead. You’re not required to make your own classes for your entities, but it does make Core Data easier to use. So now when you retrieve a Location entity from the data store, Core Data doesn’t give you an <code>NSManagedObject</code> but an instance of your own <code>Location</code> class.
+</p>
+<p>Note also that the <em>Class &gt; Codegen</em> dropdown is set to &quot;Class Definition&quot;. Xcode will automatically generate the code for your entity&apos;s class with this setting so that you don&apos;t have to do any extra work. However, it is useful to understand how to make your own <code>NSManagedObject</code> subclass rather than relying on Xcode magic. So, for this app, you&apos;ll write the code yourself.
+</p>
+<p>➤ In the inspector, change <em>Codegen</em> to <em>Manual/None</em>.
+</p>
+<p>Even though you won’t be using automatic class generation, Xcode can still lend a helping hand.
+</p>
+<p>➤ From the menu bar, choose <em>Editor → Create NSManagedObject Subclass...</em>.
+</p>
+<p>The assistant will now ask you for the data models and entities you wish to create classes for.
+</p>
+<p>➤ Select <em>DataModel</em> and click <em>Next</em>. In the next step, make sure <em>Location</em> is selected and click <em>Next</em> again.
+</p><div class="image-60"><img src="graphics/img429.png"  alt="" title="Select the Location entity" /></div>
+<p>➤ Choose a location to save the source files — in your case, the folder for your project. Press <em>Create</em> to finish.
+</p>
+<p>This adds two new files to the project. The first one is named <em>Location+CoreDataClass.swift</em> and looks something like this:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> Foundation
+<span class="hljs-keyword">import</span> CoreData
+
+<span class="hljs-meta">@objc</span>(<span class="hljs-type">Location</span>)
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Location</span>: <span class="hljs-title">NSManagedObject</span> </span>{
+
+}</pre>
+<p>As you can see in the <code>class</code> line, the <code>Location</code> class extends <code>NSManagedObject</code> instead of the regular <code>NSObject</code>.
+</p>
+<p>You already know what the <code>public</code> and <code>@objc</code> attributes are for since you&apos;ve encountered them before, but what does the <code>(Location)</code> bit do?
+</p>
+<p>That is actually a part of the <code>@objc</code> attribute. The Swift compiler uses a mechanism called <i>name mangling</i> to rename methods internally so that they can be identified uniquely. Afterall, if you have two methods named <code>copyFiles</code> in the same project, how does the compiler know which one a particular bit of code refers to? It has to have a way to identify each method uniquely so that all method calls are resolved correctly.
+</p>
+<p>Name mangling works fine if your project has only Swift code. But since you can combine Swift and Objective-C code in the same project, sometimes you run into trouble in such &quot;hybrid&quot; projects because Objective-C is not able to identify a Swift class correctly due to name mangling. This happens often when working with archived data since the archived data saves the class name and you run into issues when Objective-C can&apos;t reconcile the name it receives with a known class.
+</p>
+<p>This is where the <code>@objc(Location)</code> (or similar) notation comes into play. The part inside the brackets, in this case <code>Location</code>, tells the compiler that that is the name Objective-C code will use to refer to this particular class.
+</p>
+<p>You shouldn&apos;t have to worry about the above notation at all in this book since you&apos;ll be working with Swift code only. However, it&apos;s always a good idea to know things such as this for when you are a full-blown developer since you most likely will encounter a &quot;hybrid&quot; project at some point.
+</p>
+<p>The second file that got created is <em>Location+CoreDataProperties.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> Foundation
+<span class="hljs-keyword">import</span> CoreData
+
+<span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">Location</span> </span>{
+ <span class="hljs-meta">@nonobjc</span> <span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">func</span> <span class="hljs-title">fetchRequest</span>() -&gt; 
+                     <span class="hljs-title">NSFetchRequest</span>&lt;<span class="hljs-title">Location</span>&gt; </span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-type">NSFetchRequest</span>&lt;<span class="hljs-type">Location</span>&gt;(entityName: <span class="hljs-string">"Location"</span>);
+  }
+
+  <span class="hljs-meta">@NSManaged</span> <span class="hljs-keyword">var</span> latitude: <span class="hljs-type">Double</span>
+  <span class="hljs-meta">@NSManaged</span> <span class="hljs-keyword">var</span> longitude: <span class="hljs-type">Double</span>
+  <span class="hljs-meta">@NSManaged</span> <span class="hljs-keyword">var</span> date: <span class="hljs-type">NSDate</span>?
+  <span class="hljs-meta">@NSManaged</span> <span class="hljs-keyword">var</span> locationDescription: <span class="hljs-type">String</span>?
+  <span class="hljs-meta">@NSManaged</span> <span class="hljs-keyword">var</span> category: <span class="hljs-type">String</span>?
+  <span class="hljs-meta">@NSManaged</span> <span class="hljs-keyword">var</span> placemark: <span class="hljs-type">NSObject</span>?
+}</pre>
+<p>In this file, Xcode has created properties for the attributes that you specified in the Data Model editor. But what is this <code>extension</code> thing?
+</p>
+<p>With an <i>extension</i> you can add additional functionality to an existing object without having to change the original source code for that object. This even works when you don’t actually have the source code for those objects. Later on you’ll see an example of how you can use an extension to add new methods to objects from iOS frameworks.
+</p>
+<p>Here, the extension is used for another purpose. If you change your Core Data model at some later time and you want to automatically update the code to match those changes, then you can choose <em>Create NSManagedObject Subclass</em> again and Xcode will only overwrite what is in <em>Location+CoreDataProperties.swift</em> but not anything you added to <em>Location+CoreDataClass.swift</em>.
+</p>
+<p>So, it’s not a good idea to make changes to <em>Location+CoreDataProperties.swift</em> if you plan on overwriting this file later. Unfortunately, Xcode made a few small boo-boos in the types of the properties, so you’ll have to make some changes to this file anyway.
+</p>
+<p>The first thing to fix is the <code>placemark</code> variable. Because you made placemark a Transformable attribute, Xcode doesn’t really know what kind of object this will be. So, it chose the generic type <code>NSObject</code>. But you know it’s going to be a <code>CLPlacemark</code> object. So, you can make things easier for yourself by changing it.
+</p>
+<p>➤ First import Core Location into <em>Location+CoreDataProperties.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> CoreLocation</pre>
+<p>➤ Then change the <code>placemark</code> property to:
+</p><pre class="code-block"><span class="hljs-meta">@NSManaged</span> <span class="hljs-keyword">var</span> placemark: <span class="hljs-type">CLPlacemark</span>?</pre>
+<p>You’re adding a question mark too, because <code>placemark</code> is optional.
+</p>
+<p>➤ Also change the date property from <code>NSDate</code> to <code>Date</code>:
+</p><pre class="code-block"><span class="hljs-meta">@NSManaged</span> <span class="hljs-keyword">var</span> date: <span class="hljs-type">Date</span></pre>
+<p>The <code>NSDate</code> class is what Objective-C uses to represent dates, but in Swift, we work with <code>Date</code>, without the “NS”. It is also no longer an optional.
+</p>
+<p>➤ Finally, remove the question marks behind the <code>category</code> and <code>locationDescription</code> properties. Earlier you told Core Data these attributes were not optionals. So, they don’t need the question mark.
+</p>
+<p>Because this is a <i>managed</i> object, and the data lives inside a data store, Swift will handle <code>Location</code>’s variables in a special way. The <code>@NSManaged</code> keyword tells the compiler that these properties will be resolved at runtime by Core Data. When you put a new value into one of these properties, Core Data will place that value into the data store for safekeeping, instead of in a regular instance variable.
+</p>
+<p>And if you are wondering, the <code>@nonobjc</code> attribute is the reverse of the <code>@objc</code> attribute — it makes a class, method, or property not available to Objective-C. Since this came by way of generated boilerplate code, don&apos;t worry too much about why you&apos;d want to do that in this particular case :]
+</p>
+<p>This concludes the definition of the data model for <i>MyLocations</i>. Now you have to hook it up to a data store.
+</p>
+<h2 class="segment-chapter">The data store</h2>
+
+<p>On iOS, Core Data stores all of its data into an SQLite — pronounced “SQL light” — database. It’s OK if you have no idea what SQLite is. You’ll take a peek into that database later, but you don’t really need to know what goes on inside the data store in order to use Core Data.
+</p>
+<p>However, you do need to initialize this data store when the app starts. The code for that is the same for just about any app that uses Core Data and it goes in the app delegate class.
+</p>
+<p>As you learnt previously, the <i>app delegate</i> is the object that gets notifications that concern the application as a whole. This is where iOS notifies the app that it has started up, for example.
+</p>
+<p>You’re going to make a few changes to the project’s <code>AppDelegate</code> class.
+</p>
+<p>➤ Open <em>AppDelegate.swift</em> and import the Core Data framework at the very top:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> CoreData</pre>
+<p>➤ Add the following code inside the <code>AppDelegate</code> class (usually at the top where you define properties):
+</p><pre class="code-block"><span class="hljs-built_in">lazy</span> <span class="hljs-keyword">var</span> persistentContainer: <span class="hljs-type">NSPersistentContainer</span> = {
+  <span class="hljs-keyword">let</span> container = <span class="hljs-type">NSPersistentContainer</span>(name: <span class="hljs-string">"DataModel"</span>)
+  container.loadPersistentStores(completionHandler: { 
+    storeDescription, error <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> error = error {
+      <span class="hljs-built_in">fatalError</span>(<span class="hljs-string">"Could load data store: <span class="hljs-subst">\(error)</span>"</span>)
+    }
+  })
+  <span class="hljs-keyword">return</span> container
+}()</pre>
+<p>This is the code you need to load the data model that you’ve defined earlier, and to connect it to an SQLite data store.
+</p>
+<p>The goal here is to create an <code>NSManagedObjectContext</code> object. That is the object you’ll use to talk to Core Data. To get that <code>NSManagedObjectContext</code> object, the app needs to do several things:
+</p>
+<ol>
+<li>
+<p>Create an <code>NSManagedObjectModel</code> from the Core Data model you created earlier. This object represents the data model during runtime. You can ask it what sort of entities it has, what attributes these entities have, and so on. In most apps, you don’t need to use the <code>NSManagedObjectModel</code> object directly.
+</p></li>
+
+<li>
+<p>Create an <code>NSPersistentStoreCoordinator</code> object. This object is in charge of the SQLite database.
+</p></li>
+
+<li>
+<p>Finally, create the <code>NSManagedObjectContext</code> object and connect it to the persistent store coordinator.
+</p></li>
+</ol>
+
+<p>Together, these objects are also known as the “Core Data stack”.
+</p>
+<p>Previously, you had to perform the above steps one-by-one in code, which could get a little messy. But as of iOS 10, there is a new object, the <code>NSPersistentContainer</code>, that takes care of everything.
+</p>
+<p>That doesn’t mean you should immediately forget what you just learned about the <code>NSManagedObjectModel</code> and the <code>NSPersistentStoreCoordinator</code>, but it does save you from writing a bunch of code.
+</p>
+<p>The code that you just added creates an instance variable <code>persistentContainer</code> of type <code>NSPersistentContainer</code>. To get the <code>NSManagedObjectContext</code> that we’re after, you can simply ask the <code>persistentContainer</code> for its <code>viewContext</code> property.
+</p>
+<p>➤ For convenience, add another property to get the <code>NSManagedObjectContext</code> from the persistent container:
+</p><pre class="code-block"><span class="hljs-built_in">lazy</span> <span class="hljs-keyword">var</span> managedObjectContext: <span class="hljs-type">NSManagedObjectContext</span> = 
+                      persistentContainer.viewContext</pre>
+<p>Now we’re ready to start using Core Data!
+</p>
+<p>➤ Build the app to make sure it compiles without errors. If you run it, you won’t notice any difference because you’re not actually using Core Data anywhere yet.
+</p>
+<h2 class="segment-chapter">Pass the context</h2>
+
+<p>When the user presses the Done button in the Tag Location screen, the app currently just closes the screen. Let’s fix that and actually save a new <code>Location</code> object into the Core Data store when the Done button is tapped.
+</p>
+<p>I mentioned the <code>NSManagedObjectContext</code> object. This is the object that you use to talk to Core Data. It is often described as a “scratchpad”. You first make your changes to the context and then you call its <code>save()</code> method to store those changes permanently in the data store.
+</p>
+<p>This means that every object that needs to do something with Core Data needs to have a reference to the <code>NSManagedObjectContext</code> object.
+</p>
+<h3 class="segment-chapter">Get the context</h3>
+
+<p>➤ Switch to <em>LocationDetailsViewController.swift</em>. First, import Core Data at the top, and then add a new instance variable:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> managedObjectContext: <span class="hljs-type">NSManagedObjectContext</span>!</pre>
+<p>The problem is: how do you put the <code>NSManagedObjectContext</code> object from the app delegate into this property?
+</p>
+<p>The context object is created by <code>AppDelegate</code>, but <code>AppDelegate</code> has no reference to the <code>LocationDetailsViewController</code>.
+</p>
+<p>That’s not so strange since the Location Details view controller doesn’t exist until the user taps the Tag Location button. Prior to that, there simply is no <code>LocationDetailsViewController</code> object in existence.
+</p>
+<p>The answer is to pass along the <code>NSManagedObjectContext</code> object during the segue that presents the <code>LocationDetailsViewController</code>. The obvious place for that is <code>prepare(for:sender:)</code> in <code>CurrentLocationViewController</code>.
+</p>
+<p>But then you need to find a way to get the <code>NSManagedObjectContext</code> object into the <code>CurrentLocationViewController</code> in the first place.
+</p>
+<p>I come across a lot of code that does the following:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> delegate = <span class="hljs-type">UIApplication</span>.shared.delegate <span class="hljs-keyword">as</span>! <span class="hljs-type">AppDelegate</span>
+<span class="hljs-keyword">let</span> context = delegate.managedObjectContext
+<span class="hljs-comment">// do something with the context</span></pre>
+<p>From anywhere in your source code, you can get a reference to the context simply by asking the <code>AppDelegate</code> for its <code>managedObjectContext</code> property. Sounds like a good solution, right?
+</p>
+<p>Not quite… Suddenly all your objects are dependent on the app delegate. This introduces a dependency that can make your code very messy really quickly.
+</p><div class="image-65"><img src="graphics/img430.png"  alt="" title="Bad: All classes depend on AppDelegate" /></div>
+<p>As a general design principle, it is best to make your classes depend on each other as little as possible. The fewer interactions there are between the different parts of your program, the simpler it is to understand.
+</p>
+<p>If many of your classes need to reach out to some shared object such as the app delegate, then you may want to rethink your design.
+</p>
+<p>A better solution is to give the <code>NSManagedObjectContext</code> to each object that needs it. Now all the arrows in the diagram go just one way:
+</p><div class="image-65"><img src="graphics/img431.png"  alt="" title="Good: The context object is passed from one object to the next" /></div>
+<p>Using this architecture, <code>AppDelegate</code> gives the managed object context to <code>CurrentLocationViewController</code>, which in turn will pass it on to the <code>LocationDetailsViewController</code> when it performs the segue. This technique is known as <i>dependency injection</i>.
+</p>
+<p>This means <code>CurrentLocationViewController</code> needs its own property for the <code>NSManagedObject</code> context.
+</p>
+<p>➤ Add the following property to <em>CurrentLocationViewController.swift</em> (and don&apos;t forget to add the Core Data import):
+</p><pre class="code-block"><span class="hljs-keyword">var</span> managedObjectContext: <span class="hljs-type">NSManagedObjectContext</span>!</pre>
+<p>➤ Add the following to <code>prepare(for:sender:)</code>, so that it passes on the context to the Tag Location screen:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">prepare</span><span class="hljs-params">(<span class="hljs-keyword">for</span> segue: UIStoryboardSegue, sender: Any?)</span></span> {
+  <span class="hljs-keyword">if</span> segue.identifier == <span class="hljs-string">"TagLocation"</span> {
+    . . .
+    <span class="hljs-comment">// New code</span>
+    controller.managedObjectContext = managedObjectContext 
+  }
+}</pre>
+<p>This should also explain why the <code>managedObjectContext</code> variable is declared as an implicitly unwrapped optional with the type <code>NSManagedObjectContext!</code>.
+</p>
+<p>You should know by now that variables in Swift must always have a value. If they can be <code>nil</code> — which means “not a value” — then the variable must be made optional.
+</p>
+<p>If you were to declare <code>managedObjectContext</code> without the exclamation point, like this:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> managedObjectContext: <span class="hljs-type">NSManagedObjectContext</span></pre>
+<p>Then Swift demands you give it a value in an <code>init</code> method — for objects loaded from a storyboard, such as view controllers, that method is <code>init?(coder:)</code>.
+</p>
+<p>However, <code>prepare(for:sender:)</code> happens <i>after</i> the new view controller is instantiated, long after the call to <code>init?(coder:)</code>. As a result, inside <code>init?(coder:)</code> you can’t know what the value for <code>managedObjectContext</code> will be.
+</p>
+<p>You have no choice but to leave the <code>managedObjectContext</code> variable <code>nil</code> for a short while until the segue happens, and therefore it must be an optional.
+</p>
+<p>You could also have declared it like this:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> managedObjectContext: <span class="hljs-type">NSManagedObjectContext</span>?</pre>
+<p>The difference between <code>?</code> and <code>!</code> is that the former requires you to manually unwrap the value with <code>if let</code> every time you want to use it.
+</p>
+<p>That gets annoying really fast, especially when you know that <code>managedObjectContext</code> will get a proper value during the segue and that it will never become <code>nil</code> afterwards again. In that case, the exclamation mark is the best type of optional to use.
+</p>
+<p>These rules for optionals may seem very strict — and possibly confusing — when you’re coming from another language such as Objective-C. But they are there for a good reason — by only allowing certain variables to have no value, Swift can make your programs safer and reduce the number of programming mistakes.
+</p>
+<p>The fewer optionals you use, the better, but sometimes you can’t avoid them — as in this case with <code>managedObjectContext</code>.
+</p>
+<h3 class="segment-chapter">Pass the context from AppDelegate</h3>
+
+<p><em>AppDelegate.swift</em> now needs some way to pass the <code>NSManagedObjectContext</code> object to <code>CurrentLocationViewController</code>.
+</p>
+<p>Unfortunately, Interface Builder does not allow you to make outlets for your view controllers on the App Delegate. Instead, you have to look up these view controllers by digging through the view hierarchy.
+</p>
+<p>➤ Change the <code>application(_:didFinishLaunchingWithOptions:)</code> method to:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">application</span><span class="hljs-params">(<span class="hljs-number">_</span> application: UIApplication, 
+     didFinishLaunchingWithOptions launchOptions: 
+           [UIApplication.LaunchOptionsKey: Any]?)</span></span> -&gt; <span class="hljs-type">Bool</span> {
+           
+  <span class="hljs-keyword">let</span> tabController = window!.rootViewController 
+                          <span class="hljs-keyword">as</span>! <span class="hljs-type">UITabBarController</span>
+                          
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> tabViewControllers = tabController.viewControllers {
+    <span class="hljs-keyword">let</span> navController = tabViewControllers[<span class="hljs-number">0</span>] 
+                   <span class="hljs-keyword">as</span>! <span class="hljs-type">UINavigationController</span>
+    <span class="hljs-keyword">let</span> controller = navController.viewControllers.first 
+                       <span class="hljs-keyword">as</span>! <span class="hljs-type">CurrentLocationViewController</span>
+    controller.managedObjectContext = managedObjectContext
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+}</pre>
+<p>In order to get a reference to the <code>CurrentLocationViewController</code>, you first have to find the <code>UITabBarController</code> and then look at its <code>viewControllers</code> array.
+</p>
+<p>And since the first controller for the first tab is a navigation controller, then you have to go through the navigation controller&apos;s list of controllers to finally get at the <code>CurrentLocationViewController</code>.
+</p>
+<p>Once you have a reference to the <code>CurrentLocationViewController</code> object, you pass it the <code>managedObjectContext</code>. It may not be immediately obvious from looking at the code, but something special happens at this point…
+</p>
+<p>Remember the code for <code>persistentContainer</code> you added to AppDelegate earlier? You probably recognized it as a lazy loading variable since you&apos;ve encountered something similar before. This is the point at which the closure for the variable is actually executed and a new <code>NSPersistentContainer</code> instance is created.
+</p>
+<p>What actually happens inside the closure is fairly straightforward:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> container = <span class="hljs-type">NSPersistentContainer</span>(name: <span class="hljs-string">"DataModel"</span>)
+container.loadPersistentStores(completionHandler: { 
+  storeDescription, error <span class="hljs-keyword">in</span>
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> error = error {
+    <span class="hljs-built_in">fatalError</span>(<span class="hljs-string">"Could not load data store: <span class="hljs-subst">\(error)</span>"</span>)
+  }
+})
+<span class="hljs-keyword">return</span> container</pre>
+<p>You instantiate a new <code>NSPersistentContainer</code> object with the name of the data model you created earlier, <code>DataModel</code>. Then you tell it to <code>loadPersistentStores()</code>, which loads the data from the database into memory and sets up the Core Data stack.
+</p>
+<p>There is another closure here, given by the <code>completionHandler</code> parameter. The code in this closure gets invoked when the persistent container is done loading the data. If something went wrong, you print an error message — useful for debugging! — and terminate the app using the function <code>fatalError()</code>.
+</p>
+<p>Now that you know what it does, you may be wondering why you didn’t just put all of this code into a regular method like this:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> persistentContainer: <span class="hljs-type">NSPersistentContainer</span>
+
+<span class="hljs-keyword">init</span>() {
+  persistentContainer = createPersistentContainer()
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">createPersistentContainer</span><span class="hljs-params">()</span></span> -&gt; <span class="hljs-type">NSPersistentContainer</span> {
+  <span class="hljs-comment">// all the initialization code here</span>
+  <span class="hljs-keyword">return</span> container
+}</pre>
+<p>That would certainly be possible, but now the initialization of <code>persistentContainer</code> is spread over three different parts of the code: the declaration of the variable, the method that performs all the initialization logic, and the <code>init</code> method to tie it all together.
+</p>
+<p>Isn’t it nicer to keep all this stuff in one place, rather than in three different places? Swift lets you perform complex initialization right where you declare the variable. I think that’s pretty nifty!
+</p>
+<p>There’s another thing going on here:
+</p><pre class="code-block"><span class="hljs-built_in">lazy</span> <span class="hljs-keyword">var</span> persistentContainer: <span class="hljs-type">NSPersistentContainer</span> = { ... }()</pre>
+<p>Notice the <code>lazy</code> keyword? That means the entire block of code in the <code>{ ... }()</code> closure isn’t actually performed right away. The context object won’t be created until you ask for it. This is another example of <i>lazy loading</i>, Similar to how you handled <code>DateFormatter</code> earlier.
+</p>
+<p>The <code>managedObjectContext</code> property is also declared <code>lazy</code>:
+</p><pre class="code-block"><span class="hljs-built_in">lazy</span> <span class="hljs-keyword">var</span> managedObjectContext: <span class="hljs-type">NSManagedObjectContext</span> = 
+                      persistentContainer.viewContext</pre>
+<p>This is necessary because its initial value comes from <code>persistentContainer</code>. It also used to be necessary to use <code>self</code> here to refer to <code>persistentContainer</code>. Otherwise, Xcode would give a compiler error. That appears not to be the case with Xcode 10, but if you run into this issue, then you know what to do :]
+</p>
+<p>➤ Run the app. Everything should still be the way it was, but behind the scenes a new database has been created for Core Data.
+</p>
+<h2 class="segment-chapter">Browse the data</h2>
+
+<p>Core Data stores the data in an SQLite database. That file is named <em>DataModel.sqlite</em> and it lives in the app’s Library folder. That’s similar to the Documents folder that you saw previously.
+</p>
+<p>You can see it in Finder if you go to <em>~/Library/Developer/CoreSimulator</em> and then to the folder that contains the data for <i>MyLocations</i> on a particular simulator.
+</p>
+<h3 class="segment-chapter">Core Data data store location</h3>
+
+<p>➤ The easiest way to find this folder is to add the following to <em>Functions.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> applicationDocumentsDirectory: <span class="hljs-type">URL</span> = {
+  <span class="hljs-keyword">let</span> paths = <span class="hljs-type">FileManager</span>.<span class="hljs-keyword">default</span>.urls(<span class="hljs-keyword">for</span>: .documentDirectory, 
+                                        <span class="hljs-keyword">in</span>: .userDomainMask)
+  <span class="hljs-keyword">return</span> paths[<span class="hljs-number">0</span>]
+}()</pre>
+<p>This creates a new global constant, <code>applicationDocumentsDirectory</code>, containing the path to the app’s Documents directory. It’s a global because you’re not putting this inside a class. This constant will exist for the duration of the app; it never goes out of scope. You could have made a method for this as you did for <i>Checklists</i>, but using a global constant works just as well.
+</p>
+<p>As before, you’re using a closure to provide the code that initializes this constant. Like all globals, this is evaluated lazily the very first time it is used.
+</p>
+<div class="note">
+<p><em>Note:</em> Globals have a bad reputation. Many programmers avoid them at all costs. The problem with globals is that they create hidden dependencies between the various parts of your program. And dependencies make the program hard to change and hard to debug.
+</p>
+<p>But used well, globals can be very handy. It’s feasible that your app will need to know the path to the Documents directory in several different places. Putting it in a global constant is a great way to solve that design problem.
+</p></div>
+
+<p>➤ Add the following line to <code>application(_:didFinishLaunchingWithOptions:)</code> — a good place would be just before the final <code>return</code> statement:
+</p><pre class="code-block"><span class="hljs-built_in">print</span>(applicationDocumentsDirectory)</pre>
+<p>On my computer this prints out:
+</p><pre class="code-block">file:///Users/fahim/Library/Developer/CoreSimulator/Devices/CA23DAEA-DF30-43C3-8611-E713F96D4780/data/Containers/Data/Application/64B60279-41D1-46A4-83A7-492D03C3E5C7/Documents/</pre>
+<p>➤ Open a new Finder window and press <em>Shift+⌘+G</em>. Then copy-paste the path without the <code>file://</code> bit (note that you leave out only two slashes out of the three...) to go to the Documents folder.
+</p>
+<p>The database is not actually in the Documents folder, so go back up one level and enter the <em>Library</em> folder, and then <em>Application Support</em>:
+</p><div class="image-90"><img src="graphics/img432.png"  alt="" title="The new database in the app’s Documents directory" /></div>
+<p>The <em>DataModel.sqlite-shm</em> and <em>-</em><em>wal</em> files are also part of the data store.
+</p>
+<p>This database is still empty because you haven’t stored any objects in it yet, but just for the fun of it, you’ll take a peek inside.
+</p>
+<p>There are several handy — and free! — tools that give you a graphical interface for interacting with your SQLite databases.
+</p>
+<h3 class="segment-chapter">Browse the Core Data store using a GUI app</h3>
+
+<p>You will use <em>Liya</em> to examine the data store file. Download it from the Mac App Store or <a href="http://cutedgesystems.com/software/liya/">cutedgesystems.com/software/liya/</a>.
+</p>
+<p>➤ Start Liya. It asks you for a database connection. Under <em>Database Type</em> choose <em>SQLite</em>.
+</p><div class="image-70"><img src="graphics/img433.png"  alt="" title="Liya opens with this dialog box" /></div>
+<p>➤ On the right of the Database Type field is a small icon. Click this to open a file picker.
+</p>
+<p>You can navigate to the <em>CoreSimulator/…/Library/Application Support</em> folder, but that’s a lot of work (it’s a very deeply nested folder).
+</p>
+<p>If you have the Finder window still open, it’s easier to drag the <em>DataModel.sqlite</em> file from Finder directly on to the open file picker. Click <em>Choose</em> when you’re done.
+</p>
+<div class="note">
+<p><em>Tip:</em> You can also right-click the DataModel.sqlite file in Finder and choose <em>Open With → Liya</em> from the popup menu.
+</p></div>
+
+<p>The <em>Database URL</em> field should now contain the app’s Document folder and <em>Database Name</em> should say DataModel.sqlite:
+</p><div class="image-40"><img src="graphics/img434.png"  alt="" title="Connecting to the SQLite database" /></div>
+<p>➤ Click <em>Login</em> to proceed.
+</p>
+<p>The screen should look something like this:
+</p><div class="image-80"><img src="graphics/img435.png"  alt="" title="The empty DataModel.sqlite database in Liya" /></div>
+<p>The ZLOCATION table is where your Location objects will be stored. It’s currently empty, but on the right you can already see the column names that correspond to your fields: ZDATE, ZLATITUDE, and so on. Core Data also adds its own columns and tables (with the Z_ prefix).
+</p>
+<p>You’re not really supposed to change anything in this database by hand, but sometimes using a visual tool like this is handy to see what’s going on. You’ll come back to Liya once you’ve inserted new Location objects.
+</p>
+<div class="note">
+<p><em>Note:</em> An alternative to Liya is SQLiteStudio, <a href="http://sqlitestudio.pl">sqlitestudio.pl</a>. You can find more tools, paid and free, on the Mac App Store by searching for “sqlite”.
+</p></div>
+
+<h3 class="segment-chapter">Troubleshoot Core Data issues</h3>
+
+<p>There is another handy tool for troubleshooting Core Data. By setting a special flag on the app, you can see the SQL statements that Core Data uses under the hood to talk to the data store.
+</p>
+<p>Even if you have no experience with SQL, this is still valuable information. At least you can use it to tell whether Core Data is doing something or not. To enable this tool, you have to edit the project’s <i>scheme</i>.
+</p>
+<p>Schemes are how Xcode lets you configure your projects. A scheme is a bunch of settings for building and running your app. Standard projects have just one scheme, but you can add additional schemes, which is handy when your project becomes bigger.
+</p>
+<p>➤ Click on the left part of the <em>MyLocations &gt; iPhone</em> bar at the top of the screen and choose <em>Edit Scheme...</em> from the menu.
+</p><div class="image-40"><img src="graphics/img436.png"  alt="" title="The Edit Scheme... option" /></div>
+<p>The following panel should pop up:
+</p><div class="image-60"><img src="graphics/img437.png"  alt="" title="The scheme editor" /></div>
+<p>➤ Choose the <em>Run</em> option on the left-hand side.
+</p>
+<p>➤ Select the <em>Arguments</em> tab.
+</p>
+<p>➤ In the <em>Arguments Passed On Launch</em> section, add the following:
+</p><pre class="code-block">-com.apple.CoreData.SQLDebug 1
+-com.apple.CoreData.Logging.stderr 1</pre><div class="image-60"><img src="graphics/img438.png"  alt="" title="Adding the SQLDebug launch argument" /></div>
+<p>➤ Press <em>Close</em> to close this dialog, and run the app.
+</p>
+<p>You should see something like this in the Xcode Console:
+</p><pre class="code-block">CoreData: annotation: Connecting to sqlite database file at &quot;/Users/fahim/Library/Developer/CoreSimulator/Devices/CA23DAEA-DF30-43C3-8611-E713F96D4780/data/Containers/Data/Application/B3C8FED1-3218-454F-B86F-1482ED64433A/Library/Application Support/DataModel.sqlite&quot;
+CoreData: sql: SELECT TBL_NAME FROM SQLITE_MASTER WHERE TBL_NAME = &apos;Z_METADATA&apos;
+CoreData: sql: pragma recursive_triggers=1
+CoreData: sql: pragma journal_mode=wal
+CoreData: sql: SELECT Z_VERSION, Z_UUID, Z_PLIST FROM Z_METADATA
+CoreData: sql: SELECT TBL_NAME FROM SQLITE_MASTER WHERE TBL_NAME = &apos;Z_MODELCACHE&apos;</pre>
+<p>This is the debug output from Core Data. If you understand SQL, some of this will look familiar. The specifics don’t matter, but it’s clear that Core Data is connecting to the data store at this point. Excellent!
+</p>
+<h2 class="segment-chapter">Save the locations</h2>
+
+<p>You’ve successfully initialized Core Data and passed the <code>NSManagedObjectContext</code> to the Tag Location screen. Now it’s time to put a new <code>Location</code> object into the data store when the Done button is pressed.
+</p>
+<p>➤ Add the following instance variable to <em>LocationDetailsViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> date = <span class="hljs-type">Date</span>()</pre>
+<p>You’re adding this variable because you need to store the current date in the new <code>Location</code> object. You only want to make that <code>Date</code> object once.
+</p>
+<p>➤ In <code>viewDidLoad()</code>, change the line that sets the <code>dateLabel</code>’s text to:
+</p><pre class="code-block">dateLabel.text = format(date: date)</pre>
+<p>This now uses the new property insted of creating the date on the fly.
+</p>
+<p>➤ Change the <code>done()</code> method to the following:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">done</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> hudView = <span class="hljs-type">HudView</span>.hud(inView: navigationController!.view, 
+                          animated: <span class="hljs-literal">true</span>)
+  hudView.text = <span class="hljs-string">"Tagged"</span>
+  <span class="hljs-comment">// 1</span>
+  <span class="hljs-keyword">let</span> location = <span class="hljs-type">Location</span>(context: managedObjectContext)
+  <span class="hljs-comment">// 2</span>
+  location.locationDescription = descriptionTextView.text
+  location.category = categoryName
+  location.latitude = coordinate.latitude
+  location.longitude = coordinate.longitude
+  location.date = date
+  location.placemark = placemark
+  <span class="hljs-comment">// 3</span>
+  <span class="hljs-keyword">do</span> {
+    <span class="hljs-keyword">try</span> managedObjectContext.save()
+    afterDelay(<span class="hljs-number">0.6</span>) {
+      hudView.hide()
+      <span class="hljs-keyword">self</span>.navigationController?.popViewController(
+                                    animated: <span class="hljs-literal">true</span>)
+    }
+  } <span class="hljs-keyword">catch</span> {
+    <span class="hljs-comment">// 4</span>
+    <span class="hljs-built_in">fatalError</span>(<span class="hljs-string">"Error: <span class="hljs-subst">\(error)</span>"</span>)
+  }
+}</pre>
+<p>This is where you do all the work:
+</p>
+<ol>
+<li>
+<p>First, you create a new <code>Location</code> instance. Because this is a managed object, you have to use its <code>init(context:)</code> method. You can’t just write <code>Location()</code> because then the <code>managedObjectContext</code> won’t know about the new object.
+</p></li>
+
+<li>
+<p>Once you have created the <code>Location</code> instance, you can use it like any other object. Here you set its properties to whatever the user entered in the screen.
+</p></li>
+
+<li>
+<p>You now have a new <code>Location</code> object whose properties are all filled in, but if you were to look in the data store at this point, you’d still see no objects there. That won’t happen until you <code>save()</code> the context.
+</p>
+<p>Saving takes any objects that were added to the context, or any managed objects that had their contents changed, and permanently writes these changes to the data store. That’s why they call the context a “scratchpad”; its changes aren’t persisted until you save them.
+</p>
+<p>The <code>save()</code> method can fail for a variety of reasons and therefore you need to catch any potential errors. That’s done using Swift error handling, which you&apos;ve encountered before.
+</p></li>
+
+<li>
+<p>Output the error and then terminate the application via the sytem method <code>fatalError</code>. But where does the <code>error</code> variable that you output come from? This is a local constant that Swift automatically populates with the error that it caught — handy, huh?
+</p></li>
+</ol>
+
+<p>➤ Run the app and tag a location. Enter a description and press the Done button.
+</p>
+<p>If everything went well, Core Data will dump a whole bunch of debug information into the debug area:
+</p><pre class="code-block">CoreData: sql: BEGIN EXCLUSIVE
+. . .
+CoreData: sql: INSERT INTO ZLOCATION(Z_PK, Z_ENT, Z_OPT, ZCATEGORY, ZDATE, ZLATITUDE, ZLOCATIONDESCRIPTION, ZLONGITUDE, ZPLACEMARK) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)
+CoreData: sql: COMMIT
+. . .
+CoreData: annotation: sql execution time: 0.0001s</pre>
+<p>These are the SQL statements that Core Data performs to store the new Location object in the database.
+</p>
+<p>➤ In Liya, refresh the contents of the ZLOCATION table (press the Go button below the Tables list). There should now be one row in that table:
+</p><div class="image-90"><img src="graphics/img439.png"  alt="" title="A new row was added to the table" /></div>
+<div class="note">
+<p><em>Note:</em> If you don’t see any rows in the table, press the Stop button in Xcode first to exit the app. You can also try closing the Liya window and opening a new connection to the database. Sometimes, the Simulator data folder locations appear to change between app runs. So, you might need to set up a new database connection in Liya after each run if this happens.
+</p></div>
+
+<p>As you can see, the columns in this table contain the property values from the <code>Location</code> object. The only column that is not readable is ZPLACEMARK. Its contents have been encoded as a binary “blob” of data. That is because it’s a Transformable attribute and the <code>NSCoding</code> protocol has converted its fields into a binary chunk of data.
+</p>
+<p>If you don’t have Liya or are a command line junkie, then there is another way to examine the contents of the database. You can use the Terminal app and the <code>sqlite3</code> tool, but you’d better know your SQL’s from your ABC’s if you want to go that route:
+</p><div class="image-90"><img src="graphics/img440.png"  alt="" title="Examining the database from the Terminal" /></div>
+<h2 class="segment-chapter">Handle Core Data errors</h2>
+
+<p>To save the contents of the context to the data store, you did:
+</p><pre class="code-block"><span class="hljs-keyword">do</span> {
+  <span class="hljs-keyword">try</span> managedObjectContext.save()
+  . . .
+} <span class="hljs-keyword">catch</span> {
+  <span class="hljs-built_in">fatalError</span>(<span class="hljs-string">"Error: <span class="hljs-subst">\(error)</span>"</span>)
+}</pre>
+<p>What if something goes wrong with the save? In that case, code execution jumps to the <code>catch</code> branch and you call the <code>fatalError()</code> function. That will immediately kill the app and return the user to the iPhone’s Springboard. That’s a nasty surprise for the user, and therefore, not recommended.
+</p>
+<p>The good news is that Core Data only gives an error if you’re trying to save something that is not valid. In other words, when there is some bug in your app.
+</p>
+<p>Of course, you’ll get all the bugs out during development so users will never experience any, right? The sad truth is that you’ll never catch all your bugs. Some always manage to slip through.
+</p>
+<p>Unfortunately, there isn’t much else to do but crash when Core Data does give an error. Something went horribly wrong somewhere and now you’re stuck with invalid data. If the app were allowed to continue, things would likely only get worse, as there is no telling what state the app is in. The last thing you want to do is to corrupt the user’s data.
+</p>
+<p>However, instead of making the app crash hard with <code>fatalError()</code>, it might be nice to tell the user about the issue first so at least they know what is happening. The crash is still inevitable, but now your users will know why the app suddenly stopped working.
+</p>
+<p>In this section, you’ll add a popup alert for handling such situations. Again, these errors should happen only during development, but just in case they do occur to an actual user, you’ll try to handle it with at least a little bit of grace.
+</p>
+<h3 class="segment-chapter">Fake errors for testing purposes</h3>
+
+<p>Here’s a way to fake such a fatal error, just to illustrate what happens.
+</p>
+<p>➤ Open the data model (<em>DataModel.xcdatamodeld</em> in the file list), and select the <em>placemark</em> attribute. In the Data Model inspector, uncheck the <em>Optional</em> flag.
+</p><div class="image-30"><img src="graphics/img441.png"  alt="" title="Making the placemark attribute non-optional" /></div>
+<p>That means <code>location.placemark</code> can never be <code>nil</code>. This is a constraint that Core Data will enforce. When you try to save a <code>Location</code> object to the data store whose <code>placemark</code> property is <code>nil</code>, Core Data will throw a tantrum. So that’s exactly what you’re going to do here, just to test your error handling code and to make sure the app fails gracefully.
+</p>
+<p>➤ Run the app. It is possible that the app crashes right away…
+</p>
+<p>What happens is that you have just changed the data model by making changes to the <code>placemark</code> attribute. When you launch the app, the <code>NSPersistentContainer</code> notices this and tries to perform a “migration” of the SQLite database to the new, updated data model.
+</p>
+<p>The migration may succeed… or not… depending on what is currently in your data store. If you previously tagged a location that did not have a valid address — i.e. whose <code>placemark</code> is <code>nil</code> — then the migration to the new data model fails. After all, the new data model does not allow for <code>placemark</code>s that are <code>nil</code>.
+</p>
+<p>If the app crashed for you, then the debug area says why:
+</p><pre class="code-block">reason=Cannot migrate store in-place: Validation error missing attribute
+values on mandatory destination attribute, . . . {entity=Location, attribute=placemark, . . .}</pre>
+<p>The DataModel.sqlite file is out of date with respect to the changed data model, and Core Data can’t automatically resolve this issue.
+</p>
+<p>There are two ways to fix this:
+</p>
+<ol>
+<li>
+<p>Simply throw away the DataModel.sqlite file from the Library directory.
+</p></li>
+
+<li>
+<p>Remove the entire app from the Simulator.
+</p></li>
+</ol>
+
+<p>➤ Remove the DataModel.sqlite file, as well as the –shm and –wal files, and run the app again.
+</p>
+<p>This wasn’t actually the crash I wanted to show you, but it’s important to know that changing the data model may require you to throw away the database file or Core Data cannot be initialized properly.
+</p>
+<div class="note">
+<p><em>Note:</em> Not all is lost if <code>NSPersistentContainer</code>’s migration fails. Core Data allows you to perform your own migrations when you release an update to your app with a new data model. Instead of crashing, this mechanism allows you to convert the contents of the user’s existing data store to the new model. However, during development, it is just as easy to toss out the old database.
+</p></div>
+
+<p>➤ Now here’s the trick. Tap the Get My Location button and then tap immediately on Tag Location. If you do that quickly enough, you can beat the reverse geocoder to it and the Tag Location screen will say: “No Address Found”. It only says that when <code>placemark</code> is <code>nil</code>.
+</p>
+<p>If geocoding happens too fast, you can fake this by temporarily commenting out the line <code>self.placemark = p.last!</code> in <code>locationManager(_:didUpdateLocations:)</code> inside <em>CurrentLocationViewController.swift</em>. This will make it seem as if no address was found and the value of <code>placemark</code> stays <code>nil</code>.
+</p>
+<p>➤ Tap the Done button to save the new <code>Location</code> object.
+</p>
+<p>The app will crash:
+</p><div class="image-60"><img src="graphics/img442.png"  alt="" title="The app crashes after a Core Data error" /></div>
+<p>At the very end of that error message above, you can see that it says:
+</p><pre class="code-block">NSValidationErrorKey=placemark</pre>
+<p>This means the <code>placemark</code> attribute did not validate properly. Because you set it to non-optional, Core Data does not accept a placemark value that is <code>nil</code>.
+</p>
+<p>Of course, what you’ve just seen only happens when you run the app from Xcode - when it crashes, the debugger takes over and points at the line with the error. But that’s not what the user sees.
+</p>
+<p>➤ Stop the app. Now tap the app’s icon in the Simulator to launch the app outside of Xcode. Repeat the same procedure to make the app crash. The app will simply cease functioning and disappear from the screen.
+</p>
+<p>Imagine this happening to a user who just paid 99 cents (or more) for your app. They’ll be horribly confused, “What just happened?!” They may even ask for their money back.
+</p>
+<p>It’s better to show an alert when this happens. After the user dismisses that alert, you’ll still make the app crash, but at least the user knows the reason why. (The alert message should probably ask them to contact you and explain what they did, so you can fix that bug in the next version of your app.)
+</p>
+<h3 class="segment-chapter">Alert the user about crashes</h3>
+
+<p>➤ Add the following code to <em>Functions.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> <span class="hljs-type">CoreDataSaveFailedNotification</span> = 
+  <span class="hljs-type">Notification</span>.<span class="hljs-type">Name</span>(rawValue: <span class="hljs-string">"CoreDataSaveFailedNotification"</span>)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">fatalCoreDataError</span><span class="hljs-params">(<span class="hljs-number">_</span> error: Error)</span></span> {
+  <span class="hljs-built_in">print</span>(<span class="hljs-string">"*** Fatal error: <span class="hljs-subst">\(error)</span>"</span>)
+  <span class="hljs-type">NotificationCenter</span>.<span class="hljs-keyword">default</span>.post(
+       name: <span class="hljs-type">CoreDataSaveFailedNotification</span>, object: <span class="hljs-literal">nil</span>)
+}</pre>
+<p>This defines a new global function for handling fatal Core Data errors.
+</p>
+<p>➤ Replace the error handling code in the <code>done()</code> action (in <em>LocationDetailsViewController.swift</em>) with:
+</p><pre class="code-block">. . .
+} <span class="hljs-keyword">catch</span> {
+  fatalCoreDataError(error)
+}</pre>
+<p>The call to <code>fatalCoreDataError()</code> has taken the place of <code>fatalError()</code>. So what does that new function do, actually?
+</p>
+<p>It first outputs the error message to the Console using <code>print()</code> because it’s always useful to log such errors. After dumping the debug info, the function does the following:
+</p><pre class="code-block"><span class="hljs-type">NotificationCenter</span>.<span class="hljs-keyword">default</span>.post(
+       name: <span class="hljs-type">CoreDataSaveFailedNotification</span>, object: <span class="hljs-literal">nil</span>)</pre>
+<p>I’ve been using the term “notification” to mean any generic event or message being delivered, but the iOS SDK also has an object called the <code>NotificationCenter</code> — not to be confused with Notification Center on your iOS device.
+</p>
+<p>The code above uses <code>NotificationCenter</code> to post a notification. Any object in your app can subscribe to such notifications and when these occur, <code>NotificationCenter</code> will call a certain method in those listener objects.
+</p>
+<p>Using this official notification system is yet another way that your objects can communicate with each other. The handy thing is that the object that sends the notification and the object that receives the notification don’t need to know anything about each other. The sender just broadcasts the notification to all and doesn’t really care what happens to it. If anyone is listening, great. If not, then that’s cool too.
+</p>
+<p>UIKit defines a lot of standard notifications that you can subscribe to. For example, there is a notification that lets you know that the app is about to be suspended after the user taps the Home button.
+</p>
+<p>You can also define your own notifications, and that is what you’ve done here. The new notification is called <code>CoreDataSaveFailedNotification</code>.
+</p>
+<p>The idea is that there is one place in the app that listens for this notification, pops up an alert view, and terminates. The great thing about using <code>NotificationCenter</code> is that your Core Data code does not need to care about any of this.
+</p>
+<p>Whenever a saving error occurs, no matter at which point in the app, the <code>fatalCoreDataError(_:)</code> function sends out this notification, safe in the belief that some other object is listening for the notification and will handle the error.
+</p>
+<p>So who will actually handle the error? The app delegate is a good place for this. It’s the top-level object in the app and it&apos;s always guaranteed to exist.
+</p>
+<p>➤ Add the following method to <em>AppDelegate.swift</em>:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Helper methods</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">listenForFatalCoreDataNotifications</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-comment">// 1</span>
+  <span class="hljs-type">NotificationCenter</span>.<span class="hljs-keyword">default</span>.addObserver(
+    forName: <span class="hljs-type">CoreDataSaveFailedNotification</span>,
+     object: <span class="hljs-literal">nil</span>, queue: <span class="hljs-type">OperationQueue</span>.main,
+      using: { notification <span class="hljs-keyword">in</span>
+      <span class="hljs-comment">// 2</span>
+      <span class="hljs-keyword">let</span> message = <span class="hljs-string">""</span><span class="hljs-string">"
+There was a fatal error in the app and it cannot continue.
+
+Press OK to terminate the app. Sorry for the inconvenience.
+"</span><span class="hljs-string">""</span>
+      <span class="hljs-comment">// 3</span>
+      <span class="hljs-keyword">let</span> alert = <span class="hljs-type">UIAlertController</span>(
+        title: <span class="hljs-string">"Internal Error"</span>, message: message,
+                          preferredStyle: .alert)
+      
+      <span class="hljs-comment">// 4</span>
+      <span class="hljs-keyword">let</span> action = <span class="hljs-type">UIAlertAction</span>(title: <span class="hljs-string">"OK"</span>, 
+                                 style: .<span class="hljs-keyword">default</span>) { <span class="hljs-number">_</span> <span class="hljs-keyword">in</span>
+        <span class="hljs-keyword">let</span> exception = <span class="hljs-type">NSException</span>(
+          name: <span class="hljs-type">NSExceptionName</span>.internalInconsistencyException,
+          reason: <span class="hljs-string">"Fatal Core Data error"</span>, userInfo: <span class="hljs-literal">nil</span>)
+        exception.raise()
+      }      
+      alert.addAction(action)
+      
+      <span class="hljs-comment">// 5</span>
+      <span class="hljs-keyword">let</span> tabController = <span class="hljs-keyword">self</span>.window!.rootViewController!
+      tabController.present(alert, animated: <span class="hljs-literal">true</span>, 
+                                 completion: <span class="hljs-literal">nil</span>)
+  })
+}</pre>
+<p>Here’s how this works step-by-step:
+</p>
+<ol>
+<li>
+<p>Tell <code>NotificationCenter</code> that you want to be notified whenever a <code>CoreDataSaveFailedNotification</code> is posted. The actual code that is performed when that happens sits in a closure following <code>using:</code>.
+</p></li>
+
+<li>
+<p>Set up the error message to display. This could have been done using a normal string by inserting new lines (<code>\n</code>) as you&apos;ve seen done before, but this shows another way to do this — using multiline strings.
+</p>
+<p>Note that the multiline string starts and ends with a triple quote (<code>&quot;&quot;&quot;</code>) and that the first line of the string has to start on a new line and the closing triple quotes have to be on a new line as well.  You can include new lines and other special characters like quotes within the string. So it can be really handy, even if it looks a little weird :]
+</p></li>
+
+<li>
+<p>Create a <code>UIAlertController</code> to show the error message and use the multiline string from earlier as the message.
+</p></li>
+
+<li>
+<p>Add an action for the alert’s OK button. The code for handling the button press is again a closure — these things are everywhere! Instead of calling <code>fatalError()</code>, the closure creates an <code>NSException</code> object to terminate the app. That’s a bit nicer and it provides more information to the crash log.
+</p></li>
+
+<li>
+<p>To show the alert with <code>present(animated:completion:)</code> you need a view controller that is currently visible. You simply use the window’s <code>rootViewController</code> — in this app that is the tab bar controller — since it will be visible at all times as per the current navigation flow of the app.
+</p></li>
+</ol>
+
+<p>All that remains is calling this new method so that the notification handler is registered with <code>NotificationCenter</code>.
+</p>
+<p>➤ Add the following to <code>application(_:didFinishLaunchingWithOptions:)</code>, just before the <code>return true</code> statement:
+</p><pre class="code-block">listenForFatalCoreDataNotifications()</pre>
+<p>➤ Run the app again and try to tag a location before the street address has been obtained. Even though the app still crashes when you tap the OK button on the alert, at least now it tells the user what’s going on:
+</p><div class="image-30"><img src="graphics/img443.png"  alt="" title="The app crashes with a message" /></div>
+<p>Again, I should stress that you test your app thoroughly to make sure you’re not giving Core Data any objects that do not validate. You want to avoid these save errors at all costs!
+</p>
+<p>Ideally, users should never have to see that alert view, but it’s good to have in place because there are no guarantees your app won’t have bugs.
+</p>
+<div class="note">
+<p><em>Note:</em> You can legitimately use <code>managedObjectContext.save()</code> to let Core Data validate user input. There is no requirement that you make your app crash after an unsuccessful save, only if the error was unexpected and definitely shouldn’t have happened!
+</p>
+<p>Besides the “optional” flag, there are many more validation settings you can set for your entities. If you let users enter data that needs to go into these attributes, then it’s perfectly acceptable to use <code>save()</code> to validate input. If it throws an error, then a user input is invalid and you need to handle it.
+</p></div>
+
+<p>➤ In the data model, set the <em>placemark</em> attribute back to optional (and uncomment the code in <em>CurrentLocationViewController.swift</em>, if you did comment out the <code>placemark</code> line).
+</p>
+<p>Run the app just to make sure everything works as it should.
+</p>
+<p>You can find the project files for this chapter under <em>27 – Saving Locations</em> in the Source Code folder.
+</p></body></html>

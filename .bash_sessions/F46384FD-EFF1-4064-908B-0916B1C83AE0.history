@@ -1,0 +1,9 @@
+git remote add origin
+git remote add origin https://github.com/AhmedMagdyOmar/Store.git
+git push -u origin master
+git push -u origin master
+init git
+git init
+git remote add origin https://github.com/AhmedMagdyOmar/Store.git
+git push -u origin master
+git push -u origin master

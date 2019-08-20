@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 5: Rounds and Score</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 5: Rounds and Score</h1>
+
+<p>OK, so you have made quite a bit of progress on the game, and the to-do list is getting ever shorter! So what&apos;s next on the list now that you can generate a random number and display it on screen?
+</p>
+<p>A quick look at the task list shows that you now have to &quot;compare the value of the slider to that random number and calculate a score based on how far off the player is.&quot; Let&apos;s get to it!
+</p>
+<p>This chapter covers the following:
+</p>
+<ul>
+<li>
+<p><em>Get the difference:</em> Calculate the difference between the target value and the value that the user selected.
+</p></li>
+
+<li>
+<p><em>Other ways to calculate the difference:</em> Other approaches to calculating the difference.
+</p></li>
+
+<li>
+<p><em>What&apos;s the score?:</em> Calculate the user&apos;s score based on the difference value.
+</p></li>
+
+<li>
+<p><em>The total score:</em> Calculate the player&apos;s total score over multiple rounds.
+</p></li>
+
+<li>
+<p><em>Display the score:</em> Display the player score on screen.
+</p></li>
+
+<li>
+<p><em>One more round...:</em> Implement updating the round count and displaying the current round on screen.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Getting the difference</h2>
+
+<p>Now that you have both the target value (the random number) and a way to read the slider’s position, you can calculate how many points the player scored.
+</p>
+<p>The closer the slider is to the target, the more points for the player.
+</p>
+<p>To calculate the score for each round, you look at how far off the slider’s value is from the target:
+</p><div class="image-50"><img src="graphics/img71.png"  alt="" title="Calculating the difference between the slider position and the target value" /></div>
+<p>A simple approach to finding the distance between the target and the slider is to subtract <code>currentValue</code> from <code>targetValue</code>.
+</p>
+<p>Unfortunately, that gives a negative value if the slider is to the right of the target because now <code>currentValue</code> is greater than <code>targetValue</code>.
+</p>
+<p>You need some way to turn that negative value into a positive value — or you end up subtracting points from the player’s score (unfair!).
+</p>
+<p>Doing the subtraction the other way around — <code>currentValue</code> minus <code>targetValue</code> — won’t always solve things either because, then, the difference will be negative if the slider is to the left of the target instead of the right.
+</p>
+<p>Hmm, it looks like we’re in trouble here...
+</p>
+<div class="note">
+<p><em>Exercise</em>: How would you frame the solution to this problem if I asked you to solve it in natural language? Don’t worry about how to express it in computer language for now, just think it through in plain English.
+</p></div>
+
+<p>I came up with something like this:
+</p>
+<ul>
+<li>
+<p><i>If the slider’s value is greater than the target value, then the difference is: slider value minus the target value.</i>
+</p></li>
+
+<li>
+<p><i>However, if the target value is greater than the slider value, then the difference is: target value minus the slider value.</i>
+</p></li>
+
+<li>
+<p><i>Otherwise, both values must be equal, and the difference is zero.</i>
+</p></li>
+</ul>
+
+<p>This will always lead to a difference that is a positive number, because you always subtract the smaller number from the larger one.
+</p>
+<p>Do the math:
+</p>
+<p>If the slider is at position 60 and the target value is 40, then the slider is to the right of the target value, and the difference is 60 - 40 = 20.
+</p>
+<p>However, if the slider is at position 10 and the target is 30, then the slider is to the left of the target and has a smaller value. The difference here is 30 - 10 = also 20.
+</p>
+<h4 class="segment-chapter">Algorithms</h4>
+
+<p>What you’ve just done is come up with an <i>algorithm</i>, which is a fancy term for a series of steps for solving a computational problem. This is only a very simple algorithm, but it is an algorithm nonetheless.
+</p>
+<p>There are many famous algorithms, such as <i>quicksort</i> for sorting a list of items and <i>binary search</i> for quickly searching through such a sorted list. Other people have already invented many algorithms that you can use in your own programs — that&apos;ll save you a lot of thinking!
+</p>
+<p>However, in the programs that you write, you’ll probably have to come up with a few algorithms of your own at some time or other. Some are simple such as the one above; others can be pretty hard and might cause you to throw up your hands in despair. But that’s part of the fun of programming. :]
+</p>
+<p>The academic field of Computer Science concerns itself largely with studying algorithms and finding better ones.
+</p>
+<p>You can describe any algorithm in plain English. It’s just a series of steps that you perform to calculate something. Often, you can perform that calculation in your head or on paper, the way you did above. But for more complicated algorithms, doing that might take you forever so, at some point, you’ll have to convert the algorithm to computer code.
+</p>
+<p>The point I’m trying to make is this: If you ever get stuck and you don’t know how to make your program calculate something, take a piece of paper and try to write out the steps in English. Set aside the computer for a moment and think the steps through. How would you perform this calculation by hand?
+</p>
+<p>Once you know how to do that, converting the algorithm to code should be a piece of cake.
+</p>
+<h3 class="segment-chapter">The difference algorithm</h3>
+
+<p>Getting back to the problem at hand, it is possible you came up with a different way to solve it. I’ll show you two alternatives in a minute, but let’s convert the above algorithm to computer code first:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> difference: <span class="hljs-type">Int</span>
+<span class="hljs-keyword">if</span> currentValue &gt; targetValue {
+  difference = currentValue - targetValue
+} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> targetValue &gt; currentValue {
+  difference = targetValue - currentValue
+} <span class="hljs-keyword">else</span> {
+  difference = <span class="hljs-number">0</span>
+}</pre>
+<p>The <code>if</code> construct is new. It allows your code to make decisions, and it works much like you would expect:
+</p><pre class="code-block">if something is true {
+  then do this
+} else if something else is true {
+  then do that instead
+} else {
+  do something when neither of the above are true
+}</pre>
+<p>Basically, you put a <i>logical condition</i> after the <code>if</code> keyword. If that condition turns out to be true, for example <code>currentValue</code> is greater than <code>targetValue</code>, then the code in the block between the <code>{ }</code> brackets is executed.
+</p>
+<p>However, if the condition is not true, then the computer looks at the <code>else if</code> condition and evaluates that. There may be more than one <code>else if</code>, and code execution moves one by one from top to bottom until one condition proves to be true.
+</p>
+<p>If none of the conditions are found to be valid, then the code in the final <code>else</code> block is executed.
+</p>
+<p>In the implementation of this little algorithm, you first create a local variable named <code>difference</code> to hold the result. This will either be a positive whole number or zero, so an <code>Int</code> will do:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> difference: <span class="hljs-type">Int</span></pre>
+<p>Then you compare the <code>currentValue</code> against the <code>targetValue</code>. First, you determine if <code>currentValue</code> is greater than <code>targetValue</code>:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> currentValue &gt; targetValue {</pre>
+<p>The <code>&gt;</code> is the <i>greater-than</i> operator. The condition <code>currentValue &gt; targetValue</code> is considered true if the value stored in <code>currentValue</code> is at least one higher than the value stored in <code>targetValue</code>. In that case, the following line of code is executed:
+</p><pre class="code-block">  difference = currentValue - targetValue</pre>
+<p>Here, you subtract <code>targetValue</code> (the smaller one) from <code>currentValue</code> (the larger one) and store the result in the <code>difference</code> variable.
+</p>
+<p>Notice how I chose variable names that clearly describe what kind of data the variables contain. Often, you will see code such as this:
+</p><pre class="code-block">a = b - <span class="hljs-built_in">c</span></pre>
+<p>It is not immediately clear what this is supposed to mean, other than that some arithmetic is taking place. The variable names “a”, “b” and “c” don’t give any clues as to their intended purpose or what kind of data they might contain.
+</p>
+<p>Back to the <code>if</code> statement. If <code>currentValue</code> is equal to or less than <code>targetValue</code>, the condition is untrue (or <i>false</i> in computer-speak) and execution will move on to the next condition:
+</p><pre class="code-block">} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> targetValue &gt; currentValue {</pre>
+<p>The same thing happens here as before, except now the roles of <code>targetValue</code> and <code>currentValue</code> are reversed. The computer will only execute the following line when <code>targetValue</code> is the greater of the two values:
+</p><pre class="code-block">  difference = targetValue - currentValue</pre>
+<p>This time, you subtract <code>currentValue</code> from <code>targetValue</code> and store the result in the <code>difference</code> variable.
+</p>
+<p>There is only one situation you haven’t handled yet: when <code>currentValue</code> and <code>targetValue</code> are equal. If this happens, the player has put the slider exactly at the position of the target random number, a perfect score.
+</p>
+<p>In that case the difference is 0:
+</p><pre class="code-block">} <span class="hljs-keyword">else</span> {
+  difference = <span class="hljs-number">0</span>
+}</pre>
+<p>Since, by now, you’ve already determined that one value is not greater than the other, nor is it smaller, you can only draw one conclusion: The numbers must be equal.
+</p>
+<h3 class="segment-chapter">Displaying the difference</h3>
+
+<p>➤ Let’s put this code into action. Add it to the top of <code>showAlert()</code>:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showAlert</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">var</span> difference: <span class="hljs-type">Int</span>
+  <span class="hljs-keyword">if</span> currentValue &gt; targetValue {
+    difference = currentValue - targetValue
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> targetValue &gt; currentValue {
+    difference = targetValue - currentValue
+  } <span class="hljs-keyword">else</span> {
+    difference = <span class="hljs-number">0</span>
+  }
+
+  <span class="hljs-keyword">let</span> message = <span class="hljs-string">"The value of the slider is: <span class="hljs-subst">\(currentValue)</span>"</span> +
+                <span class="hljs-string">"\nThe target value is: <span class="hljs-subst">\(targetValue)</span>"</span> +
+                <span class="hljs-string">"\nThe difference is: <span class="hljs-subst">\(difference)</span>"</span>
+  . . .
+}</pre>
+<p>Just so you can see that it works, you add the <code>difference</code> value to the alert message as well.
+</p>
+<p>➤ Run it and see for yourself.
+</p><div class="image-60"><img src="graphics/img72.png"  alt="" title="The alert shows the difference between the target and the slider" /></div>
+<h2 class="segment-chapter">Simplifying the algorithm</h2>
+
+<p>I mentioned earlier that there are other ways to calculate the difference between <code>currentValue</code> and <code>targetValue</code> as a positive number. The above algorithm works well, but it is eight lines of code. I think we can come up with a simpler approach that takes up fewer lines.
+</p>
+<p>The new algorithm goes like this:
+</p>
+<ol>
+<li>
+<p><i>Subtract the target value from the slider’s value.</i>
+</p></li>
+
+<li>
+<p><i>If the result is a negative number, then multiply it by -1 to make it a positive number.</i>
+</p></li>
+</ol>
+
+<p>Here, you no longer avoid the negative number since computers can work just fine with negative numbers. You simply turn it into a positive number.
+</p>
+<div class="note">
+<p><em>Exercise</em>: Convert the above algorithm into source code. Hint: The English description of the algorithm contains the words “if” and “then,” which is a pretty good indication that you’ll have to use an <code>if</code> statement.
+</p></div>
+
+<p>You should have arrived at something like this:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> difference = currentValue - targetValue
+<span class="hljs-keyword">if</span> difference &lt; <span class="hljs-number">0</span> {
+  difference = difference * -<span class="hljs-number">1</span>
+}</pre>
+<p>This is a pretty straightforward translation of the new algorithm.
+</p>
+<p>You first do the subtraction and put the result into the <code>difference</code> variable.
+</p>
+<p>Notice that you can create the new variable and assign the result of a calculation to it, all in one line. You don’t need to put it onto two different lines, like so:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> difference: <span class="hljs-type">Int</span>
+difference = currentValue - targetValue</pre>
+<p>Also, in the one-liner version, you didn’t have to tell the compiler that <code>difference</code> takes <code>Int</code> values. Because both <code>currentValue</code> and <code>targetValue</code> are <code>Int</code>s, Swift is smart enough to figure out that difference should also be an <code>Int</code>.
+</p>
+<p>This feature, as mentioned before, is called <i>type inference</i> and it’s one of the big selling points of Swift.
+</p>
+<p>Once you have the subtraction result, you use an <code>if</code> statement to determine whether <code>difference</code> is negative, i.e., less than zero. If it is, you multiply by -1 and put the new result — now a positive number — back into the <code>difference</code> variable.
+</p>
+<p>When you write,
+</p><pre class="code-block">difference = difference * -<span class="hljs-number">1</span></pre>
+<p>the computer first multiplies <code>difference</code>’s value by -1. Then, it puts the result of that calculation back into <code>difference</code>. In effect, this overwrites <code>difference</code>’s old contents (the negative number) with the positive number.
+</p>
+<p>Because this is a common thing to do, there is a handy shortcut:
+</p><pre class="code-block">difference *= -<span class="hljs-number">1</span></pre>
+<p>The <code>*=</code> operator combines <code>*</code> and <code>=</code> into a single operation. The end result is the same: The variable’s old value is gone and it now contains the result of the multiplication.
+</p>
+<p>You could also have written this algorithm as follows:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> difference = currentValue - targetValue
+<span class="hljs-keyword">if</span> difference &lt; <span class="hljs-number">0</span> {
+  difference = -difference
+}</pre>
+<p>Instead of multiplying by -1, you now use the negation operator to ensure <code>difference</code>’s value is always positive. This works because negating a negative number makes it positive again. (Ask a math professor if you don’t believe me.)
+</p>
+<h3 class="segment-chapter">Using the new algorithm</h3>
+
+<p>➤ Give these new algorithms a try. You should replace the old stuff at the top of <code>showAlert()</code> as follows:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showAlert</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">var</span> difference = currentValue - targetValue
+  <span class="hljs-keyword">if</span> difference &lt; <span class="hljs-number">0</span> {
+    difference = difference * -<span class="hljs-number">1</span>
+  }
+
+  <span class="hljs-keyword">let</span> message = . . .
+}</pre>
+<p>When you run this new version of the app (try it!), it should work exactly the same as before. The result of the computation does not change, only the technique used changed.
+</p>
+<h3 class="segment-chapter">Another variation</h3>
+
+<p>The final alternative algorithm I want to show you uses a function.
+</p>
+<p>You’ve already seen functions a few times before. For example, when you used <code>lroundf()</code> for rounding off the slider’s decimals.
+</p>
+<p>Similarly, to make sure a number is always positive, you can use the <code>abs()</code> function.
+</p>
+<p>If you took math in school, you might remember the term “absolute value,” which is the value of a number without regard to its sign.
+</p>
+<p>That’s exactly what you need here, and the standard library contains a convenient function for it, which allows you to reduce this entire algorithm down to a single line of code:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> difference = <span class="hljs-built_in">abs</span>(targetValue - currentValue)</pre>
+<p>It really doesn’t matter whether you subtract <code>currentValue</code> from <code>targetValue</code> or the other way around. If the number is negative, <code>abs()</code> turns it positive. It’s a handy function to remember.
+</p>
+<p>➤ Make the change to <code>showAlert()</code> and try it out:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showAlert</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> difference = <span class="hljs-built_in">abs</span>(targetValue - currentValue)
+
+  <span class="hljs-keyword">let</span> message = . . .
+}</pre>
+<p>It doesn’t get much simpler than that!
+</p>
+<div class="note">
+<p><em>Exercise</em>: Something else has changed... can you spot it?
+</p></div>
+
+<p>Answer: You wrote <em>let</em> <code>difference</code> instead of <em>var</em> <code>difference</code>.
+</p>
+<h3 class="segment-chapter">Variables and constants</h3>
+
+<p>Swift makes a distinction between variables and <i>constants</i>. Unlike a variable, the value of a constant, as the name implies, cannot change.
+</p>
+<p>You can only put something into the box of a constant once and cannot replace it with something else afterwards.
+</p>
+<p>The keyword <code>var</code> creates a variable while <code>let</code> creates a constant. That means <code>difference</code> is now a constant, not a variable.
+</p>
+<p>In the previous algorithms, the value of <code>difference</code> could possibly change. If it was negative, you turned it positive. That required <code>difference</code> to be a variable, because only variables can have their value change.
+</p>
+<p>Now that you can calculate the whole thing in a single line, <code>difference</code> will never have to change once you’ve given it a value. In that case, it’s better to make it a constant with <code>let</code>. Why is that better? It makes your intent clear, which in turn helps the Swift compiler understand your program better.
+</p>
+<p>By the same token, <code>message</code>, <code>alert</code>, and <code>action</code> are also constants (and have been all along!). Now, you know why you declared these objects with <code>let</code> instead of <code>var</code>. Once they’ve been given a value, they never need to change.
+</p>
+<p>Constants are very common in Swift. Often, you only need to hold onto a value for a very short time. If, in that time, the value never has to change, it’s best to make it a constant (<code>let</code>) and not a variable (<code>var</code>).
+</p>
+<h2 class="segment-chapter">What’s the score?</h2>
+
+<p>Now that you know how far off the slider is from the target, calculating the player’s score for each round is easy.
+</p>
+<p>➤ Change <code>showAlert()</code> to:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showAlert</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> difference = <span class="hljs-built_in">abs</span>(targetValue - currentValue)
+  <span class="hljs-keyword">let</span> points = <span class="hljs-number">100</span> - difference
+
+  <span class="hljs-keyword">let</span> message = <span class="hljs-string">"You scored <span class="hljs-subst">\(points)</span> points"</span>
+  . . . 
+}</pre>
+<p>The maximum score you can get is 100 points if you put the slider right on the target and the difference is 0. The farther away from the target you are, the fewer points you earn.
+</p>
+<p>➤ Run the app and score some points!
+</p><div class="image-60"><img src="graphics/img73.png"  alt="" title="The alert with the player’s score for the current round" /></div>
+<div class="note">
+<p><em>Exercise</em>: Because the maximum slider position is 100 and the minimum is 1, the biggest difference is 100 - 1 = 99. That means the absolute worst score you can have in a round is 1 point. Explain why this is so. (Eek! It requires math!)
+</p></div>
+
+<h2 class="segment-chapter">Showing the total score</h2>
+
+<p>In this game, you want to show the player’s total score on the screen. After every round, the app should add the newly scored points to the total and then update the score label.
+</p>
+<h3 class="segment-chapter">Storing the total score</h3>
+
+<p>Because the game needs to keep the total score around for a long time, you will need an instance variable.
+</p>
+<p>➤ Add a new <code>score</code> instance variable to <em>ViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ViewController</span>: <span class="hljs-title">UIViewController</span> </span>{
+
+  <span class="hljs-keyword">var</span> currentValue: <span class="hljs-type">Int</span> = <span class="hljs-number">0</span>
+  <span class="hljs-keyword">var</span> targetValue = <span class="hljs-number">0</span>
+  <span class="hljs-keyword">var</span> score = <span class="hljs-number">0</span>              <span class="hljs-comment">// add this line</span></pre>
+<p>Again, we make use of type inference to not specify a type for <code>score</code>.
+</p>
+<div class="note">
+<p><em>Note</em>: If you are not sure about the inferred type of a variable, there is an easy way to find out. Simply hold down the <em>Alt</em> / <em>Option</em> key, and hover your cursor over the variable in question. The variable will be highlighted in blue and your cursor will turn into a question mark. Now, click on the variable and you will get a handy popup, which tells you the type of the variable, as well as the source file in which the variable was declared.
+</p></div>
+<div class="image-100"><img src="graphics/img74.png"  alt="" title="Discover the inferred type for a variable" /></div>
+<p>➤ Now that you&apos;re using type inference, you can clean up <code>currentValue</code> as well (and make its initial value 0, if you haven&apos;t already):
+</p><pre class="code-block">  <span class="hljs-keyword">var</span> currentValue = <span class="hljs-number">0</span></pre>
+<p>Thanks to type inference, you only have to specify the data type when you’re not giving the variable an initial value. But most of the time, you can safely make Swift guess at the type.
+</p>
+<p>I think type inference is pretty sweet! It will definitely save you some, uh, typing (in more ways than one!).
+</p>
+<h3 class="segment-chapter">Updating the total score</h3>
+
+<p>Now, <code>showAlert()</code> can be amended to update this <code>score</code> variable.
+</p>
+<p>➤ Make the following changes:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showAlert</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> difference = <span class="hljs-built_in">abs</span>(targetValue - currentValue)
+  <span class="hljs-keyword">let</span> points = <span class="hljs-number">100</span> - difference
+
+  score += points        <span class="hljs-comment">// add this line</span>
+
+  <span class="hljs-keyword">let</span> message = <span class="hljs-string">"You scored <span class="hljs-subst">\(points)</span> points"</span>
+  . . . 
+}</pre>
+<p>Nothing too shocking, here. You just added the following line:
+</p><pre class="code-block">score += points</pre>
+<p>This adds the points that the user scored in this round to the total score. You could also have written it like this:
+</p><pre class="code-block">score = score + points</pre>
+<p>Personally, I prefer the shorthand <code>+=</code> version, but either one is OK. Both accomplish exactly the same thing.
+</p>
+<h2 class="segment-chapter">Displaying the score</h2>
+
+<p>To display your current score, you’re going to do the same thing that you did for the target label: hook up the score label to an outlet and put the score value into the label’s <code>text</code> property.
+</p>
+<div class="note">
+<p><em>Exercise</em>: See if you can do the above by yourself. You’ve already done these things before for the target value label, so you should be able to repeat those steps for the score label.
+</p></div>
+
+<p>Done? You should have added this line to <em>ViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> scoreLabel: <span class="hljs-type">UILabel</span>!</pre>
+<p>Then, you connect the relevant label on the storyboard (the one that says 999999) to the new <code>scoreLabel</code> outlet.
+</p>
+<p>Unsure how to connect the outlet? There are several ways to make connections from user interface objects to the view controller’s outlets:
+</p>
+<ul>
+<li>
+<p>Control-click on the object to get a context-sensitive popup menu. Then, drag from New Referencing Outlet to View Controller (you did this with the slider).
+</p></li>
+
+<li>
+<p>Go to the Connections Inspector for the label. Drag from New Referencing Outlet to View Controller (you did this with the target label).
+</p></li>
+
+<li>
+<p>Control-drag <em>from</em> View Controller to the label (give this one a try now) — doing it the other way, Control-dragging from the label to the View Controller, won’t work.
+</p></li>
+</ul>
+
+<p>There is more than one way to skin a cat, or, connect outlets. :]
+</p>
+<p>Great, that gives you a <code>scoreLabel</code> outlet that you can use to display the score. Now, where in the code can you do that? In <code>updateLabels()</code>, of course.
+</p>
+<p>➤ Back in <em>ViewController.swift</em>, change <code>updateLabels()</code> to the following:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">updateLabels</span><span class="hljs-params">()</span></span> {
+  targetLabel.text = <span class="hljs-type">String</span>(targetValue)
+  scoreLabel.text = <span class="hljs-type">String</span>(score)     <span class="hljs-comment">// add this line</span>
+}</pre>
+<p>Nothing new here. You convert the score — which is an <code>Int</code> — into a <code>String</code> and then pass that string to the label’s <code>text</code> property. In response to that, the label will redraw itself with the new score.
+</p>
+<p>➤ Run the app and verify that the points for this round are added to the total score label whenever you tap the button.
+</p><div class="image-60"><img src="graphics/img75.png"  alt="" title="The score label keeps track of the player’s total score" /></div>
+<h2 class="segment-chapter">One more round...</h2>
+
+<p>Speaking of rounds, you also have to increment the round number each time the player starts a new round.
+</p>
+<div class="note">
+<p><em>Exercise</em>: Keep track of the current round number (starting at 1) and increment it when a new round starts. Display the current round number in the corresponding label. I may be throwing you into the deep end here, but if you’ve been able to follow the instructions so far, then you’ve already seen all the pieces you will need to pull this off. Good luck!
+</p></div>
+
+<p>If you guessed that you had to add another instance variable, then you are right. You should add the following line (or something similar) to <em>ViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> round = <span class="hljs-number">0</span></pre>
+<p>It’s also OK if you included the name of the data type, even though that is not strictly necessary:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> round: <span class="hljs-type">Int</span> = <span class="hljs-number">0</span></pre>
+<p>Also, add an outlet for the label:
+</p><pre class="code-block"><span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> roundLabel: <span class="hljs-type">UILabel</span>!</pre>
+<p>As before, you should connect the label to this outlet in Interface Builder.
+</p>
+<div class="note">
+<p><em>Don’t forget to make those connections.</em>
+</p>
+<p>Forgetting to make the connections in Interface Builder is an often-made mistake, especially by yours truly.
+</p>
+<p>It happens to me all the time that I make the outlet for a button and write the code to deal with taps on that button but, when I run the app, it doesn’t work. Usually, it takes me a few minutes and some head scratching to realize that I forgot to connect the button to the outlet or the action method.
+</p>
+<p>You can tap on the button all you want but, unless that connection exists, your code will not respond.
+</p></div>
+
+<p>Finally, <code>updateLabels()</code> should be modified like this:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">updateLabels</span><span class="hljs-params">()</span></span> {
+  targetLabel.text = <span class="hljs-type">String</span>(targetValue)
+  scoreLabel.text = <span class="hljs-type">String</span>(score)
+  roundLabel.text = <span class="hljs-type">String</span>(round)    <span class="hljs-comment">// add this line</span>
+}</pre>
+<p>Did you also figure out where to increment the <code>round</code> variable?
+</p>
+<p>I’d say the <code>startNewRound()</code> method is a pretty good place. After all, you call this method whenever you start a new round. It makes sense to increment the round counter there.
+</p>
+<p>➤ Change <code>startNewRound()</code> to:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">startNewRound</span><span class="hljs-params">()</span></span> {
+  round += <span class="hljs-number">1</span>           <span class="hljs-comment">// add this line</span>
+  targetValue = ...
+}</pre>
+<p>Note that when you declared the <code>round</code> instance variable, you gave it a default value of 0. Therefore, when the app starts up, <code>round</code> is initially 0. When you call <code>startNewRound()</code> for the very first time, it adds 1 to this initial value and, as a result, the first round is properly counted as round 1.
+</p>
+<p>➤ Run the app and try it out. The round counter should update whenever you press the Hit Me! button.
+</p><div class="image-60"><img src="graphics/img76.png"  alt="" title="The round label counts how many rounds have been played" /></div>
+<p>You&apos;re making great progress; well done!
+</p>
+<p>You can find the project files for the app up to this point under <em>05 — Rounds and Score</em> in the Source Code folder. If you get stuck, compare your version of the app with these source files to see if you missed anything.
+</p></body></html>

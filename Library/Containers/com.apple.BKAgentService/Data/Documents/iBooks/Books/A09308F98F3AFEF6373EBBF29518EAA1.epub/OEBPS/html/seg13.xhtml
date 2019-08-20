@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 8: The Final App</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 8: The Final App</h1>
+
+<p>You might be thinking, &quot;OK, <i>Bull&apos;s Eye</i> is now done, and I can move on to the next app!&quot; If you were, I&apos;m afraid you are in for disappointment - there&apos;s just a teensy bit more to do in the game.
+</p>
+<p>&quot;What? What&apos;s left to do? We finished the task list!&quot; you say? You are right. The game is indeed complete. However, all this time, you&apos;ve been developing and testing for a 4&quot; screen found on devices such as the iPhone 5, 5c, and SE. But what about other iPhones such as the 4.7-inch iPhone, the 5.5-inch iPhone Plus, or the 5.8-inch iPhone X which have bigger screens? Or the iPad with its multiple screen sizes? Will the game work correctly on all these different screen sizes?
+</p>
+<p>And if not, shouldn&apos;t we fix it?
+</p>
+<p>This chapter covers the following:
+</p>
+<ul>
+<li>
+<p><em>Support different screen sizes:</em> Ensure that the app will run correctly on all the different iPhone and iPad screen sizes.
+</p></li>
+
+<li>
+<p><em>Crossfade:</em> Add some animation to make the transition to the start of a new game a bit more dynamic.
+</p></li>
+
+<li>
+<p><em>The icon:</em> Add the app icon.
+</p></li>
+
+<li>
+<p><em>Display name:</em> Set the display name for the app.
+</p></li>
+
+<li>
+<p><em>Run on device:</em> How to configure everything to run your app on an actual device.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Support different screen sizes</h2>
+
+<p>First, let&apos;s check if there is indeed an issue running Bull&apos;s Eye on a device with a larger screen. It&apos;s always good to verify that there&apos;s inded an issue before we do extra work, right? Why fix it, if it isn&apos;t broken? :]
+</p>
+<p>➤ To see how the app looks on a larger screen, run the app on an iPhone simulator like the <em>iPhone 8</em>. You can switch between Simulators using the selector at the top of the Xcode window:
+</p><div class="image-50"><img src="graphics/img125.png"  alt="" title="Using the scheme selector to switch to the iPhone 8 Simulator" /></div>
+<p>The result might not be what you expected:
+</p><div class="image-80"><img src="graphics/img126.png"  alt="" title="On the iPhone 8 Simulator, the app doesn&apos;t fill up the entire screen" /></div>
+<p>Obviously, this won’t do. Not everybody is going to be using a 4&quot; iOS device. And you don&apos;t want the game to display on only part of the screen for the rest of the people!
+</p>
+<p>This is a good opportunity to learn about <i>Auto Layout</i>, a core UIKit technology that makes it easy to support many different screen sizes in your apps, including the larger screens of the 4.7-inch, 5.5-inch, and 5.8-inch iPhones, and the iPad.
+</p>
+<p><em>Tip:</em> You can use the <em>Window → Scale</em> menu to resize a simulator if it doesn&apos;t fit on your screen. Some of those simulators, like the iPad one, can be monsters! Also, as of Xcode 9, you can resize a simulator window by simply dragging on one corner of the window - just like you do to resize any other window on macOS.
+</p>
+<p>Interface Builder has a few handy tools to help you make the game fit on any screen.
+</p>
+<h3 class="segment-chapter">The background image</h3>
+
+<p>➤ Go to <em>Main.storyboard</em>. Open the <em>View as:</em> panel at the bottom and choose the <em>iPhone 8</em> device. (You may need to change the orientation back to landscape.)
+</p><div class="image-60"><img src="graphics/img127.png"  alt="" title="Viewing the storyboard on iPhone 8" /></div>
+<p>The storyboard should look like your screen from when you ran on the iPhone 8 Simulator. This shows you how changes on the storyboard affect the bigger iPhone screens.
+</p>
+<p>First, let’s fix the background image. At its normal size, the image is too small to fit on the larger screens.
+</p>
+<p>This is where Auto Layout comes to the rescue.
+</p>
+<p>➤ In the storyboard, select the <em>Background image view</em> on the main <em>View Controller</em> and click the small <em>Add New Constraints</em> button at the bottom of the Xcode window:
+</p><div class="image-40"><img src="graphics/img128.png"  alt="" title="The Add New Constraints button" /></div>
+<p>This button lets you define relationships, called <i>constraints</i>, between the currently selected view and other views in the scene. When you run the app, UIKit evaluates these constraints and calculates the final layout of the views. This probably sounds a bit abstract, but you’ll see soon how it works in practice.
+</p>
+<p>In order for the background image to stretch from edge-to-edge on the screen, the left, top, right, and bottom edges of the image should be flush against the screen edges. Let&apos;s use Auto Layout to do this.
+</p>
+<p>➤ In the <em>Add New Constraints</em> menu, set the <em>left</em>, <em>top</em>, <em>right</em>, and <em>bottom</em> spacing to zero and make sure that the red I-beam markers next to (or above/below) each item is enabled. (The red I-beams are used to specify which constraints are enabled when adding new constraints.):
+</p><div class="image-45"><img src="graphics/img129.png"  alt="" title="Using the Add New Constraints menu to position the background image" /></div>
+<p>➤ Press <em>Add 4 Constraints</em> to finish. The background image will now cover the view fully. (Press Undo and Redo a few times to see the difference.)
+</p><div class="image-60"><img src="graphics/img130.png"  alt="" title="The background image now covers the whole view" /></div>
+<p>You might have also noticed that the Document Outline now has a new item called <em>Constraints</em>:
+</p><div class="image-30"><img src="graphics/img131.png"  alt="" title="The new Auto Layout constraints appear in the Document Outline" /></div>
+<p>There should be four constraints listed there, one for each edge of the image.
+</p>
+<p>➤ Run the app again on the iPhone 8 Simulator and also on the iPhone SE Simulator. In both cases, the background should display correctly now. (Of course, the other controls are still off-center, but we&apos;ll fix that soon.)
+</p>
+<p>If you use the <em>View as:</em> panel to switch the storyboard back to the iPhone SE, the background should display correctly there too.
+</p>
+<h3 class="segment-chapter">The About screen</h3>
+
+<p>Let’s repeat the background image fix for the About screen, too.
+</p>
+<p>➤ Use the <em>Add New Constraints</em> button to pin the About screen’s background image view to the parent view.
+</p>
+<p>The background image is now fine. Of course, the Close button and web view are still completely off.
+</p>
+<p>➤ In the storyboard, drag the <em>Close</em> button so that it snaps to the center of the view as well as the bottom guide.
+</p>
+<p>Interface Builder shows a handy guide, the dotted blue line, near the edges of the screen, which is useful for aligning objects by hand.
+</p><div class="image-70"><img src="graphics/img132.png"  alt="" title="The dotted blue lines are guides that help position your UI elements" /></div>
+<p>You want to create a centering constraint that keeps the Close button in the middle of the screen, regardless of how wide the screen is.
+</p>
+<p>➤ Click the <em>Close</em> button to select it. From the <em>Align</em> menu (which is to the left of the Add New Constraints button), choose <em>Horizontally in Container</em> and click <em>Add 1 Constraint</em>.
+</p><div class="image-30"><img src="graphics/img133.png"  alt="" title="The Align menu" /></div>
+<p>Interface Builder now draws a blue bar to represent the constraint, and a red box around the button as well.
+</p><div class="image-25"><img src="graphics/img134.png"  alt="" title="The Close button has red borders" /></div>
+<p>That’s a problem: the red box indicates that something is wrong with the constraints, usually that there aren’t enough of them.
+</p>
+<p>The thing to remember is this: for each view, there must always be enough constraints to define both its position and its size. The Close button already knows its size – you typed this into the Size inspector earlier – but for its position there is only a constraint for the X-coordinate (the alignment in the horizontal direction). You also need to add a constraint for the Y-coordinate.
+</p>
+<p>As you&apos;ve noticed, there are different types of constraints - there are alignment constraints and spacing constraints, like the ones you added via the Add New Constraints button.
+</p>
+<p>➤ With the <em>Close</em> button still selected, click on the <em>Add New Constraints</em> button.
+</p>
+<p>You want the Close button to always sit at a distance of 20 points from the bottom of the screen.
+</p>
+<p>➤ In the <em>Add New Constraints</em> menu, in the <em>Spacing to nearest neighbor</em> section, set the bottom spacing to <em>20</em> and make sure that the I-beam above the text box is enabled.
+</p><div class="image-35"><img src="graphics/img135.png"  alt="" title="The red I-beams decide the sides that are pinned down" /></div>
+<p>➤ Click <em>Add 1 Constraint</em> to finish.
+</p>
+<p>The red border will now turn blue, meaning that everything is OK:
+</p><div class="image-25"><img src="graphics/img136.png"  alt="" title="The constraints on the Close button are valid" /></div>
+<p>If at this point you don’t see blue bars but orange ones, then something’s still wrong with your Auto Layout constraints:
+</p><div class="image-35"><img src="graphics/img137.png"  alt="" title="The views are not positioned according to the constraints" /></div>
+<p>This happens when the constraints are valid (otherwise some, or all, of the bars/borders would be red) but the view is not in the right place in the scene. The dashed orange box off to the side is where Auto Layout has calculated the view should be, based on the constraints you have given it.
+</p>
+<p>To fix this issue, select the <em>Close</em> button again and click the <em>Update Frames</em> button at the bottom of the Interface Builder canvas.
+</p><div class="image-20"><img src="graphics/img138.png"  alt="" title="The Update Frames button" /></div>
+<p>You can also use the <em>Editor → Resolve Auto Layout Issues → Update Frames</em> item from the menu bar.
+</p>
+<p>The Close button should now always be perfectly centered, regardless of the device screen size.
+</p>
+<div class="note">
+<p><em>Note:</em> What happens if you don’t add any constraints to your views? In that case, Xcode will automatically add constraints when it builds the app. That is why you didn’t need to bother with any of this before.
+</p>
+<p>However, these default constraints may not always do what you want. For example, they will not automatically resize your views to accommodate larger (or smaller) screens. If you want that to happen, then it’s up to you to add your own constraints. (Afterall, Auto Layout can’t read your mind!)
+</p>
+<p>As soon as you add just one constraint to a view, Xcode will no longer add any other automatic constraints to that view. From then on, you’re responsible for adding enough constraints so that UIKit always knows what the position and size of the view will be.
+</p></div>
+
+<p>There is one thing left to fix in the About screen and that is the web view.
+</p>
+<p>➤ Select the <em>Web View</em> and open the <em>Add New Constraints</em> menu. First, make sure <em>Constrain to margins</em> is unchecked. Then click all four I-beam icons so they become solid red and set their spacing to 20 points, except the bottom one which should be 8 points:
+</p><div class="image-40"><img src="graphics/img139.png"  alt="" title="Creating the constraints for the web view" /></div>
+<p>➤ Finish by clicking <em>Add 4 Constraints</em>.
+</p>
+<p>There are now four constraints on the web view - indicated by the blue bars on each side:
+</p><div class="image-50"><img src="graphics/img140.png"  alt="" title="The four constraints on the web view" /></div>
+<p>Three of these pin the web view to the main view, so that it always resizes along with it, and one connects it to the Close button. This is enough to determine the size and position of the web view in any scenario.
+</p>
+<h3 class="segment-chapter">Fix the rest of the main scene</h3>
+
+<p>Back to the main game scene, which still needs some work.
+</p>
+<p>The game looks a bit lopsided now on bigger screens. You will fix that by placing all the labels, buttons, and the slider into a new “container” view. Using Auto Layout, you’ll center that container view in the screen, regardless of how big the screen is.
+</p>
+<p>➤ Select all the labels, buttons, and the slider. You can hold down <em>⌘</em> and click them individually, but an easier method is to go to the <em>Document Outline</em>, click on the first view (for me that is the “Put the Bull’s Eye as close as you can to:” label), then hold down Shift and click on the last view (in my case the Hit Me! button):
+</p><div class="image-25"><img src="graphics/img141.png"  alt="" title="Selecting the views from the Document Outline" /></div>
+<p>You should have selected everything but the background image view.
+</p>
+<p>➤ From Xcode’s menu bar, choose <em>Editor → Embed In → View</em>. This places the selected views inside a new container view:
+</p><div class="image-60"><img src="graphics/img142.png"  alt="" title="The views are embedded in a new container view" /></div>
+<p>This new view is completely white, which is not what you want eventually, but it does make it easier to add the constraints.
+</p>
+<p>➤ Select the newly added <em>container view</em> and open the <em>Add New Constraints</em> menu. Check the boxes for <em>Width</em> and <em>Height</em> in order to make constraints for them and leave the width and height at the values specified by Interface Builder. Click <em>Add 2 Constraints</em> to finish.
+</p><div class="image-30"><img src="graphics/img143.png"  alt="" title="Pinning the width and height of the container view" /></div>
+<p>Interface Builder now draws several bars around the view that represent the Width and Height constraints that you just made, but they are red. Don’t panic! It only means there are not enough constraints yet. No problem, you’ll add the missing constraints next.
+</p>
+<p>➤ With the container view still selected, open the <em>Align menu</em>. Check the <em>Horizontally in Container</em> and <em>Vertically in Container</em> options. Click <em>Add 2 Constraints</em>.
+</p>
+<p>All the Auto Layout bars should be blue now and the view is perfectly centered.
+</p>
+<p>➤ Finally, change the <em>Background</em> color of the container view to <em>Clear Color</em> (in other words, 100% transparent).
+</p>
+<p>You now have a layout that works correctly on any iPhone display! Try it out:
+</p><div class="image-90"><img src="graphics/img144.png"  alt="" title="The game running on 4-inch and 5.5-inch iPhones" /></div>
+<p>Auto Layout may take a while to get used to. Adding constraints in order to position UI elements is a little less obvious than just dragging them into place.
+</p>
+<p>But this also buys you a lot of power and flexibility, which you need when you’re dealing with devices that have different screen sizes.
+</p>
+<p>You’ll learn more about Auto Layout in the other parts of <i>The iOS Apprentice</i>.
+</p>
+<div class="note">
+<p><em>Exercise:</em> As you try the game on different devices, you might notice something - the controls for the game are always centered on screen, but they do not take up the whole area of the screen on bigger devices! This is because you set the container view for the controls to be a specific size. If you want the controls to change position and size depending on how much screen space is available, then you have to remove the container view (or set it to resize depending on screen size) and then set up the necessary autolayout constraints for each control separately.
+</p>
+<p>Are you up to the challenge of doing this on your own?
+</p></div>
+
+<h4 class="segment-chapter">Compiler warning</h4>
+
+<p>There&apos;s a compiler warning about views without any layout constraints being clipped which has been there since from almost the first time we created the main game view. At that point, I mentioned that we&apos;d tackle that warning later.
+</p>
+<p>But where are these views without constraints? The Issue navigator certainly does not give any clue! We have to go to a different screen to find out the list of affected views.
+</p>
+<p>If you look at the Document Outline, you&apos;ll notice that there&apos;s a small yellow circle with an arrow inside it next to the View Controller Scene - an indication that there are some warnings (not errors). If you click this circle, you will be taken to a list of Auto Layout issues in the scene:
+</p><div class="image-90"><img src="graphics/img145.png"  alt="" title="List of Auto Layout issues for scene" /></div>
+<p>You&apos;ll notice that all the controls inside the container view have warnings. This is because none of those views have any Auto Layout constraints and so will remain at their original positions when the view is displayed.
+</p>
+<p>So how do you fix these warnings? Simple enough - add some Auto Layout constraints for each view so that the view&apos;s size and position can be determined via Auto Layout when the view is displayed. Of course, you have the necessary knowledge at this point to do this yourself. So I&apos;ll leave it to you to tackle as a personal challenge :]
+</p>
+<p>If you get stuck, check out the final project provided for this chapter - that should show you how I fixed the issues.
+</p>
+<h3 class="segment-chapter">Testing on iPhone X</h3>
+
+<p>So it looks as if we got the app working correctly for all devices, right?
+</p>
+<p>Well ... not quite :]
+</p>
+<p>Try running the app on the iPhone X simulator. you should see something like this:
+</p><div class="image-90"><img src="graphics/img146.png"  alt="" title="The game on iPhone X" /></div>
+<p>Whoa! What happened?
+</p>
+<p>In Xcode 9, Apple introduced a new mechanism to go along with Auto Layout to work with the iPhone X screen. Since the iPhone X has a notch at the top, you don&apos;t want most apps to display their content beneath the notch since that content would not display properly.
+</p>
+<p>So, Xcode 9 has what is known as <i>safe layout guides</i> to define where it is safe to display content. If you take a look at the Auto Layout constraints for the background image on the main scene (or even the About scene for that matter), you will notice that the background image aligns to the safe area.
+</p>
+<p>Just to be clear, this is the correct behavior for most apps - you want your content to stick to the safe area. However, in the case of a game like <i>Bull&apos;s Eye</i> where you have a custom background, you want the background to cover the entire screen.
+</p>
+<p>So how do we fix it? Simple enough ... Just change the image constraints so that they align with the superview, which is the main view for the scene.
+</p>
+<p>➤ Select the background image in the main scene and switch to the <em>Size inspector</em>. It should show the four constraints set on the image:
+</p><div class="image-30"><img src="graphics/img147.png"  alt="" title="Auto Layout constraints for image" /></div>
+<p>➤ Double-click the first one. You should get a detailed editor for that Auto Layout constraint:
+</p><div class="image-30"><img src="graphics/img148.png"  alt="" title="Auto Layout constraint editor" /></div>
+<p>➤ Click the drop down for <em>First Item</em> and change it from Safe Area to Superview. Also, if the <em>Constant</em> field has a non-zero value, change it to 0.
+</p><div class="image-30"><img src="graphics/img149.png"  alt="" title="Edit Auto Layout constraint" /></div>
+<p>➤ Do the same for the other three constraints. Note that for two of the constraints, Safe Area will be the Second Item and not the First Item. So change either one based on which one specifies Safe Area.
+</p>
+<p>➤ Run your app on both the iPhone X simulator and at least one of the other simulators like the iPhone 8 one, to make sure that your change works correctly on all devices.
+</p>
+<h2 class="segment-chapter">Crossfade</h2>
+
+<p>There&apos;s one final bit of knowledge I want to impart before calling the game complete - Core Animation. This technology makes it very easy to create really sweet animations, with just a few lines of code, in your apps. Adding subtle animations (with emphasis on subtle!) can make your app a delight to use.
+</p>
+<p>You will add a simple crossfade after the Start Over button is pressed, so the transition back to round one won’t seem so abrupt.
+</p>
+<p>➤ In <em>ViewController.swift</em>, change <code>startNewGame()</code> to:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">startNewGame</span><span class="hljs-params">()</span></span> {
+  ...
+  startNewRound()
+  <span class="hljs-comment">// Add the following lines</span>
+  <span class="hljs-keyword">let</span> transition = <span class="hljs-type">CATransition</span>()
+  transition.type = <span class="hljs-type">CATransitionType</span>.fade
+  transition.duration = <span class="hljs-number">1</span>
+  transition.timingFunction = <span class="hljs-type">CAMediaTimingFunction</span>(name: 
+                              <span class="hljs-type">CAMediaTimingFunctionName</span>.easeOut)
+  view.layer.add(transition, forKey: <span class="hljs-literal">nil</span>)
+}</pre>
+<p>Everything after the comment telling you to add the following lines, all the <code>CATransition</code> stuff, is new.
+</p>
+<p>I’m not going to go into too much detail here. Suffice it to say you’re setting up an animation that crossfades from what is currently on the screen to the changes you’re making in <code>startNewRound()</code> – reset the slider to center position and reset the values of the labels.
+</p>
+<p>➤ Run the app and move the slider so that it is no longer in the center. Press the Start Over button and you should see a subtle crossfade animation.
+</p><div class="image-40"><img src="graphics/img150.png"  alt="" title="The screen crossfades between the old and new states" /></div>
+<h2 class="segment-chapter">The icon</h2>
+
+<p>You’re almost done with the app, but there are still a few loose ends to tie up. You may have noticed that the app has a really boring white icon. That won’t do!
+</p>
+<p>➤ Open the asset catalog (<em>Assets.xcassets</em>) and select <em>AppIcon</em>:
+</p><div class="image-90"><img src="graphics/img151.png"  alt="" title="The AppIcon group in the asset catalog" /></div>
+<p>This has several icon groups for the different types of icons the app needs.
+</p>
+<p>➤ In Finder, open the <em>Icon</em> folder from the resources. Drag the <em>Icon-40.png</em> file into the first slot, <em>iPhone Notification 20pt</em>:
+</p><div class="image-75"><img src="graphics/img152.png"  alt="" title="Dragging the icon into the asset catalog" /></div>
+<p>You may be wondering why you’re dragging the Icon-40.png file and not the Icon-20.png into the slot for 20pt. Notice that this slot says <em>2x</em>, which means it’s for Retina devices and on Retina screens one point counts as two pixels. So, 20pt = 40px. And the 40 in the icon name is for the size of the icon in pixels. Makes sense?
+</p>
+<p>➤ Drag the <em>Icon-60.png</em> file into the <em>3x</em> slot next to it. This is for the iPhone Plus devices with their 3x resolution.
+</p>
+<p>➤ For <em>iPhone Spotlight </em><em>&amp;</em><em> Settings 29pt</em>, drag the <em>Icon-58.png</em> file into the 2x slot and <em>Icon-87.png</em> into the 3x slot. (What, you don’t know your times table for 29?)
+</p>
+<p>➤ For <em>iPhone Spotlight 40pt</em>, drag the <em>Icon-80.png</em> file into the 2x slot and <em>Icon-120.png</em> into the 3x slot.
+</p>
+<p>➤ For <em>iPhone App 60pt</em>, drag the <em>Icon-120.png</em> file into the 2x slot and <em>Icon-180.png</em> into the 3x slot.
+</p>
+<p>That’s four icons in two different sizes. Phew!
+</p>
+<p>The other AppIcon groups are mostly for the iPad.
+</p>
+<p>➤ Drag the specific icons (based on size) into the proper slots for iPad. Notice that the iPad icons need to be supplied in 1x as well as 2x sizes (but not 3x). You may need to do some mental arithmetic here to figure out which icon goes into which slot!
+</p><div class="image-70"><img src="graphics/img153.png"  alt="" title="The full set of icons for the app" /></div>
+<p>➤ Run the app and close it. You’ll see that the icon has changed on the Simulator’s springboard. If not, remove the app from the Simulator and try again (sometimes the Simulator keeps using the old icon and re-installing the app will fix this).
+</p><div class="image-40"><img src="graphics/img154.png"  alt="" title="The icon on the Simulator’s springboard" /></div>
+<h2 class="segment-chapter">Display name</h2>
+
+<p>One last thing. You named the project <em>BullsEye</em> and that is the name that shows up under the icon. However, I’d prefer to spell it “<em>Bull’s Eye</em>”.
+</p>
+<p>There is only limited space under the icon and for apps with longer names you have to get creative to make the name fit. For this game, however, there is enough room to add the space and the apostrophe.
+</p>
+<p>➤ Go to the <em>Project Settings</em> screen. The very first option is <em>Display Name</em>. Change this to <em>Bull&apos;s Eye</em>.
+</p><div class="image-100"><img src="graphics/img155.png"  alt="" title="Changing the display name of the app" /></div>
+<p>Like many of the project’s settings you can also find the display name in the app’s Info.plist file. Let’s have a look.
+</p>
+<p>➤ From the <em>Project navigator</em>, select <em>Info.plist</em>.
+</p><div class="image-100"><img src="graphics/img156.png"  alt="" title="The display name of the app in Info.plist" /></div>
+<p>The row <em>Bundle display name</em> contains the new name you’ve just entered.
+</p>
+<div class="note">
+<p><em>Note:</em> If <em>Bundle display name</em> is not present, the app will use the value from the field <em>Bundle name</em>. That has the special value “$(PRODUCT_NAME)”, meaning Xcode will automatically put the project name, BullsEye, in this field when it adds the Info.plist to the application bundle. By providing a <em>Bundle display name</em> you can override this default name and give the app any name you want.
+</p></div>
+
+<p>➤ Run the app and quit it to see the new name under the icon.
+</p><div class="image-20"><img src="graphics/img157.png"  alt="" title="The bundle display name setting changes the name under the icon" /></div>
+<p>Awesome, that completes your very first app!
+</p>
+<p>You can find the project files for the finished app under <em>08 - The Final App</em> in the Source Code folder.
+</p>
+<h2 class="segment-chapter">Run on device</h2>
+
+<p>So far, you’ve run the app on the Simulator. That’s nice and all but probably not why you’re learning iOS development. You want to make apps that run on real iPhones and iPads! There’s hardly a thing more exciting than running an app that you made on your own phone. And, of course, to show off the fruits of your labor to other people!
+</p>
+<p>Don’t get me wrong: developing your apps on the Simulator works very well. When developing, I spend most of my time with the Simulator and only test the app on my iPhone every so often.
+</p>
+<p>However, you do need to run your creations on a real device in order to test them properly. There are some things the Simulator simply cannot do. If your app needs the iPhone’s accelerometer, for example, you have no choice but to test that functionality on an actual device. Don’t sit there and shake your Mac!
+</p>
+<p>Until a few years back, you needed a paid Developer Program account to run apps on your iPhone. Now, you can do it for free. All you need is an Apple ID. And the latest Xcode makes it easier than ever before.
+</p>
+<h3 class="segment-chapter">Configure your device for development</h3>
+
+<p>➤ Connect your iPhone, iPod touch, or iPad to your Mac using a USB cable.
+</p>
+<p>➤ From the Xcode menu bar select <em>Window → Devices and Simulators</em> to open the Devices and Simulators window.
+</p>
+<p>Mine looks like this:
+</p><div class="image-80"><img src="graphics/img158.png"  alt="" title="The Devices and Simulators window" /></div>
+<p>On the left is a list of devices that are currently connected to my Mac and which can be used for development.
+</p>
+<p>➤ Click on your device name to select it.
+</p>
+<p>If this is the first time you’re using the device with Xcode, the Devices window will say something like, “iPhone is not paired with your computer.” To pair the device with Xcode, you need to unlock the device first (hold the home button, or use Face ID, depending on your device). After unlocking, an alert will pop up on the device asking you to trust the computer you’re trying to pair with. Tap on <em>Trust</em> to continue.
+</p>
+<p>Xcode will now refresh the page and let you use the device for development. Give it a few minutes (see the progress bar in the main Xcode window). If it takes too long, you may need to unplug the device and plug it back in.
+</p>
+<p>At this point it’s possible you may get the error message, “An error was encountered while enabling development on this device.” You’ll need to unplug the device and reboot it. Make sure to restart Xcode before you reconnect the device.
+</p>
+<p>Also, note the checkbox which says <em>Connect via network</em>? That checkbox (gasp!) allows you to run and debug code on your iPhone over WiFi!
+</p>
+<p>Cool, that is the device sorted.
+</p>
+<h3 class="segment-chapter">Add your developer account to Xcode</h3>
+
+<p>The next step is setting up your Apple ID with Xcode. It’s OK to use the same Apple ID that you’re already using with iTunes and your iPhone, but if you run a business, you might want to create a new Apple ID to keep things separate. Of course, if you’ve already registered for a paid Developer Program account, you should use that Apple ID.
+</p>
+<p>➤ Open the <em>Accounts</em> pane in the Xcode Preferences window:
+</p><div class="image-60"><img src="graphics/img159.png"  alt="" title="The Accounts preferences" /></div>
+<p>➤ Click the <em>+</em> button at the bottom and select <em>Add Apple ID</em> from the list of options.
+</p><div class="image-50"><img src="graphics/img160.png"  alt="" title="Xcode Account Type selection" /></div>
+<p>Xcode will ask for your Apple ID:
+</p><div class="image-60"><img src="graphics/img161.png"  alt="" title="Adding your Apple ID to Xcode" /></div>
+<p>➤ Type your Apple ID username and password and click <em>Sign In</em>.
+</p>
+<p>Xcode verifies your account details and adds it to the stored list of accounts.
+</p>
+<div class="note">
+<p><em>Note:</em> It’s possible that Xcode is unable to use the Apple ID your provided - for example, if it has been used with a Developer Program account in the past that is now expired. The simplest solution is to make a new Apple ID. It’s free and only takes a few minutes. <a href="https://appleid.apple.com">appleid.apple.com</a>
+</p></div>
+
+<p>You still need to tell Xcode to use this account when building your app.
+</p>
+<h3 class="segment-chapter">Code signing</h3>
+
+<p>➤ Go to the <em>Project Settings</em> screen for your app target. In the <em>General</em> tab go to the <em>Signing</em> section.
+</p><div class="image-100"><img src="graphics/img162.png"  alt="" title="The Signing options in the Project Settings screen" /></div>
+<p>In order to allow Xcode to put an app on your iPhone, the app must be <i>digitally signed</i> with your <em>Development Certificate</em>. A <i>certificate</i> is an electronic document that identifies you as an iOS application developer and is valid only for a specific amount of time.
+</p>
+<p>Apps that you want to submit to the App Store must be signed with another certificate, the <em>Distribution Certificate</em>. To create (and use) a distribution certificate, you must be a member of the paid Developer Program. However, creating/using a development certificate is free.
+</p>
+<p>In addition to a valid certificate, you also need a <em>Provisioning Profile</em> for each app you make. Xcode uses this profile to sign the app for use on your particular device (or devices). The specifics don’t really matter, just know that you need a provisioning profile or the app won’t go on your device.
+</p>
+<p>Making the certificates and provisioning profiles used to be a really frustrating and error-prone process. Fortunately, those days are over: Xcode now makes it really easy. When the <em>Automatically manage signing</em> option is enabled, Xcode will take care of all this business with certificates and provisioning profiles and you don’t have to worry about a thing.
+</p>
+<p>➤ Click on <em>Team</em> to select your Apple ID.
+</p>
+<p>Xcode will now automatically register your device with your account, create a new Development Certificate, and download and install the Provisioning Profile on your device. These are all steps you had to do by hand in the past, but now Xcode takes care of all that.
+</p>
+<p>You could get some signing errors like these:
+</p><div class="image-50"><img src="graphics/img163.png"  alt="" title="Signing/team set up errors" /></div>
+<p>The app’s Bundle Identifier – or App ID as it’s called here – must be unique. If another app is already using that identifier, then you cannot use it anymore. That’s why you’re supposed to start the Bundle ID with your own domain name. The fix is easy: change the Bundle Identifier field to something else and try again.
+</p>
+<p>It’s also possible you get this error (or something similar):
+</p><div class="image-50"><img src="graphics/img164.png"  alt="" title="No devices registered" /></div>
+<p>Xcode must know about the device that you’re going to run the app on. That’s why I asked you to connect your device first. Double-check that your iPhone or iPad is still connected to your Mac and that it is listed in the Devices window.
+</p>
+<h3 class="segment-chapter">Run on device</h3>
+
+<p>If everything goes smoothly, go back to Xcode’s main window and click on the dropdown in the toolbar to change where you will run the app. The name of your device should be in that list somewhere.
+</p>
+<p>On my system it looks like this:
+</p><div class="image-50"><img src="graphics/img165.png"  alt="" title="Setting the active device" /></div>
+<p>You’re all set and ready to go!
+</p>
+<p>➤ Press <em>Run</em> to launch the app.
+</p>
+<p>At this point you may get a popup with the question “codesign wants to sign using key … in your keychain”. If so, answer with <em>Always Allow</em>. This is Xcode trying to use the new Development Certificate you just created - you just need to give it permission first.
+</p>
+<p>Does the app work? Awesome! If not, read on...
+</p>
+<h3 class="segment-chapter">When things go wrong...</h3>
+
+<p>There are a few things that can go wrong when you try to put the app on your device, especially if you’ve never done this before, so don’t panic if you run into problems.
+</p>
+<h4 class="segment-chapter"><em>The device is not connected</em></h4>
+
+<p>Make sure your iPhone, iPod touch, or iPad is connected to your Mac. The device must be listed in Xcode’s Devices window and there should not be a yellow warning icon.
+</p>
+<h4 class="segment-chapter"><em>The device does not trust you</em></h4>
+
+<p>You might get this warning:
+</p><div class="image-50"><img src="graphics/img166.png"  alt="" title="Quick, call security!" /></div>
+<p>On the device itself there will be a popup with the text, “Untrusted Developer. Your device management settings do not allow using apps from developer …”.
+</p>
+<p>If this happens, open the Settings app on the device and go to <em>General</em> → <em>Profile</em>. Your Apple ID should be listed in that screen. Tap it, followed by the Trust button. Then try running the app again.
+</p>
+<h4 class="segment-chapter"><em>The device is locked</em></h4>
+
+<p>If your phone locks itself with a passcode after a few minutes, you might get this warning:
+</p><div class="image-50"><img src="graphics/img167.png"  alt="" title="The app won’t run if the device is locked" /></div>
+<p>Simply unlock your device (hold the home button, type in the 4-digit passcode, or use FaceID) and press Run again.
+</p>
+<h3 class="segment-chapter">Signing certificates</h3>
+
+<p>If you’re curious about these certificates, then open the <em>Preferences</em> window and go to the <em>Accounts</em> tab. Select your account and click the <em>Manage Certificates…</em> button in the bottom-right corner.
+</p>
+<p>This brings up another panel, listing your signing certificates:
+</p><div class="image-45"><img src="graphics/img168.png"  alt="" title="The Manage Certificates panel" /></div>
+<p>When you’re done, close the panel and go to the <em>Devices and Simulators</em> window.
+</p>
+<p>You can see the provisioning profiles that are installed on your device by right-clicking the device name and choosing <em>Show Provisioning Profiles</em>.
+</p><div class="image-50"><img src="graphics/img169.png"  alt="" title="The provisioning profiles on your device" /></div>
+<p>The “iOS Team Provisioning Profile: *” is the one that allows you to run the app on your device. (By the way, they call it the “team” profile because often there is more than one developer working on an app and they can all share the same profile.)
+</p>
+<p>You can have more than one certificate and provisioning profile installed. This is useful if you’re on multiple development teams or if you prefer to manage the provisioning profiles for different apps by hand.
+</p>
+<p>To see how Xcode chooses which profile and certificate to sign your app with, go to the <em>Project Settings</em> screen and switch to the <em>Build Settings</em> tab. There are a lot of settings in this list, so filter them by typing <em>signing</em> in the search box. (Also make sure <em>All</em> is selected, not Basic.)
+</p>
+<p>The screen will look something like this:
+</p><div class="image-75"><img src="graphics/img170.png"  alt="" title="The Code Signing settings" /></div>
+<p>Under <em>Code Signing Identity</em> it says <em>iOS Developer</em>. This is the certificate that Xcode uses to sign the app. If you click on that line, you can choose another certificate. Under <em>Provisioning Profile</em> you can change the active profile. Most of the time you won’t need to change these settings, but at least you know where to find them now.
+</p>
+<p>And that concludes everything you need to know about running your app on an actual device.
+</p>
+<h2 class="segment-chapter">The end… or the beginning?</h2>
+
+<p>It has been a bit of a journey to get to this point – if you’re new to programming, you’ve had to get a lot of new concepts into your head. I hope your brain didn’t explode!
+</p>
+<p>At least you should have gotten some insight into what it takes to develop an app.
+</p>
+<p>I don’t expect you to totally understand everything that you did, especially not the parts that involved writing Swift code. It is perfectly fine if you didn’t, as long as you’re enjoying yourself and you sort of get the basic concepts of objects, methods and variables.
+</p>
+<p>If you were able to follow along and do the exercises, you’re in good shape!
+</p>
+<p>I encourage you to play around with the code a bit more. The best way to learn programming is to do it, and that includes making mistakes and messing things up. I hereby grant you full permission to do so! Maybe you can add some cool new features to the game (and if you do, please let me know).
+</p>
+<p>In the Source Code folder for this book you can find the complete source code for the <i>Bull’s Eye</i> app. If you’re still unclear about something we did, it might be a good idea to look at this cleaned up source code.
+</p>
+<p>If you’re interested in how I made the graphics, then take a peek at the Photoshop files in the Resources folder. The wood background texture was made by Atle Mo from <a href="http://subtlepatterns.com">subtlepatterns.com</a>.
+</p>
+<p>If you&apos;re feeling exhausted after all that coding, pour yourself a drink and put your feet up for a bit. You’ve earned it! On the other hand, if you just can&apos;t wait to get to grips with more code, let&apos;s move on to our next app!
+</p></body></html>

@@ -1,0 +1,852 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 28: The Locations Tab</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 28: The Locations Tab</h1>
+
+<p>You’ve set up the data model and given the app the ability to save new locations to the data store. Next, you’ll show these saved locations in a table view in the second tab.
+</p>
+<p>The completed Locations screen will look like this:
+</p><div class="image-35"><img src="graphics/img444.png"  alt="" title="The Locations screen" /></div>
+<p>This chapter covers the following:
+</p>
+<ul>
+<li>
+<p><em>The locations tab:</em> Set up the second tab to display a list of saved locations.
+</p></li>
+
+<li>
+<p><em>Create a custom table view cell subclass:</em> Create a custom table view cell subclass to handle displaying location information.
+</p></li>
+
+<li>
+<p><em>Edit locations:</em> Add functionality to allow editing of items in the locations list.
+</p></li>
+
+<li>
+<p><em>Use NSFetchedResultsController:</em> How do you use <code>NSFetchedResultsController</code> to fetch data from your Core Data store?
+</p></li>
+
+<li>
+<p><em>Delete Locations:</em> Add the ability to the UI to delete locations, thus removing them from the Core Data store as well.
+</p></li>
+
+<li>
+<p><em>Table view sections:</em> Use built-in Core Data functionality to add the ability to display separate sections based on the location category.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">The Locations tab</h2>
+
+<p>➤ Open the storyboard editor and delete the <em>Second Scene</em>. This is a leftover from the project template and you don’t need it.
+</p>
+<p>➤ Drag a new <em>Navigation Controller</em> on to the canvas — it has a table view controller attached to it, which is fine. You’ll use that in a second.
+</p>
+<p>➤ <em>Control-drag</em> from the Tab Bar Controller to this new Navigation Controller and select <em>Relationship Segue - view controllers</em>. This adds the navigation controller to the tab bar.
+</p>
+<p>➤ The Navigation Controller now has a <em>Tab Bar Item</em> that is named “Item”. Rename it to <em>Locations</em>.
+</p>
+<p>➤ Double-click the navigation bar of the new table view controller (the one attached to the new Navigation Controller) and change the title to <em>Locations</em>. (If Xcode gives you trouble, use the Attributes inspector on the Navigation Item instead.)
+</p>
+<p>The storyboard now looks like this:
+</p><div class="image-70"><img src="graphics/img445.png"  alt="" title="The storyboard after adding the Locations screen" /></div>
+<p>➤ Run the app and activate the Locations tab. It doesn’t show anything useful yet:
+</p><div class="image-20"><img src="graphics/img446.png"  alt="" title="The Locations screen in the second tab" /></div>
+<h3 class="segment-chapter">Design the table view cell</h3>
+
+<p>Before you can show any data in the table, you first have to design the prototype cell.
+</p>
+<p>➤ Set the prototype cell’s Reuse Identifier to <em>LocationCell</em>.
+</p>
+<p>➤ In the <em>Size inspector</em>, change <em>Row Height</em> to 58.
+</p>
+<p>➤ Drag two Labels on to the cell. Give the top one the text <em>Description</em> and the bottom one the text <em>Address</em>. This is just so you know what they are for.
+</p>
+<p>➤ Set the font of the Description label to <em>System Bold</em>, size <em>17</em>. Give this label a tag of 100.
+</p>
+<p>➤ Set the font of the Address label to <em>System</em>, size <em>14</em>. Set the Text color to black with 50% opacity (so its looks like a medium gray). Give it a tag of 101.
+</p>
+<p>The cell will look something like this:
+</p><div class="image-35"><img src="graphics/img447.png"  alt="" title="The prototype cell" /></div>
+<p>Make sure that the labels are wide enough to span the entire cell, position them vertically to suit your taste and then set up AutoLayout constraints for the <em>left</em>, <em>top</em>, <em>right</em>, and <em>bottom</em> so that the labels stay in place even if the screen dimensions changed.
+</p>
+<p>Previously, you would have had to set the table view row height in the Size inspector as well. But these days, with automatic sizing enabled by default, you don&apos;t have to worry about that.
+</p>
+<p>But you might have to set the vertical resistance compression for one or the other of the labels since both of them have the same vertical compression resistance at the moment and so iOS will be unable to determine which takes precedence when the content for the labels will not fit well. I opted to lower the vertical compression resistance of the Address label. You can do the same or change the other label. It shouldn&apos;t make a huge difference here.
+</p>
+<h3 class="segment-chapter">The basic table view controller</h3>
+
+<p>Let’s write the code for the view controller. You’ve seen table view controllers several times now, so this should be easy.
+</p>
+<p>You’re going to fake the content first, because it’s a good idea to make sure that the prototype cell works before you have to deal with Core Data.
+</p>
+<p>➤ Add a new file to the project and name it <em>LocationsViewController.swift</em>.
+</p>
+<div class="note">
+<p><em>Tip:</em> If you want to keep your list of source files neatly sorted by name in the project navigator, then right-click the MyLocations group (the yellow folder icon) and choose <em>Sort by Name</em> from the menu.
+</p></div>
+
+<p>➤ Change the contents of <em>LocationsViewController.swift</em> to:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> UIKit
+<span class="hljs-keyword">import</span> CoreData
+<span class="hljs-keyword">import</span> CoreLocation
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LocationsViewController</span>: <span class="hljs-title">UITableViewController</span> </span>{
+  <span class="hljs-keyword">var</span> managedObjectContext: <span class="hljs-type">NSManagedObjectContext</span>!
+
+  <span class="hljs-comment">// MARK: - Table View Delegates</span>
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+        numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+  }
+
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+               cellForRowAt indexPath: IndexPath)</span></span> -&gt; 
+               <span class="hljs-type">UITableViewCell</span> {
+    <span class="hljs-keyword">let</span> cell = tableView.dequeueReusableCell( 
+                         withIdentifier: <span class="hljs-string">"LocationCell"</span>, 
+                                    <span class="hljs-keyword">for</span>: indexPath)
+
+    <span class="hljs-keyword">let</span> descriptionLabel = cell.viewWithTag(<span class="hljs-number">100</span>) <span class="hljs-keyword">as</span>! <span class="hljs-type">UILabel</span>
+    descriptionLabel.text = <span class="hljs-string">"If you can see this"</span>
+
+    <span class="hljs-keyword">let</span> addressLabel = cell.viewWithTag(<span class="hljs-number">101</span>) <span class="hljs-keyword">as</span>! <span class="hljs-type">UILabel</span>
+    addressLabel.text = <span class="hljs-string">"Then it works!"</span>
+
+    <span class="hljs-keyword">return</span> cell
+  }
+}</pre>
+<p>You’ve faked a single row with some placeholder text in the labels. You’ve also given this class an <code>NSManagedObjectContext</code> property even though you won’t be using it yet.
+</p>
+<p>➤ Switch to the storyboard, select the Locations scene, and in the <em>Identity inspector</em>, change the <em>Class</em> of the table view controller to <em>LocationsViewController</em>. (Be careful with the auto completion when you&apos;re doing this since you also have a LocationsDetailViewController and that might get auto added if you are not careful...)
+</p>
+<p>➤ Run the app to make sure the table view works.
+</p><div class="image-30"><img src="graphics/img448.png"  alt="" title="The table view with fake data" /></div>
+<p>Excellent! Now it’s time to fill the table with the Location objects from the data store.
+</p>
+<h3 class="segment-chapter">Display Locations from data store</h3>
+
+<p>➤ Run the app and tag a handful of locations. If there is no data in the data store, then the app doesn’t have much to show…
+</p>
+<p>This new part of the app doesn’t know anything yet about the <code>Location</code> objects that you have added to the data store. In order to display them in the table view, you need to obtain references to these objects somehow. You can do that by asking the data store. This is called <i>fetching</i>.
+</p>
+<p>➤ First, add a new instance variable to <em>LocationsViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> locations = [<span class="hljs-type">Location</span>]()</pre>
+<p>This array will hold the list of <code>Location</code> objects.
+</p>
+<p>➤ Add a <code>viewDidLoad()</code> implementation:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">super</span>.viewDidLoad()
+  <span class="hljs-comment">// 1</span>
+  <span class="hljs-keyword">let</span> fetchRequest = <span class="hljs-type">NSFetchRequest</span>&lt;<span class="hljs-type">Location</span>&gt;()
+  <span class="hljs-comment">// 2</span>
+  <span class="hljs-keyword">let</span> entity = <span class="hljs-type">Location</span>.entity()
+  fetchRequest.entity = entity
+  <span class="hljs-comment">// 3</span>
+  <span class="hljs-keyword">let</span> sortDescriptor = <span class="hljs-type">NSSortDescriptor</span>(key: <span class="hljs-string">"date"</span>, 
+                                  ascending: <span class="hljs-literal">true</span>)
+  fetchRequest.sortDescriptors = [sortDescriptor]
+  <span class="hljs-keyword">do</span> {
+    <span class="hljs-comment">// 4</span>
+    locations = <span class="hljs-keyword">try</span> managedObjectContext.fetch(fetchRequest)
+  } <span class="hljs-keyword">catch</span> {
+    fatalCoreDataError(error)
+  }
+}</pre>
+<p>This may look daunting but it’s actually quite simple. You’re going to ask the managed object context for a list of all <code>Location</code> objects in the data store, sorted by date.
+</p>
+<ol>
+<li>
+<p>The <code>NSFetchRequest</code> is the object that describes which objects you’re going to fetch from the data store. To retrieve an object that you previously saved to the data store, you create a fetch request that describes the search parameters of the object — or objects — that you’re looking for.
+</p></li>
+
+<li>
+<p>Here you tell the fetch request you’re looking for <code>Location</code> entities.
+</p></li>
+</ol>
+
+<ol>
+<li>
+<p>The <code>NSSortDescriptor</code> tells the fetch request to sort on the <code>date</code> attribute, in ascending order so that the <code>Location</code> objects that the user added first will be at the top of the list. You can sort on any attribute here — later on, you’ll sort on the <code>Location</code>’s category as well.
+</p>
+<p>That completes the fetch request. It took a few lines of code, but basically you said: “Get all <code>Location</code> objects from the data store and sort them by date.”
+</p></li>
+</ol>
+
+<ol>
+<li>
+<p>Now that you have a fetch request, you can tell the context to execute it. The <code>fetch()</code> method returns an array with the sorted objects, or throws an error in case something went wrong. That’s why this happens inside a <code>do-try-catch</code> block.
+</p>
+<p>If everything goes well, you assign the results of the fetch to the <code>locations</code> instance variable.
+</p></li>
+</ol>
+
+<div class="note">
+<p><em>Note:</em> To create the fetch request you wrote <code>NSFetchRequest&lt;Location&gt;</code>.
+</p>
+<p>The <code>&lt; &gt;</code> mean that <code>NSFetchRequest</code> is a <i>generic</i>. Recall that arrays are also generics — to create an array you specify the type of objects that go into the array, either using the shorthand notation <code>[Location]</code>, or the longer <code>Array&lt;Location&gt;</code>.
+</p>
+<p>To use an <code>NSFetchRequest</code>, you need to tell it what type of object you’re going to be fetching. Here, you create an <code>NSFetchRequest&lt;Location&gt;</code> so that the result of <code>fetch()</code> is an array of <code>Location</code> objects.
+</p></div>
+
+<p>Now that you’ve loaded the list of <code>Location</code> objects into an instance variable, you can change the table view’s data source methods.
+</p>
+<p>➤ Change the data source methods to:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+      numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">return</span> locations.<span class="hljs-built_in">count</span>
+}</pre><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+             cellForRowAt indexPath: IndexPath)</span></span> -&gt; 
+             <span class="hljs-type">UITableViewCell</span> {
+  <span class="hljs-keyword">let</span> cell = tableView.dequeueReusableCell(
+                       withIdentifier: <span class="hljs-string">"LocationCell"</span>, 
+                                  <span class="hljs-keyword">for</span>: indexPath)
+
+  <span class="hljs-keyword">let</span> location = locations[indexPath.row]
+
+  <span class="hljs-keyword">let</span> descriptionLabel = cell.viewWithTag(<span class="hljs-number">100</span>) <span class="hljs-keyword">as</span>! <span class="hljs-type">UILabel</span>
+  descriptionLabel.text = location.locationDescription
+
+  <span class="hljs-keyword">let</span> addressLabel = cell.viewWithTag(<span class="hljs-number">101</span>) <span class="hljs-keyword">as</span>! <span class="hljs-type">UILabel</span>
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> placemark = location.placemark {
+    <span class="hljs-keyword">var</span> text = <span class="hljs-string">""</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> s = placemark.subThoroughfare {
+      text += s + <span class="hljs-string">" "</span>
+    }
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> s = placemark.thoroughfare {
+      text += s + <span class="hljs-string">", "</span>
+    }
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> s = placemark.locality {
+      text += s
+    }
+    addressLabel.text = text
+  } <span class="hljs-keyword">else</span> {
+    addressLabel.text = <span class="hljs-string">""</span>
+  }
+  <span class="hljs-keyword">return</span> cell
+}</pre>
+<p>This should have no surprises for you. You get the <code>Location</code> object for the row from the array and then use its properties to fill the labels. Because <code>placemark</code> is an optional, you use <code>if let</code> to unwrap it.
+</p>
+<p>➤ Run the app. Now switch to the Locations tab and… crap! It crashes.
+</p>
+<p>The error message should say something like:
+</p><pre class="code-block">fatal error: unexpectedly found nil while unwrapping an Optional value</pre>
+<div class="note">
+<p><em>Exercise.</em> What did you forget?
+</p></div>
+
+<p>Answer: You added a <code>managedObjectContext</code> property to <code>LocationsViewController</code>, but never gave this property a value. Therefore, there is nothing to fetch <code>Location</code> objects from. (If you already noticed this and were like, &quot;How come we are not passing the value from AppDelegate?&quot;, good job! You are really getting the hang of this :])
+</p>
+<p>➤ Switch to <em>AppDelegate.swift</em>. In <code>application(_:didFinishLaunchingWithOption:s)</code>, change the <code>if let tabBarViewControllers</code> block, as follows:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> tabViewControllers = tabController.viewControllers {
+  <span class="hljs-comment">// First tab</span>
+  <span class="hljs-keyword">var</span> navController = tabViewControllers[<span class="hljs-number">0</span>]            
+                      <span class="hljs-keyword">as</span>! <span class="hljs-type">UINavigationController</span>
+  <span class="hljs-keyword">let</span> controller1 = navController.viewControllers.first 
+                    <span class="hljs-keyword">as</span>! <span class="hljs-type">CurrentLocationViewController</span>
+  controller1.managedObjectContext = managedObjectContext
+  <span class="hljs-comment">// Second tab</span>
+  navController = tabViewControllers[<span class="hljs-number">1</span>] 
+                  <span class="hljs-keyword">as</span>! <span class="hljs-type">UINavigationController</span>
+  <span class="hljs-keyword">let</span> controller2 = navController.viewControllers.first 
+                    <span class="hljs-keyword">as</span>! <span class="hljs-type">LocationsViewController</span>
+  controller2.managedObjectContext = managedObjectContext  
+}</pre>
+<p>There are a couple of minor changes to the existing code — one is to make <code>navController</code> a variable so that it can be re-used for the second tab, and the second is to rename the <code>controller</code> constant to <code>controller1</code> to separate it from the the second view controller which would be of a different type.
+</p>
+<p>The code for the second tab looks up the <code>LocationsViewController</code> in the storyboard and gives it a reference to the managed object context, similar to what you did for the first tab.
+</p>
+<p>➤ Run the app again and switch to the Locations tab. Core Data properly fetches the objects and displays them:
+</p><div class="image-30"><img src="graphics/img449.png"  alt="" title="The list of Locations" /></div>
+<p>Note that the list doesn’t update yet if you tag a new location. You have to restart the app to see the new <code>Location</code> object appear. You’ll solve this later on.
+</p>
+<h2 class="segment-chapter">Create a custom table view cell subclass</h2>
+
+<p>Using <code>viewWithTag(_:)</code> to find the labels from the table view cell works, but it doesn’t look very object-oriented to me.
+</p>
+<p>It would be much nicer if you could make your own <code>UITableViewCell</code> subclass and give it outlets for the labels. Fortunately, you can, and it’s pretty easy!
+</p>
+<p>➤ Add a new file to the project using the <em>Cocoa Touch Class</em> template. Name it <em>LocationCell</em> and make it a subclass of <em>UITableViewCell</em>. (Make sure that the class name does not change when you set the subclass — that can be a little annoying.)
+</p>
+<p>➤ Add the following outlets to <em>LocationCell.swift</em>, inside the class definition:
+</p><pre class="code-block"><span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> descriptionLabel: <span class="hljs-type">UILabel</span>!
+<span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> addressLabel: <span class="hljs-type">UILabel</span>!</pre>
+<p>➤ Open the storyboard and select the prototype cell that you made earlier. In the <em>Identity inspector</em>, set <em>Class</em> to <em>LocationCell</em>.
+</p>
+<p>➤ Now you can connect the two labels to the two outlets. This time the outlets are not on the view controller but on the cell, so use the <code>LocationCell</code>’s Connections inspector to connect the <code>descriptionLabel</code> and <code>addressLabel</code> outlets.
+</p>
+<p>That is all you need to do to make the table view use your own table view cell class. But, you do need to update <code>LocationsViewController</code> to make use of it.
+</p>
+<p>➤ In <em>LocationsViewController.swift</em>, replace <code>tableView(cellForRowAt)</code> with the following:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+             cellForRowAt indexPath: IndexPath)</span></span> -&gt; 
+             <span class="hljs-type">UITableViewCell</span> {
+  <span class="hljs-keyword">let</span> cell = tableView.dequeueReusableCell(
+                       withIdentifier: <span class="hljs-string">"LocationCell"</span>, 
+                       <span class="hljs-keyword">for</span>: indexPath) <span class="hljs-keyword">as</span>! <span class="hljs-type">LocationCell</span>
+
+  <span class="hljs-keyword">let</span> location = locations[indexPath.row]
+  cell.configure(<span class="hljs-keyword">for</span>: location)
+
+  <span class="hljs-keyword">return</span> cell
+}</pre>
+<p>As before, this asks for a cell using <code>dequeueReusableCell(withIdentifier:for:)</code>, but now this will be a <code>LocationCell</code> object instead of a regular <code>UITableViewCell</code>. That’s why you’ve added the type cast.
+</p>
+<p>Note that the string <code>LocationCell</code> is the re-use identifier from the placeholder cell, but <code>LocationCell</code> is the class of the actual cell object that you’re getting. They have the same name but one is a <code>String</code> and the other is a <code>UITableViewCell</code> subclass with extra properties. I hope that’s not too confusing.
+</p>
+<p>Once you have the cell reference, you call a new method, <code>configure(for:)</code> to put the <code>Location</code> object into the table view cell.
+</p>
+<p>➤ Add this new method to <em>LocationCell.swift</em>:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Helper Method</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">configure</span><span class="hljs-params">(<span class="hljs-keyword">for</span> location: Location)</span></span> {
+  <span class="hljs-keyword">if</span> location.locationDescription.isEmpty {
+    descriptionLabel.text = <span class="hljs-string">"(No Description)"</span>
+  } <span class="hljs-keyword">else</span> {
+    descriptionLabel.text = location.locationDescription
+  }
+
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> placemark = location.placemark {
+    <span class="hljs-keyword">var</span> text = <span class="hljs-string">""</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> s = placemark.subThoroughfare {
+      text += s + <span class="hljs-string">" "</span>
+    }
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> s = placemark.thoroughfare {
+      text += s + <span class="hljs-string">", "</span>
+    }
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> s = placemark.locality {
+      text += s
+    }
+    addressLabel.text = text
+  } <span class="hljs-keyword">else</span> {
+    addressLabel.text = <span class="hljs-type">String</span>(format:
+      <span class="hljs-string">"Lat: %.8f, Long: %.8f"</span>, location.latitude, 
+                               location.longitude)
+  }
+}</pre>
+<p>Instead of using <code>viewWithTag(_:)</code> to find the description and address labels, you now simply use the <code>descriptionLabel</code> and <code>addressLabel</code> properties of the cell.
+</p>
+<p>➤ Run the app to make sure everything still works. If you have a location without a description the table cell will now say “(No Description)”. If there is no placemark, the address label contains the GPS coordinates.
+</p>
+<p>Using a custom subclass for your table view cells, there is no limit to how complex the cell functionality can be.
+</p>
+<h2 class="segment-chapter">Edit locations</h2>
+
+<p>You will now connect the <code>LocationsViewController</code> to the Location Details screen, so that when you tap a row in the table, it lets you edit that location’s description and category.
+</p>
+<p>You’ll be re-using the <code>LocationDetailsViewController</code> but have it edit an existing <code>Location</code> object rather than add a new one.
+</p>
+<h3 class="segment-chapter">Create edit segue</h3>
+
+<p>➤ Go to the storyboard. Select the prototype cell from the Locations scene and <em>Control-drag</em> to the Tag Locations scene (which is the Location Details screen). Add a <em>Show</em> selection segue and name it <em>EditLocation</em>.
+</p>
+<p>At this point the storyboard should look like this:
+</p><div class="image-90"><img src="graphics/img450.png"  alt="" title="The Location Details screen is now also connected to the Locations screen" /></div>
+<p>There are now two segues from two different screens going to the same view controller.
+</p>
+<p>This is the reason why you should build your view controllers to be as independent of their “calling” controllers as possible. You can then easily re-use them somewhere else in your app.
+</p>
+<p>Soon, you will be calling this same screen from yet another place. In total there will be three segues to it.
+</p>
+<p>➤ Go to <em>LocationsViewController.swift</em> and add the following code:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Navigation</span>
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">prepare</span><span class="hljs-params">(<span class="hljs-keyword">for</span> segue: UIStoryboardSegue, 
+                         sender: Any?)</span></span> {
+  <span class="hljs-keyword">if</span> segue.identifier == <span class="hljs-string">"EditLocation"</span> {
+    <span class="hljs-keyword">let</span> controller = segue.destination 
+                     <span class="hljs-keyword">as</span>! <span class="hljs-type">LocationDetailsViewController</span>
+    controller.managedObjectContext = managedObjectContext
+
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> indexPath = tableView.indexPath(<span class="hljs-keyword">for</span>: sender 
+                                         <span class="hljs-keyword">as</span>! <span class="hljs-type">UITableViewCell</span>) {
+      <span class="hljs-keyword">let</span> location = locations[indexPath.row]
+      controller.locationToEdit = location
+    }
+  }
+}</pre>
+<p>This method is invoked when the user taps a row in the Locations screen. It figures out which <code>Location</code> object belongs to the row and puts it in the new <code>locationToEdit</code> property of <code>LocationDetailsViewController</code>. This property doesn’t exist yet, but you’ll add it in a moment.
+</p>
+<h4 class="segment-chapter">The Any type</h4>
+
+<p>The type of the <code>sender</code> parameter is <code>Any</code>. You have seen this type in a few places before. What is it?
+</p>
+<p>Objective-C has a special type, <code>id</code>, that means “any object”. It’s similar to <code>NSObject</code> except that it doesn’t make any assumptions at all about the underlying type of the object. <code>id</code> doesn’t have any methods, properties or instance variables, it’s a completely naked object reference.
+</p>
+<p>All objects in an Objective-C program can be treated as having type <code>id</code>. As a result, a lot of the APIs from iOS frameworks depend on this special <code>id</code> type. This is a powerful feature of Objective-C, but unfortunately, a dynamic type like <code>id</code> doesn’t really fit in a <i>strongly typed</i> language such as Swift.
+</p>
+<p>Still, we can’t avoid <code>id</code> completely because it’s so prevalent in iOS frameworks. The Swift equivalent of <code>id</code> is the <code>Any</code> type.
+</p>
+<p>The <code>sender</code> parameter from <code>prepare(for:sender:)</code> can be any kind of object, and so has type <code>Any</code> (thanks to the question mark it can also be <code>nil</code>).
+</p>
+<p>If the segue is triggered from a table view, <code>sender</code> is of type <code>UITableViewCell</code>. If triggered from a <code>button</code>, sender is of type <code>UIButton</code> (or <code>UIBarButtonItem</code>), and so on.
+</p>
+<p>Objects that appear as type <code>Any</code> are not very useful in that form, and you’ll have to tell Swift what sort of object it really is. In the code that you just wrote, <code>indexPath(for:)</code> expects a <code>UITableViewCell</code> object, not an <code>Any</code> object.
+</p>
+<p>You and I both know that <code>sender</code> in this case really is a <code>UITableViewCell</code> because the only way to trigger this segue is to tap a table view cell. With the <code>as!</code> type cast you’re giving Swift your word (scout’s honor!) that it can safely interpret <code>sender</code> as a <code>UITableViewCell</code>.
+</p>
+<p>(Of course, if you were to hook up this segue to something else, such as a button, then this assumption is no longer valid and the app will crash.)
+</p>
+<h3 class="segment-chapter">Set up the edit view controller</h3>
+
+<p>When editing an existing <code>Location</code> object, you have to do a few things differently in the <code>LocationDetailsViewController</code>. The title of the screen shouldn’t be “Tag Location” but “Edit Location”. You also must put the values from the existing <code>Location</code> object into the various cells.
+</p>
+<p>The value of the new <code>locationToEdit</code> property determines whether the screen operates in “add” mode or in “edit” mode.
+</p>
+<p>➤ Add these properties to <em>LocationDetailsViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> locationToEdit: <span class="hljs-type">Location</span>?
+<span class="hljs-keyword">var</span> descriptionText = <span class="hljs-string">""</span>    </pre>
+<p><code>locationToEdit</code> needs to be an optional because in “add” mode it will be <code>nil</code>.
+</p>
+<p>➤ Update <code>viewDidLoad()</code> to check whether <code>locationToEdit</code> is set:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">super</span>.viewDidLoad()
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> location = locationToEdit {
+    title = <span class="hljs-string">"Edit Location"</span>
+  }
+  . . .
+}</pre>
+<p>If <code>locationToEdit</code> is not <code>nil</code>, you’re editing an existing <code>Location</code> object. In that case, the title of the screen becomes “Edit Location”.
+</p>
+<div class="note">
+<p><em>Note:</em> Xcode gives a warning on the line <code>if let location = locationToEdit</code> because you’re not using the value of <code>location</code> anywhere. If you click the yellow icon, Xcode suggests that you replace it with <code>if locationToEdit != nil</code>. You <i>will</i> use <code>location</code> in a bit, so ignore Xcode’s suggestion.
+</p></div>
+
+<p>➤ Also change this line in <code>viewDidLoad()</code>:
+</p><pre class="code-block">descriptionTextView.text = descriptionText</pre>
+<p>You load the value of the new <code>descriptionText</code> variable into the text view.
+</p>
+<p>Now how do you get the values from the <code>locationToEdit</code> object into the text view and labels of this view controller? Swift has a really cool <em>property observer</em> feature that is perfect for this.
+</p>
+<p>➤ Change the declaration of the <code>locationToEdit</code> property to the following:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> locationToEdit: <span class="hljs-type">Location</span>? {
+  <span class="hljs-keyword">didSet</span> {
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> location = locationToEdit {
+      descriptionText = location.locationDescription
+      categoryName = location.category
+      date = location.date
+      coordinate = <span class="hljs-type">CLLocationCoordinate2DMake</span>(
+        location.latitude, location.longitude)
+      placemark = location.placemark
+    }
+  }
+}</pre>
+<p>If a variable has a <code>didSet</code> block, then the code in this block is performed whenever you put a new value into that variable — very handy!
+</p>
+<p>Here, you take the opportunity to fill in the view controller’s instance variables with the <code>Location</code> object’s values.
+</p>
+<p>Because <code>prepare(for:sender:)</code> — and therefore <code>locationToEdit</code>’s <code>didSet</code> — is called before <code>viewDidLoad()</code>, this puts the right values on the screen before it becomes visible.
+</p>
+<p>➤ Run the app, go to the Locations tab and tap on a row. The Edit Location screen should now appear with the data from the selected location:
+</p><div class="image-25"><img src="graphics/img451.png"  alt="" title="Editing an existing location" /></div>
+<p>➤ Change the description of the location and press Done.
+</p>
+<p>Nothing happened?! Well, that’s not quite true. Stop the app and run it again. You will see that a new location has been added with the changed description, but the old one is still there as well.
+</p>
+<h3 class="segment-chapter">Fix the edit screen</h3>
+
+<p>There are two problems to solve:
+</p>
+<ol>
+<li>
+<p>When editing an existing location you must save changes to the location instead of creating a new entry.
+</p></li>
+
+<li>
+<p>The Locations screen doesn’t update to reflect any changes to the data.
+</p></li>
+</ol>
+
+<p>The first fix is easy.
+</p>
+<p>➤ Still in <em>LocationDetailsViewController.swift</em>, change the top part of <code>done()</code>:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">done</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> hudView = <span class="hljs-type">HudView</span>.hud(inView: . . .)
+
+  <span class="hljs-keyword">let</span> location: <span class="hljs-type">Location</span>
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> temp = locationToEdit {
+    hudView.text = <span class="hljs-string">"Updated"</span>
+    location = temp
+  } <span class="hljs-keyword">else</span> {
+    hudView.text = <span class="hljs-string">"Tagged"</span>
+    location = <span class="hljs-type">Location</span>(context: managedObjectContext)
+  }
+
+  location.locationDescription = descriptionTextView.text
+  . . .</pre>
+<p>The change is straightforward: you only ask Core Data for a new <code>Location</code> object if you don’t already have one. You also make the text in the HUD say “Updated” when the user is editing an existing <code>Location</code>.
+</p>
+<div class="note">
+<p><em>Note:</em> I’ve been harping on about the fact that Swift requires all non-optional variables and constants to always have a value. But here you declare <code>let location</code> without giving it an initial value. What gives?
+</p>
+<p>Well, the <code>if</code> statement that follows this declaration always puts a value into <code>location</code>, either the unwrapped value of <code>locationToEdit</code>, or a new <code>Location</code> object obtained from Core Data. After the <code>if</code> statement, <code>location</code> is guaranteed to have a value. Swift is cool with that.
+</p></div>
+
+<p>➤ Run the app again and edit a location. Now the HUD should say “Updated”.
+</p>
+<p>➤ Stop the app and run it again to verify that the object was indeed properly changed. (You can also look at it directly in the SQLite database, of course.)
+</p>
+<div class="note">
+<p><em>Exercise.</em> Why do you think the table view isn’t being updated after you change a <code>Location</code> object? Tip: Recall that the table view also doesn’t update when you tag new locations.
+</p></div>
+
+<p>Answer: You fetch the <code>Location</code> objects in <code>viewDidLoad()</code>. But <code>viewDidLoad()</code> is only performed once, when the app starts. After the initial load of the <code>Locations</code> screen, its contents are never refreshed.
+</p>
+<p>In <i>Checklists</i>, you solved this by using a delegate and that would be a valid solution here too. The <code>LocationDetailsViewController</code> could tell you through delegate methods that a location has been added or changed. But since you’re using Core Data, there is a better way to do this.
+</p>
+<h2 class="segment-chapter">Use NSFetchedResultsController</h2>
+
+<p>As you are no doubt aware by now, table views are everywhere in iOS apps. A lot of the time when you’re working with Core Data, you want to fetch objects from the data store and show them in a table view. And when those objects change, you want to do a live update of the table view in response, to show the changes to the user.
+</p>
+<p>So far, you’ve filled the table view by manually fetching the results, but then you also need to manually check for changes and perform the fetch again to update the table. With <code>NSFetchedResultsController</code>, all that manual work is no longer needed.
+</p>
+<p>It works like this: you give <code>NSFetchedResultsController</code> a fetch request, just like the <code>NSFetchRequest</code> you made earlier, and tell it to go fetch the objects. So far nothing new.
+</p>
+<p>But, you don’t put the results from that fetch into your own array. Instead, you read them straight from the fetched results controller. In addition, you make the view controller the delegate for the <code>NSFetchedResultsController</code>. Through this delegate, the view controller is informed that objects have been changed, added or deleted so that it can update the table in response.
+</p>
+<p>➤ In <em>LocationsViewController.swift</em>, replace the <code>locations</code> instance variable with a new <code>fetchedResultsController</code> variable:
+</p><pre class="code-block"><span class="hljs-built_in">lazy</span> <span class="hljs-keyword">var</span> fetchedResultsController: 
+         <span class="hljs-type">NSFetchedResultsController</span>&lt;<span class="hljs-type">Location</span>&gt; = {
+  <span class="hljs-keyword">let</span> fetchRequest = <span class="hljs-type">NSFetchRequest</span>&lt;<span class="hljs-type">Location</span>&gt;()
+
+  <span class="hljs-keyword">let</span> entity = <span class="hljs-type">Location</span>.entity()
+  fetchRequest.entity = entity
+  
+  <span class="hljs-keyword">let</span> sortDescriptor = <span class="hljs-type">NSSortDescriptor</span>(key: <span class="hljs-string">"date"</span>, 
+                                  ascending: <span class="hljs-literal">true</span>)
+  fetchRequest.sortDescriptors = [sortDescriptor]
+  
+  fetchRequest.fetchBatchSize = <span class="hljs-number">20</span>
+  
+  <span class="hljs-keyword">let</span> fetchedResultsController = <span class="hljs-type">NSFetchedResultsController</span>(
+            fetchRequest: fetchRequest, 
+    managedObjectContext: <span class="hljs-keyword">self</span>.managedObjectContext,
+      sectionNameKeyPath: <span class="hljs-literal">nil</span>, cacheName: <span class="hljs-string">"Locations"</span>)
+  
+  fetchedResultsController.delegate = <span class="hljs-keyword">self</span>
+  <span class="hljs-keyword">return</span> fetchedResultsController
+}()</pre>
+<p>This again uses the lazy initialization pattern with a closure to set everything up. It’s good to get into the habit of lazily loading objects. You don’t allocate them until you first use them. This makes your apps quicker to start and it saves memory.
+</p>
+<p>The code in the closure does the same thing that you used to do in <code>viewDidLoad()</code>: it makes an <code>NSFetchRequest</code> and gives it an entity and a sort descriptor.
+</p>
+<div class="note">
+<p><em>Note:</em> Note that the new variable is not just <code>NSFetchedResultsController</code> but <code>NSFetchedResultsController&lt;Location&gt;</code>, since it’s a generic. You need to tell the fetched results controller what type of objects to fetch.
+</p></div>
+
+<p>This is new:
+</p><pre class="code-block">fetchRequest.fetchBatchSize = <span class="hljs-number">20</span></pre>
+<p>If you have a huge table with hundreds of objects, then it requires a lot of memory to keep all of these objects around, even though you can only see a handful of them at a time.
+</p>
+<p>The <code>NSFetchedResultsController</code> is pretty smart about this and will only fetch the objects that you can actually see, which cuts down on memory usage. This is all done in the background without you having to worry about it. The fetch batch size setting allows you to tweak how many objects will be fetched at a time.
+</p>
+<p>Once the fetch request is set up, you create the star of the show:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> fetchedResultsController = <span class="hljs-type">NSFetchedResultsController</span>(
+  fetchRequest: fetchRequest,
+  managedObjectContext: <span class="hljs-keyword">self</span>.managedObjectContext,
+  sectionNameKeyPath: <span class="hljs-literal">nil</span>, cacheName: <span class="hljs-string">"Locations"</span>)</pre>
+<p>The <code>cacheName</code> needs to be a unique name that <code>NSFetchedResultsController</code> uses to cache the search results. It keeps this cache around even after your app quits, so the next time the fetch request is lightning fast, as the <code>NSFetchedResultsController</code> doesn’t have to make a round-trip to the database but can simply read from the cache.
+</p>
+<p>We’ll talk about the <code>sectionNameKeyPath</code> parameter shortly.
+</p>
+<p>The line that sets <code>fetchedResultsController.delegate</code> to <code>self</code> currently gives an error message because <code>LocationsViewController</code> does not conform to the right delegate protocol yet. You’ll fix that in minute.
+</p>
+<p>Now that you have a fetched results controller, you clean up <code>viewDidLoad()</code>.
+</p>
+<p>➤ Change <code>viewDidLoad()</code> like this:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">super</span>.viewDidLoad()
+  performFetch()
+}
+
+<span class="hljs-comment">// MARK:- Helper methods</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">performFetch</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">do</span> {
+    <span class="hljs-keyword">try</span> fetchedResultsController.performFetch()
+  } <span class="hljs-keyword">catch</span> {
+    fatalCoreDataError(error)
+  }
+}</pre>
+<p>You still perform the initial fetch in <code>viewDidLoad()</code>, using the new <code>performFetch()</code> helper method. However, if any <code>Location</code> objects change after that initial fetch, the <code>NSFetchedResultsController</code>’s delegate methods are called to let you know about these changes. I’ll show you how in a second.
+</p>
+<p>It’s always a good idea to explicitly set the delegate to <code>nil</code> when you no longer need the <code>NSFetchedResultsController</code>, just so you don’t get any more notifications that were still pending.
+</p>
+<p>➤ For that reason, add a <code>deinit</code> method:
+</p><pre class="code-block"><span class="hljs-keyword">deinit</span> {
+  fetchedResultsController.delegate = <span class="hljs-literal">nil</span>
+}</pre>
+<p>The <code>deinit</code> method is invoked when this view controller is destroyed. It may not be strictly necessary to <code>nil</code> out the delegate here, but it’s a bit of defensive programming that won’t hurt.
+</p>
+<p>Note that in this app the <code>LocationsViewController</code> will never actually be deallocated because it’s one of the top-level view controllers in the tab bar. Still, it’s good to get into the habit of writing <code>deinit</code> methods.
+</p>
+<p>Because you removed the <code>locations</code> array, you should also change the table’s data source methods.
+</p>
+<p>➤ Change <code>tableView(_:numberOfRowsInSection:)</code> to:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+      numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">let</span> sectionInfo = fetchedResultsController.sections![section] 
+  <span class="hljs-keyword">return</span> sectionInfo.numberOfObjects
+}</pre>
+<p>The fetched results controller’s <code>sections</code> property returns an array of <code>NSFetchedResultsSectionInfo</code> objects that describe each section of the table view. The number of rows is found in the section info’s <code>numberOfObjects</code> property.
+</p>
+<p>(Currently there is only one section, but later you’ll split up the locations by category and then each category gets its own section.)
+</p>
+<p>➤ Change <code>tableView(_:cellForRowAt:)</code> to:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+             cellForRowAt indexPath: IndexPath)</span></span> -&gt; 
+             <span class="hljs-type">UITableViewCell</span> {
+  <span class="hljs-keyword">let</span> cell = tableView.dequeueReusableCell(
+        withIdentifier: <span class="hljs-string">"LocationCell"</span>, 
+                   <span class="hljs-keyword">for</span>: indexPath) <span class="hljs-keyword">as</span>! <span class="hljs-type">LocationCell</span>
+
+  <span class="hljs-keyword">let</span> location = fetchedResultsController.object(at: indexPath)
+  cell.configure(<span class="hljs-keyword">for</span>: location)
+  
+  <span class="hljs-keyword">return</span> cell
+}</pre>
+<p>Instead of looking into the <code>locations</code> array like you did before, you now ask the <code>fetchedResultsController</code> for the object at the requested index-path. Because it is designed to work closely with table views, <code>NSFetchedResultsController</code> knows how to deal with index-paths, so that’s very convenient.
+</p>
+<p>➤ Make the same change in <code>prepare(for:sender:)</code>.
+</p>
+<p>There is still one piece of the puzzle missing. You need to implement the delegate methods for <code>NSFetchedResultsController</code> in <code>LocationsViewController</code>. Let’s use an <i>extension</i> for that, to keep the code organized.
+</p>
+<h3 class="segment-chapter">Organize the code using extensions</h3>
+
+<p>An extension lets you add code to an existing class, without having to modify the original class source code. When you make an extension you say, “here are a bunch of extra methods that also need to go into that class”, and you can do that even if you didn’t write the original class to begin with.
+</p>
+<p>You’ve seen an extension used in Location+CoreDataProperties.swift. That was done to make it easier for Xcode to regenerate this file without overwriting the contents of Location+CoreDataClass.swift.
+</p>
+<p>You can also use extensions to organize your source code. Here you’ll use an extension just for the <code>NSFetchedResultsControllerDelegate</code> methods, so they are not all tangled up with <code>LocationsViewController</code>’s other code. By putting this code in a separate unit, you keep the responsibilities separate.
+</p>
+<p>This makes it easy to spot which part of <code>LocationsViewController</code> plays the role of the delegate. All the fetched results controller delegate stuff happens just in this extension, not in the main body of the class — you could even place this extension in a separate Swift file if you wanted.
+</p>
+<p>➤ Add the following code to the bottom of <em>LocationsViewController.swift</em>, outside of the class implementation:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- NSFetchedResultsController Delegate Extension</span>
+<span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">LocationsViewController</span>: 
+          <span class="hljs-title">NSFetchedResultsControllerDelegate</span> </span>{
+  
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">controllerWillChangeContent</span><span class="hljs-params">(<span class="hljs-number">_</span> controller: 
+          NSFetchedResultsController&lt;NSFetchRequestResult&gt;)</span></span> {
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"*** controllerWillChangeContent"</span>)
+    tableView.beginUpdates()
+  }
+  
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">controller</span><span class="hljs-params">(<span class="hljs-number">_</span> controller: 
+          NSFetchedResultsController&lt;NSFetchRequestResult&gt;, 
+          didChange anObject: Any, at indexPath: IndexPath?, 
+          <span class="hljs-keyword">for</span> type: NSFetchedResultsChangeType, 
+          newIndexPath: IndexPath?)</span></span> {
+
+    <span class="hljs-keyword">switch</span> type {
+    <span class="hljs-keyword">case</span> .insert:
+      <span class="hljs-built_in">print</span>(<span class="hljs-string">"*** NSFetchedResultsChangeInsert (object)"</span>)
+      tableView.insertRows(at: [newIndexPath!], with: .fade)
+      
+    <span class="hljs-keyword">case</span> .delete:
+      <span class="hljs-built_in">print</span>(<span class="hljs-string">"*** NSFetchedResultsChangeDelete (object)"</span>)
+      tableView.deleteRows(at: [indexPath!], with: .fade)
+      
+    <span class="hljs-keyword">case</span> .update:
+      <span class="hljs-built_in">print</span>(<span class="hljs-string">"*** NSFetchedResultsChangeUpdate (object)"</span>)
+      <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> cell = tableView.cellForRow(at: indexPath!) 
+                                      <span class="hljs-keyword">as</span>? <span class="hljs-type">LocationCell</span> {
+        <span class="hljs-keyword">let</span> location = controller.object(at: indexPath!) 
+                       <span class="hljs-keyword">as</span>! <span class="hljs-type">Location</span>
+        cell.configure(<span class="hljs-keyword">for</span>: location)
+      }
+
+    <span class="hljs-keyword">case</span> .move:
+      <span class="hljs-built_in">print</span>(<span class="hljs-string">"*** NSFetchedResultsChangeMove (object)"</span>)
+      tableView.deleteRows(at: [indexPath!], with: .fade)
+      tableView.insertRows(at: [newIndexPath!], with: .fade)
+    }
+  }
+  
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">controller</span><span class="hljs-params">(<span class="hljs-number">_</span> controller: 
+          NSFetchedResultsController&lt;NSFetchRequestResult&gt;, 
+          didChange sectionInfo: NSFetchedResultsSectionInfo, 
+          atSectionIndex sectionIndex: Int, 
+          <span class="hljs-keyword">for</span> type: NSFetchedResultsChangeType)</span></span> {
+    <span class="hljs-keyword">switch</span> type {
+    <span class="hljs-keyword">case</span> .insert:
+      <span class="hljs-built_in">print</span>(<span class="hljs-string">"*** NSFetchedResultsChangeInsert (section)"</span>)
+      tableView.insertSections(<span class="hljs-type">IndexSet</span>(integer: sectionIndex), 
+                                           with: .fade)
+    <span class="hljs-keyword">case</span> .delete:
+      <span class="hljs-built_in">print</span>(<span class="hljs-string">"*** NSFetchedResultsChangeDelete (section)"</span>)
+      tableView.deleteSections(<span class="hljs-type">IndexSet</span>(integer: sectionIndex),
+                                           with: .fade)
+    <span class="hljs-keyword">case</span> .update:
+      <span class="hljs-built_in">print</span>(<span class="hljs-string">"*** NSFetchedResultsChangeUpdate (section)"</span>)    
+    <span class="hljs-keyword">case</span> .move:
+      <span class="hljs-built_in">print</span>(<span class="hljs-string">"*** NSFetchedResultsChangeMove (section)"</span>)
+    }
+  }
+  
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">controllerDidChangeContent</span><span class="hljs-params">(<span class="hljs-number">_</span> controller:
+          NSFetchedResultsController&lt;NSFetchRequestResult&gt;)</span></span> {
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"*** controllerDidChangeContent"</span>)
+    tableView.endUpdates()
+  }
+}</pre>
+<p>Yowza, that’s a lot of code. Don’t let this freak you out! This is the standard way of implementing these delegate methods. For many apps, this exact code will suffice and you can simply copy it over. Look it over for a few minutes to see if this code makes sense to you. You’ve made it this far, so I’m sure it won’t be too hard.
+</p>
+<p><code>NSFetchedResultsController</code> will invoke these methods to let you know that certain objects were inserted, removed, or just updated. In response, you call the corresponding methods on the <code>UITableView</code> to insert, remove or update rows. That’s all there is to it.
+</p>
+<p>I put <code>print()</code> statements in these methods so you can follow along in the Console as to what is happening. Also note that you’re using the <code>switch</code> statement here. A series of <code>if</code>’s would have worked just as well but <code>switch</code> reads better.
+</p>
+<p>➤ Run the app. Edit an existing location and press the Done button.
+</p>
+<p>The debug area now shows:
+</p><pre class="code-block">*** controllerWillChangeContent
+*** NSFetchedResultsChangeUpdate (object)
+*** controllerDidChangeContent</pre>
+<p><code>NSFetchedResultsController</code> noticed that an existing object was updated and, through updating the table, called your <code>cell.configure(for:)</code> method to redraw the contents of the cell. By the time the Edit Location screen disappears from sight, the table view is updated and your change is visible.
+</p>
+<p>This also works for adding new locations.
+</p>
+<p>➤ Tag a new location and press the Done button.
+</p>
+<p>The debug area says:
+</p><pre class="code-block">*** controllerWillChangeContent
+*** NSFetchedResultsChangeInsert (object)
+*** controllerDidChangeContent</pre>
+<p>This time it’s an “insert” notification. The delegate methods tell the table view to do <code>insertRows(at:with:)</code> in response and the new <code>Location</code> object is inserted in the table.
+</p>
+<p>That’s how easy it is. You make a new <code>NSFetchedResultsController</code> object with a fetch request and implement the delegate methods.
+</p>
+<p>The fetched results controller keeps an eye on any changes that you make to the data store and notifies its delegate in response.
+</p>
+<p>It doesn’t matter where in the app you make these changes, they can happen on any screen. When that screen saves the changes to the managed object context, the fetched results controller picks up on it right away.
+</p>
+<h4 class="segment-chapter">“It’s not a bug, it’s an undocumented feature”</h4>
+
+<p>There is a nasty Core Data bug that has been there for the last few iOS versions. Here is how you can reproduce it:
+</p>
+<ol>
+<li>
+<p>Quit the app.
+</p></li>
+
+<li>
+<p>Run the app again and tag a new location.
+</p></li>
+
+<li>
+<p>Switch to the Locations tab.
+</p></li>
+</ol>
+
+<p>You’d expect the new location to appear in the Locations tab, but it doesn’t.
+</p>
+<p>It’s even possible that the app crashes as soon as you switch tabs — at least, it used to with older versions of iOS, but I haven&apos;t seen the crash with iOS 12 yet. The error message is:
+</p><pre class="code-block">CoreData: FATAL ERROR: The persistent cache of section information does not match the current configuration.  You have illegally mutated the NSFetchedResultsController&apos;s fetch request, its predicate, or its sort descriptor without either disabling caching or using +deleteCacheWithName:</pre>
+<p>We did no such thing! Interestingly, this problem does not occur when you switch to the Locations tab before you tag the new location.
+</p>
+<p>There are two possible fixes:
+</p>
+<ol>
+<li>
+<p>You can delete the cache of the <code>NSFetchedResultsController</code>. To do this, add the following line to <code>viewDidLoad()</code> before the call to <code>performFetch()</code>:
+</p></li>
+</ol>
+<pre class="code-block"><span class="hljs-type">NSFetchedResultsController</span>&lt;<span class="hljs-type">Location</span>&gt;.deleteCache(withName: <span class="hljs-string">"Locations"</span>)</pre>
+<p>This is not a great solution because it negates the point of having a cache in the first place.
+</p>
+<ol>
+<li>
+<p>You can force the <code>LocationsViewController</code> to load its view immediately when the app starts up. Without this, it delays loading the view until you switch tabs, causing Core Data to get confused. To apply this fix, add the following to <code>application(_:didFinishLaunchingWithOptions:)</code>, immediately below the line that sets <code>controller2.managedObjectContext</code>:
+</p></li>
+</ol>
+<pre class="code-block"><span class="hljs-keyword">let</span> <span class="hljs-number">_</span> = controller2.view</pre>
+<p>If this problem affects you, then implement one of the above solutions — my suggestion is option #2. Then throw away DataModel.sqlite and run the app again. Verify that the bug no longer occurs.
+</p>
+<p>iOS is pretty great but unfortunately it’s not free of bugs — what software is?. If you encounter what you perceive to be a bug in one of the iOS frameworks, then report it at <a href="https://bugreport.apple.com">bugreport.apple.com</a>. Feel free to report this Core Data bug as practice. :-)
+</p>
+<h2 class="segment-chapter">Delete locations</h2>
+
+<p>Everyone makes mistakes. So, it’s likely that users will want to delete locations from their list at some point. This is a very easy feature to add: you just have to remove the <code>Location</code> object from the data store and the <code>NSFetchedResultsController</code> will make sure it gets dropped from the table — again, through its delegate methods.
+</p>
+<p>➤ Add the following method to <em>LocationsViewController.swift</em> (under the table view delegate section):
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+              commit editingStyle: UITableViewCell.EditingStyle, 
+              forRowAt indexPath: IndexPath)</span></span> {
+  <span class="hljs-keyword">if</span> editingStyle == .delete {
+    <span class="hljs-keyword">let</span> location = fetchedResultsController.object(at: 
+                                             indexPath)
+    managedObjectContext.delete(location)
+    <span class="hljs-keyword">do</span> {
+      <span class="hljs-keyword">try</span> managedObjectContext.save()
+    } <span class="hljs-keyword">catch</span> {
+      fatalCoreDataError(error)
+    }
+  }
+}</pre>
+<p>You’ve seen <code>tableView(_:commit:forRowAt:)</code> before. It’s part of the table view’s data source protocol. As soon as you implement this method in your view controller, it enables swipe-to-delete.
+</p>
+<p>This method gets the <code>Location</code> object from the selected row and then tells the context to delete that object. This will trigger the <code>NSFetchedResultsController</code> to send a notification to the delegate, which then removes the corresponding row from the table. That’s all you need to do!
+</p>
+<p>➤ Run the app and remove a location using swipe-to-delete. The <code>Location</code> object is dropped from the database and its row disappears from the screen with a brief animation.
+</p><div class="image-25"><img src="graphics/img452.png"  alt="" title="Swipe to delete rows from the table" /></div>
+<p>Many apps have an Edit button in the navigation bar that triggers a mode that also lets you delete — and sometimes move — rows. This is extremely easy to add.
+</p>
+<p>➤ Add the following line to <code>viewDidLoad()</code> in <em>LocationsViewController.swift</em>:
+</p><pre class="code-block">navigationItem.rightBarButtonItem = editButtonItem</pre>
+<p>That’s all there is to it. Every view controller has a built-in Edit button that can be accessed through the <code>editButtonItem</code> property. Tapping that button puts the table in editing mode:
+</p><div class="image-25"><img src="graphics/img453.png"  alt="" title="The table view in edit mode" /></div>
+<p>➤ Run the app and verify that you can now also delete rows by pressing the Edit button.
+</p>
+<p>Pretty sweet, huh? There’s more cool stuff that <code>NSFetchedResultsController</code> makes really easy, such as splitting up the rows into sections.
+</p>
+<h2 class="segment-chapter">Table view sections</h2>
+
+<p>The <code>Location</code> objects have a <code>category</code> field. It would be nice to group the locations by category in the table. The table view supports organizing rows into sections and each of these sections can have its own header.
+</p>
+<p>Putting your rows into sections is a lot of work if you’re doing it by hand, but <code>NSFetchedResultsController</code> practically gives you section support for free.
+</p>
+<p>➤ Change the creation of the sort descriptors in the <code>fetchedResultsController</code> initialization block:
+</p><pre class="code-block"><span class="hljs-built_in">lazy</span> <span class="hljs-keyword">var</span> fetchedResultsController: . . . = {
+  . . .
+  <span class="hljs-keyword">let</span> sort1 = <span class="hljs-type">NSSortDescriptor</span>(key: <span class="hljs-string">"category"</span>, ascending: <span class="hljs-literal">true</span>)
+  <span class="hljs-keyword">let</span> sort2 = <span class="hljs-type">NSSortDescriptor</span>(key: <span class="hljs-string">"date"</span>, ascending: <span class="hljs-literal">true</span>)
+  fetchRequest.sortDescriptors = [sort1, sort2]
+  . . .</pre>
+<p>Instead of one sort descriptor object, you now have two. First you sort the <code>Location</code> objects by <code>category</code> and inside each of the category groups you sort by <code>date</code>.
+</p>
+<p>➤ Also change the initialization of the <code>NSFetchedResultsController</code> object:
+</p><pre class="code-block">  <span class="hljs-keyword">let</span> fetchedResultsController = <span class="hljs-type">NSFetchedResultsController</span>(
+    fetchRequest: fetchRequest,
+    managedObjectContext: <span class="hljs-keyword">self</span>.managedObjectContext,
+    sectionNameKeyPath: <span class="hljs-string">"category"</span>,              <span class="hljs-comment">// change this</span>
+    cacheName: <span class="hljs-string">"Locations"</span>)</pre>
+<p>The only difference here is that the <code>sectionNameKeyPath</code> parameter is set to &quot;category&quot;, which means the fetched results controller will group the search results based on the value of the category attribute.
+</p>
+<p>You’re not done yet — the table view’s data source also has methods for sections. So far you’ve only used the methods for rows, but now that you’re adding sections to the table, you need to implement a few additional methods.
+</p>
+<p>➤ Add the following methods to the table view delegate section:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">numberOfSections</span><span class="hljs-params">(<span class="hljs-keyword">in</span> tableView: UITableView)</span></span> 
+              -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">return</span> fetchedResultsController.sections!.<span class="hljs-built_in">count</span>
+}
+
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+    titleForHeaderInSection section: Int)</span></span> -&gt; <span class="hljs-type">String</span>? {
+  <span class="hljs-keyword">let</span> sectionInfo = fetchedResultsController.sections![section]
+  <span class="hljs-keyword">return</span> sectionInfo.name
+}</pre>
+<p>Because you let <code>NSFetchedResultsController</code> do all the work already, the implementation of these methods is very simple. You ask the fetcher object for a list of the sections, which is an array of <code>NSFetchedResultsSectionInfo</code> objects, and then look inside that array to find out how many sections there are and what their names are.
+</p>
+<div class="note">
+<p><em>Exercise.</em> Why do you need to write <code>sections!</code> with an exclamation point?
+</p></div>
+
+<p>Answer: the <code>sections</code> property is an optional, so it needs to be unwrapped before you can use it. Here you know for sure that <code>sections</code> will never be <code>nil</code> — after all, you just told <code>NSFetchedResultsController</code> to group the search results based on the value of their “category” field — so you can safely force unwrap it using the exclamation mark. Are you starting to get the hang of these optionals already?
+</p>
+<p>➤ Run the app. Play with the categories on the Locations tab and notice how the table view automatically updates. All thanks to <code>NSFetchedResultsController</code>!
+</p><div class="image-25"><img src="graphics/img454.png"  alt="" title="The locations are now grouped in sections" /></div>
+<p>You can find the project files for this chapter under <em>28 – Locations Tab</em> in the Source Code folder.
+</p></body></html>

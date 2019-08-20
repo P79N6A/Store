@@ -1,0 +1,810 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 40: Refactoring</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 40: Refactoring</h1>
+
+<p>Things are looking good in <i>StoreSearch</i>, but there are still a few rough edges to the app.
+</p>
+<p>If you start a search and switch to landscape while the results are still downloading, the landscape view will remain empty. You can reproduce this situation by artificially slowing down your network connection using the Network Link Conditioner tool.
+</p>
+<p>It would also be nice to show an activity spinner on the landscape screen while the search is taking place.
+</p>
+<p>You will polish off some of these rough edges in this chapter and cover the following:
+</p>
+<ul>
+<li>
+<p><em>Refactor the search:</em> Refactor the code to put the search logic into its own class so that you have cnetralized access to the search state and results.
+</p></li>
+
+<li>
+<p><em>Improve the categories:</em> Create a category enumeration to define iTunes categories in a type-safe manner.
+</p></li>
+
+<li>
+<p><em>Enums with associated values:</em> Use enumerations with associated values to maintain the search state and the search results.
+</p></li>
+
+<li>
+<p><em>Spin me right round:</em> Add an activity indicator to the landscape view. Also add a network activity indicator to the app.
+</p></li>
+
+<li>
+<p><em>Nothing found:</em> Update the landscape view to display a message when there are no search results available.
+</p></li>
+
+<li>
+<p><em>The Detail pop-up:</em> Display the Detail pop-up when any search result on the landscape view is tapped.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Refactor the search</h2>
+
+<p>So how can <code>LandscapeViewController</code> tell what state the search is in? Its <code>searchResults</code> array will be empty if no search was done, or the search has not completed yet. Also, it could have zero <code>SearchResult</code> objects even after a successful search. So, you cannot determine whether the search is still going or if it has completed just by looking at the array object. It is possible that the <code>searchResults</code> array will have a count of 0 in either case.
+</p>
+<p>You need a way to determine whether a search is still going on. A possible solution is to have <code>SearchViewController</code> pass the <code>isLoading</code> flag to <code>LandscapeViewController</code>, but that doesn’t feel right to me. This is known as <i>code smell</i>, a hint at a deeper problem with the design of the program.
+</p>
+<p>Instead, let’s take the searching logic out of <code>SearchViewController</code> and put it into a class of its own, <code>Search</code>. Then, you can get all the state relating to the active search from that <code>Search</code> object. Time for some more refactoring!
+</p>
+<h3 class="segment-chapter">The Search class</h3>
+
+<p>➤ If you want, create a new branch for this in Git.
+</p>
+<p>This is a pretty comprehensive change to the code and there is always a risk that it won&apos;t work as you hoped. By making the changes in a new branch, you can commit your changes without messing up the master branch. Plus, you can revert back to the master branch if the changes don&apos;t work out. Making new branches in Git is quick and easy, so it’s good to get into the habit.
+</p>
+<p>➤ Create a new file using the <em>Swift File</em> template. Name it <em>Search</em>.
+</p>
+<p>➤ Change the contents of <em>Search.swift</em> to:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> Foundation
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Search</span> </span>{
+  <span class="hljs-keyword">var</span> searchResults: [<span class="hljs-type">SearchResult</span>] = []
+  <span class="hljs-keyword">var</span> hasSearched = <span class="hljs-literal">false</span>
+  <span class="hljs-keyword">var</span> isLoading = <span class="hljs-literal">false</span>
+    
+  <span class="hljs-keyword">private</span> <span class="hljs-keyword">var</span> dataTask: <span class="hljs-type">URLSessionDataTask</span>? = <span class="hljs-literal">nil</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">performSearch</span><span class="hljs-params">(<span class="hljs-keyword">for</span> text: String, category: Int)</span></span> {
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"Searching..."</span>)
+  }
+}</pre>
+<p>You’ve given this class three public properties, one private property, and a method. This stuff should look familiar because it comes straight from <code>SearchViewController</code>. You’ll be removing code from that class and putting it into this new <code>Search</code> class.
+</p>
+<p>The <code>performSearch(for:category:)</code> method doesn’t do much yet but that’s OK. First I want to make <code>SearchViewController</code> work with this new <code>Search</code> object and when it compiles without errors, you will move all the logic over. Baby steps!
+</p>
+<h3 class="segment-chapter">Move code over</h3>
+
+<p>Let’s make the changes to <em>SearchViewController.swift</em>. Xcode will probably give a bunch of errors and warnings while you’re making these changes, but it will all work out in the end.
+</p>
+<p>➤ In <em>SearchViewController.swift</em>, remove the declarations for the following properties:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> searchResults: [<span class="hljs-type">SearchResult</span>] = []
+<span class="hljs-keyword">var</span> hasSearched = <span class="hljs-literal">false</span>
+<span class="hljs-keyword">var</span> isLoading = <span class="hljs-literal">false</span>
+<span class="hljs-keyword">var</span> dataTask: <span class="hljs-type">URLSessionDataTask</span>?</pre>
+<p>And replace them with this one:
+</p><pre class="code-block"><span class="hljs-keyword">private</span> <span class="hljs-keyword">let</span> search = <span class="hljs-type">Search</span>()</pre>
+<p>The new <code>Search</code> object not only describes the state and results of the search, it will also encapsulate all the logic for talking to the iTunes web service. You can now remove a lot of code from the view controller.
+</p>
+<p>➤ Move the following methods over to <em>Search.swift</em>:
+</p>
+<ul>
+<li>
+<p><code>iTunesURL(searchText:category:)</code>
+</p></li>
+
+<li>
+<p><code>parse(data:)</code>
+</p></li>
+</ul>
+
+<p>➤ Make these methods <code>private</code>. They are only important to <code>Search</code> itself, not to any other classes from the app, so it’s good to “hide” them.
+</p>
+<p>➤ Back in <em>SearchViewController.swift</em>, replace the <code>performSearch()</code> method with the following (tip: set aside the old code in a temporary file because you’ll need it again later).
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">performSearch</span><span class="hljs-params">()</span></span> {
+  search.performSearch(<span class="hljs-keyword">for</span>: searchBar.text!, 
+         category: segmentedControl.selectedSegmentIndex)
+  
+  tableView.reloadData()
+  searchBar.resignFirstResponder()
+}</pre>
+<p>This simply makes the <code>Search</code> object do all the work. Of course, you still reload the table view — to show the activity spinner — and hide the keyboard.
+</p>
+<p>There are a few places in the code that still use the old <code>searchResults</code> array even though that no longer exists. You should change them to use the <code>searchResults</code> property from the <code>Search</code> object instead. Likewise for <code>hasSearched</code> and <code>isLoading</code>.
+</p>
+<p>➤ For example, change <code>tableView(_:numberOfRowsInSection:)</code> to:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+               numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">if</span> search.isLoading {
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>  <span class="hljs-comment">// Loading...</span>
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> !search.hasSearched {
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>  <span class="hljs-comment">// Not searched yet</span>
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> search.searchResults.<span class="hljs-built_in">count</span> == <span class="hljs-number">0</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>  <span class="hljs-comment">// Nothing Found</span>
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">return</span> search.searchResults.<span class="hljs-built_in">count</span>
+  }
+}</pre>
+<p>Similar to the above, find the other places in code where the relevant properties have moved and make the necessary changes. If you aren&apos;t sure of where to make the changes, look for Xcode errors — for this step, once you make all the changes correctly, the code will compile again without any errors.
+</p>
+<p>➤ In <code>showLandscape(with:)</code>, change the line that sets the <code>searchResults</code> property on the new view controller from:
+</p><pre class="code-block">controller.searchResults = search.searchResults</pre>
+<p>To:
+</p><pre class="code-block">controller.search = search</pre>
+<p>This line will give an error after you make the change, but you’ll fix that next.
+</p>
+<p>The <code>LandscapeViewController</code> still has a property for a <code>searchResults</code> array so you have to change that to use the <code>Search</code> object as well.
+</p>
+<p>➤ In <em>LandscapeViewController.swift</em>, remove the <code>searchResults</code> instance variable and replace it with:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> search: <span class="hljs-type">Search</span>!</pre>
+<p>➤ In <code>viewWillLayoutSubviews()</code>, change the call to <code>tileButtons()</code> into:
+</p><pre class="code-block">tileButtons(search.searchResults)</pre>
+<p>OK, that’s the first round of changes. Build the app to make sure there are no compiler errors.
+</p>
+<h3 class="segment-chapter">Add the search logic back in</h3>
+
+<p>The app itself doesn’t do much anymore because you removed all the searching logic. So let’s put that back in.
+</p>
+<p>➤ In <em>Search.swift</em>, replace <code>performSearch(for:category:)</code> with the following (you can use that temporary file from earlier, but be careful to make the proper changes):
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">performSearch</span><span class="hljs-params">(<span class="hljs-keyword">for</span> text: String, category: Int)</span></span> {
+  <span class="hljs-keyword">if</span> !text.isEmpty {
+    dataTask?.cancel()
+
+    isLoading = <span class="hljs-literal">true</span>
+    hasSearched = <span class="hljs-literal">true</span>
+    searchResults = []
+
+    <span class="hljs-keyword">let</span> url = iTunesURL(searchText: text, category: category)
+    
+    <span class="hljs-keyword">let</span> session = <span class="hljs-type">URLSession</span>.shared
+    dataTask = session.dataTask(with: url, completionHandler: {
+      data, response, error <span class="hljs-keyword">in</span>
+      <span class="hljs-comment">// Was the search cancelled?</span>
+      <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> error = error <span class="hljs-keyword">as</span> <span class="hljs-type">NSError</span>?, error.code == -<span class="hljs-number">999</span> {
+        <span class="hljs-keyword">return</span>
+      }
+
+      <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> httpResponse = response <span class="hljs-keyword">as</span>? <span class="hljs-type">HTTPURLResponse</span>, 
+             httpResponse.statusCode == <span class="hljs-number">200</span>, <span class="hljs-keyword">let</span> data = data {
+        <span class="hljs-keyword">self</span>.searchResults = <span class="hljs-keyword">self</span>.parse(data: data)
+        <span class="hljs-keyword">self</span>.searchResults.<span class="hljs-built_in">sort</span>(by: &lt;)
+
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">"Success!"</span>)
+        <span class="hljs-keyword">self</span>.isLoading = <span class="hljs-literal">false</span>
+        <span class="hljs-keyword">return</span>
+      }
+
+      <span class="hljs-built_in">print</span>(<span class="hljs-string">"Failure! <span class="hljs-subst">\(response!)</span>"</span>)
+      <span class="hljs-keyword">self</span>.hasSearched = <span class="hljs-literal">false</span>
+      <span class="hljs-keyword">self</span>.isLoading = <span class="hljs-literal">false</span>
+    })
+    dataTask?.resume()
+  }
+}</pre>
+<p>This is basically the same logic as before, except all the user interface code has been removed. The purpose of <code>Search</code> is just to perform a search, it should not do any UI stuff. That’s the job of the view controller.
+</p>
+<p>➤ Run the app and search for something. When the search finishes, the Console shows a “Success!” message but the table view does not reload and the spinner keeps spinning for eternity.
+</p>
+<p>The <code>Search</code> object currently has no way to tell the <code>SearchViewController</code> that it is done. You could solve this by making <code>SearchViewController</code> a delegate of the <code>Search</code> object, but for situations like these, closures are much more convenient.
+</p>
+<h3 class="segment-chapter">The SearchComplete closure</h3>
+
+<p>Let’s create your own closure!
+</p>
+<p>➤ Add the following line to <em>Search.swift</em>, above the <code>class</code> line:
+</p><pre class="code-block"><span class="hljs-keyword">typealias</span> <span class="hljs-type">SearchComplete</span> = (<span class="hljs-type">Bool</span>) -&gt; <span class="hljs-type">Void</span></pre>
+<p>The <code>typealias</code> declaration allows you to create a more convenient name for a data type, in order to save some keystrokes and to make the code more readable.
+</p>
+<p>Here, you declare a type for your own closure, named <code>SearchComplete</code>. This is a closure that returns no value (it is <code>Void</code>) and takes one parameter, a <code>Bool</code>. If you think this syntax is weird, then I’m right there with you, but that’s the way it is.
+</p>
+<p>From now on, you can use the name <code>SearchComplete</code> to refer to a closure that takes a <code>Bool</code> parameter and returns no value.
+</p>
+<h4 class="segment-chapter">Closure types</h4>
+
+<p>Whenever you see a <code>-&gt;</code> in a type definition, the type is intended for a closure, function, or method.
+</p>
+<p>Swift treats these three things as mostly interchangeable. Closures, functions, and methods are all blocks of source code that possibly take parameters and return a value. The difference is that a function is really just a closure with a name, and a method is a function that lives inside an object.
+</p>
+<p>Some examples of closure types:
+</p>
+<p><code>() -&gt; ()</code> is a closure that takes no parameters and returns no value.
+</p>
+<p><code>Void -&gt; Void</code> is the same as the previous example. <code>Void</code> and <code>()</code> mean the same thing.
+</p>
+<p><code>(Int) -&gt; Bool</code> is a closure that takes one parameter, an <code>Int</code>, and returns a <code>Bool</code>.
+</p>
+<p><code>Int -&gt; Bool</code> is the same as the above. If there is only one parameter, you can leave out the parentheses.
+</p>
+<p><code>(Int, String) -&gt; Bool</code> is a closure taking two parameters, an <code>Int</code> and a <code>String</code>, and returning a <code>Bool</code>.
+</p>
+<p><code>(Int, String) -&gt; Bool?</code> as above, but now returns an optional <code>Bool</code> value.
+</p>
+<p><code>(Int) -&gt; (Int) -&gt; Int</code> is a closure that returns another closure that returns an <code>Int</code>. Freaky! Swift treats closures like any other type of object, so you can also pass them as parameters and return them from functions.
+</p>
+<p>➤ Make the following changes to <code>performSearch(for:category:)</code>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">performSearch</span><span class="hljs-params">(<span class="hljs-keyword">for</span> text: String, category: Int, 
+            completion: @escaping SearchComplete)</span></span> {      <span class="hljs-comment">// new</span>
+  <span class="hljs-keyword">if</span> !text.isEmpty {
+    . . .
+    dataTask = session.dataTask(with: url, completionHandler: {
+      data, response, error <span class="hljs-keyword">in</span>
+      <span class="hljs-keyword">var</span> success = <span class="hljs-literal">false</span>                                <span class="hljs-comment">// new</span>
+      . . .
+      <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> httpResponse = response <span class="hljs-keyword">as</span>? . . . {
+        . . .            
+        <span class="hljs-keyword">self</span>.isLoading = <span class="hljs-literal">false</span>
+        success = <span class="hljs-literal">true</span>                     <span class="hljs-comment">// instead of return</span>
+      }
+      
+      <span class="hljs-keyword">if</span> !success {                                      <span class="hljs-comment">// new</span>
+        <span class="hljs-keyword">self</span>.hasSearched = <span class="hljs-literal">false</span>
+        <span class="hljs-keyword">self</span>.isLoading = <span class="hljs-literal">false</span>
+      }                                                  <span class="hljs-comment">// new</span>
+      <span class="hljs-comment">// New code block - add the next three lines</span>
+      <span class="hljs-type">DispatchQueue</span>.main.async {                         
+        completion(success)
+      } 
+    })
+    dataTask?.resume()
+  }
+}</pre>
+<p>You’ve added a third parameter named <code>completion</code> that is of type <code>SearchComplete</code>. Whoever calls <code>performSearch(for:category:completion:)</code> can now supply their own closure, and the method will execute the code that is inside that closure when the search completes.
+</p>
+<div class="note">
+<p><em>Note:</em> The <code>@escaping</code> annotation is necessary for closures that are not used immediately. It tells Swift that this closure may need to capture variables such as <code>self</code> and keep them around for a little while until the closure can finally be executed, in this case, when the search is done.
+</p></div>
+
+<p>Instead of returning early from the closure upon success, you now set the <code>success</code> variable to <code>true</code> replacing the <code>return</code> statement. The value of <code>success</code> is used for the <code>Bool</code> parameter of the <code>completion</code> closure, as you can see inside the call to <code>DispatchQueue.main.async</code> at the bottom.
+</p>
+<p>To perform the code from the closure, you simply call it as you’d call any function or method: <code>closureName(parameters)</code>. You call <code>completion(true)</code> upon success and <code>completion(false)</code> upon failure. This is done so that the <code>SearchViewController</code> can reload its table view or, in the case of an error, show an alert view.
+</p>
+<p>➤ In <em>SearchViewController.swift</em>, replace <code>performSearch()</code> with:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">performSearch</span><span class="hljs-params">()</span></span> {
+  search.performSearch(<span class="hljs-keyword">for</span>: searchBar.text!, 
+         category: segmentedControl.selectedSegmentIndex, 
+         completion: { success <span class="hljs-keyword">in</span>          <span class="hljs-comment">// Begin new code</span>
+    <span class="hljs-keyword">if</span> !success {
+      <span class="hljs-keyword">self</span>.showNetworkError()
+    }    
+    <span class="hljs-keyword">self</span>.tableView.reloadData()
+  })                                       <span class="hljs-comment">// End new code</span>
+  
+  tableView.reloadData()
+  searchBar.resignFirstResponder()
+}</pre>
+<p>You now pass a closure to <code>performSearch(for:category:completion:)</code>. The code in this closure gets called after the search completes, with the <code>success</code> parameter being either <code>true</code> or <code>false</code>. A lot simpler than making a delegate, right? The closure is always called on the main thread, so it’s safe to use UI code here.
+</p>
+<p>➤ Run the app. You should be able to search again.
+</p>
+<p>That’s the first part of this refactoring complete. You’ve extracted the relevant code for searching out of the <code>SearchViewController</code> and placed it into its own object, <code>Search</code>. The view controller now only does view-related things, which is exactly how it is supposed to work.
+</p>
+<p>➤ You’ve made quite a few extensive changes, so it’s a good idea to commit.
+</p>
+<h2 class="segment-chapter">Improve the categories</h2>
+
+<p>The idea behind Swift’s strong typing is that the data type of a variable should be as descriptive as possible. Right now, the category to search for is represented by a number, 0 to 3, but is that the best way to describe a category to your program?
+</p>
+<p>If you see the number 3, does that mean “e-book” to you? It could be anything… And what if you use 4 or 99 or -1, what would that mean? These are all valid values for an <code>Int</code> but not for a category. The only reason the category is currently an <code>Int</code> is because <code>segmentedControl.selectedSegmentIndex</code> is an <code>Int</code>.
+</p>
+<h3 class="segment-chapter">Represent the category as an enum</h3>
+
+<p>There are only four possible search categories, so this sounds like a job for an enum!
+</p>
+<p>➤ Add the following to <em>Search.swift</em>, <i>inside</i> the <code>class</code> brackets:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">Category</span>: <span class="hljs-title">Int</span> </span>{
+  <span class="hljs-keyword">case</span> all = <span class="hljs-number">0</span>
+  <span class="hljs-keyword">case</span> music = <span class="hljs-number">1</span>
+  <span class="hljs-keyword">case</span> software = <span class="hljs-number">2</span>
+  <span class="hljs-keyword">case</span> ebooks = <span class="hljs-number">3</span>
+}</pre>
+<p>This creates a new enumeration type named <code>Category</code> with four possible values. Each of these has a numeric value associated with it, called the <em>raw</em> value.
+</p>
+<p>Contrast this with the <code>AnimationStyle</code> enum you made before:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">AnimationStyle</span> </span>{
+  <span class="hljs-keyword">case</span> slide
+  <span class="hljs-keyword">case</span> fade
+}</pre>
+<p>That enum does not associate numbers with its values — it doesn’t say <code>: Int</code> behind the enum name. For <code>AnimationStyle</code> it doesn’t matter that <code>slide</code> is really number 0 and <code>fade</code> is number 1, or whatever the values might be. All you care about is that a variable of type <code>AnimationStyle</code> can either be <code>.slide</code> or <code>.fade</code>, a numeric value is not important.
+</p>
+<p>For the <code>Category</code> enum, however, you want to connect its four values to the four possible indices of the Segmented Control. If segment 3 is selected, you want this to correspond to <code>.ebooks</code>. That’s why the items from the <code>Category</code> enum have associated numbers.
+</p>
+<h3 class="segment-chapter">Use the Category enum</h3>
+
+<p>➤ Change the method signature of <code>performSearch(for:category:completion:)</code> to use this new type:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">performSearch</span><span class="hljs-params">(<span class="hljs-keyword">for</span> text: String, category: Category, 
+                   completion: @escaping SearchComplete)</span></span> {</pre>
+<p>The <code>category</code> parameter is no longer an <code>Int</code>. It is not possible to pass it the value 4 or 99 or -1 anymore. It must always be one of the values from the <code>Category</code> enum. This reduces a potential source of bugs and it has made the program more expressive. Whenever you have a limited list of possible values that can be turned into an enum, it’s worth doing!
+</p>
+<p>➤ Also change <code>iTunesURL(searchText:category:)</code> because that also assumed <code>category</code> would be an <code>Int</code>:
+</p><pre class="code-block"><span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">iTunesURL</span><span class="hljs-params">(searchText: String, 
+                         category: Category)</span></span> -&gt; <span class="hljs-type">URL</span> {
+  <span class="hljs-keyword">let</span> kind: <span class="hljs-type">String</span>
+  <span class="hljs-keyword">switch</span> category {
+  <span class="hljs-keyword">case</span> .all: kind = <span class="hljs-string">""</span>
+  <span class="hljs-keyword">case</span> .music: kind = <span class="hljs-string">"musicTrack"</span>
+  <span class="hljs-keyword">case</span> .software: kind = <span class="hljs-string">"software"</span>
+  <span class="hljs-keyword">case</span> .ebooks: kind = <span class="hljs-string">"ebook"</span>
+  }
+  
+  <span class="hljs-keyword">let</span> encodedText = . . .</pre>
+<p>The <code>switch</code> now looks at the various cases from the <code>Category</code> enum instead of the numbers 0 to 3. Note that the <code>default</code> case is no longer needed because the <code>category</code> parameter cannot have any other values.
+</p>
+<p>This code works, but to be honest I’m not entirely happy with it. I’ve said before that any logic that is related to an object should be an integral part of that object. In other words, an object should do as much as it can itself.
+</p>
+<p>Converting the category into a “kind” string that goes into the iTunes URL is a good example. That sounds like something the <code>Category</code> enum itself could do.
+</p>
+<p>Swift enums can have their own methods and properties. So, let’s take advantage of that and improve the code even more.
+</p>
+<p>➤ Add the <code>type</code> property to the <code>Category</code> enum:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">Category</span>: <span class="hljs-title">Int</span> </span>{
+  <span class="hljs-keyword">case</span> all = <span class="hljs-number">0</span>
+  <span class="hljs-keyword">case</span> music = <span class="hljs-number">1</span>
+  <span class="hljs-keyword">case</span> software = <span class="hljs-number">2</span>
+  <span class="hljs-keyword">case</span> ebooks = <span class="hljs-number">3</span>
+
+  <span class="hljs-keyword">var</span> type: <span class="hljs-type">String</span> {
+    <span class="hljs-keyword">switch</span> <span class="hljs-keyword">self</span> {
+    <span class="hljs-keyword">case</span> .all: <span class="hljs-keyword">return</span> <span class="hljs-string">""</span>
+    <span class="hljs-keyword">case</span> .music: <span class="hljs-keyword">return</span> <span class="hljs-string">"musicTrack"</span>
+    <span class="hljs-keyword">case</span> .software: <span class="hljs-keyword">return</span> <span class="hljs-string">"software"</span>
+    <span class="hljs-keyword">case</span> .ebooks: <span class="hljs-keyword">return</span> <span class="hljs-string">"ebook"</span>
+    }
+  }
+}</pre>
+<p>Swift enums cannot have instance variables, only computed properties. <code>type</code> has the exact same <code>switch</code> statement that you just saw, except that it switches on <code>self</code>, the current value of the enumeration object.
+</p>
+<p>➤ In <code>iTunesURL(searchText:category:)</code> you can now simply write:
+</p><pre class="code-block"><span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">iTunesURL</span><span class="hljs-params">(searchText: String, 
+                         category: Category)</span></span> -&gt; <span class="hljs-type">URL</span> {
+  <span class="hljs-keyword">let</span> kind = category.type
+  <span class="hljs-keyword">let</span> encodedText = . . .</pre>
+<p>That’s a lot cleaner. Everything that has to do with categories now lives inside its own enum, <code>Category</code>.
+</p>
+<h3 class="segment-chapter">Convert an Int to Category</h3>
+
+<p>You still need to tell <code>SearchViewController</code> about this, because it needs to convert the selected segment index into a proper <code>Category</code> value.
+</p>
+<p>➤ In <em>SearchViewController.swift</em>, change the first part of <code>performSearch()</code> to:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">performSearch</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> category = <span class="hljs-type">Search</span>.<span class="hljs-type">Category</span>(
+         rawValue: segmentedControl.selectedSegmentIndex) {
+    search.performSearch(<span class="hljs-keyword">for</span>: searchBar.text!, 
+           category: category, completion: {
+       . . .
+    })
+    . . .
+  }
+}</pre>
+<p>To convert the <code>Int</code> value from <code>selectedSegmentIndex</code> to an item from the <code>Category</code> enum, you use the built-in <code>init(rawValue:)</code> method. This may fail — for example, when you pass in a number that isn’t covered by one of <code>Category</code>’s cases, i.e. anything that is outside the range 0 to 3. That’s why <code>init(rawValue:)</code> returns an optional that needs to be unwrapped with <code>if let</code> before you can use it.
+</p>
+<div class="note">
+<p><em>Note:</em> Because you placed the <code>Category</code> enum inside the <code>Search</code> class, its full name is <code>Search.Category</code>. In other words, <code>Category</code> lives inside the <code>Search</code> <i>namespace</i>. It makes sense to bundle up these two things because they are so closely related.
+</p></div>
+
+<p>➤ Build and run to see if the different categories still work.
+</p>
+<h2 class="segment-chapter">Enums with associated values</h2>
+
+<p>Enums are pretty useful for restricting something to a limited range of possibilities, like what you did with the search categories. But they are even more powerful than you might have expected, as you’ll find out…
+</p>
+<p>Like all objects, the <code>Search</code> object has a certain amount of <i>state</i>. For <code>Search</code>, this is determined by its <code>isLoading</code>, <code>hasSearched</code>, and <code>searchResults</code> variables.
+</p>
+<p>These three variables describe four possible states:
+</p><div class="image-90"><img src="graphics/img680.png"  alt="" title="" /></div>
+<p>The <code>Search</code> object is in only one of these states at a time, and when it changes from one state to another, there is a corresponding change in the app’s UI. For example, upon a change from “searching” to “have results”, the app hides the activity spinner and loads the results into the table view.
+</p>
+<p>The problem is that this state is scattered across three different variables. It’s tricky to see what the current state is just by looking at these variables.
+</p>
+<h3 class="segment-chapter">Consolidate search state</h3>
+
+<p>You can improve upon things by giving <code>Search</code> an explicit <code>state</code> variable. The cool thing is that this gets rid of <code>isLoading</code>, <code>hasSearched</code>, and even the <code>searchResults</code> array variables. Now there is only a single place you have to look at to determine what <code>Search</code> is currently up to.
+</p>
+<p>➤ In <em>Search.swift</em>, remove the following instance variables:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> searchResults: [<span class="hljs-type">SearchResult</span>] = []
+<span class="hljs-keyword">var</span> hasSearched = <span class="hljs-literal">false</span>
+<span class="hljs-keyword">var</span> isLoading = <span class="hljs-literal">false</span></pre>
+<p>➤ In their place, add the following enum, which goes inside the class again:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">State</span> </span>{
+  <span class="hljs-keyword">case</span> notSearchedYet
+  <span class="hljs-keyword">case</span> loading
+  <span class="hljs-keyword">case</span> noResults
+  <span class="hljs-keyword">case</span> results([<span class="hljs-type">SearchResult</span>])
+}</pre>
+<p>This enumeration has a case for each of the four states listed above. It does not need raw values, so the cases don’t have numbers — do note that the state <code>.notSearchedYet</code> is also used for when there is an error.
+</p>
+<p>The <code>.results</code> case is special: it has an <i>associated value</i> — an array of <code>SearchResult</code> objects.
+</p>
+<p>This array is only important when the search is successful. In all the other cases, there are no search results and the array is empty — see the state table above. By making it an associated value, you’ll only have access to this array when <code>Search</code> is in the <code>.results</code> state. In the other states, the array simply does not exist.
+</p>
+<h3 class="segment-chapter">Use the new state enum</h3>
+
+<p>Let’s see how this works.
+</p>
+<p>➤ First add a new instance variable:
+</p><pre class="code-block"><span class="hljs-keyword">private</span>(<span class="hljs-keyword">set</span>) <span class="hljs-keyword">var</span> state: <span class="hljs-type">State</span> = .notSearchedYet</pre>
+<p>This keeps track of <code>Search</code>’s current state. Its initial value is <code>.notSearchedYet</code> — obviously no search has happened yet when the <code>Search</code> object is first constructed.
+</p>
+<p>This variable is <code>private</code>, but only half so. It’s not unreasonable for other objects to want to ask <code>Search</code> what its current state is. In fact, the app won’t work unless you allow this.
+</p>
+<p>But you don’t want those other objects to be able to <i>change</i> the value of <code>state</code>; they are only allowed to read the state value. With <code>private(set)</code> you tell Swift that reading is OK for other objects, but assigning (or setting) new values to this variable may only happen inside the <code>Search</code> class.
+</p>
+<p>➤ Change <code>performSearch(for:category:completion:)</code> to use this new variable:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">performSearch</span><span class="hljs-params">(<span class="hljs-keyword">for</span> text: String, category: Category, 
+                 completion: @escaping SearchComplete)</span></span> {
+  <span class="hljs-keyword">if</span> !text.isEmpty {
+    dataTask?.cancel()
+    <span class="hljs-comment">// Remove the next 3 lines and replace with the following</span>
+    state = .loading                                
+    . . .
+    dataTask = session.dataTask(with: url, completionHandler: {
+      data, response, error <span class="hljs-keyword">in</span>
+      
+      <span class="hljs-keyword">var</span> newState = <span class="hljs-type">State</span>.notSearchedYet           <span class="hljs-comment">// add this</span>
+      . . .      
+      <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> httpResponse = response . . . {
+        <span class="hljs-comment">// Replace all code within this if block with following</span>
+        <span class="hljs-keyword">var</span> searchResults = <span class="hljs-keyword">self</span>.parse(data: data)
+        <span class="hljs-keyword">if</span> searchResults.isEmpty {
+          newState = .noResults
+        } <span class="hljs-keyword">else</span> {
+          searchResults.<span class="hljs-built_in">sort</span>(by: &lt;)
+          newState = .results(searchResults)
+        }
+        success = <span class="hljs-literal">true</span>
+      }
+      <span class="hljs-comment">// Remove "if !success" block</span>
+      <span class="hljs-type">DispatchQueue</span>.main.async {
+        <span class="hljs-keyword">self</span>.state = newState                        <span class="hljs-comment">// add this</span>
+        completion(success)
+      }
+    })
+    dataTask?.resume()
+  }
+}</pre>
+<p>Instead of the old variables <code>isLoading</code>, <code>hasSearched</code>, and <code>searchResults</code>, this code now only changes <code>state</code>.
+</p>
+<div class="note">
+<p><em>Note:</em> You don&apos;t update <code>state</code> directly, but instead, use a new local variable <code>newState</code>. Then at the end, in the <code>DispatchQueue.main.async</code> block, you transfer the value of <code>newState</code> to <code>self.state</code>. The reason for doing this the long way round is that <code>state</code> must only be changed by the main thread, or it can lead to a nasty and unpredictable bug known as a <i>race condition</i>.
+</p>
+<p>When you have multiple threads trying to use the same variable at the same time, the app may do unexpected things and crash. In our app, the main thread will try to use <code>search.state</code> to display the activity spinner in the table view — and that can happen at the same time as <code>URLSession</code>’s completion handler, which runs in a background thread. We have to make sure these two threads don’t get in each other’s way!
+</p></div>
+
+<p>Here’s how the new logic works:
+</p>
+<p>There is a lot that can go wrong between performing the network request and parsing the JSON. By setting <code>newState</code> to <code>.notSearchedYet</code> (which doubles as the error state) and <code>success</code> to <code>false</code> at the start of the completion handler, you assume the worst — always a good idea when doing network programming — unless there is evidence otherwise.
+</p>
+<p>That evidence comes when the app is able to successfully parse the JSON and create an array of <code>SearchResult</code> objects. If the array is empty, <code>newState</code> becomes <code>.noResults</code>.
+</p>
+<p>The interesting part is when the array is <i>not</i> empty. After sorting it like before, you do <code>newState = .results(searchResults)</code>. This gives <code>newState</code> the value <code>.results</code> and also associates the array of <code>SearchResult</code> objects with it. You no longer need a separate instance variable to keep track of the array; the array object is intrinsically attached to the value of <code>newState</code>.
+</p>
+<p>Finally, you copy the value of <code>newState</code> into <code>self.state</code>. As I mentioned, this needs to happen on the main thread to prevent race conditions.
+</p>
+<h3 class="segment-chapter">Update other classes to use the state enum</h3>
+
+<p>That completes the changes in <em>Search.swift</em>, but there are quite a few other places in the code that still try to use <code>Search</code>’s old properties.
+</p>
+<p>➤ In <em>SearchViewController.swift</em>, replace <code>tableView(_:numberOfRowsInSection:)</code> with:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+               numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">switch</span> search.state {
+  <span class="hljs-keyword">case</span> .notSearchedYet:
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+  <span class="hljs-keyword">case</span> .loading:
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+  <span class="hljs-keyword">case</span> .noResults:
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+  <span class="hljs-keyword">case</span> .results(<span class="hljs-keyword">let</span> list):
+    <span class="hljs-keyword">return</span> list.<span class="hljs-built_in">count</span>
+  }
+}</pre>
+<p>This is pretty straightforward. Instead of trying to make sense out of the separate <code>isLoading</code>, <code>hasSearched</code>, and <code>searchResults</code> variables, this simply looks at the value from <code>search.state</code>. The <code>switch</code> statement is ideal for situations like this.
+</p>
+<p>The <code>.results</code> case requires a bit more explanation. Because <code>.results</code> has an array of <code>SearchResult</code> objects associated with it, you can <i>bind</i> this array to a temporary variable, <code>list</code>, and then use that variable inside the case to read how many items are in the array. That’s how you make use of the associated value.
+</p>
+<p>This pattern, using a <code>switch</code> statement to look at <code>state</code>, is going to become very common in your code.
+</p>
+<p>➤ Replace <code>tableView(_:cellForRowAt:)</code> with:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+    cellForRowAt indexPath: IndexPath)</span></span> -&gt; <span class="hljs-type">UITableViewCell</span> {
+  <span class="hljs-keyword">switch</span> search.state {
+  <span class="hljs-keyword">case</span> .notSearchedYet:
+    <span class="hljs-built_in">fatalError</span>(<span class="hljs-string">"Should never get here"</span>)
+  
+  <span class="hljs-keyword">case</span> .loading:
+    <span class="hljs-keyword">let</span> cell = tableView.dequeueReusableCell(
+        withIdentifier: <span class="hljs-type">TableView</span>.<span class="hljs-type">CellIdentifiers</span>.loadingCell, 
+        <span class="hljs-keyword">for</span>: indexPath)
+    
+    <span class="hljs-keyword">let</span> spinner = cell.viewWithTag(<span class="hljs-number">100</span>) <span class="hljs-keyword">as</span>! 
+                  <span class="hljs-type">UIActivityIndicatorView</span>
+    spinner.startAnimating()
+    <span class="hljs-keyword">return</span> cell
+  
+  <span class="hljs-keyword">case</span> .noResults:
+    <span class="hljs-keyword">return</span> tableView.dequeueReusableCell(
+      withIdentifier: <span class="hljs-type">TableView</span>.<span class="hljs-type">CellIdentifiers</span>.nothingFoundCell,
+      <span class="hljs-keyword">for</span>: indexPath)
+    
+  <span class="hljs-keyword">case</span> .results(<span class="hljs-keyword">let</span> list):
+    <span class="hljs-keyword">let</span> cell = tableView.dequeueReusableCell(
+      withIdentifier: <span class="hljs-type">TableView</span>.<span class="hljs-type">CellIdentifiers</span>.searchResultCell,
+      <span class="hljs-keyword">for</span>: indexPath) <span class="hljs-keyword">as</span>! <span class="hljs-type">SearchResultCell</span>
+    
+    <span class="hljs-keyword">let</span> searchResult = list[indexPath.row]
+    cell.configure(<span class="hljs-keyword">for</span>: searchResult)
+    <span class="hljs-keyword">return</span> cell
+  }
+}</pre>
+<p>The same thing happens here. The various <code>if</code> statements have been replaced by a <code>switch</code> and <code>case</code> statements for the four possibilities.
+</p>
+<p>Note that <code>numberOfRowsInSection</code> returns 0 for <code>.notSearchedYet</code> and no cells will ever be asked for. But because a switch must always be exhaustive, you also have to include a case for <code>.notSearchedYet</code> in <code>cellForRowAt</code>. Since it would be a bug if the code ever got there, you can use the built-in <code>fatalError()</code> function to help catch such a situation.
+</p>
+<p>➤ Next up is <code>tableView(_:willSelectRowAt:)</code>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+     willSelectRowAt indexPath: IndexPath)</span></span> -&gt; <span class="hljs-type">IndexPath</span>? {
+  <span class="hljs-keyword">switch</span> search.state {
+  <span class="hljs-keyword">case</span> .notSearchedYet, .loading, .noResults:
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+  <span class="hljs-keyword">case</span> .results:
+    <span class="hljs-keyword">return</span> indexPath
+  }
+}</pre>
+<p>It’s only possible to tap on rows when the state is <code>.results</code>. So for all the other cases, this method returns <code>nil</code>.  And for the <code>.results</code> case, you don’t need to bind the results array because you’re not using it for anything here.
+</p>
+<p>➤ And finally, change <code>prepare(for:sender:)</code> to:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">prepare</span><span class="hljs-params">(<span class="hljs-keyword">for</span> segue: UIStoryboardSegue, 
+                         sender: Any?)</span></span> {
+  <span class="hljs-keyword">if</span> segue.identifier == <span class="hljs-string">"ShowDetail"</span> {
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">case</span> .results(<span class="hljs-keyword">let</span> list) = search.state {
+      <span class="hljs-keyword">let</span> detailViewController = segue.destination
+                                 <span class="hljs-keyword">as</span>! <span class="hljs-type">DetailViewController</span>
+      <span class="hljs-keyword">let</span> indexPath = sender <span class="hljs-keyword">as</span>! <span class="hljs-type">IndexPath</span>
+      <span class="hljs-keyword">let</span> searchResult = list[indexPath.row]
+      detailViewController.searchResult = searchResult
+    }
+  }
+}</pre>
+<p>Here you only care about the <code>.results</code> case, so writing an entire <code>switch</code> statement is a bit much. For situations like this, you can use the special <code>if case</code> statement to look at a single case.
+</p>
+<p>There is one more change to make in <em>LandscapeViewController.swift</em>.
+</p>
+<p>➤ Change the <code>if firstTime</code> block in <code>viewWillLayoutSubviews()</code> to:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> firstTime {
+  firstTime = <span class="hljs-literal">false</span>
+  
+  <span class="hljs-keyword">switch</span> search.state {
+  <span class="hljs-keyword">case</span> .notSearchedYet:
+    <span class="hljs-keyword">break</span>
+  <span class="hljs-keyword">case</span> .loading:
+    <span class="hljs-keyword">break</span>
+  <span class="hljs-keyword">case</span> .noResults:
+    <span class="hljs-keyword">break</span>
+  <span class="hljs-keyword">case</span> .results(<span class="hljs-keyword">let</span> list):
+    tileButtons(list)
+  }
+}</pre>
+<p>This uses the same pattern as before. If the state is <code>.results</code>, it binds the array of <code>SearchResult</code> objects to the temporary constant <code>list</code> and passes it along to <code>tileButtons()</code>. The reason you don&apos;t use a <code>if case</code>  condition here is because you’ll be adding additional code to the other cases soon. But, because these cases are currently empty, they must contain a <code>break</code> statement.
+</p>
+<p>➤ Build and run to see if the app still works — it should!
+</p>
+<p>I think enums with associated values are one of the most exciting features of Swift. Here you used them to simplify the way the <code>Search</code> state is expressed. No doubt you’ll find many other great uses for them in your own apps!
+</p>
+<p>➤ This is a good time to commit your changes.
+</p>
+<h2 class="segment-chapter">Spin me right round</h2>
+
+<p>If you rotate to landscape while the search is still taking place, the app really ought to show an animated spinner to let the user know that an action is taking place. You already check in <code>viewWillLayoutSubviews()</code> what the state of the active <code>Search</code> object is, so that’s an easy fix.
+</p>
+<h3 class="segment-chapter">Show an activity indicator in landscape mode</h3>
+
+<p>➤ In <em>LandscapeViewController.swift</em>, add a new method to display an activity indicator:
+</p><pre class="code-block"><span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showSpinner</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> spinner = <span class="hljs-type">UIActivityIndicatorView</span>(style: .whiteLarge)
+  spinner.center = <span class="hljs-type">CGPoint</span>(x: scrollView.bounds.midX + <span class="hljs-number">0.5</span>, 
+                           y: scrollView.bounds.midY + <span class="hljs-number">0.5</span>)
+  spinner.tag = <span class="hljs-number">1000</span>
+  view.addSubview(spinner)
+  spinner.startAnimating()
+}</pre>
+<p>This creates a new <code>UIActivityIndicatorView</code> object — a big white one —, puts it in the center of the screen, and starts animating it.
+</p>
+<p>You give the spinner the tag 1000, so you can easily remove it from the screen once the search is done.
+</p>
+<p>➤ In <code>viewWillLayoutSubviews()</code> change the <code>.loading</code> case in the <code>switch</code> statement to call this new method:
+</p><pre class="code-block"><span class="hljs-keyword">case</span> .loading:
+  showSpinner()</pre>
+<p>➤ Run the app. After starting a search, quickly rotate the phone to landscape. You should now see a spinner:
+</p><div class="image-30"><img src="graphics/img681.png"  alt="" title="A spinner indicates a search is still taking place" /></div>
+<div class="note">
+<p><em>Note:</em> In the new method you add <code>0.5</code> to the spinner’s <code>center</code> position. This kind of spinner is 37 points wide and high, which is not an even number. If you were to place the center of this view at the exact center of the screen at (284, 160) then it would extend 18.5 points to either end. The top-left corner of that spinner will be at coordinates (265.5, 141.5), making it look all blurry.
+</p>
+<p>It’s best to avoid placing objects at fractional coordinates. By adding 0.5 to both the X and Y position, the spinner is placed at (266, 142) and everything looks sharp. Pay attention to this when working with the <code>center</code> property and objects that have odd widths or heights.
+</p></div>
+
+<h3 class="segment-chapter">Hide the landscape spinner when results are found</h3>
+
+<p>This is all great, but the spinner doesn’t disappear when the actual search results are received. The app never notifies the <code>LandscapeViewController</code> when results are found.
+</p>
+<p>There is a variety of ways you can choose to tell the <code>LandscapeViewController</code> that the search results have come in, but let’s keep it simple.
+</p>
+<p>➤ In <em>LandscapeViewController.swift</em>, add these two new methods:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Public Methods</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">searchResultsReceived</span><span class="hljs-params">()</span></span> {
+  hideSpinner()
+  
+  <span class="hljs-keyword">switch</span> search.state {
+  <span class="hljs-keyword">case</span> .notSearchedYet, .loading, .noResults:
+    <span class="hljs-keyword">break</span>
+  <span class="hljs-keyword">case</span> .results(<span class="hljs-keyword">let</span> list):
+    tileButtons(list)
+  }
+}
+
+<span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">hideSpinner</span><span class="hljs-params">()</span></span> {
+  view.viewWithTag(<span class="hljs-number">1000</span>)?.removeFromSuperview()
+}</pre>
+<p>The private <code>hideSpinner()</code> method looks for the view with tag 1000 — the activity spinner — and then tells that view to remove itself from the screen.
+</p>
+<p>You could have kept a reference to the spinner and used that, but for a simple situation such as this you might as well use a tag.
+</p>
+<p>Because no one else has any strong references to the <code>UIActivityIndicatorView</code>, this instance will be deallocated. Note that you have to use optional chaining because <code>viewWithTag()</code> can potentially return <code>nil</code>.
+</p>
+<p>The <code>searchResultsReceived()</code> method should be called from somewhere, of course, and that somewhere is the <code>SearchViewController</code>.
+</p>
+<p>➤ In <em>SearchViewController.swift</em>’s <code>performSearch()</code> method, add the following line into the closure, below <code>self.tableView.reloadData()</code>:
+</p><pre class="code-block"><span class="hljs-keyword">self</span>.landscapeVC?.searchResultsReceived()</pre>
+<p>The sequence of events here is quite interesting. When the search begins there is no <code>LandscapeViewController</code> object yet because the only way to start a search is from portrait mode.
+</p>
+<p>But by the time the closure is invoked, the device may have rotated and if that happened <code>self.landscapeVC</code> will contain a valid reference.
+</p>
+<p>Upon rotation, you also gave the new <code>LandscapeViewController</code> a reference to the active <code>Search</code> object. Now you just have to tell it that search results are available so it can create the buttons and fill them up with images.
+</p>
+<p>Of course, if you’re still in portrait mode by the time the search completes, then <code>self.landscapeVC</code> is <code>nil</code> and the call to <code>searchResultsReceived()</code> will simply be ignored due to the optional chaining — you could have used <code>if let</code> here to unwrap the value of <code>self.landscapeVC</code>, but optional chaining has the same effect and is shorter to write.
+</p>
+<p>➤ Try it out. That works pretty well, eh?
+</p>
+<div class="note">
+<p><em>Exercise.</em> Verify that network errors are also handled correctly when the app is in landscape orientation. Find a way to create, or fake, a network error and see what happens in landscape mode. Hint: if you don&apos;t want to use the Network Link Conditioner, the <code>sleep(5)</code> function will put your app to sleep for 5 seconds. Put that in the completion handler to give yourself some time to flip the device around.
+</p></div>
+
+<h3 class="segment-chapter">Show the network activity indicator</h3>
+
+<p>Speaking of spinners, you’ve probably noticed that your iPhone’s status bar shows a small, animated spinner when network activity is taking place. This isn’t automatic — the app needs to explicitly turn this animation on or off. Fortunately, it’s only a single line of code.
+</p>
+<p>➤ In <em>Search.swift</em>, add this import:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> UIKit</pre>
+<p>➤ Add make the following change to <code>performSearch(for:category:completion:)</code>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">performSearch</span><span class="hljs-params">(<span class="hljs-keyword">for</span> text: String, category: Category, 
+                   completion: @escaping SearchComplete)</span></span> {
+  <span class="hljs-keyword">if</span> !text.isEmpty {
+    dataTask?.cancel()
+    <span class="hljs-comment">// Add the following line</span>
+    <span class="hljs-type">UIApplication</span>.shared.isNetworkActivityIndicatorVisible = 
+                                                         <span class="hljs-literal">true</span>
+    . . .</pre>
+<p>This makes the network activity indicator visible in the app’s status bar. To turn it off again, add the following line to <code>DispatchQueue.main.async</code>  at the end of <code>performSearch(for:category:completion:)</code>:
+</p><pre class="code-block"><span class="hljs-type">UIApplication</span>.shared.isNetworkActivityIndicatorVisible = <span class="hljs-literal">false</span></pre>
+<p>➤ Try it out. The app now also shows a spinning animation in the status bar while the search is taking place — unless you happen to be on an iPhone X. In that case, you won&apos;t see the network activity indicator.
+</p><div class="image-50"><img src="graphics/img682.png"  alt="" title="The network activity indicator" /></div>
+<h2 class="segment-chapter">Nothing found</h2>
+
+<p>You’re not done yet. If there are no matches found, you should also tell the user about this if they’re in landscape mode.
+</p>
+<p>➤ First, add the following method to <em>LandscapeViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showNothingFoundLabel</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> label = <span class="hljs-type">UILabel</span>(frame: <span class="hljs-type">CGRect</span>.zero)
+  label.text = <span class="hljs-string">"Nothing Found"</span>
+  label.textColor = <span class="hljs-type">UIColor</span>.white
+  label.backgroundColor = <span class="hljs-type">UIColor</span>.clear
+  
+  label.sizeToFit()
+  
+  <span class="hljs-keyword">var</span> rect = label.frame
+  rect.size.width = ceil(rect.size.width/<span class="hljs-number">2</span>) * <span class="hljs-number">2</span>    <span class="hljs-comment">// make even</span>
+  rect.size.height = ceil(rect.size.height/<span class="hljs-number">2</span>) * <span class="hljs-number">2</span>  <span class="hljs-comment">// make even</span>
+  label.frame = rect
+  
+  label.center = <span class="hljs-type">CGPoint</span>(x: scrollView.bounds.midX, 
+                         y: scrollView.bounds.midY)
+  view.addSubview(label)
+}</pre>
+<p>You first create a <code>UILabel</code> object and give it text and a color. The <code>backgroundColor</code> property is set to <code>UIColor.clear</code> to make the lable transparent.
+</p>
+<p>The call to <code>sizeToFit()</code> tells the label to resize itself to the optimal size. You could have given the label a frame that was big enough to begin with, but I find this just as easy. This also helps when you’re translating the app to a different language, in which case you may not know beforehand how large the label needs to be.
+</p>
+<p>The only trouble is that you want to center the label in the view and as you saw before, that gets tricky when the width or height are odd — something you don’t necessarily know in advance. So here you use a little trick to always force the dimensions of the label to be even numbers:
+</p><pre class="code-block">width = ceil(width/<span class="hljs-number">2</span>) * <span class="hljs-number">2</span></pre>
+<p>If you divide a number such as 11 by 2 you get 5.5. The <code>ceil()</code> function rounds up 5.5 to make 6, and then you multiply by 2 to get a final value of 12. This formula always gives you the next even number if the original is odd. You only need to do this because these values have type <code>CGFloat</code>. If they were integers, you wouldn’t have to worry about fractional parts.
+</p>
+<div class="note">
+<p><em>Note</em>: Because you’re not using a hardcoded number such as 480 or 568 but <code>scrollView.bounds</code> to determine the width of the screen, the code to center the label works correctly on all screen sizes.
+</p></div>
+
+<p>➤ Inside the <code>switch</code> statement in <code>viewWillLayoutSubviews()</code>, call the new method from the case for <code>.noResults</code>:
+</p><pre class="code-block"><span class="hljs-keyword">case</span> .noResults:
+  showNothingFoundLabel()</pre>
+<p>➤ Run the app and search for something ridiculous (<em>ewdasuq3sadf843</em> will do). When the search is done, flip to landscape.
+</p><div class="image-40"><img src="graphics/img683.png"  alt="" title="Yup, nothing found here either" /></div>
+<p>It doesn’t work properly yet if you flip to landscape while the search is taking place. Of course, you also need to put some logic in <code>searchResultsReceived()</code>.
+</p>
+<p>➤ Change the <code>switch</code> statement in that method to:
+</p><pre class="code-block"><span class="hljs-keyword">switch</span> search.state {
+<span class="hljs-keyword">case</span> .notSearchedYet, .loading:
+  <span class="hljs-keyword">break</span>
+<span class="hljs-keyword">case</span> .noResults:
+  showNothingFoundLabel()
+<span class="hljs-keyword">case</span> .results(<span class="hljs-keyword">let</span> list):
+  tileButtons(list)
+}</pre>
+<p>Now you should have all your bases covered.
+</p>
+<h2 class="segment-chapter">The Detail pop-up</h2>
+
+<p>The landscape view is that much more functional after all the refactoring and changes. But there&apos;s still one more thing left to do. The landscape search results are not buttons for nothing.
+</p>
+<p>The app should show the Detail pop-up when you tap an item, like this:
+</p><div class="image-40"><img src="graphics/img684.png"  alt="" title="The pop-up in landscape mode" /></div>
+<p>This is fairly easy to achieve. When adding the buttons you can give them a <i>target-action</i> — a method to call when the Touch Up Inside event is received. Just like in Interface Builder, except now you hook up the event to the action method programmatically.
+</p>
+<p>➤ First, still in <em>LandscapeViewController.swift</em> add the method to be called when a button is tapped:
+</p><pre class="code-block"><span class="hljs-meta">@objc</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">buttonPressed</span><span class="hljs-params">(<span class="hljs-number">_</span> sender: UIButton)</span></span> {
+  performSegue(withIdentifier: <span class="hljs-string">"ShowDetail"</span>, sender: sender)
+}</pre>
+<p>Even though this is an action method, you didn’t declare it as <code>@IBAction</code>. That is only necessary when you want to connect the method to something in Interface Builder. Here you make the connection via code, so you can skip the <code>@IBAction</code> annotation.
+</p>
+<p>Also note that the method has the <code>@objc</code> attribute — as you learnt previously with <i>MyLocations</i>, you need to tag any method that is identified via a <code>#selector</code> with the <code>@objc</code> attribute. So, that would seem to indicate that you&apos;ll be calling this new method using a <code>#selector</code>, right?
+</p>
+<p>Pressing the button simply triggers a segue, and you&apos;ll get to the segue part in a moment. But first, you should hook up the buttons to the above method.
+</p>
+<p>➤ Add the following two lines to the button creation code in <code>tileButtons()</code>:
+</p><pre class="code-block">button.tag = <span class="hljs-number">2000</span> + index
+button.addTarget(<span class="hljs-keyword">self</span>, action: #selector(buttonPressed), 
+                 <span class="hljs-keyword">for</span>: .touchUpInside)</pre>
+<p>First you give the button a tag, so you know to which index in the <code>.results</code> array this button corresponds. That’s needed in order to pass the correct <code>SearchResult</code> object to the Detail pop-up.
+</p>
+<p>Also, if you replaced the <code>index</code> variable in the <code>for</code> loop earlier with a wildcard because of the Xcode compiler warning, this would be the time to revert that change.
+</p>
+<p><em>Tip:</em> You added 2000 to the index because tag 0 is used on all views by default, so asking for a view with tag 0 might actually return a view that you didn’t expect. To avoid this kind of confusion, you simply start counting from 2000.
+</p>
+<p>You also tell the button it should call the <code>buttonPressed()</code> method when it gets tapped.
+</p>
+<p>➤ Next, add the <code>prepare(for:sender:)</code> method to handle the segue:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Navigation </span>
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">prepare</span><span class="hljs-params">(<span class="hljs-keyword">for</span> segue: UIStoryboardSegue, 
+                         sender: Any?)</span></span> {
+  <span class="hljs-keyword">if</span> segue.identifier == <span class="hljs-string">"ShowDetail"</span> {
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">case</span> .results(<span class="hljs-keyword">let</span> list) = search.state {
+      <span class="hljs-keyword">let</span> detailViewController = segue.destination
+                                 <span class="hljs-keyword">as</span>! <span class="hljs-type">DetailViewController</span>
+      <span class="hljs-keyword">let</span> searchResult = list[(sender <span class="hljs-keyword">as</span>! <span class="hljs-type">UIButton</span>).tag - <span class="hljs-number">2000</span>]
+      detailViewController.searchResult = searchResult
+    }
+  }
+}</pre>
+<p>This is almost identical to <code>prepare(for:sender:)</code> from  <code>SearchViewController</code>, except now you don’t get the index of the <code>SearchResult</code> object from an index-path, but from the button’s tag minus 2000.
+</p>
+<p>Of course, none of this will work unless you actually have a segue in the storyboard.
+</p>
+<p>➤ Go to the Landscape scene in the storyboard and Control-drag from the yellow circle at the top to the Detail View Controller. Make it a <em>Present Modally</em> segue with the identifier set to <em>ShowDetail</em>.
+</p>
+<p>The storyboard should look like this now:
+</p><div class="image-55"><img src="graphics/img685.png"  alt="" title="The storyboard after connecting the Landscape view to the Detail pop-up" /></div>
+<p>➤ Run the app and check it out.
+</p>
+<p>Cool! But what happens when you rotate back to portrait with a Detail pop-up showing? Unfortunately, it sticks around. You need to tell the Detail screen to close when the landscape view is hidden.
+</p>
+<p>➤ In <em>SearchViewController.swift</em>, in <code>hideLandscape(with:)</code>, add the following lines to the <code>animate(alongsideTransition:)</code> animation closure:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.presentedViewController != <span class="hljs-literal">nil</span> {
+  <span class="hljs-keyword">self</span>.dismiss(animated: <span class="hljs-literal">true</span>, completion: <span class="hljs-literal">nil</span>)
+}</pre>
+<p>In the Console output you should see that the <code>DetailViewController</code> is properly deallocated when you rotate back to portrait.
+</p>
+<p>➤ If you’re happy with the way the code works, then let’s commit it. If you also made a branch, then merge it back into the master branch.
+</p>
+<p>You can find the project files for this chaper under <em>40 – Refactoring</em> in the Source Code folder.
+</p></body></html>

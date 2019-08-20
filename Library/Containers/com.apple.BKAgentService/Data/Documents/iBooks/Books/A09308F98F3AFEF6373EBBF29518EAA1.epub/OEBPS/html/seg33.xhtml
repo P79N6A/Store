@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 26: Adding Polish</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 26: Adding Polish</h1>
+
+<p>Your Tag Location screen is now functional but it looks a little basic and could do with some polish. It&apos;s the small details that will make your apps a delight to use and stand out from the competition.
+</p>
+<p>In this chapter, you will learn the following:
+</p>
+<ul>
+<li>
+<p><em>Improve the user experience:</em> How to improve the user experience by adding tiny tweaks to your app which gives it some polish.
+</p></li>
+
+<li>
+<p><em>Add a HUD:</em> How to add a HUD (<em>H</em>eads <em>U</em>p <em>D</em>isplay) to your app to provide a quick, animated status update.
+</p></li>
+
+<li>
+<p><em>Handle the navigation:</em> How to continue the navigation flow after displaying the HUD.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Improve the user experience</h2>
+
+<p>Take a look at the design of the cell with the Description text view:
+</p><div class="image-30"><img src="graphics/img414.png"  alt="" title="There is a margin between the text view and the cell border" /></div>
+<p>There is a margin between the text view and the cell border, but because the background of both the cell and the text view are white, the user cannot see where the text view begins (or ends).
+</p>
+<p>It is possible to tap on the cell but be just outside the text view area. That is annoying when you want to start typing: you think that you’re tapping in the text view, but the keyboard doesn’t appear.
+</p>
+<p>There is no feedback to the user that they&apos;re actually tapping outside the text view, and they will think your app is broken. In my opinion, deservedly so.
+</p>
+<h3 class="segment-chapter">Keyboard activation for cells</h3>
+
+<p>You’ll have to make the app a little more forgiving. When the user taps anywhere inside that first cell, the text view should activate, even if the tap wasn’t on the text view itself.
+</p>
+<p>➤ Add the following table view delegate methods to <em>LocationDetailsViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Table View Delegates</span>
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+          willSelectRowAt indexPath: IndexPath)</span></span> -&gt; <span class="hljs-type">IndexPath</span>? {
+  <span class="hljs-keyword">if</span> indexPath.section == <span class="hljs-number">0</span> || indexPath.section == <span class="hljs-number">1</span> {
+    <span class="hljs-keyword">return</span> indexPath
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+  }
+}
+
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+           didSelectRowAt indexPath: IndexPath)</span></span> {
+  <span class="hljs-keyword">if</span> indexPath.section == <span class="hljs-number">0</span> &amp;&amp; indexPath.row == <span class="hljs-number">0</span> {
+    descriptionTextView.becomeFirstResponder()
+  }
+}</pre>
+<p>The <code>tableView(_:willSelectRowAt:)</code> method limits taps to just the cells from the first two sections. Recall that <code>||</code> means <i>or</i>. So, if the section number equals 0 <i>or</i> when it equals 1, you accept the tap on the cell. The third section only has read-only labels — it doesn’t need to allow taps.
+</p>
+<p>The <code>tableView(_:didSelectRowAt:)</code> method handles the actual taps on the rows. You don’t need to respond to taps on the Category or Add Photo rows as these cells are connected to segues.
+</p>
+<p>But if the user taps on the first row of the first section — the row with the description text view — then you will give the input focus to the text view. Here you use <code>&amp;&amp;</code>, meaning <i>and</i>, to make sure the tap is in the first section <i>and</i> also on the first row of that section.
+</p>
+<p>➤ Try it out. Run the app and click or tap somewhere along the edges of the first cell. Any tap inside that first cell should now make the text view active and bring up the keyboard. (Remember that on the Simulator you may need to press <em>⌘+K</em> to make the keyboard visible.)
+</p>
+<p>Anything you can do to make screens less frustrating to use, is worth putting in the effort!
+</p>
+<p>Speaking of the text view, once you’ve activated it, there’s no way to get rid of the keyboard! And because the keyboard takes up half of the screen, that can be a bit annoying.
+</p>
+<h3 class="segment-chapter">Deactivate the keyboard</h3>
+
+<p>It would be nice if the keyboard disappeared after you tapped anywhere else on the screen. As it happens, that is not so hard to implement.
+</p>
+<p>➤ Add the following to the end of <code>viewDidLoad()</code> in <em>LocationDetailsViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-comment">// Hide keyboard</span>
+<span class="hljs-keyword">let</span> gestureRecognizer = <span class="hljs-type">UITapGestureRecognizer</span>(target: <span class="hljs-keyword">self</span>, 
+                             action: #selector(hideKeyboard))
+gestureRecognizer.cancelsTouchesInView = <span class="hljs-literal">false</span>
+tableView.addGestureRecognizer(gestureRecognizer)</pre>
+<p>A <em>gesture recognizer</em> is a very handy object that can recognize touch-based actions like taps, swipes, pans and pinches. You simply create the gesture recognizer object, give it a method to call when that particular gesture has been observed to take place, and add the recognizer object to a view.
+</p>
+<p>You’re using a <code>UITapGestureRecognizer</code>, which as the name implies, recognizes simple taps.
+</p>
+<p>Notice the <code>#selector()</code> keyword again:
+</p><pre class="code-block">. . . target: <span class="hljs-keyword">self</span>, action: #selector(hideKeyboard)) . . </pre>
+<p>You use this syntax to tell the <code>UITapGestureRecognizer</code> that it should call the method named by <code>#selector()</code> whenever the gesture happens.
+</p>
+<p>This pattern is known as <em>target-action</em> and you’ve already used it whenever you’ve connected <code>UIButton</code>s, <code>UIBarButtonItem</code>s, and other controls to action methods.
+</p>
+<p>The “target” is the object receiving the message, which is often <code>self</code>, and “action” is the message to send.
+</p>
+<p>Here you’ve chosen the message <em>hideKeyboard</em> to be sent when a tap is recognized anywhere in the table view — so, you have to implement the method and respond to that message. (Also, remember that selectors have their root in Objective-C and so, any method which is called via a selector has to be accessible from Objective-C.)
+</p>
+<p>➤ Add the <code>hideKeyboard()</code> method to <em>LocationDetailsViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-meta">@objc</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">hideKeyboard</span><span class="hljs-params">(<span class="hljs-number">_</span> gestureRecognizer: 
+                        UIGestureRecognizer)</span></span> {
+  <span class="hljs-keyword">let</span> point = gestureRecognizer.location(<span class="hljs-keyword">in</span>: tableView)
+  <span class="hljs-keyword">let</span> indexPath = tableView.indexPathForRow(at: point)
+
+  <span class="hljs-keyword">if</span> indexPath != <span class="hljs-literal">nil</span> &amp;&amp; indexPath!.section == <span class="hljs-number">0</span> 
+                      &amp;&amp; indexPath!.row == <span class="hljs-number">0</span> {
+    <span class="hljs-keyword">return</span>
+  }
+  descriptionTextView.resignFirstResponder()
+}</pre>
+<p>Whenever the user taps somewhere in the table view, the gesture recognizer calls this method. Conveniently, it also passes a reference to itself as a parameter, which lets you ask <code>gestureRecognizer</code> where the tap happened.
+</p>
+<p>The <code>gestureRecognizer.location(in:)</code> method returns a <code>CGPoint</code> value indicating the tap position. <code>CGPoint</code> is a common struct that you see all the time in UIKit. It contains two fields, <code>x</code> and <code>y</code>, that describe a position on screen.
+</p>
+<p>Using this <code>CGPoint</code>, you ask the table view which index-path is currently displayed at that position. This is important because you obviously don’t want to hide the keyboard if the user tapped in the row with the text view! If the user tapped anywhere else, you hide the keyboard.
+</p>
+<div class="note">
+<p><em>Exercise</em>. Does the logic in the <code>if</code> statement make sense to you? Explain how this works.
+</p></div>
+
+<p>Answer: It is possible that the user tapped inside the table view, but not on a cell — for example, somewhere in between two sections or on the section header. In that case, <code>indexPath</code> will be <code>nil</code>, making this an optional (of type <code>IndexPath?</code>). And to use an optional, you need to unwrap it somehow, either with <code>if let</code> or with <code>!</code>.
+</p>
+<p>You only want to hide the keyboard if the index-path for the tap is not section 0, row 0, which is the cell with the text view. If the user did tap that particular cell, you bail out of <code>hideKeyboard()</code> with the <code>return</code> statement before the code reaches the call to <code>resignFirstResponder()</code>.
+</p>
+<div class="note">
+<p><em>Note:</em> You don’t want to force unwrap an optional if there’s a chance it might be <code>nil</code> or you risk crashing the app. Force unwrapping <code>indexPath!.section</code> and <code>indexPath!.row</code> may look dangerous here, but it is guaranteed to work thanks to the <em>short-circuiting</em> behavior of the <code>&amp;&amp;</code> operator.
+</p>
+<p>If <code>indexPath</code> equals <code>nil</code>, then everything after the first <code>&amp;&amp;</code> is simply ignored. The condition can never become true anymore if one of the terms is false. So when the app gets to look at <code>indexPath!.section</code>, you know that the value of <code>indexPath</code> is not <code>nil</code> at that point.
+</p></div>
+
+<p>An alternative way to write this logic is:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> indexPath == <span class="hljs-literal">nil</span> || 
+          !(indexPath!.section == <span class="hljs-number">0</span> &amp;&amp; indexPath!.row == <span class="hljs-number">0</span>) {
+  descriptionTextView.resignFirstResponder()
+}</pre>
+<p>Can you wrap your head around that? Here, the <code>if</code> statement checks for the exact opposite. The <code>&amp;&amp;</code> and <code>||</code> operators are each other’s opposite in Boolean logic and you can often flip the meaning of a condition around by turning <code>&amp;&amp;</code> into <code>||</code> by introducing the <code>!</code> not operator.
+</p>
+<p>You don’t need to worry about this so early on in your programming career, but at some point you’ll have to learn these rules of Boolean logic. They can be mind-benders!
+</p>
+<p>Of course, you can also use <code>if let</code> to safely unwrap <code>indexPath</code>. So a third (but more verbose) way to write the <code>if</code> statement is as follows:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> indexPath = indexPath {
+  <span class="hljs-keyword">if</span> indexPath.section != <span class="hljs-number">0</span> &amp;&amp; indexPath.row != <span class="hljs-number">0</span> {
+    descriptionTextView.resignFirstResponder()
+  }
+} <span class="hljs-keyword">else</span> {
+  descriptionTextView.resignFirstResponder()
+}</pre>
+<p>I just wanted to give you a brief glimpse of the various ways you can write the conditions in <code>if</code> statements. There’s often more than one way to do something in Swift. So, choose whatever approach you find easiest to understand.
+</p>
+<p>➤ Run the app. Tap in the text view to bring up the keyboard. (If the keyboard doesn’t come up, press <em>⌘+K</em>.) Tap anywhere else in the table view to hide the keyboard again.
+</p>
+<p>The table view can also automatically dismiss the keyboard when the user starts scrolling. You can enable this in the storyboard.
+</p>
+<p>➤ Open the storyboard and select the table view in the Tag Location scene. In the <em>Attributes inspector</em> change the <em>Keyboard</em> option to <em>Dismiss on drag</em>. Now scrolling should also hide the keyboard.
+</p><div class="image-70"><img src="graphics/img415.png"  alt="" title="The “Dismiss on drag” option for the keyboard" /></div>
+<p>(If this doesn’t work for you on the simulator, try it on a real device. The keyboard in the Simulator can be a bit wonky.)
+</p>
+<p>➤ Also try the <em>Dismiss interactively</em> option. Which one do you like best?
+</p>
+<h2 class="segment-chapter">The HUD</h2>
+
+<p>There is one more improvement I wish to make to this screen, just to add a little spice. When you tap the Done button to close the screen, the app will show a quick animation to let you know it successfully saved the location:
+</p><div class="image-25"><img src="graphics/img416.png"  alt="" title="Before you close the screen it shows an animated checkmark" /></div>
+<p>This type of overlay graphic is often called a HUD, for <em>H</em>eads-<em>U</em>p <em>D</em>isplay. Apps aren’t quite fighter jets, but HUDs are often used to display a progress bar or spinner while files are downloading or another long-lasting task is taking place.
+</p>
+<p>You’ll show your own HUD view for a brief second before the screen closes. It adds an extra bit of liveliness to the app.
+</p>
+<p>If you’re wondering how you can display anything on top of a table, this HUD is simply a <code>UIView</code> subclass. You can add views on top of other views. That’s what you’ve been doing all along, in fact.
+</p>
+<p>The labels are views that are added on top of the cells, which are also views. The cells themselves are added on top of the table view, and the table view in turn is added on top of the navigation controller’s content view.
+</p>
+<p>So far, when you’ve made your own objects, they have always been view controllers or data model objects, but it’s also possible to make your own views.
+</p>
+<p>Often, using the standard buttons and labels is sufficient. But when you want to do something that is not available as a standard view, you can always make your own. You either subclass <code>UIView</code> or <code>UIControl</code> and do your own drawing. That’s what you’re going to do for the HUD view as well.
+</p>
+<h3 class="segment-chapter">Create the HUD view</h3>
+
+<p>➤ Add a new file to the project using the <em>Swift File</em> template. Name it <em>HudView</em>.
+</p>
+<p>Let’s build a minimal version of this class just so that you can get something on the screen. When that works, you’ll make it look fancy.
+</p>
+<p>➤ Replace the contents of <em>HudView.swift</em> with the following:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> UIKit
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HudView</span>: <span class="hljs-title">UIView</span> </span>{
+  <span class="hljs-keyword">var</span> text = <span class="hljs-string">""</span>
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">func</span> <span class="hljs-title">hud</span>(<span class="hljs-title">inView</span> <span class="hljs-title">view</span>: <span class="hljs-title">UIView</span>, 
+                    <span class="hljs-title">animated</span>: <span class="hljs-title">Bool</span>) -&gt; <span class="hljs-title">HudView</span> </span>{
+    <span class="hljs-keyword">let</span> hudView = <span class="hljs-type">HudView</span>(frame: view.bounds)
+    hudView.isOpaque = <span class="hljs-literal">false</span>
+
+    view.addSubview(hudView)
+    view.isUserInteractionEnabled = <span class="hljs-literal">false</span>
+
+    hudView.backgroundColor = <span class="hljs-type">UIColor</span>(red: <span class="hljs-number">1</span>, green: <span class="hljs-number">0</span>, blue: <span class="hljs-number">0</span>, 
+                                    alpha: <span class="hljs-number">0.5</span>)
+    <span class="hljs-keyword">return</span> hudView
+  }
+}</pre>
+<p>The <code>hud(inView, animated)</code> method is known as a <em>convenience constructor</em>. It creates and returns a new <code>HudView</code> instance.
+</p>
+<p>Normally you would create a new <code>HudView</code> object by writing:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> hudView = <span class="hljs-type">HudView</span>()</pre>
+<p>But using the convenience constructor you’d write:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> hudView = <span class="hljs-type">HudView</span>.hud(inView: parentView, animated: <span class="hljs-literal">true</span>)</pre>
+<p>A convenience constructor is generally a <em>class method</em>, i.e. a method that works on the class as a whole and not on any particular instance. You can tell because its declaration begins with <code>class func</code> instead of just <code>func</code>.
+</p>
+<p>When you call <code>HudView.hud(inView: parentView, animated: true)</code> you don’t have an instance of <code>HudView</code> yet. The whole purpose of this method is to create an instance of the HUD view for you, so you don’t have to do that yourself, and to place it on top of another view.
+</p>
+<p>You can see that making an instance is actually the first thing this method does:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">func</span> <span class="hljs-title">hud</span>(<span class="hljs-title">inView</span> <span class="hljs-title">view</span>: <span class="hljs-title">UIView</span>, 
+                  <span class="hljs-title">animated</span>: <span class="hljs-title">Bool</span>) -&gt; <span class="hljs-title">HudView</span> </span>{
+  <span class="hljs-keyword">let</span> hudView = <span class="hljs-type">HudView</span>(frame: view.bounds)
+  . . .
+  <span class="hljs-keyword">return</span> hudView
+}</pre>
+<p>It calls <code>HudView()</code>, or actually <code>HudView(frame:)</code> which is an <code>init</code> method inherited from <code>UIView</code>. At the end of the method, the new instance is returned to the caller.
+</p>
+<p>So why use this convenience constructor? As the name implies, for convenience.
+</p>
+<p>Since there are several steps to setting up the view, putting them in the convenience constructor frees you from having to worry about any of that.
+</p>
+<p>One of these additional steps is that this method adds the new <code>HudView</code> object as a subview on top of the “parent” view object. This is the navigation controller’s view, so the HUD will cover the entire screen.
+</p>
+<p>It also sets the parent view’s <code>isUserInteractionEnabled</code> property to <code>false</code>. While the HUD is showing, you don’t want the user to interact with the screen anymore. The user has already pressed the Done button and the screen is in the process of closing.
+</p>
+<p>Most users will leave the screen alone at this point, but there’s always some joker who wants to try and break things. By setting <code>isUserInteractionEnabled</code> to <code>false</code>, the view swallows any touches and all the underlying views become unresponsive.
+</p>
+<p>Just for testing, you set the background color of the HUD to 50% transparent red. That way you can see if it covers the entire screen.
+</p>
+<h3 class="segment-chapter">Use the HUD view</h3>
+
+<p>Let’s add the code to call this funky new HUD, so that you can see it in action.
+</p>
+<p>➤ Change the <code>done()</code> method in <em>LocationDetailsViewController.swift</em> to:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">done</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> hudView = <span class="hljs-type">HudView</span>.hud(inView: navigationController!.view, 
+                          animated: <span class="hljs-literal">true</span>)
+  hudView.text = <span class="hljs-string">"Tagged"</span>
+}</pre>
+<p>This creates a <code>HudView</code> object and adds it to the navigation controller’s view with an animation. You also set the <code>text</code> property on the new object.
+</p>
+<p>Previously, <code>done()</code>sent you back to the previous view controller. For testing purposes, you’re not going to do that anymore. You want to have enough time to see what the <code>HudView</code> looks like as you build it step-by-step; if you immediately close the screen after showing the HUD, it will be hard to see what’s going on — unless you have the ability to slow down time somehow... You’ll put back the code that closes the screen later.
+</p>
+<p>➤ Run the app. When you press the Done button, the screen will look like this:
+</p><div class="image-20"><img src="graphics/img417.png"  alt="" title="The HUD view covers the whole screen" /></div>
+<p>The app is now totally unresponsive because user interaction is disabled.
+</p>
+<p>When you’re working with views, it’s a good idea to set the background color to a bright color such as red or blue, so you can see exactly how big a given view is.
+</p>
+<p>Did you, upon looking at the HUD activation code think, &quot;Hey, how come we are using the navigation&apos; controller&apos;s view instead of the view from <code>LocationDetailsViewController</code>?&quot; If you did, good on you! It shows that you are starting to understand the composition of view controllers and views and thinking about how they work.
+</p>
+<p>The answer is simple enough to figure out :] Just try it and see what happens. Change the <code>HudView</code> creation line in <code>done()</code> to the following:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> hudView = <span class="hljs-type">HudView</span>.hud(inView: view, animated: <span class="hljs-literal">true</span>)</pre>
+<p>Here, instead of the navigation controller&apos;s content view, you use the current view controller&apos;s view as the parent for the HUD.
+</p>
+<p>➤ Run the app and try the Done button. You should get a screen like this:
+</p><div class="image-20"><img src="graphics/img418.png"  alt="" title="The HUD view does not cover the navigation bar" /></div>
+<p>Do you see what happened?
+</p>
+<p>The HUD now only covers the screen area for the <code>LocationDetailsViewController</code>&apos;s view - it does not cover the navigation bar. And you know what that means, right? The user can tap on the Cancel or Done buttons and have them respond even if the rest of the screen has user interactions disabled. That can be a problem in certain situations.
+</p>
+<p>Revert your code back to using the navigation controller&apos;s view before you forget.
+</p>
+<p>Let&apos;s get the HUD view to actually display something on screen instead of the red background.
+</p>
+<h3 class="segment-chapter">Draw the HUD view</h3>
+
+<p>➤ Remove the <code>backgroundColor</code> line from the <code>hud(inView:animated:)</code> method.
+</p>
+<p>➤ Add the following method to <em>HudView.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">draw</span><span class="hljs-params">(<span class="hljs-number">_</span> rect: CGRect)</span></span> {
+  <span class="hljs-keyword">let</span> boxWidth: <span class="hljs-type">CGFloat</span> = <span class="hljs-number">96</span>
+  <span class="hljs-keyword">let</span> boxHeight: <span class="hljs-type">CGFloat</span> = <span class="hljs-number">96</span>
+
+  <span class="hljs-keyword">let</span> boxRect = <span class="hljs-type">CGRect</span>(
+    x: round((bounds.size.width - boxWidth) / <span class="hljs-number">2</span>),
+    y: round((bounds.size.height - boxHeight) / <span class="hljs-number">2</span>),
+    width: boxWidth,
+    height: boxHeight)
+
+  <span class="hljs-keyword">let</span> roundedRect = <span class="hljs-type">UIBezierPath</span>(roundedRect: boxRect, 
+                                cornerRadius: <span class="hljs-number">10</span>)
+  <span class="hljs-type">UIColor</span>(white: <span class="hljs-number">0.3</span>, alpha: <span class="hljs-number">0.8</span>).setFill()
+  roundedRect.fill()
+}</pre>
+<p>The <code>draw()</code> method is invoked whenever UIKit wants your view to redraw itself.
+</p>
+<p>Recall that everything in iOS is event-driven. The view doesn’t draw anything on screen unless UIKit asks it to draw itself. That means you should never call <code>draw()</code> yourself.
+</p>
+<p>Instead, if you want a view to redraw, you should send it the <code>setNeedsDisplay()</code> message. UIKit will then trigger a <code>draw()</code> when it is ready to perform the drawing. This may seem strange if you’re coming from another platform. You may be used to redrawing the screen whenever you feel like it, but on iOS, UIKit is in charge of who gets to draw when.
+</p>
+<p>The above code draws a filled rectangle with rounded corners in the center of the screen. The rectangle is 96 by 96 points (so I suppose it’s really a square):
+</p><pre class="code-block"><span class="hljs-keyword">let</span> boxWidth: <span class="hljs-type">CGFloat</span> = <span class="hljs-number">96</span>
+<span class="hljs-keyword">let</span> boxHeight: <span class="hljs-type">CGFloat</span> = <span class="hljs-number">96</span></pre>
+<p>This declares two constants you’ll be using in the calculations that follow. You’re using constants because it’s clearer to refer to the symbolic name <code>boxWidth</code> than the number 96. That number doesn’t mean much by itself, but “box width” is a pretty clear description of its purpose.
+</p>
+<p>Additionally, if you were to later decide to change the size of the HUD box, you only have one place in your code where you need to change the width or the height, insted of going through all your code trying to figure out where else you had the width or the height value as a number.
+</p>
+<p>Note that you force the type of these constants to be <code>CGFloat</code>, which is the type used by UIKit to represent decimal numbers. When working with UIKit or Core Graphics (CG, get it?) you use <code>CGFloat</code> instead of the regular <code>Float</code> or <code>Double</code>.
+</p><pre class="code-block"><span class="hljs-keyword">let</span> boxRect = <span class="hljs-type">CGRect</span>(
+  x: round((bounds.size.width - boxWidth) / <span class="hljs-number">2</span>),
+  y: round((bounds.size.height - boxHeight) / <span class="hljs-number">2</span>),
+  width: boxWidth,
+  height: boxHeight)</pre>
+<p>There&apos;s <code>CGRect</code> again, the struct that represents a rectangle. You use it to calculate the position for the HUD. The HUD rectangle should be centered horizontally and vertically on the screen. The size of the screen is given by <code>bounds.size</code> (this is the size of <code>HudView</code> itself, which spans the entire screen).
+</p>
+<p>The above calculation uses the <code>round()</code> function to make sure the rectangle doesn’t end up on fractional pixel boundaries because that makes the image look fuzzy.
+</p><pre class="code-block"><span class="hljs-keyword">let</span> roundedRect = <span class="hljs-type">UIBezierPath</span>(roundedRect: boxRect, cornerRadius: <span class="hljs-number">10</span>)
+<span class="hljs-type">UIColor</span>(white: <span class="hljs-number">0.3</span>, alpha: <span class="hljs-number">0.8</span>).setFill()
+roundedRect.fill()</pre>
+<p><code>UIBezierPath</code> is a very handy object for drawing rectangles with rounded corners. You just tell it how large the rectangle is and how round the corners should be. Then you fill the rectangle with an 80% opaque dark gray color.
+</p>
+<p>➤ Run the app. The result should look like this:
+</p><div class="image-30"><img src="graphics/img419.png"  alt="" title="The HUD view has a partially transparent background" /></div>
+<p>There are two more things to add to the HUD, a checkmark and a text label. The checkmark is an image.
+</p>
+<h3 class="segment-chapter">Display the HUD checkmark</h3>
+
+<p>➤ The Resources folder for the book has two files in the <em>Hud Images</em> folder, <em>Checkmark@2x.png</em> and <em>Checkmark@3x.png</em>. Add these files to the asset catalog, <em>Assets.xcassets</em>.
+</p>
+<p>You can do this with the + button or simply drag them from Finder on to the Xcode window with the asset catalog open.
+</p>
+<p>➤ Add the following code to the end of <code>draw()</code>:
+</p><pre class="code-block"><span class="hljs-comment">// Draw checkmark</span>
+<span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> image = <span class="hljs-type">UIImage</span>(named: <span class="hljs-string">"Checkmark"</span>) {
+  <span class="hljs-keyword">let</span> imagePoint = <span class="hljs-type">CGPoint</span>(
+    x: center.x - round(image.size.width / <span class="hljs-number">2</span>),
+    y: center.y - round(image.size.height / <span class="hljs-number">2</span>) - boxHeight / <span class="hljs-number">8</span>)
+  image.draw(at: imagePoint)
+}</pre>
+<p>This loads the checkmark image into a <code>UIImage</code> object. Then it calculates the position for that image based on the center coordinate of the HUD view (<code>center</code>) and the dimensions of the image (<code>image.size</code>).
+</p>
+<p>Finally, it draws the image at that position.
+</p>
+<p>➤ Run the app to see the HUD view with the image:
+</p><div class="image-30"><img src="graphics/img420.png"  alt="" title="The HUD view with the checkmark image" /></div>
+<div class="note">
+<p><em>Note:</em> If you don&apos;t see the checkmark when you run the app, and if you did change the <code>done()</code> method to use the view controller&apos;s view instead of the navigation controller&apos;s content view earlier, make sure that you reverted the code back.
+</p>
+<p>The position calculations are based on the HUD view stretching up to the navigation bar, and if the view size is different, the checkmark will be placed a little above the rounded square. Since the background is mostly white outside the square, and the checkmark is white too, you might not even notice it when it is drawn outside the rounded square :]
+</p></div>
+
+<h4 class="segment-chapter">Failable initializers</h4>
+
+<p>To create the <code>UIImage</code> you used <code>if let</code> to unwrap the resulting object. That’s because <code>UIImage(named:)</code> is a <i>failable</i> initializer.
+</p>
+<p>It is possible that loading the image fails. This could be for one of many different reasons such as there being no image with the specified name, or the file not containing a valid image. You can’t fool <code>UIImage</code> into loading something that isn’t an image!
+</p>
+<p>That’s why <code>UIImage</code>’s <code>init(named:)</code> method is really defined as <code>init?(named:)</code>. The question mark indicates that this method returns an optional. If there was a problem loading the image, it returns <code>nil</code> instead of a brand spanking new <code>UIImage</code> object.
+</p>
+<p>You’ll see these failable initializers throughout the iOS frameworks. One that you have encountered before is <code>init?(coder:)</code>. Whenever it is possible that creating a new object will fail, the responsible <code>init</code> method will return an optional that you need to unwrap before you can use it.
+</p>
+<h3 class="segment-chapter">Display the HUD text</h3>
+
+<p>Usually, to display text in your own view, you’d add a <code>UILabel</code> object as a subview and let <code>UILabel</code> do all the hard work. However, for a view as simple as this, you can also do your own text drawing.
+</p>
+<p>➤ Add the following code to the end of  <code>draw()</code> to complete the method:
+</p><pre class="code-block"><span class="hljs-comment">// Draw the text</span>
+<span class="hljs-keyword">let</span> attribs = [ 
+    <span class="hljs-type">NSAttributedString</span>.<span class="hljs-type">Key</span>.font: <span class="hljs-type">UIFont</span>.systemFont(ofSize: <span class="hljs-number">16</span>),
+    <span class="hljs-type">NSAttributedString</span>.<span class="hljs-type">Key</span>.foregroundColor: <span class="hljs-type">UIColor</span>.white ]
+
+<span class="hljs-keyword">let</span> textSize = text.size(withAttributes: attribs)
+
+<span class="hljs-keyword">let</span> textPoint = <span class="hljs-type">CGPoint</span>(
+  x: center.x - round(textSize.width / <span class="hljs-number">2</span>),
+  y: center.y - round(textSize.height / <span class="hljs-number">2</span>) + boxHeight / <span class="hljs-number">4</span>)
+
+text.draw(at: textPoint, withAttributes: attribs)</pre>
+<p>When drawing text, you first need to know how big the text is so you can figure out where to position it. <code>String</code> has a bunch of handy methods for doing both.
+</p>
+<p>First, you set up a dictionary of attributes for the text that you want to draw, such as the font to be used, the text color etc. Here, you&apos;ll use a white system font of size 16.
+</p>
+<p>You use these attributes and the string from the <code>text</code> property to calculate how wide and tall the text will be. The result ends up in the <code>textSize</code> constant, which is of type <code>CGSize</code>. (As you&apos;ll notice, <code>CGPoint</code>, <code>CGSize</code>, and <code>CGRect</code> are types you use a lot when making your own views.)
+</p>
+<p>Finally, you calculate where to draw the text (<code>textPoint</code>), and then draw it. Quite simple, really.
+</p>
+<p>➤ Run the app to try it out. Lookin’ good!
+</p><div class="image-30"><img src="graphics/img421.png"  alt="" title="The HUD view with the checkmark and the text" /></div>
+<p>➤ Make sure to test the HUD on different Simulators. No matter the device dimensions, the HUD should always appear centered in the screen.
+</p>
+<p>OK, you&apos;ve now got a rounded box with a checkmark, but it’s still far from spectacular. Time to liven it up a little with some animation!
+</p>
+<h3 class="segment-chapter">Add some animation</h3>
+
+<p>You’ve already seen a bit about animations before — they’re really easy to add.
+</p>
+<p>➤ Add the following method to <em>HudView.swift</em>:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Public methods</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">show</span><span class="hljs-params">(animated: Bool)</span></span> {
+  <span class="hljs-keyword">if</span> animated {
+    <span class="hljs-comment">// 1</span>
+    alpha = <span class="hljs-number">0</span>
+    transform = <span class="hljs-type">CGAffineTransform</span>(scaleX: <span class="hljs-number">1.3</span>, y: <span class="hljs-number">1.3</span>)
+    <span class="hljs-comment">// 2</span>
+    <span class="hljs-type">UIView</span>.animate(withDuration: <span class="hljs-number">0.3</span>, animations: {
+      <span class="hljs-comment">// 3</span>
+      <span class="hljs-keyword">self</span>.alpha = <span class="hljs-number">1</span>
+      <span class="hljs-keyword">self</span>.transform = <span class="hljs-type">CGAffineTransform</span>.identity
+    })
+  }
+}</pre>
+<p>For the <i>Bull’s Eye</i> app, you made a crossfade animation using the Core Animation framework. <code>UIView</code>, however, has its own animation mechanism. It still uses Core Animation behind the scenes, but it’s a little more convenient to use.
+</p>
+<p>The standard steps for doing <code>UIView</code>-based animations are as follows:
+</p>
+<ol>
+<li>
+<p>Set up the initial state of the view before the animation starts. Here you set <code>alpha</code> to 0, making the view fully transparent. You also set the <code>transform</code> to a scale factor of 1.3. We’re not going to go into depth on transforms here, but basically, this means the view is initially scaled up to be larger than it normally would be.
+</p></li>
+
+<li>
+<p>Call <code>UIView.animate(withDuration:animations:)</code> to set up an animation. You pass the method a closure that describes what happens as part the animation. Recall that a closure is a piece of inline code that is not executed right away. UIKit will animate the properties that you change inside the closure from their initial state to the final state.
+</p></li>
+
+<li>
+<p>Inside the closure, set up the state of the view as it should be after the animation completes. You set <code>alpha</code> to 1, which means the <code>HudView</code> is now fully opaque. You also set the <code>transform</code> to the “identity” transform, restoring the scale back to normal. Because this code is part of a closure, you need to use <code>self</code> to refer to the <code>HudView</code> instance and its properties. That’s the rule for closures.
+</p></li>
+</ol>
+
+<p>The HUD view will quickly fade in as it goes from fully transparent to fully opaque, and it will scale down from 1.3 times its original size to its regular width and height.
+</p>
+<p>This is only a simple animation but it looks quite smart.
+</p>
+<p>➤ Change the <code>hud(inView:animated:)</code> method to call <code>show(animated:)</code> just before it returns:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">func</span> <span class="hljs-title">hud</span>(<span class="hljs-title">inView</span> <span class="hljs-title">view</span>: <span class="hljs-title">UIView</span>, <span class="hljs-title">animated</span>: <span class="hljs-title">Bool</span>) -&gt; <span class="hljs-title">HudView</span> </span>{
+  . . .
+  hudView.show(animated: animated)    <span class="hljs-comment">// Add this</span>
+  <span class="hljs-keyword">return</span> hudView
+}</pre>
+<p>➤ Run the app and marvel at the magic of <code>UIView</code> animation.
+</p>
+<h3 class="segment-chapter">Improve the animation</h3>
+
+<p>You can actually do one better. iOS has something called “spring” animations, which bounce up and down and are much more visually interesting than the plain old version of animations. Using them is very simple.
+</p>
+<p>➤ Replace the <code>UIView.animate(withDuration:animations:)</code> code in <code>show(animated:)</code> with the following:
+</p><pre class="code-block"><span class="hljs-type">UIView</span>.animate(withDuration: <span class="hljs-number">0.3</span>, delay: <span class="hljs-number">0</span>, 
+     usingSpringWithDamping: <span class="hljs-number">0.7</span>, initialSpringVelocity: <span class="hljs-number">0.5</span>, 
+                    options: [], animations: {
+    <span class="hljs-keyword">self</span>.alpha = <span class="hljs-number">1</span>
+    <span class="hljs-keyword">self</span>.transform = <span class="hljs-type">CGAffineTransform</span>.identity
+  }, completion: <span class="hljs-literal">nil</span>) </pre>
+<p>The code in the closure is still the same — it sets alpha to 1 and restores the identity transform — but this new animation method has a lot more options. Feel free to play with these options to see what they do.
+</p>
+<p>➤ Run the app and watch it bounce. Actually, the effect is very subtle, but subtle is good when it comes to user interfaces. You don’t want your users to get seasick from using the app!
+</p>
+<h2 class="segment-chapter">Handle the navigation</h2>
+
+<p>Back to <em>LocationDetailsViewController</em>… You still need to close the screen when the user taps Done.
+</p>
+<p>There’s a challenge here: you don’t want to dismiss the screen right away. It won’t look very good if the screen closes before the HUD is finished animating. You didn’t spend all that time writing <code>HudView</code> for nothing — you want to give your users a chance to see it.
+</p>
+<p>You are going to use the <em>G</em>rand <em>C</em>entral <em>D</em>ispatch framework, or GCD here. GCD is a very handy but somewhat low-level library for handling asynchronous tasks. Telling the app to wait a few seconds before executing some code is a perfect example of an async task.
+</p>
+<p>➤ Add these lines to the bottom of the <code>done()</code> action method:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> delayInSeconds = <span class="hljs-number">0.6</span>
+<span class="hljs-type">DispatchQueue</span>.main.asyncAfter(deadline: .now() + delayInSeconds, 
+                               execute: {
+  <span class="hljs-keyword">self</span>.navigationController?.popViewController(animated: <span class="hljs-literal">true</span>)
+})</pre>
+<p>Believe it or not, these mysterious incantations tell the app to close the Tag Location screen after 0.6 seconds :]
+</p>
+<p>The magic happens in <code>DispatchQueue.main.asyncAfter()</code>. This function takes a closure as its final parameter. Inside that closure, you tell the navigation controller to go back to the previous view controller in the navigation stack. This doesn’t happen right away, though. That’s the exciting thing about closures: even though this code sits side-by-side with all the other code in the method, everything inside the closure is ignored for now and kept for a later time.
+</p>
+<p><code>DispatchQueue.main.asyncAfter()</code> uses the time given by <code>.now() + delayInSeconds</code> to schedule the closure for some point in the future. Until then, the app just sits there twiddling its thumbs. (By the way, <code>.now()</code> is a shortcut for <code>DispatchTime.now()</code>. Swift’s type inference already knows that the type of the <code>when:</code> parameter is always a <code>DispatchTime</code> object, so you don’t have to mention <code>DispatchTime</code> explicitly.)
+</p>
+<p>After 0.6 seconds, the code from the closure runs and the screen closes.
+</p>
+<div class="note">
+<p><em>Note:</em> I spent some time tweaking that number. The HUD view takes 0.3 seconds to fully fade in and then you wait another 0.3 seconds before the screen disappears. That felt right to me. You don’t want to close the screen too quickly or the effect from showing the HUD is lost, but it shouldn’t take too long either, or it will annoy the user. Animations are cool but they shouldn’t make the app more frustrating to use!
+</p></div>
+
+<p>➤ Run the app. Press the Done button and watch how the screen disappears. This looks pretty smooth, if I do say so myself.
+</p>
+<p>But wait … the HUD never goes away after the Tag Location screen closes! It still is there after you navigate back to the parent view. This is not good ...
+</p>
+<div class="note">
+<p><em>Exercise:</em> Can you explain why this happens?
+</p></div>
+
+<p>The reason is simple. You added the HUD to the navigation controller&apos;s content view, not the Tag Location screen&apos;s view. So, even though you&apos;ve dismissed the Tag Location screen, you still have the HUD displaying because the navigation controller itself is still in existence.
+</p>
+<p>So what do you think you should do to hide the HUD? Remove it from view, of course!
+</p>
+<p>➤ Add the following method to <em>HudView.swift</em>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">hide</span><span class="hljs-params">()</span></span> {
+  superview?.isUserInteractionEnabled = <span class="hljs-literal">true</span>
+  removeFromSuperview()
+}</pre>
+<p>This method is rather simple. Remember how you disabled user-interactions when showing the HUD? You first re-enable user-interactions and then remove the <code>HudView</code> instance from it&apos;s parent view. The only new thing might be <code>superview</code> and that&apos;s a reference to a view&apos;s parent view — all <code>UIView</code> objects (and sub-classes of <code>UIVew</code> too) have a <code>superview</code> property which identifies the view&apos;s parent.
+</p>
+<p>Of course, if you wanted, you could have made the method a bit more complex and interesting by adding some animation to the removal of the HUD. Basically, you&apos;d set up the animation to reverse what you did when you showed the view. But I leave that to you as an exercise :]
+</p>
+<p>Now, you need to call this new method to hide the HUD before you exit the Tag Location screen.
+</p>
+<p>➤ Modify the <code>DispatchQueue.main.asyncAfter</code> closure for <code>done()</code> in <em>LocationDetailsViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-type">DispatchQueue</span>.main.asyncAfter(deadline: .now() + delayInSeconds, 
+                               execute: {
+  hudView.hide()   <span class="hljs-comment">// Add this line</span>
+  <span class="hljs-keyword">self</span>.navigationController?.popViewController(animated: <span class="hljs-literal">true</span>)
+})</pre>
+<p>➤ Run the app. Press the Done button and check if the HUD disappears when the Tag Location screen goes away.
+</p>
+<h3 class="segment-chapter">Clean up the code</h3>
+
+<p>I don’t know about you, but I find this GCD stuff to be a bit messy. So let’s clean up the code and make it easier to understand.
+</p>
+<p>➤ Add a new file to the project using the <em>Swift File</em> template. Name the file <em>Functions.swift</em>.
+</p>
+<p>➤ Replace the contents of the new file with:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> Foundation
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">afterDelay</span><span class="hljs-params">(<span class="hljs-number">_</span> seconds: Double, run: @escaping <span class="hljs-params">()</span></span></span> -&gt; <span class="hljs-type">Void</span>) {
+  <span class="hljs-type">DispatchQueue</span>.main.asyncAfter(deadline: .now() + seconds, 
+                                 execute: run)
+}</pre>
+<p>That looks very much like the code you just added to <code>done()</code>, except it now lives in its own function, <code>afterDelay()</code>. This is a <em>free function</em>, not a method inside an object. So, it can be used from anywhere in your code.
+</p>
+<p>Take a good look at <code>afterDelay()</code>’s second parameter, the one named <code>run</code>. Its type is <code>() -&gt; Void</code>. That’s not some weird emoticon; it is Swift notation for a parameter that takes a closure with no arguments and no return value.
+</p>
+<p>The type for a closure generally looks like this:
+</p><pre class="code-block">(parameter list) -&gt; return type</pre>
+<p>In this case, both the parameter list and the return value are empty, <code>()</code> and <code>Void</code>. This can also be written as <code>Void -&gt; Void</code>, or even <code>() -&gt; ()</code> , but I like the <code>() -&gt; Void</code> better because it looks like a function delcaration.
+</p>
+<p>So, whenever you see a <code>-&gt;</code> in the type annotation for a parameter, you know that parameter is a closure.
+</p>
+<p><code>afterDelay()</code> simply passes this closure along to <code>DispatchQueue.main.asyncAfter()</code>.
+</p>
+<p>The annotation <code>@escaping</code> is necessary for closures that are not performed immediately. This is so that Swift knows that it should hold on to this closure for a while.
+</p>
+<p>You may be wondering why you’re going through all this trouble. No fear! The reason will become apparent after you’ve made the following change…
+</p>
+<p>➤ Go back to <em>LocationDetailsViewController.swift</em> and change <code>done()</code> as follows:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">done</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> hudView = <span class="hljs-type">HudView</span>.hud(inView: navigationController!.view, 
+                                    animated: <span class="hljs-literal">true</span>)
+  hudView.text = <span class="hljs-string">"Tagged"</span>
+  afterDelay(<span class="hljs-number">0.6</span>, run: {
+    hudView.hide()
+    <span class="hljs-keyword">self</span>.navigationController?.popViewController(animated: <span class="hljs-literal">true</span>)
+  })
+}</pre>
+<p>Now that’s the power of Swift! It only takes one look at this code to immediately understand what it does. After a delay, some code is executed.
+</p>
+<p>By moving the nasty GCD stuff into a new function, <code>afterDelay()</code>, you have added a new level of <em>abstraction</em> to your code that makes it much easier to follow. Writing good programs is all about finding the right abstractions.
+</p>
+<div class="note">
+<p><em>Note:</em> Because the code referring to the navigation controller sits in a closure, it needs to use <code>self</code> . Inside closures you always need to use <code>self</code> explicitly. But, you didn&apos;t need to use <code>self</code> for the line referring to the <code>hudView</code> since it is a local variable which would be in existence only within the scope of the <code>done()</code> method.
+</p></div>
+
+<p>You can make the code even more concise. Change the code to:
+</p><pre class="code-block">afterDelay(<span class="hljs-number">0.6</span>) {
+  hudView.hide()
+  <span class="hljs-keyword">self</span>.navigationController?.popViewController(animated: <span class="hljs-literal">true</span>)
+}</pre>
+<p>Now the closure sits <i>outside</i> of the call to <code>afterDelay()</code>.
+</p>
+<p>Swift has a handy rule that says you can put a closure outside a function call if it’s the last parameter of the function. This is known as <em>trailing closure syntax</em>. You will usually see closures being used in this manner because it reads (and looks) better.
+</p>
+<p>➤ Run the app again to make sure the timing still works. Boo-yah!
+</p>
+<p>You can find the project files for this chapter under <em>26 – Adding Polish</em> in the Source Code folder.
+</p></body></html>

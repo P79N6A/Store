@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 3: Slider and Labels</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 3: Slider and Labels</h1>
+
+<p>Now that you&apos;ve accomplished the first task of putting a button on the screen and making it show an alert, you’ll simply go down the task list and tick off the other items.
+</p>
+<p>You don’t really have to complete the to-do list in any particular order, but some things make sense to do before others. For example, you cannot read the position of the slider if you don’t have a slider yet.
+</p>
+<p>So let’s add the rest of the controls — the slider and the text labels — and turn this app into a real game!
+</p>
+<p>When you’re done, the app will look like this:
+</p><div class="image-60"><img src="graphics/img44.png"  alt="" title="The game screen with standard UIKit controls" /></div>
+<p>Hey, wait a minute... that doesn’t look nearly as pretty as the game I promised you! The difference is that these are the standard UIKit controls. This is what they look like straight out of the box.
+</p>
+<p>You’ve probably seen this look before because it is perfectly suitable for regular apps. But because the default look is a little boring for a game, you’ll put some special sauce on top later to spiff things up.
+</p>
+<p>In this chapter, you&apos;ll cover the following:
+</p>
+<ul>
+<li>
+<p><em>Portrait vs. landscape</em>: Switch your app to landscape mode.
+</p></li>
+
+<li>
+<p><em>Objects, data and methods</em>: A quick primer on the basics of object-oriented programming.
+</p></li>
+
+<li>
+<p><em>Adding the other controls</em>: Add the rest of the controls necessary to complete the user interface of your app.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Portrait vs. landscape</h2>
+
+<p>Notice that in the previous screenshot, the dimensions of the app have changed: The iPhone is rotated to its side and the screen is wider but less tall. This is called <i>landscape</i> orientation.
+</p>
+<p>You’ve no doubt seen landscape apps before on iPhone. It’s a common display orientation for games, but many other types of apps work in landscape mode, too, usually in addition to the regular “upright” <i>portrait</i> orientation.
+</p>
+<p>For instance, many people prefer to write emails with their device in landscape because the wider screen allows for a bigger keyboard and easier typing.
+</p>
+<p>In portrait orientation, the iPhone SE screen consists of 320 points horizontally and 568 points vertically. For landscape, these dimensions are switched.
+</p><div class="image-70"><img src="graphics/img45.png"  alt="" title="Screen dimensions for portrait and landscape orientation" /></div>
+<p>So what is a <i>point</i>?
+</p>
+<p>On older devices — up to the iPhone 3GS and corresponding iPod touch models, as well as the first iPads — one point corresponds to one pixel. As a result, these low-resolution devices don’t look very sharp because of their big, chunky pixels.
+</p>
+<p>I’m sure you know what a pixel is? In case you don’t, it’s the smallest element that a screen is made up of. (That&apos;s how the word originated, a shortened form of pictures, PICS or PIX + ELement = PIXEL.) The display of your iPhone is a big matrix of pixels that each can have their own color, just like a television screen. Changing the color values of these pixels produces a visible image on the display. The more pixels, the better the image looks.
+</p>
+<p>On the high-resolution Retina display of the iPhone 4 and later models, one point actually corresponds to two pixels horizontally and vertically, so four pixels in total. It packs a lot of pixels in a very small space, making for a much sharper display, which accounts for the popularity of Retina devices.
+</p>
+<p>On the Plus devices, it’s even crazier: They have a 3x resolution with <i>nine</i> pixels for every point. Insane! You need to be eagle-eyed to make out the individual pixels on these fancy Retina HD displays. It becomes almost impossible to make out where one pixel ends and the next one begins, that’s how miniscule they are!
+</p>
+<p>It’s not only the number of pixels that differs between the various iPhone and iPad models. Over the years, they have received different form factors, from the small 3.5-inch screen in the beginning all the way up to 12.9 inches on the iPad Pro model.
+</p>
+<p>The form factor of the device determines the width and height of the screen in points:
+</p><div class="image-100"><img src="graphics/img46.png"  alt="" title="" /></div>
+<p>In the early days of iOS, there was only one screen size. But those days of “one size fits all” are long gone. Now, we have a variety of screen sizes to deal with.
+</p>
+<div class="note">
+<p><em>UIKit and other frameworks</em>
+</p>
+<p>iOS offers a lot of building blocks in the form of frameworks or “kits.” The UIKit framework provides the user interface controls such as buttons, labels and navigation bars. It manages the view controllers and generally takes care of anything else that deals with your app’s user interface. (That is what UI stands for: User Interface.)
+</p>
+<p>If you had to write all that stuff from scratch, you’d be busy for a long while. Instead, you can build your app on top of the system-provided frameworks and take advantage of all the work the Apple engineers have already put in.
+</p>
+<p>Any object you see whose name starts with UI, such as <code>UIButton</code>, comes from UIKit. When you’re writing iOS apps, UIKit is the framework you’ll spend most of your time with, but there are others as well.
+</p>
+<p>Examples of other frameworks are Foundation, which provides many of the basic building blocks for building apps; Core Graphics for drawing basic shapes such as lines, gradients and images on the screen; AVFoundation for playing sound and video; and many others.
+</p>
+<p>The complete set of frameworks for iOS is known collectively as Cocoa Touch.
+</p></div>
+
+<p>Remember that UIKit works with points instead of pixels, so you only have to worry about the differences between the screen sizes measured in points. The actual number of pixels is only important for graphic designers because images are still measured in pixels.
+</p>
+<p>Developers work in points, designers work in pixels.
+</p>
+<p>The difference between points and pixels can be a little confusing, but if that is the only thing you’re confused about right now, then I’m doing a pretty good job. ;-)
+</p>
+<p>For the time being, you’ll work with just the iPhone SE screen size of 320×568 points — just to keep things simple. Later on, you’ll also make the game fit other iPhone screens.
+</p>
+<h3 class="segment-chapter">Converting the app to landscape</h3>
+
+<p>To switch the app from portrait to landscape, you have to do two things:
+</p>
+<ol>
+<li>
+<p>Make the view in <em>Main.storyboard</em> landscape instead of portrait.
+</p></li>
+
+<li>
+<p>Change the <em>Supported Device Orientations</em> setting of the app.
+</p></li>
+</ol>
+
+<p>➤ Open <em>Main.storyboard</em>. In Interface Builder, in the <em>View as: iPhone SE</em> panel, change <em>Orientation</em> to landscape:
+</p><div class="image-90"><img src="graphics/img47.png"  alt="" title="Changing the orientation in Interface Builder" /></div>
+<p>This changes the dimensions of the view controller. It also puts the button off-center.
+</p>
+<p>➤ Move the button back to the center of the view because an untidy user interface just won’t do in this day and age.
+</p><div class="image-60"><img src="graphics/img48.png"  alt="" title="The view in landscape orientation" /></div>
+<p>That takes care of the view layout.
+</p>
+<p>➤ Run the app on iPhone SE Simulator. Note that the screen does not show up as landscape yet, and the button is no longer in the center.
+</p>
+<p>➤ Choose <em>Hardware ▸ Rotate Left</em> or <em>Rotate Right</em> from Simulator’s menu bar at the top of the screen, or hold <em>⌘</em> and press the left or right Arrow keys on your keyboard. This will flip the simulator around.
+</p>
+<p>Now, everything will look as it should.
+</p>
+<p>Notice that, in landscape orientation, the app no longer shows the iPhone’s status bar. This gives apps more room for their user interfaces.
+</p>
+<p>To finalize the orientation switch, you should do one more thing. There is a configuration option that tells iOS what orientations your app supports. New apps that you make from a template always support both portrait and landscape orientations.
+</p>
+<p>➤ Click the blue <em>BullsEye</em> project icon at the top of the <em>Project navigator</em>. The editor pane of the Xcode window now reveals a bunch of settings for the project.
+</p>
+<p>➤ Make sure that the <em>General</em> tab is selected:
+</p><div class="image-100"><img src="graphics/img49.png"  alt="" title="The settings for the project" /></div>
+<p>In the <em>Deployment Info</em> section, there is an option for <em>Device Orientation</em>.
+</p>
+<p>➤ Check only the <em>Landscape Left</em> and <em>Landscape Right</em> options and leave the Portrait and Upside Down options unchecked.
+</p>
+<p>Run the app again and it properly launches in the landscape orientation right from the start.
+</p>
+<h2 class="segment-chapter">Understanding objects, data and methods</h2>
+
+<p>Time for some programming theory. No, you can&apos;t escape it. :]
+</p>
+<p>Swift is a so-called “object-oriented” programming language, which means that most of the stuff you do involves objects of some kind. I already mentioned a few times that an app consists of objects that send messages to each other.
+</p>
+<p>When you write an iOS app, you’ll be using objects that are provided for you by the system, such as the <code>UIButton</code> object from UIKit, and you’ll be making objects of your own, such as view controllers.
+</p>
+<h3 class="segment-chapter">Objects</h3>
+
+<p>So what exactly <i>is</i> an object? Think of an object as a building block of your program.
+</p>
+<p>Programmers like to group related functionality into objects. <i>This</i> object takes care of parsing a file, <i>that</i> object knows how to draw an image on the screen, and <i>that</i> object over there can perform a difficult calculation.
+</p>
+<p>Each object takes care of a specific part of the program. In a full-blown app, you will have many different types of objects (tens or even hundreds).
+</p>
+<p>Even your small starter app already contains several different objects. The one you have spent the most time with so far is <code>ViewController</code>. The Hit Me button is also an object, as is the alert pop-up. And the text values that you put on the alert — “Hello, World” and “This is my first app!” — are also objects.
+</p>
+<p>The project also has an object named <code>AppDelegate</code> — you’re going to ignore that for the moment, but feel free to look at its source if you’re curious. These object thingies are everywhere!
+</p>
+<h3 class="segment-chapter">Data and methods</h3>
+
+<p>An object can have both <i>data</i> and <i>functionality</i>:
+</p>
+<ul>
+<li>
+<p>An example of data is the Hit Me button that you added to the view controller earlier. When you dragged the button into the storyboard, it actually became part of the view controller’s data. Data <i>contains</i> something. In this case, the view controller contains the button.
+</p></li>
+
+<li>
+<p>An example of functionality is the <code>showAlert</code> action that you added to respond to taps on the button. Functionality <i>does</i> something.
+</p></li>
+</ul>
+
+<p>The button itself also has data and functionality. Examples of button data are the text and color of its label, its position on the screen, its width and height and so on. The button also has functionality: It can recognize that the user tapped on it and it will trigger an action in response.
+</p>
+<p>The thing that provides functionality to an object is commonly called a <i>method</i>. Other programming languages may call this a “procedure” or “subroutine” or “function.” You will also see the term function used in Swift; a method is simply a function that belongs to an object.
+</p>
+<p>Your <code>showAlert</code> action is an example of a method. You can tell it’s a method because the line says <code>func</code> (short for “function”) and the name is followed by parentheses:
+</p><div class="image-60"><img src="graphics/img50.png"  alt="" title="All method definitions start with the word func and have parentheses" /></div>
+<p>If you look through the rest of <em>ViewController.swift</em>, you’ll see another method, <code>viewDidLoad()</code>.
+</p>
+<p>It currently doesn’t do much; the Xcode template placed it there for your convenience. It&apos;s a method that&apos;s often used by view controllers, so it’s likely that you will need to add some code to it at some point.
+</p>
+<div class="note">
+<p><em>Note</em>: These additional methods added by an Xcode template are known as &quot;boilerplate code.&quot; If you don&apos;t need to add functionality to these boilerplate methods, feel free to remove them — it&apos;ll make your code cleaner and more compact.
+</p>
+<p>There&apos;s a caveat though; sometimes, the boilerplate code is needed in order not to get a compiler error. You will see this later on when we start using more complex view controllers. So if you remove the boilerplate code and get a compiler error, restore the code and try removing the code selectively until you figure out what is needed and what is not.
+</p></div>
+
+<p>The concept of methods may still feel a little weird, so here’s an example:
+</p><div class="image-80"><img src="graphics/img51.png"  alt="" title="Every party needs ice cream!" /></div>
+<p>You (or at least an object named “You”) want to throw a party, but you forgot to buy ice cream. Fortunately, you have invited the object named Steve who happens to live next door to a convenience store. It won’t be much of a party without ice cream so, at some point during your party preparations, you send object Steve a message asking him to bring some ice cream.
+</p>
+<p>The computer now switches to object Steve and executes the commands from his <code>buyIceCream()</code> method, one by one, from top to bottom.
+</p>
+<p>When the <code>buyIceCream()</code> method is done, the computer returns to your <code>throwParty()</code> method and continues with that, so you and your friends can eat the ice cream that Steve brought back with him.
+</p>
+<p>The Steve object also has data. Before he goes to the store, he has money. At the store, he exchanges this money data for other, much more important, data: ice cream! After making that transaction, he brings the ice cream data over to the party (if he eats it all along the way, your program has a bug).
+</p>
+<h3 class="segment-chapter">Messages</h3>
+
+<p>“Sending a message” sounds more involved than it really is. It’s a good way to think conceptually of how objects communicate, but there really aren’t any pigeons or mailmen involved. The computer simply jumps from the <code>throwParty()</code> method to the <code>buyIceCream()</code> method and back again.
+</p>
+<p>Often the terms “calling a method” or “invoking a method” are used instead. That means the exact same thing as sending a message: The computer jumps to the method you’re calling and returns to where it left off when that method is done.
+</p>
+<p>The important thing to remember is that objects have methods (the steps involved in buying ice cream) and data (the actual ice cream and the money to buy it with).
+</p>
+<p>Objects can look at each other’s data (to some extent anyway, just like Steve may not approve if you peek inside his wallet) and can ask other objects to perform their methods. That’s how you get your app to do things. But not all data from an object can be inspected by other objects and/or code — this is an area known as access control and you&apos;ll learn about this later.
+</p>
+<h2 class="segment-chapter">Adding the other controls</h2>
+
+<p>Your app already has a button, but you still need to add the rest of the UI controls, also known as “views.” Here is the screen again, this time annotated with the different types of views:
+</p><div class="image-60"><img src="graphics/img52.png"  alt="" title="The different views in the game screen" /></div>
+<p>As you can see, I put placeholder values into some of the labels (for example, “999999”). That makes it easier to see how the labels will fit on the screen when they’re actually used. The score label could potentially hold a large value, so you’d better make sure the label has room for it.
+</p>
+<p>➤ Try to re-create the above screen on your own by dragging the various controls from the Object Library onto your scene. You’ll need a few new Buttons, Labels and a Slider. You can see in the screenshot above how big the items should (roughly) be. It’s OK if you’re a few points off.
+</p>
+<div class="note">
+<p><em>Note</em>: It might seem a little annoying to use the Library panel since it goes away as soon as you drag an item from it. You then have to tap the icon on the toolbar to show the Library panel again to select another item. If you are placing multiple components, just hold down the Alt/Option key (<em>⌥</em>) as you drag an item from the Library panel — the Library panel will remain open, allowing you to select another item.
+</p></div>
+
+<p>To tweak the settings of these views, you use the <em>Attributes inspector</em>. You can find this inspector in the right-hand pane of the Xcode window:
+</p><div class="image-35"><img src="graphics/img53.png"  alt="" title="The Attributes inspector" /></div>
+<p>The inspector area shows various aspects of the item that is currently selected. The Attributes inspector, for example, lets you change the background color of a label or the size of the text on a button. You’ve already seen the Connections inspector that showed the button’s actions. As you become more proficient with Interface Builder, you’ll be using all of these inspector panes to configure your views.
+</p>
+<p>➤ Hint: The <em>ⓘ</em> button is actually a regular button, but its <em>Type</em> is set to <em>Info Light</em> in the Attributes inspector:
+</p><div class="image-30"><img src="graphics/img54.png"  alt="" title="The button type lets you change the look of the button" /></div>
+<p>➤ Also use the Attributes inspector to configure the <em>slider</em>. Its minimum value should be 1, its maximum 100, and its current value 50.
+</p><div class="image-30"><img src="graphics/img55.png"  alt="" title="The slider attributes" /></div>
+<p>When you’re done, you should have 12 user interface elements in your scene: one slider, three buttons and a whole bunch of labels. Excellent!
+</p>
+<p>➤ Run the app and play with it for a minute. The controls don’t really do much yet (except for the button that should still pop up the alert), but you can at least drag the slider around.
+</p>
+<p>You can now tick a few more items off the to-do list, all without much programming! That is going to change really soon, because you will have to write Swift code to actually make the controls do anything.
+</p>
+<h3 class="segment-chapter">The slider</h3>
+
+<p>The next item on your to-do list is: “Read the value of the slider after the user presses the Hit Me button.”
+</p>
+<p>If, in your messing around in Interface Builder, you did not accidentally disconnect the button from the <code>showAlert</code> action, you can modify the app to show the slider’s value in the alert pop-up. (If you did disconnect the button, then you should hook it up again first. You know how, right?)
+</p>
+<p>Remember how you added an action to the view controller in order to recognize when the user tapped the button? You can do the same thing for the slider. This new action will be performed whenever the user drags the slider.
+</p>
+<p>The steps for adding this action are largely the same as before.
+</p>
+<p>➤ First, go to <em>ViewController.swift</em> and add the following at the bottom, just before the final closing curly bracket:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">sliderMoved</span><span class="hljs-params">(<span class="hljs-number">_</span> slider: UISlider)</span></span> {
+  <span class="hljs-built_in">print</span>(<span class="hljs-string">"The value of the slider is now: <span class="hljs-subst">\(slider.value)</span>"</span>)
+}</pre>
+<p>➤ Second, go to the storyboard and Control-drag from the slider to View Controller in the Document Outline. Let go of the mouse button and select <em>sliderMoved:</em> from the pop-up. Done!
+</p>
+<p>Just to refresh your memory, the Document Outline sits on the left-hand side of the Interface Builder canvas. It shows the View hierarchy of the storyboard. Here, you can see that the View controller contains a view (succinctly named View), which, in turn, contains the sub-views you’ve added: the buttons and labels.
+</p><div class="image-40"><img src="graphics/img56.png"  alt="" title="The Document Outline shows the view hierarchy of the storyboard" /></div>
+<p>Remember, if the Document Outline is not visible, click the little icon at the bottom of the Xcode window to reveal it:
+</p><div class="image-25"><img src="graphics/img57.png"  alt="" title="This button shows or hides the Document Outline" /></div>
+<p>When you connect the slider, make sure to Control-drag to View controller (the yellow circle icon), not View Controller Scene at the very top. If you don’t see the yellow circle icon, then click the arrow in front of View Controller Scene (called the &quot;disclosure triangle&quot;) to expand it.
+</p>
+<p>If all went well, the <code>sliderMoved:</code> action is now hooked up to the slider’s Value Changed event. This means the <code>sliderMoved()</code> method will be called every time the user drags the slider to the left or right, changing its value.
+</p>
+<p>You can verify that the connection was made by selecting the slider and looking at the <em>Connections inspector</em>:
+</p><div class="image-20"><img src="graphics/img58.png"  alt="" title="The slider is now hooked up to the view controller" /></div>
+<div class="note">
+<p><em>Note</em>: Did you notice that the <code>sliderMoved:</code> action has a colon in its name but <code>showAlert</code> does not? That’s because the <code>sliderMoved()</code> method takes a single parameter, <code>slider</code>, while <code>showAlert()</code> does not have any parameters. If an action method has a parameter, Interface Builder adds a <code>:</code> to the name. You’ll learn more about parameters and how to use them soon.
+</p></div>
+
+<p>➤ Run the app and drag the slider.
+</p>
+<p>As soon as you start dragging, the Xcode window should open a new pane at the bottom, the <em>Debug area</em>, showing a list of messages:
+</p><div class="image-80"><img src="graphics/img59.png"  alt="" title="Printing messages in the Debug area" /></div>
+<div class="note">
+<p><em>Note</em>: If, for some reason, the Debug area does not show up, you can always show (or hide) the Debug area by using the appropriate toolbar button on the top right corner of the Xcode window. You will notice from the above screenshot that the Debug area is split into two panes. You can control which of the panes is shown/hidden by using the two blue square icons shown above in the bottom-right corner.
+</p></div>
+<div class="image-30"><img src="graphics/img60.png"  alt="" title="Show Debug area" /></div>
+<p>If you swipe the slider all the way to the left, you should see the value go down to 1. All the way to the right, the value should stop at 100.
+</p>
+<p>The <code>print()</code> function is a great help to show you what is going on in the app. Its entire purpose is to write a text message to the <em>Console</em> — the right-hand pane in the Debug area. Here, you used <code>print()</code> to verify that you properly hooked up the action to the slider and that you can read the slider value as the slider is moved.
+</p>
+<p>I often use <code>print()</code> to make sure my apps are doing the right thing before I add more functionality. Printing a message to the Console is quick and easy.
+</p>
+<div class="note">
+<p><em>Note</em>: You may see a bunch of other messages in the Console, too. This is debug output from UIKit and iOS Simulator. You can safely ignore these messages.
+</p></div>
+
+<h3 class="segment-chapter">Strings</h3>
+
+<p>To put text in your app, you use something called a “string.” The strings you have used so far are:
+</p><pre class="code-block"><span class="hljs-string">"Hello, World"</span>
+<span class="hljs-string">"This is my first app!"</span>
+<span class="hljs-string">"Awesome"</span>
+<span class="hljs-string">"The value of the slider is now: <span class="hljs-subst">\(slider.value)</span>"</span></pre>
+<p>The first three were used to make the <code>UIAlertController</code>; the last one was used with <code>print()</code>.
+</p>
+<p>Such a chunk of text is called a string because you can visualize the text as a sequence of characters, as if they were pearls in a necklace:
+</p><div class="image-80"><img src="graphics/img61.png"  alt="" title="A string of characters" /></div>
+<p>Working with strings is something you need to do all the time when you’re writing apps, so over the course of this book you’ll get quite experienced in using strings.
+</p>
+<p>In Swift, to create a string, simply put the text in between double quotes. In other languages, you can often use single quotes as well, but in Swift they must be double quotes. And they must be plain double quotes, not typographic “smart quotes.”
+</p>
+<p>To summarize:
+</p><pre class="code-block"><span class="hljs-comment">// This is the proper way to make a Swift string:</span>
+<span class="hljs-string">"I am a good string"</span>
+
+<span class="hljs-comment">// These are wrong:</span>
+'<span class="hljs-type">I</span> should have double quotes'
+''<span class="hljs-type">Two</span> single quotes <span class="hljs-keyword">do</span> not make a double quote''
+“<span class="hljs-type">My</span> quotes are too fancy”
+@<span class="hljs-string">"I am an Objective-C string"</span></pre>
+<p>Anything between the characters <code>\(</code> and <code>)</code> inside a string is special. The <code>print()</code> statement used the string, <code>&quot;The value of the slider is now: \(slider.value)&quot;</code>. Think of the <code>\( … )</code> as a placeholder: <code>&quot;The value of the slider is now: X&quot;</code>, where X will be replaced by the value of the slider.
+</p>
+<p>Filling in the blanks this way is a very common way to build strings in Swift and is known as <i>string interpolation</i>.
+</p>
+<h3 class="segment-chapter">Variables</h3>
+
+<p>Printing information with <code>print()</code> to the Console is very useful during the development process, but it’s absolutely useless to users because they can’t see the Console when the app is running on a device.
+</p>
+<p>Let’s improve this to show the value of the slider in the alert pop-up. So how do you get the slider’s value into <code>showAlert()</code>?
+</p>
+<p>When you read the slider’s value in <code>sliderMoved()</code>, that piece of data disappears when the action method ends. It would be handy if you could remember this value until the user taps the Hit Me button.
+</p>
+<p>Fortunately, Swift has a building block for exactly this purpose: the <i>variable</i>.
+</p>
+<p>➤ Open <em>ViewController.swift</em> and add the following at the top, directly below the line that says <code>class ViewController</code>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> currentValue: <span class="hljs-type">Int</span> = <span class="hljs-number">0</span></pre>
+<p>You have now added a variable named <code>currentValue</code> to the view controller object.
+</p>
+<p>The code should look like this (I left out the method code, also known as the method implementations):
+</p><pre class="code-block"><span class="hljs-keyword">import</span> UIKit
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ViewController</span>: <span class="hljs-title">UIViewController</span> </span>{
+  <span class="hljs-keyword">var</span> currentValue: <span class="hljs-type">Int</span> = <span class="hljs-number">0</span>
+
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+    . . .
+  }
+
+  <span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showAlert</span><span class="hljs-params">()</span></span> {
+    . . .
+  }
+
+  <span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">sliderMoved</span><span class="hljs-params">(<span class="hljs-number">_</span> slider: UISlider)</span></span> {
+    . . .
+  }
+}</pre>
+<p>It is customary to add the variables above the methods, and to indent everything with a tab, or two to four spaces — which one you use is largely a matter of personal preference. I like to use two spaces. (You can configure this in Xcode’s preferences panel. From the menu bar choose <em>Xcode</em> ▸ <em>Preferences…</em> ▸ <em>Text Editing</em> and go to the <em>Indentation</em> tab.)
+</p>
+<p>Remember when I said that a view controller, or any object really, could have both data and functionality? The <code>showAlert()</code> and <code>sliderMoved()</code> actions are examples of functionality, while the <code>currentValue</code> variable is part of the view controller&apos;s data.
+</p>
+<p>A variable allows the app to remember things. Think of a variable as a temporary storage container for a single piece of data. Similar to how there are containers of all sorts and sizes, data comes in all kinds of shapes and sizes.
+</p>
+<p>You don’t just put stuff in the container and then forget about it. You will often replace its contents with a new value. When the thing that your app needs to remember changes, you take the old value out of the box and put in the new value. That’s the whole point behind variables: They can <i>vary</i>. For example, you will update <code>currentValue</code> with the new position of the slider every time the slider is moved. The size of the storage container and the sort of values the variable can remember are determined by its <i>data type</i>, or just <i>type</i>.
+</p>
+<p>You specified the type <code>Int</code> for the <code>currentValue</code> variable, which means this container can hold whole numbers (also known as <i>integers</i>) between at least minus two billion and plus two billion. <code>Int</code> is one of the most common data types. There are many others though, and you can even make your own.
+</p>
+<p>Variables are like children’s toy blocks:
+</p><div class="image-50"><img src="graphics/img62.png"  alt="" title="Variables are containers that hold values" /></div>
+<p>The idea is to put the right shape in the right container. The container is the variable and its type determines what “shape” fits. The shapes are the possible values that you can put into the variables.
+</p>
+<p>You can change the contents of each box later as long as the shape fits. For example, you can take out a blue square from a square box and put in a red square — the only thing you have to make sure is that both are squares.
+</p>
+<p>But you can’t put a square in a round hole: The data type of the value and the data type of the variable have to match.
+</p>
+<p>I said a variable is a <i>temporary</i> storage container. How long will it keep its contents? Unlike meat or vegetables, variables won’t spoil if you keep them for too long — a variable will hold onto its value indefinitely, until you put a new value into that variable or until you destroy the container altogether.
+</p>
+<p>Each variable has a certain lifetime (also known as its <i>scope</i>) that depends on exactly where in your program you defined that variable. In this case, <code>currentValue</code> sticks around for just as long as its owner, <code>ViewController</code>, does. Their fates are intertwined.
+</p>
+<p>The view controller, and thus <code>currentValue</code>, is there for the duration of the app. They don’t get destroyed until the app quits. Soon, you’ll also see variables that are short-lived (also known as <i>local variables</i>).
+</p>
+<p>Enough theory, let’s make this variable work for us!
+</p>
+<h4 class="segment-chapter">Creating your variable</h4>
+
+<p>➤ Change the contents of the <code>sliderMoved()</code> method in <em>ViewController.swift</em> to the following:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">sliderMoved</span><span class="hljs-params">(<span class="hljs-number">_</span> slider: UISlider)</span></span> {
+  currentValue = lroundf(slider.value)
+}</pre>
+<p>You removed the <code>print()</code> statement and replaced it with this line:
+</p><pre class="code-block">currentValue = lroundf(slider.value)</pre>
+<p>What is going on here?
+</p>
+<p>You’ve seen <code>slider.value</code> before, which is the slider’s position at a given moment. This is a value between 1 and 100, possibly with digits behind the decimal point. And <code>currentValue</code> is the name of the variable you have just created.
+</p>
+<p>To put a new value into a variable, you simply do this:
+</p><pre class="code-block">variable = the new value</pre>
+<p>This is known as <i>assignment</i>. You <i>assign</i> the new value to the variable. It puts the shape into the box. Here, you put the value that represents the slider’s position into the <code>currentValue</code> variable.
+</p>
+<h3 class="segment-chapter">Functions</h3>
+
+<p>But what is the <code>lroundf</code> thing? Recall that the slider’s value can be a non-whole number. You’ve seen this with the <code>print()</code> output in the Console as you moved the slider.
+</p>
+<p>However, this game would be really hard if you made the player guess the position of the slider with an accuracy that goes beyond whole numbers. That will be nearly impossible to get right!
+</p>
+<p>To give the player a fighting chance, you use whole numbers only. That is why <code>currentValue</code> has a data type of <code>Int</code>, because it stores <i>integers</i>, a fancy term for whole numbers.
+</p>
+<p>You use the function <code>lroundf()</code> to round the decimal number to the nearest whole number and then store that rounded-off number in <code>currentValue</code>.
+</p>
+<div class="note">
+<p><em>Functions and methods</em>
+</p>
+<p>You’ve already seen that methods provide functionality, but <i>functions</i> are another way to put functionality into your apps (the name sort of gives it away, right?). Functions and methods are how Swift programs combine multiple lines of code into single, cohesive units.
+</p>
+<p>The difference between the two is that a function doesn’t belong to an object while a method does. In other words, a method is exactly like a function — that’s why you use the <code>func</code> keyword to define them — except that you need to have an object to use the method. But regular functions, or <i>free functions</i> as they are sometimes called, can be used anywhere.
+</p>
+<p>Swift provides your programs with a large library of useful functions. The function <code>lroundf()</code> is one of them and you’ll be using quite a few others as you progress. <code>print()</code> is also a function, by the way. You can tell because the function name is always followed by parentheses that possibly contain one or more parameters.
+</p></div>
+
+<p>➤ Now change the <code>showAlert()</code> method to the following:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showAlert</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> message = <span class="hljs-string">"The value of the slider is: <span class="hljs-subst">\(currentValue)</span>"</span>
+
+  <span class="hljs-keyword">let</span> alert = <span class="hljs-type">UIAlertController</span>(title: <span class="hljs-string">"Hello, World"</span>, 
+                              message: message,    <span class="hljs-comment">// changed</span>
+                       preferredStyle: .alert)
+
+  <span class="hljs-keyword">let</span> action = <span class="hljs-type">UIAlertAction</span>(title: <span class="hljs-string">"OK"</span>,          <span class="hljs-comment">// changed</span>
+                             style: .<span class="hljs-keyword">default</span>, 
+                           handler: <span class="hljs-literal">nil</span>)
+
+  alert.addAction(action)
+
+  present(alert, animated: <span class="hljs-literal">true</span>, completion: <span class="hljs-literal">nil</span>)
+}</pre>
+<p>The line with <code>let message =</code>  is new. Also note the other two small changes marked by comments.
+</p>
+<div class="note">
+<p><em>Note</em>: Anything appearing after two slashes <code>//</code> (and up to the end of that particular line) in Swift source code is treated as a comment — a note by the developer to themselves or to other developers. The Swift compiler generally ignores comments; they are there for the convenience of humans.
+</p></div>
+
+<p>As before, you create and show a <code>UIAlertController</code>, except this time its message says: “The value of the slider is: X,” where X is replaced by the contents of the <code>currentValue</code> variable (a whole number between 1 and 100).
+</p>
+<p>Suppose <code>currentValue</code> is 34, which means the slider is about one-third to the left. The new code above will convert the string <code>&quot;The value of the slider is: \(currentValue)&quot;</code> into <code>&quot;The value of the slider is: 34&quot;</code> and put that into a new object named <code>message</code>.
+</p>
+<p>The old <code>print()</code> did something similar, except that it printed the result to the Console. Here, however, you do not wish to print the result but show it in the alert pop-up. That is why you tell the <code>UIAlertController</code> that it should now use this new string as the message to display.
+</p>
+<p>➤ Run the app, drag the slider and press the button. Now, the alert should show the actual value of the slider.
+</p><div class="image-50"><img src="graphics/img63.png"  alt="" title="The alert shows the value of the slider" /></div>
+<p>Cool. You have used a variable, <code>currentValue</code>, to remember a particular piece of data, the rounded-off position of the slider, so that it can be used elsewhere in the app — in this case in the alert’s message text.
+</p>
+<p>If you tap the button again without moving the slider, the alert will still show the same value. The variable keeps its value until you put a new one into it.
+</p>
+<h3 class="segment-chapter">Your first bug</h3>
+
+<p>There is a small problem with the app, though. Maybe you’ve noticed it already. Here is how to reproduce the problem:
+</p>
+<p>➤ Press the Stop button in Xcode to completely terminate the app, then press Run again. Without moving the slider, immediately press the Hit Me button.
+</p>
+<p>The alert now says: “The value of the slider is: 0”. But the slider is obviously at the center, so you would expect the value to be 50. You’ve discovered a bug!
+</p>
+<div class="note">
+<p><em>Exercise</em>: Think of a reason why the value would be 0 in this particular situation (start the app, don’t move the slider, press the button).
+</p></div>
+
+<p>Answer: The clue here is that this only happens when you don’t move the slider. Of course, without moving the slider the <code>sliderMoved()</code> message is never sent and you never put the slider’s value into the <code>currentValue</code> variable.
+</p>
+<p>The default value for the <code>currentValue</code> variable is 0, and that is what you are seeing here.
+</p>
+<p>➤ To fix this bug, change the declaration of <code>currentValue</code> to:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> currentValue: <span class="hljs-type">Int</span> = <span class="hljs-number">50</span></pre>
+<p>Now the starting value of <code>currentValue</code> is 50, which should be the same value as the slider’s initial position.
+</p>
+<p>➤ Run the app again and verify that the bug is fixed.
+</p>
+<p>You can find the project files for the app up to this point under <em>03 - Slider and Labels</em> in the Source Code folder.
+</p></body></html>

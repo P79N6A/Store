@@ -1,0 +1,752 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta property="fb:admins" content="724580831" />
+
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta name="description" content="     Use Bookmarks in iBooks App for iOS to Quickly Access Saved Pages"   />
+<meta name="keywords" content="OS X Daily, OSXDaily, Apple, Mac, iPhone, iPad, Mac OS X, iOS, Mac, tips, tricks, tutorials, news" />
+
+<link rel="shortcut icon" href="/images/favicon.ico" />
+<link rel="stylesheet" type="text/css" href="http://cdn.osxdaily.com/wp-content/themes/osxdaily-left2/style.css" />
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://osxdaily.com/feed/" />
+<link rel="alternate" type="text/xml" title="RSS .92" href="http://osxdaily.com/feed/rss/" />
+<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="http://osxdaily.com/feed/atom/" />
+<link rel="pingback" href="http://osxdaily.com/xmlrpc.php" />
+
+
+
+<title>   Use Bookmarks in iBooks App for iOS to Quickly Access Saved Pages   </title>
+
+
+
+
+<link rel='dns-prefetch' href='//s0.wp.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel="alternate" type="application/rss+xml" title="OS X Daily &raquo; Use Bookmarks in iBooks App for iOS to Quickly Access Saved Pages Comments Feed" href="http://osxdaily.com/2013/09/03/use-bookmarks-ibooks-ios/feed/" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/cdn.osxdaily.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.2.2"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55357,56424,55356,57342,8205,55358,56605,8205,55357,56424,55356,57340],[55357,56424,55356,57342,8203,55358,56605,8203,55357,56424,55356,57340]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel='stylesheet' id='wp-block-library-css'  href='http://cdn.osxdaily.com/wp-includes/css/dist/block-library/style.min.css?ver=5.2.2' type='text/css' media='all' />
+<link rel='stylesheet' id='cookie-notice-front-css'  href='http://cdn.osxdaily.com/wp-content/plugins/cookie-notice/css/front.min.css?ver=5.2.2' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-syntax-css-css'  href='http://cdn.osxdaily.com/wp-content/plugins/wp-syntax/css/wp-syntax.css?ver=1.1' type='text/css' media='all' />
+<link rel='stylesheet' id='social-logos-css'  href='http://cdn.osxdaily.com/wp-content/plugins/jetpack/_inc/social-logos/social-logos.min.css?ver=1' type='text/css' media='all' />
+<link rel='stylesheet' id='jetpack_css-css'  href='http://cdn.osxdaily.com/wp-content/plugins/jetpack/css/jetpack.css?ver=6.2.1' type='text/css' media='all' />
+<script type='text/javascript' src='http://cdn.osxdaily.com/wp-includes/js/jquery/jquery.js?ver=1.12.4-wp'></script>
+<script type='text/javascript' src='http://cdn.osxdaily.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var related_posts_js_options = {"post_heading":"h4"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://cdn.osxdaily.com/wp-content/plugins/jetpack/_inc/build/related-posts/related-posts.min.js?ver=20150408'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var cnArgs = {"ajaxurl":"https:\/\/osxdaily.com\/wp-admin\/admin-ajax.php","hideEffect":"fade","onScroll":"yes","onScrollOffset":"100","cookieName":"cookie_notice_accepted","cookieValue":"true","cookieTime":"31536000","cookiePath":"\/","cookieDomain":"","redirection":"","cache":"1","refuse":"no","revoke_cookies":"0","revoke_cookies_opt":"automatic","secure":"0"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://cdn.osxdaily.com/wp-content/plugins/cookie-notice/js/front.min.js?ver=1.2.43'></script>
+<link rel='https://api.w.org/' href='http://osxdaily.com/wp-json/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://osxdaily.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://cdn.osxdaily.com/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='New iPhone Models Incoming: Apple Sends Invites for September 10 Event' href='http://osxdaily.com/2013/09/03/new-iphone-models-incoming-apple-sends-invites-for-september-10-event/' />
+<link rel='next' title='OS X Mavericks Developer Preview 7 Released by Apple' href='http://osxdaily.com/2013/09/03/os-x-mavericks-developer-preview-7-released-by-apple/' />
+<link rel="canonical" href="http://osxdaily.com/2013/09/03/use-bookmarks-ibooks-ios/" />
+<link rel='shortlink' href='http://osxdaily.com/?p=40109' />
+<link rel="alternate" type="application/json+oembed" href="http://osxdaily.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fosxdaily.com%2F2013%2F09%2F03%2Fuse-bookmarks-ibooks-ios%2F" />
+<link rel="alternate" type="text/xml+oembed" href="http://osxdaily.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fosxdaily.com%2F2013%2F09%2F03%2Fuse-bookmarks-ibooks-ios%2F&#038;format=xml" />
+<script type='text/javascript'>
+	(function () {
+		var pl_beacon = document.createElement('script');
+		pl_beacon.type = 'text/javascript';
+		pl_beacon.async = true;
+		var host = 'http://osxdaily.com';
+		if ('https:' == document.location.protocol) {
+			host = host.replace('http://', 'https://');
+		}
+		pl_beacon.src = host + '/un6up8Rl5Bi9.js?ts=' + Math.floor((Math.random() * 100000) + 1);
+		var first_script_tag = document.getElementsByTagName('script')[0];
+		first_script_tag.parentNode.insertBefore(pl_beacon, first_script_tag);
+	})();
+</script><style type='text/css'>img#wpstats{display:none}</style>
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Use Bookmarks in iBooks App for iOS to Quickly Access Saved Pages" />
+<meta property="og:url" content="http://osxdaily.com/2013/09/03/use-bookmarks-ibooks-ios/" />
+<meta property="og:description" content="For those who read within the iBooks app of iOS, digital bookmarks are a very useful feature that work much like bookmarks do in a real paper book; you set a bookmark on a page, and you then have e…" />
+<meta property="article:published_time" content="2013-09-03T20:06:03+00:00" />
+<meta property="article:modified_time" content="2013-09-06T18:05:54+00:00" />
+<meta property="og:site_name" content="OS X Daily" />
+<meta property="og:image" content="http://cdn.osxdaily.com/wp-content/uploads/2013/09/access-bookmark-ibooks.jpg" />
+<meta property="og:image:width" content="620" />
+<meta property="og:image:height" content="307" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:site" content="@osxdaily" />
+<meta name="twitter:text:title" content="Use Bookmarks in iBooks App for iOS to Quickly Access Saved Pages" />
+<meta name="twitter:image" content="http://cdn.osxdaily.com/wp-content/uploads/2013/09/access-bookmark-ibooks.jpg?w=640" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<!-- End Jetpack Open Graph Tags -->
+
+
+</head>
+
+<body>
+
+
+<div id="wrap">
+
+<div id="header">
+
+<div id="topline">
+
+
+<div id="space">
+
+
+<div id="logobox">
+<a href="http://osxdaily.com"><img src="http://cdn.osxdaily.com/wp-content/themes/osxdaily-left2/img/osxdaily-logo-l.png" alt="OS X Daily"  border="0" width="250" height="75" /></a>
+</div>
+
+<div id="top_block">
+
+<script type="text/javascript"><!--
+	e9 = new Object();
+    e9.size = "728x90,468x60";
+	e9.noAd = 1;
+//--></script>
+<script type="text/javascript" src="http://tags.expo9.exponential.com/tags/OSXDailycom/ROS/tags.js"></script>
+
+</div>
+
+
+<div id="top_wide_block">
+
+<div class="underlinemenu">
+<ul>
+
+<li style="margin-left:none !important;"><a href="/">Home</a></li>
+<li><a href="/category/mac-os-x/">Mac OS</a></li>
+<li><a href="/category/iphone/">iPhone</a></li>
+<li><a href="/category/ipad/">iPad</a></li>
+<li><a href="/category/tips-tricks/">Tips & Tricks</a></li>
+<li><a href="/tag/news/">News</a></li>
+<li><a href="/tag/ios/">iOS</a></li>
+<li><a href="/category/troubleshooting/">Troubleshooting</a></li>
+<li></li>
+<li style="border-right:none!important;"><div id="gsearch_box" style="width:220px;">
+
+<script>
+  (function() {
+    var cx = '000140732189139953166:WMX-1131898171';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<gcse:searchbox-only resultsUrl="//osxdaily.com/gsearch/"></gcse:searchbox-only>
+
+</div></li>
+</ul>
+</div>
+
+
+
+
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+</div>
+
+<div id="content">
+
+
+
+<div class="post">
+<h1>Use Bookmarks in iBooks App for iOS to Quickly Access Saved Pages</h1>
+
+
+<div id="subhead_block">
+<span class="subhead_lefty">Sep 3, 2013 - <a href="http://osxdaily.com/2013/09/03/use-bookmarks-ibooks-ios/#comments">1 Comment</a></span>
+<span class="subhead_righty"></span>
+</div>
+
+
+
+<div class="contenttext">
+<p><img src="http://cdn.osxdaily.com/wp-content/uploads/2013/09/ibooks-icon.jpg" alt="iBooks" title="ibooks-icon" width="112" height="112" class="alignright size-full wp-image-40113" /> For those who read within the iBooks app of iOS, digital bookmarks are a very useful feature that work much like bookmarks do in a real paper book; you set a bookmark on a page, and you then have easy access for future reference, whether to find where you left off reading or to quickly jump to an important passage. </p>
+<p>You can set bookmarks with just about anything that opens in the iBooks app, whether it&#8217;s a native iBook, ebook, or PDF, so long as it opens and has page references you can set bookmarks and quickly access them again, and of course the feature is universal within the iBooks app for iPad, iPhone, iPod touch, and (soon) OS X.<br />
+<span id="more-40109"></span></p>
+<!-- Quick Adsense WordPress Plugin: http://quickadsense.com/ -->
+<div style="float: left; margin: 10px 10px 10px 0;">
+<div style="padding:5px 20px 10px 0;" ><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 336x280 in page article -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:336px;height:280px"
+     data-ad-client="ca-pub-7321635426958037"
+     data-ad-slot="4239339108"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>
+</div>
+
+<h3>Set a Bookmark in iBooks App for iOS</h3>
+<ul>
+<li>Open a book within iBooks app</li>
+<li>From the section you want to bookmark for later reference, tap the bookmark button in the upper right corner</li>
+</ul>
+<p><img src="http://cdn.osxdaily.com/wp-content/uploads/2013/09/set-bookmark-ibooks.jpg" alt="Set a bookmark in iBooks app for iOS" title="set-bookmark-ibooks" width="620" height="266" class="aligncenter size-full wp-image-40111" /></p>
+<p>You can set as many bookmarks as you want for a single book or for multiple books, and they will all be accessible in the the same place for future retrieval. </p>
+<h3>Access the Bookmarked Page(s) in iBooks</h3>
+<ul>
+<li>Back in iBooks app, open the book you want to retrieve a bookmark for</li>
+<li>Tap the list icon within the top menu bar, then tap on the &#8220;Bookmarks&#8221; tab</li>
+<li>Choose the bookmark that you set earlier to immediately jump to that location in the iBook</li>
+</ul>
+<p><img src="http://cdn.osxdaily.com/wp-content/uploads/2013/09/access-bookmark-ibooks.jpg" alt="Access a bookmark set in iBooks for iOS" title="access-bookmark-ibooks" width="620" height="307" class="aligncenter size-full wp-image-40110" /></p>
+<p>Bookmarks are defined by the book name, page number, and date the bookmark was set, making it easy to reference individual bookmarks either for the same book or across multiple books.</p>
+<p>Remember that bookmark access is book (or pdf) dependent, meaning if you have set a bookmark within Moby Dick for page 218, it would only be accessible from Moby Dick within iBooks, and not from within another book. This seems to be the cause of much confusion with bookmarking in iBooks app, and perhaps why the feature does not get as much usage as it should.</p>
+<h3>Removing a Bookmark</h3>
+<ul>
+<li>Access the bookmarked page from the iBooks app again, then tap on the red Bookmarks icon again</li>
+</ul>
+<p>This removes the red bookmark badge from the individual page, and it will no longer be included within the &#8220;Bookmarks&#8221; tab either.</p>
+
+<!-- Quick Adsense WordPress Plugin: http://quickadsense.com/ -->
+<div style="float: none; margin:10px 0 10px 0; text-align:center;">
+<!--- gads -->
+<div style="padding:5px 20px 10px 0;" id="lower_content_ad_box">
+
+<script type="text/javascript"><!--
+google_ad_client = "pub-7321635426958037";
+/* 336x280, created 8/6/09 */
+google_ad_slot = "3803516584";
+google_ad_width = 336;
+google_ad_height = 280;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
+</div>
+
+<div style="font-size: 0px; height: 0px; line-height: 0px; margin: 0; padding: 0; clear: both;"></div><div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-icon-text sd-sharing"><div class="sd-content"><ul><li class="share-facebook"><a rel="nofollow" data-shared="sharing-facebook-40109" class="share-facebook sd-button share-icon" href="http://osxdaily.com/2013/09/03/use-bookmarks-ibooks-ios/?share=facebook" target="_blank" title="Click to share on Facebook"><span>Facebook</span></a></li><li class="share-twitter"><a rel="nofollow" data-shared="sharing-twitter-40109" class="share-twitter sd-button share-icon" href="http://osxdaily.com/2013/09/03/use-bookmarks-ibooks-ios/?share=twitter" target="_blank" title="Click to share on Twitter"><span>Twitter</span></a></li><li><a href="#" class="sharing-anchor sd-button share-more"><span>More</span></a></li><li class="share-end"></li></ul><div class="sharing-hidden"><div class="inner" style="display: none;"><ul><li class="share-linkedin"><a rel="nofollow" data-shared="sharing-linkedin-40109" class="share-linkedin sd-button share-icon" href="http://osxdaily.com/2013/09/03/use-bookmarks-ibooks-ios/?share=linkedin" target="_blank" title="Click to share on LinkedIn"><span>LinkedIn</span></a></li><li class="share-print"><a rel="nofollow" data-shared="" class="share-print sd-button share-icon" href="http://osxdaily.com/2013/09/03/use-bookmarks-ibooks-ios/#print" target="_blank" title="Click to print"><span>Print</span></a></li><li class="share-end"></li><li class="share-tumblr"><a rel="nofollow" data-shared="" class="share-tumblr sd-button share-icon" href="http://osxdaily.com/2013/09/03/use-bookmarks-ibooks-ios/?share=tumblr" target="_blank" title="Click to share on Tumblr"><span>Tumblr</span></a></li><li class="share-pinterest"><a rel="nofollow" data-shared="sharing-pinterest-40109" class="share-pinterest sd-button share-icon" href="http://osxdaily.com/2013/09/03/use-bookmarks-ibooks-ios/?share=pinterest" target="_blank" title="Click to share on Pinterest"><span>Pinterest</span></a></li><li class="share-end"></li><li class="share-pocket"><a rel="nofollow" data-shared="" class="share-pocket sd-button share-icon" href="http://osxdaily.com/2013/09/03/use-bookmarks-ibooks-ios/?share=pocket" target="_blank" title="Click to share on Pocket"><span>Pocket</span></a></li><li class="share-reddit"><a rel="nofollow" data-shared="" class="share-reddit sd-button share-icon" href="http://osxdaily.com/2013/09/03/use-bookmarks-ibooks-ios/?share=reddit" target="_blank" title="Click to share on Reddit"><span>Reddit</span></a></li><li class="share-end"></li><li class="share-telegram"><a rel="nofollow" data-shared="" class="share-telegram sd-button share-icon" href="http://osxdaily.com/2013/09/03/use-bookmarks-ibooks-ios/?share=telegram" target="_blank" title="Click to share on Telegram"><span>Telegram</span></a></li><li class="share-jetpack-whatsapp"><a rel="nofollow" data-shared="" class="share-jetpack-whatsapp sd-button share-icon" href="https://api.whatsapp.com/send?text=Use%20Bookmarks%20in%20iBooks%20App%20for%20iOS%20to%20Quickly%20Access%20Saved%20Pages%20http%3A%2F%2Fosxdaily.com%2F2013%2F09%2F03%2Fuse-bookmarks-ibooks-ios%2F" target="_blank" title="Click to share on WhatsApp"><span>WhatsApp</span></a></li><li class="share-end"></li><li class="share-skype"><a rel="nofollow" data-shared="sharing-skype-40109" class="share-skype sd-button share-icon" href="http://osxdaily.com/2013/09/03/use-bookmarks-ibooks-ios/?share=skype" target="_blank" title="Click to share on Skype"><span>Skype</span></a></li><li class="share-google-plus-1"><a rel="nofollow" data-shared="sharing-google-40109" class="share-google-plus-1 sd-button share-icon" href="http://osxdaily.com/2013/09/03/use-bookmarks-ibooks-ios/?share=google-plus-1" target="_blank" title="Click to share on Google+"><span>Google</span></a></li><li class="share-end"></li><li class="share-end"></li></ul></div></div></div></div></div>
+<div id='jp-relatedposts' class='jp-relatedposts' >
+	<h3 class="jp-relatedposts-headline"><em>Related</em></h3>
+</div>
+</div>
+
+
+
+
+
+
+
+<div style="clear:both;display:block;margin:20px 0;">
+
+
+<form style="width: 560px; border: 12px solid #2266BB;padding: 10px;text-align:center;box-shadow: 0 1px 10px #444;" action="https://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open('https://feedburner.google.com/fb/a/mailverify?uri=osxdaily', 'popupwindow', 'scrollbars=yes,width=550,height=520');return true">
+<p style="font-size: 25px;">Enjoy this tip? <strong>Subscribe to the OSXDaily newsletter</strong> to get more of our great Apple tips, tricks, and important news delivered to your inbox! Enter your email address below:</p>
+<p><input type="text" style="width:200px" name="email"></p>
+<input type="hidden" value="osxdaily" name="uri"><input type="hidden" name="loc" value="en_US"><input type="submit" value="Subscribe">
+</form>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+<!--matched content-->
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:inline-block;width:600px;height:400px"
+     data-ad-client="ca-pub-7321635426958037"
+     data-ad-slot="5790820468"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<h3 style="margin-top:30px;">Related articles:</h3>
+<ul style="margin:0 0 0 20px;color:#555;font-size:1.1em;">
+<li><a href="http://osxdaily.com/2011/07/30/hide-reading-list-icon-safari-bookmarks-bar-mac-os-x-lion/" rel="bookmark" title="Permanent Link: Hide the Reading List Icon from Safari Bookmarks Bar in OS X Lion">Hide the Reading List Icon from Safari Bookmarks Bar in OS X Lion</a></li><li><a href="http://osxdaily.com/2012/07/19/always-show-the-bookmarks-bar-in-safari-on-ipad/" rel="bookmark" title="Permanent Link: Always Show the Bookmarks Bar in Safari on iPad">Always Show the Bookmarks Bar in Safari on iPad</a></li><li><a href="http://osxdaily.com/2010/07/16/open-save-pdf-in-ibooks-on-iphone-and-ipad/" rel="bookmark" title="Permanent Link: Open &#038; Save PDF&#8217;s to iBooks on iPhone and iPad">Open &#038; Save PDF&#8217;s to iBooks on iPhone and iPad</a></li><li><a href="http://osxdaily.com/2013/05/18/save-web-page-pdf-ios/" rel="bookmark" title="Permanent Link: How to Save Web Pages as PDF Files on the iPad &#038; iPhone">How to Save Web Pages as PDF Files on the iPad &#038; iPhone</a></li></ul>
+
+<div style="margin:20px 0 30px 0;">
+<strong style="font-size:14px;color:#555 !important;padding-top:10px;paddin-bottom:10px;">Posted by: Paul Horowitz in <a href="http://osxdaily.com/category/ipad/" rel="category tag">iPad</a>, <a href="http://osxdaily.com/category/iphone/" rel="category tag">iPhone</a>, <a href="http://osxdaily.com/category/tips-tricks/" rel="category tag">Tips &amp; Tricks</a></strong>
+</div>
+
+
+<a name="comments"></a>
+
+
+<!-- You can start editing here. -->
+
+	<h4 id="comments">One Comment</h4>
+<p class="smaller-font"><a href="http://osxdaily.com/2013/09/03/use-bookmarks-ibooks-ios/feed/">&raquo; Comments RSS Feed</a></p>
+
+	<ol class="commentlist">
+			<li class="comment even thread-even depth-1" id="comment-7368499">
+				<div id="div-comment-7368499" class="comment-body">
+				<div class="comment-author vcard">
+						<cite class="fn">Rob van der Lei</cite> <span class="says">says:</span>		</div>
+		
+		<div class="comment-meta commentmetadata"><a href="http://osxdaily.com/2013/09/03/use-bookmarks-ibooks-ios/#comment-7368499">
+			June 27, 2019 at 3:41 am				</a>
+						</div>
+
+		<p>Hello,<br />
+I would like to know how you can add a bookmark in a audiobooks that&#8217;s in iBooks. Or if thats not possible, how to add a bookmark in a audiobook at all. Maybe move the audiobook purchased in iTunes to an other app.<br />
+I hope you can help.</p>
+
+		<div class="reply"><a rel='nofollow' class='comment-reply-link' href='/2013/09/03/use-bookmarks-ibooks-ios/?replytocom=7368499#respond' data-commentid="7368499" data-postid="40109" data-belowelement="div-comment-7368499" data-respondelement="respond" aria-label='Reply to Rob van der Lei'>Reply</a></div>
+				</div>
+				</li><!-- #comment-## -->
+	</ol>
+
+
+ 
+
+
+<div id="respond">
+
+<h3>Leave a Reply</h3>
+
+<div class="cancel-comment-reply">
+	<small><a rel="nofollow" id="cancel-comment-reply-link" href="/2013/09/03/use-bookmarks-ibooks-ios/#respond" style="display:none;">Click here to cancel reply.</a></small>
+</div>
+
+
+<form action="https://osxdaily.com/wp-comments-post.php" method="post" id="commentform">
+
+
+<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" aria-required='true' />
+<label for="author"><small>Name (required)</small></label></p>
+
+<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" aria-required='true' />
+<label for="email"><small>Mail (will not be published) (required)</small></label></p>
+
+<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+<label for="url"><small>Website</small></label></p>
+
+
+<p><textarea autocomplete="nope"  id="de96c0db68"  name="de96c0db68"   cols="58" rows="10" tabindex="4"></textarea><textarea id="comment" aria-hidden="true" name="comment" autocomplete="nope" style="padding:0;clip:rect(1px, 1px, 1px, 1px);position:absolute !important;white-space:nowrap;height:1px;width:1px;overflow:hidden;" tabindex="-1"></textarea><script type="text/javascript">document.getElementById("comment").setAttribute( "id", "da33d83818db2381e7d585214e7c90be" );document.getElementById("de96c0db68").setAttribute( "id", "comment" );</script></p>
+
+<p><input name="submit" type="submit" id="submit" tabindex="5" value="Submit Comment" />
+<input type="hidden" name="comment_post_ID" value="40109" />
+
+<input type='hidden' name='comment_post_ID' value='40109' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+</p>
+<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="df6c1a9c80" /></p><p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="80"/></p>
+</form>
+
+
+</div>
+
+
+
+<div class="navigation">
+<div class="aleft">
+&laquo; <a href="http://osxdaily.com/2013/09/03/new-iphone-models-incoming-apple-sends-invites-for-september-10-event/">New iPhone Models Incoming: Apple Sends Invites for September 10 Event</a></div>
+<div class="aright">
+<a href="http://osxdaily.com/2013/09/03/os-x-mavericks-developer-preview-7-released-by-apple/">OS X Mavericks Developer Preview 7 Released by Apple</a> &raquo;</div>
+</div> <!-- end navigation -->
+
+
+<p>&nbsp;</p>
+<div class="below_article_amzn_adlink" style="background-color:#F4F4F4;border:5px solid #2266BB;box-shadow: 0 2px 3px #777777;color:#606060;margin:55px 0;display:block;padding:15px;clear:both;font-size:1.4em;text-align:center;">
+<a target="_blank" rel="nofollow" href="https://www.amazon.com/Apple-Computers/b/ref=as_li_ss_tl?ie=UTF8&node=565124&linkCode=ll2&tag=oxd-20&linkId=fff1f4b70b63770f7842cbf241018a29&language=en_US">Shop on Amazon.com and help support OSXDaily!</a><img src="https://www.assoc-amazon.com/e/ir?t=oxd-20&l=ur2&o=1" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+</div>
+
+
+</div>
+
+<div id="right_column">
+
+<div id="subscribe_box">
+<h3 class="sidebarstyle" id="subscribe_box_head">Subscribe to OSXDaily</h3>
+<a rel="nofollow" target="_blank" target="_blank" href="http://feeds.feedburner.com/osxdaily"><img src="http://cdn.osxdaily.com/wp-content/themes/osxdaily-left2/img/socialicons/rss-icon.png" border="0" height="48" width="48" alt="Subscribe to RSS" /></a>
+
+<a rel="nofollow" target="_blank" href="http://twitter.com/osxdaily"><img src="http://cdn.osxdaily.com/wp-content/themes/osxdaily-left2/img/socialicons/twitter-icon.png" border="0" height="48" width="48" alt="Subscribe to Twitter Feed" /></a>
+
+<a rel="nofollow" target="_blank" href="http://www.facebook.com/osxdaily"><img src="http://cdn.osxdaily.com/wp-content/themes/osxdaily-left2/img/socialicons/facebook-icon.png" border="0" height="48" width="48" alt="Follow on Facebook" /></a>
+
+<a rel="nofollow" target="_blank" href="http://feedburner.google.com/fb/a/mailverify?uri=osxdaily&amp;loc=en_US"><img src="http://cdn.osxdaily.com/wp-content/themes/osxdaily-left2/img/socialicons/mail-icon.png" border="0" height="48" width="48" alt="Subscribe to eMail Updates" /></a>
+
+<div style="padding:10px 0 20px 25px;">
+
+<div style="width:125px;float:left;">
+<iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Ffacebook.com%2Fosxdaily&amp;send=false&amp;layout=button_count&amp;width=90&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:90px; height:21px;" allowTransparency="true"></iframe>
+</div>
+
+<div style="width:100px;float:left;">
+<a href="https://twitter.com/OSXDaily" class="twitter-follow-button" data-show-count="false">Follow @OSXDaily</a>
+<script defer async src="//platform.twitter.com/widgets.js" type="text/javascript"></script>
+</div>
+
+</div>
+
+</div>
+
+
+
+
+<div style="margin:20px 0;">
+
+<!-- BuySellAds Zone Code -->
+<div id="bsap_1278263" class="bsarocks bsap_95cb8853ab792f424634d57b5de28eed"></div>
+<!-- End BuySellAds Zone Code -->
+</div>
+
+<div style="margin:20px 0;">
+
+<!-- tf -->
+<script type="text/javascript"><!--
+	e9 = new Object();
+    e9.size = "300x250,160x600,300x600";
+	e9.noAd = 1;
+//--></script>
+<script type="text/javascript" src="http://tags.expo9.exponential.com/tags/OSXDailycom/ROS/tags.js"></script>
+</div>
+
+
+
+
+<!--posts-->
+<div style="margin:20px 0; border:1px solid #ccc; border-radius:4px;background-color:#f3f3f3;padding:15px;">
+<h3 class="sidebarstyle">Tips & Tricks</h3>
+<ul>
+ 
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/17/mac-stuck-screensaver-fix/" rel="bookmark">Screen Saver Stuck on Mac? How to Fix It</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/16/show-all-devices-disk-utility-mac/" rel="bookmark">How to Show All Drive Devices in Disk Utility for MacOS</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/14/change-screen-brightness-mac-terminal/" rel="bookmark">How to Adjust Screen Brightness on Mac from Command Line</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/13/how-opt-out-beta-macos-system-software-updates/" rel="bookmark">How to Opt Out of MacOS Catalina Beta Updates</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/12/open-vmdk-virtualbox/" rel="bookmark">How to Open a VMDK File in VirtualBox</a></li>
+</ul>
+</div>
+<!--endposts-->
+
+
+<div style="margin:20px 0;">
+<!-- tf -->
+<script type="text/javascript"><!--
+	e9 = new Object();
+    e9.size = "300x250,160x600,300x600";
+	e9.noAd = 1;
+//--></script>
+<script type="text/javascript" src="http://tags.expo9.exponential.com/tags/OSXDailycom/ROS/tags.js"></script>
+
+</div>
+
+<!--posts-->
+<div style="margin:20px 0; border:1px solid #ccc; border-radius:4px;background-color:#f3f3f3;padding:15px;">
+<h3 class="sidebarstyle">News</h3>
+<ul>
+ 
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/16/you-can-download-ios-13-ipados-13-public-beta-6-now/" rel="bookmark">You Can Download iOS 13 &#038; iPadOS 13 Public Beta 6 Now</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/15/ios-13-beta-7-ipados-13-beta-7-available-to-download-for-developers/" rel="bookmark">iOS 13 Beta 7 &#038; iPadOS 13 Beta 7 Available to Download for Developers</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/08/enjoy-four-asmr-videos-from-apple-crunching-whispering-woodworking-rain/" rel="bookmark">Enjoy Four ASMR Videos from Apple &#8211; Crunching, Whispering, Woodworking, Rain</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/08/public-beta-5-of-ios-13-ipados-13-download-available/" rel="bookmark">Public Beta 5 of iOS 13 &#038; iPadOS 13 Available to Download Now</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/07/download-ios-13-beta-6-ipados-13-beta-6-now-available/" rel="bookmark">Download iOS 13 Beta 6 &#038; iPadOS 13 Beta 6 Now Available</a></li>
+</ul>
+</div>
+<!--endposts-->
+
+<!-- matchedcontent -->
+<div style="margin:20px 0;">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:600px"
+     data-ad-client="ca-pub-7321635426958037"
+     data-ad-slot="5553666864"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+
+<!--posts-->
+<div style="margin:20px 0; border:1px solid #ccc; border-radius:4px;background-color:#f3f3f3;padding:15px;">
+<h3 class="sidebarstyle">iPhone / iPad</h3>
+<ul>
+ 
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/15/ios-13-beta-7-ipados-13-beta-7-available-to-download-for-developers/" rel="bookmark">iOS 13 Beta 7 &#038; iPadOS 13 Beta 7 Available to Download for Developers</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/10/how-make-facetime-call-iphone-ipad/" rel="bookmark">How to Make a FaceTime Call from iPhone &#038; iPad</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/07/download-ios-13-beta-6-ipados-13-beta-6-now-available/" rel="bookmark">Download iOS 13 Beta 6 &#038; iPadOS 13 Beta 6 Now Available</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/06/convert-numbers-file-to-excel-ipad-iphone/" rel="bookmark">How to Convert Numbers File to Excel on iPad or iPhone</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/04/how-update-email-password-iphone-ipad/" rel="bookmark">How to Update an Email Password on iPhone &#038; iPad</a></li>
+</ul>
+</div>
+<!--endposts-->
+
+<div style="margin:20px 0;">
+
+<!-- tf -->
+<script type="text/javascript"><!--
+	e9 = new Object();
+    e9.size = "300x250";
+    e9.noAd = 1;
+//--></script>
+<script type="text/javascript" src="http://tags.expo9.exponential.com/tags/OSXDailycom/ROS/tags.js"></script>
+
+</div>
+
+
+<!--posts-->
+<div style="margin:20px 0; border:1px solid #ccc; border-radius:4px;background-color:#f3f3f3;padding:15px;">
+<h3 class="sidebarstyle">Mac</h3>
+<ul>
+ 
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/17/mac-stuck-screensaver-fix/" rel="bookmark">Screen Saver Stuck on Mac? How to Fix It</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/16/show-all-devices-disk-utility-mac/" rel="bookmark">How to Show All Drive Devices in Disk Utility for MacOS</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/14/change-screen-brightness-mac-terminal/" rel="bookmark">How to Adjust Screen Brightness on Mac from Command Line</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/13/how-opt-out-beta-macos-system-software-updates/" rel="bookmark">How to Opt Out of MacOS Catalina Beta Updates</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/12/open-vmdk-virtualbox/" rel="bookmark">How to Open a VMDK File in VirtualBox</a></li>
+</ul>
+</div>
+<!--endposts-->
+
+
+
+
+<div style="margin:20px auto;text-align:center;">
+<!-- tf sidebar-->
+<script type="text/javascript"><!--
+	e9 = new Object();
+    e9.size = "300x250";
+	e9.noAd = 1;
+//--></script>
+<script type="text/javascript" src="//tags.expo9.exponential.com/tags/OSXDailycom/ROS/tags.js"></script>
+</div>
+
+	<!--posts-->
+<div style="margin:20px 0; border:1px solid #ccc; border-radius:4px;background-color:#f3f3f3;padding:15px;">
+<h3 class="sidebarstyle">Troubleshooting</h3>
+<ul>
+ 
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/17/mac-stuck-screensaver-fix/" rel="bookmark">Screen Saver Stuck on Mac? How to Fix It</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/13/how-opt-out-beta-macos-system-software-updates/" rel="bookmark">How to Opt Out of MacOS Catalina Beta Updates</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/09/how-uninstall-malwarebytes-mac/" rel="bookmark">How to Uninstall Malwarebytes on Mac</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/05/how-install-malwarebytes-mac-scan-malware/" rel="bookmark">How to Install Malwarebytes on Mac to Scan for Malware &#038; Adware</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/04/how-update-email-password-iphone-ipad/" rel="bookmark">How to Update an Email Password on iPhone &#038; iPad</a></li>
+</ul>
+</div>
+<!--endposts-->
+
+
+
+<div style="margin:20px auto;text-align:center;">
+	<a target="_blank" rel="nofollow" href="https://www.amazon.com/ref=as_li_ss_tl?ie=UTF8&linkCode=ll2&tag=oxd-20&linkId=64d3941a2a40f30b13accdf967a25940&language=en_US"><img src="http://cdn.osxdaily.com/wp-content/uploads/2019/06/support-shop-amazon.jpeg" height="250" width="300" alt="Shop on Amazon to help support this site" border="0"/></a>
+	</div>
+
+
+</div>
+
+
+<div id="footer">
+
+
+
+<div id="footer_item_container">
+
+
+
+<h4>OSXDaily</h4>
+<p><a href="http://osxdaily.com/about/">About OSXDaily</a> | <a href="http://www.osxdaily.com/contact-os-x-daily/">Contact Us</a> | <a href="http://osxdaily.com/osxdailycom-privacy-policy/">Privacy Policy</a> | <a href="http://osxdaily.com/sitemap-all/">Sitemap</a> </p>
+<p>This website is unrelated to Apple Inc</p>
+<p>All trademarks and copyrights on this website are property of their respective owners.</p>
+
+
+</div>
+
+<div id="footer_text">
+<p>&copy; 2019 OS X Daily. All Rights Reserved. Reproduction without explicit permission is prohibited.</p>
+</div>
+
+
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-428992-6";
+urchinTracker();
+</script>
+
+
+
+<!-- Powered by WPtouch Pro: 3.8.3 -->
+	<script type="text/javascript">
+		window.WPCOM_sharing_counts = {"http:\/\/osxdaily.com\/2013\/09\/03\/use-bookmarks-ibooks-ios\/":40109};
+	</script>
+		<script type='text/javascript' src='http://cdn.osxdaily.com/wp-includes/js/comment-reply.min.js?ver=5.2.2'></script>
+<script type='text/javascript' src='https://s0.wp.com/wp-content/js/devicepx-jetpack.js?ver=201933'></script>
+<script type='text/javascript' src='http://cdn.osxdaily.com/wp-content/plugins/wp-syntax/js/wp-syntax.js?ver=1.1'></script>
+<script type='text/javascript' src='http://cdn.osxdaily.com/wp-includes/js/wp-embed.min.js?ver=5.2.2'></script>
+<script async="async" type='text/javascript' src='http://cdn.osxdaily.com/wp-content/plugins/akismet/_inc/form.js?ver=4.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var sharing_js_options = {"lang":"en","counts":"1"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://cdn.osxdaily.com/wp-content/plugins/jetpack/_inc/build/sharedaddy/sharing.min.js?ver=6.2.1'></script>
+<script type='text/javascript'>
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-facebook', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-twitter', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomtwitter', 'menubar=1,resizable=1,width=600,height=350' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-linkedin', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomlinkedin', 'menubar=1,resizable=1,width=580,height=450' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-tumblr', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomtumblr', 'menubar=1,resizable=1,width=450,height=450' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-pocket', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcompocket', 'menubar=1,resizable=1,width=450,height=450' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-telegram', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomtelegram', 'menubar=1,resizable=1,width=450,height=450' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-skype', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomskype', 'menubar=1,resizable=1,width=305,height=665' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-google-plus-1', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomgoogle-plus-1', 'menubar=1,resizable=1,width=480,height=550' );
+				return false;
+			});
+</script>
+<script type='text/javascript' src='https://stats.wp.com/e-201933.js' async='async' defer='defer'></script>
+<script type='text/javascript'>
+	_stq = window._stq || [];
+	_stq.push([ 'view', {v:'ext',j:'1:6.2.1',blog:'6690815',post:'40109',tz:'-7',srv:'osxdaily.com'} ]);
+	_stq.push([ 'clickTrackerInit', '6690815', '40109' ]);
+</script>
+
+			<div id="cookie-notice" role="banner" class="cn-bottom wp-default" style="color: #fff; background-color: #000;"><div class="cookie-notice-container"><span id="cn-notice-text">This website and third-party tools use cookies for functional, analytical, and advertising purposes. By continuing to browse the site, closing this banner, scrolling this webpage, or clicking a link, you agree to these cookies. You can review our privacy policy for additional information.</span><a href="#" id="cn-accept-cookie" data-cookie-set="accept" class="cn-set-cookie cn-button wp-default button">I Accept</a><a href="http://osxdaily.com/osxdailycom-privacy-policy/" target="_blank" id="cn-more-info" class="cn-more-info cn-button wp-default button">Privacy Policy</a>
+				</div>
+				
+			</div></div>
+
+</div>
+
+<!-- BuySellAds Ad Code -->
+<script type="text/javascript">
+(function(){
+  var bsa = document.createElement('script');
+     bsa.type = 'text/javascript';
+     bsa.async = true;
+     bsa.src = 'http://s3.buysellads.com/ac/bsa.js';
+  (document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(bsa);
+})();
+</script>
+<!-- End BuySellAds Ad Code -->
+
+</body>
+</html>

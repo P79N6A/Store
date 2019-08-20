@@ -1,0 +1,535 @@
+WEBVTT
+
+00:00.570 --> 00:06.120
+Maintenant, la première chose que nous allons faire est d'ouvrir un terminal et à l'intérieur du terminal, nous
+
+00:06.120 --> 00:08.000
+allons naviguer vers notre bureau.
+
+00:08.010 --> 00:13.650
+Donc, si vous n'êtes pas familier avec la ligne de commande et que vous n'avez pas regardé Marchal en ligne
+
+00:13.980 --> 00:18.390
+de commande, je vous recommande de l'examiner maintenant car nous allons utiliser beaucoup de commandes
+
+00:18.390 --> 00:20.790
+pour créer des répertoires. et naviguer autour.
+
+00:20.790 --> 00:25.290
+Donc, si vous n'êtes pas encore au courant, c'est le bon moment pour examiner cela.
+
+00:26.010 --> 00:33.600
+Donc, la première chose que je vais faire est de créer un CD sur
+
+00:33.600 --> 00:43.920
+mon ordinateur. Ici, je vais créer un nouveau répertoire appelé story, puis un CD sur ce répertoire d’histoires, et vice-versa.
+
+00:43.920 --> 00:45.870
+Vous pouvez voir que c'est complètement vide.
+
+00:45.990 --> 00:50.420
+Et de même dans le viseur, je peux vous montrer la même chose.
+
+00:50.430 --> 00:54.600
+Alors allons-y et créons des fichiers texte.
+
+00:54.660 --> 01:01.590
+Donc, je vais utiliser touch pour créer un fichier appelé Chapitre 1, texte de points, puis ouvrir
+
+01:01.590 --> 01:09.690
+le texte du chapitre 1. Vous pouvez le faire en écrivant simplement open et ouvrez-le dans l'application par défaut qui contient
+
+01:09.750 --> 01:11.880
+du texte sur un Mac.
+
+01:12.120 --> 01:18.130
+Alternativement, vous pouvez utiliser un texte dans le terminal, par exemple Vin.
+
+01:18.210 --> 01:21.770
+Maintenant, cela ne concerne que les personnes qui sont vraiment au courant.
+
+01:21.780 --> 01:24.050
+C'est donc à vous de décider ce que vous décidez d'utiliser.
+
+01:24.090 --> 01:30.180
+Mais si vous n'êtes pas familier avec l'utilisation d'éditeurs basés sur des terminaux, il est probablement préférable
+
+01:30.180 --> 01:33.920
+de s'en tenir à la commande open et d'utiliser textedit.
+
+01:33.930 --> 01:43.350
+Alors ouvrons le chapitre 1 et écrivons quelque chose à l'intérieur de Jawi OK.
+
+01:43.360 --> 01:45.270
+Donc, c'est mon chef-d'œuvre fait.
+
+01:45.390 --> 01:49.440
+Je vais aller de l'avant et cliquez sur Enregistrer et je vais quitter Textedit.
+
+01:49.570 --> 01:53.190
+C'était donc notre premier chapitre terminé.
+
+01:53.380 --> 02:01.100
+Nous allons maintenant créer un référentiel get local et commencer à suivre certaines de ces modifications de fichiers.
+
+02:01.450 --> 02:06.350
+Donc pour initialiser get, nous écrivons simplement get in.
+
+02:06.340 --> 02:12.490
+Et comme vous pouvez le constater, le référentiel get initialisé et vide se trouve dans le répertoire des histoires.
+
+02:12.490 --> 02:17.230
+Maintenant, si vous regardez à l'intérieur du viseur, vous ne pouvez vraiment pas voir ce point bien.
+
+02:17.320 --> 02:18.900
+Mais comme nous l'avons appris auparavant.
+
+02:18.970 --> 02:20.720
+Si vous utilisez LS A.
+
+02:20.920 --> 02:26.620
+Vous pouvez voir tous les fichiers cachés et vous pouvez voir que Dogget se trouve juste à côté et il
+
+02:26.710 --> 02:32.320
+va être utilisé pour suivre toutes vos modifications, pour valider vos modifications et effectuer un contrôle de version.
+
+02:32.320 --> 02:38.100
+Nous sommes donc actuellement dans le répertoire des histoires et vous pouvez également appeler cela le répertoire de travail.
+
+02:38.110 --> 02:45.250
+Ainsi, comme je l’ai déjà mentionné, avant de l’utiliser et d’en apprendre davantage sur le contrôle de version, il contient une terminologie et
+
+02:45.340 --> 02:46.570
+un langage propres.
+
+02:46.570 --> 02:51.370
+Je vais donc essayer de démystifier et de simplifier un grand nombre de termes que vous rencontrerez juste pour
+
+02:51.370 --> 02:55.440
+que nous puissions tous être sur la même page et comprendre tous ce qui se passe.
+
+02:55.720 --> 03:01.770
+Nous sommes donc actuellement dans le répertoire de travail qui est le répertoire des histoires.
+
+03:02.050 --> 03:07.750
+Et ici, dans l’ordre, commencez simplement à suivre les modifications de mes fichiers.
+
+03:07.750 --> 03:15.350
+Par exemple, le chapitre 1 du texte de points, puis je dois ajouter ce fichier à ce qu'on appelle une zone intermédiaire.
+
+03:15.790 --> 03:23.230
+Et c’est essentiellement un endroit intermédiaire où vous pouvez choisir les fichiers de votre répertoire
+
+03:23.230 --> 03:26.270
+de travail que vous voulez valider.
+
+03:26.320 --> 03:33.220
+Pour voir ce qui se trouve actuellement dans votre zone de stockage intermédiaire, vous pouvez utiliser la commande get status. Elle vous
+
+03:33.220 --> 03:39.630
+indique qu'il existe des fichiers non suivis qui seront affichés en rouge et qu'il s'agit simplement d'un fichier dans
+
+03:39.630 --> 03:41.080
+un répertoire de travail.
+
+03:41.080 --> 03:42.410
+Donc à l'intérieur ici.
+
+03:42.550 --> 03:45.560
+Mais ce n'est pas encore dans la zone de transit.
+
+03:45.610 --> 03:52.570
+Donc, pour l'ajouter à la zone de transfert et commencer à suivre ses modifications, nous devons utiliser
+
+03:52.570 --> 03:53.940
+la commande get.
+
+03:54.020 --> 03:58.930
+Nous allons donc taper get ajouté et taper le nom du fichier.
+
+03:58.930 --> 04:01.730
+Donc, dans ce cas, c'est le chapitre 1 du texte alternatif.
+
+04:01.960 --> 04:08.710
+Alors allez-y et appuyez sur Entrée, puis si nous essayons à nouveau d'utiliser get status, vous constaterez que ce fichier a été ajouté
+
+04:08.800 --> 04:11.820
+en tant que nouveau fichier et qu'il est maintenant vert.
+
+04:11.830 --> 04:16.380
+Donc, ceci est maintenant dans la zone de préparation et il est prêt à être engagé.
+
+04:16.390 --> 04:20.260
+Alors, allez-y et validez ceci sous contrôle de version.
+
+04:20.260 --> 04:28.480
+Donc, la commande est get commit et je vais utiliser le tiret et le drapeau pour ajouter un message de commit.
+
+04:28.480 --> 04:31.450
+Le message de validation est donc vraiment important.
+
+04:31.630 --> 04:38.140
+C'est quelque chose qui vous aide à garder trace des modifications que vous avez apportées à chaque commit.
+
+04:38.140 --> 04:47.200
+Ainsi, lorsque vous créez un nouveau point de sauvegarde, vous souhaitez être aussi explicite que possible sur les modifications apportées entre le dernier point
+
+04:47.230 --> 04:50.380
+de sauvegarde et ce point de sauvegarde actuel.
+
+04:50.380 --> 04:58.420
+Donc, pour notre commit initial, nous pouvons utiliser quelque chose de très simple comme le commit initial et cela montre que c'est notre
+
+04:58.420 --> 04:59.880
+point de départ.
+
+05:00.100 --> 05:05.920
+Alternativement, si vous voulez être un peu plus précis car dans notre cas, nous avons en fait terminé
+
+05:05.920 --> 05:07.090
+le chapitre 1
+
+05:07.090 --> 05:11.180
+Vous pouvez donc écrire le chapitre 1 complet.
+
+05:11.200 --> 05:16.540
+Maintenant, ce que vous allez réaliser, c’est que les messages de commit sont généralement écrits au
+
+05:16.540 --> 05:17.050
+présent.
+
+05:17.260 --> 05:18.600
+Et c'est la meilleure pratique.
+
+05:18.610 --> 05:25.210
+Donc, alors qu’il serait probablement plus logique de penser au moins dans ma tête d’écrire le
+
+05:25.270 --> 05:28.200
+premier chapitre complété comme point de sauvegarde.
+
+05:28.240 --> 05:32.680
+C'est en fait par convention que vous devriez toujours utiliser le temps présent.
+
+05:32.680 --> 05:36.910
+Donc, c'est comme si vous le faisiez maintenant, vous présentiez vos modifications maintenant.
+
+05:37.000 --> 05:44.200
+Alors allons-y, frappez et tournez pour faire notre premier commit et vous pouvez voir ce que vous avez
+
+05:44.200 --> 05:47.290
+fait en utilisant la commande Get log.
+
+05:47.560 --> 05:53.320
+Vous pouvez donc voir que ce commit a été fait à ce moment par cette personne.
+
+05:53.540 --> 06:00.720
+Et il a aussi un hachage et ce hachage identifie de manière unique ce commit particulier.
+
+06:00.910 --> 06:06.620
+Et puis, tout à la fin, vous voyez ce message de validation de la raison d'être de ce point de sauvegarde.
+
+06:07.870 --> 06:12.310
+Alors maintenant, je vais aller de l'avant et créer deux autres chapitres.
+
+06:12.340 --> 06:25.450
+Créons donc simplement du texte de points au chapitre deux et au texte de points trois du chapitre. Nous avons maintenant trois chapitres et je
+
+06:25.720 --> 06:29.640
+vais modifier certains de ces fichiers texte.
+
+06:29.680 --> 06:31.030
+Alors disons que
+
+06:41.270 --> 06:43.710
+k est terminé au chapitre 2.
+
+06:43.960 --> 06:49.330
+Et enfin, allons de l'avant et ouvrons simplement le chapitre 3 et le modifierons également.
+
+07:00.930 --> 07:01.420
+D'accord.
+
+07:01.450 --> 07:03.720
+Les trois fichiers ont donc été modifiés.
+
+07:03.760 --> 07:09.070
+Et ici, dans le Finder, vous pouvez avoir un aperçu rapide du contenu,
+
+07:09.070 --> 07:14.520
+ce qui me sera vraiment utile pour pouvoir vous montrer ce qu’il fait en arrière-plan.
+
+07:14.800 --> 07:20.860
+Alors maintenant, allons de l'avant et lisons ces deux nouveaux fichiers dans nos zones de préparation.
+
+07:20.860 --> 07:28.180
+Encore une fois, si nous utilisons get status, vous pouvez voir qu'il y a deux fichiers non suivis qui ne se trouvent que dans
+
+07:28.180 --> 07:31.970
+le répertoire de travail et pas encore dans la zone de transfert.
+
+07:32.290 --> 07:38.630
+Nous pouvons donc le placer dans la zone de préparation en ajoutant simplement chacun d’entre eux, comme nous l’avions fait auparavant.
+
+07:38.650 --> 07:42.610
+Obtenez ajouter et écrire quelque chose comme les dog tags du chapitre deux.
+
+07:42.630 --> 07:45.430
+Et puis faire le chapitre trois texte de points.
+
+07:45.640 --> 07:51.940
+Mais comme vous pouvez l’imaginer si vous avez plusieurs fichiers, il peut être extrêmement fastidieux de le
+
+07:51.940 --> 07:53.580
+faire un par un.
+
+07:53.590 --> 07:56.070
+Alors bien sûr, il y a un meilleur moyen.
+
+07:56.080 --> 08:01.870
+Ainsi, au lieu d’ajouter ces fichiers un par un, nous pouvons simplement dire simplement obtenir
+
+08:01.870 --> 08:07.050
+ADD, puis utiliser le point pour tout spécifier dans ce répertoire en cours.
+
+08:07.060 --> 08:09.840
+Donc, tout dans le répertoire de l'histoire.
+
+08:10.090 --> 08:14.740
+Alors maintenant, si je vais de l'avant et que j'appuie sur entrée, je récupère les stators.
+
+08:14.920 --> 08:22.150
+Vous pouvez voir que les deux nouveaux fichiers qui ont été ajoutés à la zone de transfert et que nous allons maintenant
+
+08:22.270 --> 08:26.580
+les valider dans un nouveau commit dans un nouveau point de sauvegarde.
+
+08:26.920 --> 08:30.110
+Et vous savez quoi faire si vous suivez avec moi.
+
+08:30.130 --> 08:35.570
+Allez-y et essayez-le.
+
+08:35.570 --> 08:35.930
+D'accord.
+
+08:35.930 --> 08:43.430
+Alors, comment se fait-il que si vous êtes membre de la commande, vous pouvez vous
+
+08:43.430 --> 08:51.920
+engager et que nous allons utiliser le drapeau M pour spécifier un message de validation et écrire
+
+08:51.920 --> 08:58.120
+un message au présent, alors disons compléter le chapitre deux et trois.
+
+08:58.940 --> 09:05.590
+Donc, c'est tout ce que j'ai fait entre le commentaire initial et ce commit.
+
+09:05.600 --> 09:10.230
+La seule différence est le fait que j'ai maintenant terminé le chapitre deux du chapitre trois.
+
+09:10.250 --> 09:13.170
+Alors allons-y et appuyez sur Entrée.
+
+09:13.550 --> 09:17.060
+Encore une fois, vérifions-le en utilisant get log.
+
+09:17.120 --> 09:24.170
+Nous pouvons voir que nous avons maintenant deux commits avec des hachages différents, car ils sont uniques
+
+09:24.170 --> 09:25.230
+et différents.
+
+09:25.280 --> 09:32.990
+Ainsi, le premier était le chapitre 1 complet et le fut à ce moment-là, puis environ cinq minutes plus tard,
+
+09:32.990 --> 09:36.100
+j'ai terminé les chapitres deux et trois.
+
+09:36.170 --> 09:38.110
+Et ce fut le deuxième commit.
+
+09:38.480 --> 09:41.230
+Et c'est où nous en sommes en ce moment.
+
+09:41.270 --> 09:49.480
+Ainsi, vous pouvez voir par la tête par cette Woodhead Ceci est la position ou l'état actuel dans lequel nous sommes.
+
+09:49.490 --> 09:52.720
+Je veux donc simplement récapituler rapidement ce que nous venons de faire.
+
+09:52.970 --> 09:58.440
+Nous avons donc créé un fichier dans notre répertoire de travail dans notre répertoire d’histoire.
+
+09:58.630 --> 10:05.990
+Le répertoire de travail est donc le dossier ou le répertoire dans lequel vous initialisez votre référentiel get.
+
+10:06.100 --> 10:10.390
+Quand nous avons dit d'entrer, nous l'avons fait dans le répertoire des histoires.
+
+10:10.460 --> 10:12.540
+Cela devient donc un répertoire de travail.
+
+10:12.740 --> 10:18.890
+Et à partir de maintenant, il va essayer de suivre les changements qu'il voit entre le
+
+10:19.310 --> 10:22.090
+répertoire de travail et le référentiel local.
+
+10:22.490 --> 10:31.040
+Ainsi, au début, nous avons créé un fichier dans notre répertoire de travail dans story, puis nous l'avons utilisé
+
+10:31.040 --> 10:34.310
+pour l'ajouter à la zone de transfert.
+
+10:34.310 --> 10:39.740
+Maintenant, la raison pour laquelle il existe cette zone de stockage intermédiaire, car vous pourriez vous demander pourquoi ne pas
+
+10:39.740 --> 10:42.470
+simplement aller du répertoire de travail directement au référentiel.
+
+10:42.500 --> 10:44.690
+Pourquoi avons-nous besoin de cette étape supplémentaire?
+
+10:44.840 --> 10:52.430
+Parfois, vous ne souhaitez peut-être pas ajouter tous vos fichiers à suivre ni tous vos fichiers
+
+10:52.430 --> 10:53.550
+à valider.
+
+10:53.600 --> 10:59.240
+La zone de rassemblement est donc un bon endroit pour essayer de déterminer quelles sont les choses que vous souhaitez ignorer.
+
+10:59.390 --> 11:01.970
+Et l'une des choses que vous voulez suivre.
+
+11:02.210 --> 11:09.200
+Ainsi, une fois que nous l'avons utilisé et que nous avons mis le fichier hors de la zone de préparation et
+
+11:09.200 --> 11:17.160
+que nous sommes satisfaits des modifications que nous allons valider, l'étape suivante consiste à poursuivre et à valider à l'aide de la commande Get commit.
+
+11:17.180 --> 11:25.730
+Alors maintenant, notre fichier se trouve dans notre référentiel local afin que dot get et que cette version reçoive un nom via
+
+11:25.730 --> 11:27.340
+le message commit.
+
+11:27.350 --> 11:35.540
+Cela signifie donc que même si nous avons foiré notre fichier, nous pouvons toujours utiliser la dernière version
+
+11:35.540 --> 11:43.820
+sous contrôle de version et une commande spéciale appelée Obtenir l'extraction pour revenir ou revenir à la dernière position
+
+11:43.820 --> 11:46.200
+de notre référentiel local.
+
+11:46.370 --> 11:52.080
+Alors laissez-moi vous montrer à quoi cela ressemble dans la ligne de commande et comment nous le ferions dans la pratique.
+
+11:52.100 --> 11:57.410
+Donc, pour le moment, j'ai trois chapitres bien écrits et j'ai le sentiment que mon livre va devenir
+
+11:57.410 --> 11:58.430
+un gros vendeur.
+
+11:58.450 --> 12:06.530
+Alors maintenant, disons que je sais que vous avez travaillé sur le chapitre trois et que j'ai tout
+
+12:06.530 --> 12:13.910
+bousillé et que vous vous êtes endormi sur mon clavier et que j’ai sauvegardé mon fichier.
+
+12:13.910 --> 12:20.140
+Et maintenant, si vous y jetez un coup d’œil, c’est tout simplement Mumbojumbo et j’ai ruiné mon chef-d’œuvre.
+
+12:20.360 --> 12:25.170
+Mais ffin dessus, car nous avons le contrôle de version et nous l’avons activé.
+
+12:25.370 --> 12:28.270
+Donc, nous n'avons rien à craindre.
+
+12:28.610 --> 12:33.750
+Je peux réellement annuler les modifications que j'ai apportées localement dans mon répertoire de travail.
+
+12:33.770 --> 12:39.290
+Donc, à ce stade, vous pouvez utiliser get stators pour vérifier que notre fichier de texte de points, au
+
+12:39.280 --> 12:44.780
+chapitre trois, contient des modifications qui n'ont pas encore été validées ni ajoutées à la zone de transfert.
+
+12:44.840 --> 12:50.920
+Donc, si nous le voulions, nous pouvons réellement revenir à la gloire précédente.
+
+12:51.230 --> 12:57.920
+Mais avant cela, nous pouvons utiliser une bonne commande pour vérifier l’une des différences entre la version actuelle
+
+12:57.920 --> 13:03.100
+du chapitre 3 et le dernier point de sauvegarde de notre référentiel get.
+
+13:03.230 --> 13:06.860
+Donc, pour ce faire, vous pouvez utiliser la commande get diff.
+
+13:06.950 --> 13:12.350
+Donc, cette différence et nous allons lui donner le nom de fichier du chapitre 3.
+
+13:12.650 --> 13:17.210
+Et si vous appuyez sur Entrée, vous pouvez voir que c'est la partie qui a été supprimée.
+
+13:17.210 --> 13:23.860
+Donc, la partie en rouge et puis c'est la partie qui a été ajoutée, qui est notre gobbledygook.
+
+13:24.050 --> 13:29.600
+Alors maintenant, si j’ai regardé ces différences, c’est peut-être simplement que vous savez qu’il n’ya
+
+13:29.930 --> 13:36.480
+que quelques erreurs dans ma nouvelle version du chapitre 3 et que je veux juste peut-être copier certaines
+
+13:36.480 --> 13:41.390
+choses ou jeter un coup d’œil sur la changer mon fichier actuel.
+
+13:41.700 --> 13:46.910
+Mais d’autres fois, il se peut que vous sachiez que vous ne voulez que brûler le nouveau fichier.
+
+13:46.920 --> 13:49.120
+Vous ne voulez simplement rien avoir à faire avec ça.
+
+13:49.140 --> 13:52.710
+Et vous préféreriez de beaucoup revenir à la version précédente.
+
+13:52.980 --> 13:59.370
+Donc, si vous voulez faire cela, il y a une commande appelée Get check out qui va vraiment
+
+13:59.370 --> 14:00.510
+vous être utile.
+
+14:00.810 --> 14:03.190
+Alors, allez voir.
+
+14:03.210 --> 14:07.920
+Et ensuite, nous allons spécifier le nom du fichier que nous voulons extraire, qui
+
+14:07.920 --> 14:14.170
+est du texte de points du chapitre 3, et si vous regardez juste ici, qui est l'aperçu de la
+
+14:14.170 --> 14:23.070
+version actuelle du texte de points du chapitre trois une fois que j'ai appuyé sur Entrée, Cette commande qui demande fondamentalement de ramener ce chapitre 3
+
+14:23.070 --> 14:26.550
+à la dernière version validée dans notre référentiel local.
+
+14:26.550 --> 14:33.900
+Donc, si je clique sur entrée, vous pouvez voir que presque immédiatement mon chapitre 3 a été restauré dans son état
+
+14:34.440 --> 14:41.610
+glorieux précédent et qu'il s'agit de la version du chapitre 3 au dernier point de contrôle auquel je l'ai commis.
+
+14:41.640 --> 14:46.000
+C'est donc celui-ci qui est complété aux chapitres 2 et 3.
+
+14:46.020 --> 14:51.770
+Donc, alors que dans cette leçon, nous avons surtout étudié les implémentations locales d’enfants.
+
+14:51.840 --> 14:58.460
+Donc, en enregistrant ces versions localement sur notre ordinateur dans la prochaine leçon, je vais parler de get hub et
+
+14:58.830 --> 15:02.580
+de la création de référentiels distants afin que je voie la.

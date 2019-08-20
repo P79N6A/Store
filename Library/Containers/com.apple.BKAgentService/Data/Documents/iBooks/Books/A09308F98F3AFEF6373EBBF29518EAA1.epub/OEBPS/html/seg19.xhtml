@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 13: Delegates and Protocols</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 13: Delegates and Protocols</h1>
+
+<p>You now have an Add Item screen showing a keyboard that lets the user enter text. The app also properly validates the input so that you’ll never end up with text that is empty.
+</p>
+<p>But how do you get this text into a new <code>ChecklistItem</code> object that you can add to the <code>items</code> array on the Checklists screen? That is the topic that this chapter will explore.
+</p>
+<h2 class="segment-chapter">Add new ChecklistItems</h2>
+
+<p>In order for a new item addition to work, you’ll have to get the Add Item screen to notify the Checklist View Controller of the new item addition. This is one of the fundamental tasks that every iOS app needs to do: sending messages from one view controller to another.
+</p><div class="image-55"><img src="graphics/img264.png"  alt="" title="Sending a ChecklistItem object to the screen with the items array" /></div>
+<h3 class="segment-chapter">The messy way</h3>
+
+<div class="note">
+<p><em>Exercise:</em> How would you tackle this problem? The <code>done()</code> method needs to create a new <code>ChecklistItem</code> object with the text from the text field (easy), then add it to the <code>items</code> array and the table view in <code>ChecklistViewController</code> (not so easy).
+</p></div>
+
+<p>Maybe you came up with something like this:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AddItemViewController</span>: <span class="hljs-title">UITableViewController</span>, . . . </span>{
+
+  <span class="hljs-comment">// This variable refers to the other view controller</span>
+  <span class="hljs-keyword">var</span> checklistViewController: <span class="hljs-type">ChecklistViewController</span>
+
+  <span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">done</span><span class="hljs-params">()</span></span> {
+    <span class="hljs-comment">// Create the new checklist item object</span>
+    <span class="hljs-keyword">let</span> item = <span class="hljs-type">ChecklistItem</span>()
+    item.text = textField.text!
+
+    <span class="hljs-comment">// Directly call a method from ChecklistViewController</span>
+    checklistViewController.add(item)
+  }
+}</pre>
+<p>In this scenario, <code>AddItemViewController</code> has a variable that refers to the <code>ChecklistViewController</code>, and <code>done()</code> calls its <code>add()</code> method with the new <code>ChecklistItem</code> object.
+</p>
+<p>This will work, but it’s not the iOS way. The big downside to this approach is that it shackles these two view controller objects together.
+</p>
+<p>As a general principle, if screen A launches screen B then you don’t want screen B to know too much about the screen that invoked it (A). The less B knows of A, the better.
+</p><div class="image-50"><img src="graphics/img265.png"  alt="" title="Screen A knows all about screen B, but B knows nothing of A" /></div>
+<p>Giving <code>AddItemViewController</code> a direct reference to <code>ChecklistViewController</code> prevents you from opening the Add Item screen from somewhere else in the app. It can only ever talk back to <code>ChecklistViewController</code>. That’s a big disadvantage.
+</p>
+<p>You won’t actually need to do this in <i>Checklists</i>, but in many apps it’s common for one screen to be accessible from multiple places. For example, a login screen that appears after the user has been logged out due to inactivity. Or, a details screen that shows more information about a tapped item, no matter where that item is located in the app (you’ll see an example of this in the next app).
+</p>
+<p>Therefore, it’s best if <code>AddItemViewController</code> doesn’t know anything about <code>ChecklistViewController</code>.
+</p>
+<p>But if that’s the case, then how can you make the two communicate?
+</p>
+<p>The solution is to make your own <i>delegate</i>.
+</p>
+<h3 class="segment-chapter">The delegate way</h3>
+
+<p>You’ve already seen delegates in a few different places: the table view has a delegate that responds to taps on the rows; the text field has a delegate that you used to validate the length of the text; and the app also has something named the <code>AppDelegate</code> (see the project navigator).
+</p>
+<p>You can’t turn a corner in this place without bumping into a delegate…
+</p>
+<p>The delegate pattern is commonly used to handle the situation you find yourself in: Screen A opens screen B. At some point screen B needs to communicate back to screen A, usually when it closes.
+</p>
+<p>The solution is to make screen A the delegate of screen B, so that B can send its messages to A whenever it needs to.
+</p><div class="image-50"><img src="graphics/img266.png"  alt="" title="Screen A launches screen B and becomes its delegate" /></div>
+<p>The cool thing about the delegate pattern is that screen B doesn’t really know anything about screen A. It just knows that <i>some</i> object is its delegate, but doesn’t really care who that is. Just like how <code>UITableView</code> doesn’t really care about your view controller, only that it delivers table view cells when the table view asks for them.
+</p>
+<p>This principle, where screen B is independent of screen A and yet can still talk to it, is called <i>loose coupling</i> and is considered good software design practice.
+</p><div class="image-50"><img src="graphics/img267.png"  alt="" title="This is what Screen B sees: only the delegate part, not the rest of screen A" /></div>
+<p>You will use the delegate pattern to let the <code>AddItemViewController</code> send notifications back to the <code>ChecklistViewController</code> without it having to know anything about the latter.
+</p>
+<p>Delegates go hand-in-hand with <i>protocols</i>, a prominent feature of the Swift language.
+</p>
+<h3 class="segment-chapter">The delegate protocol</h3>
+
+<p>➤ At the top of <em>AddItemViewController.swift</em>, add the following after the <code>import</code> line (but before the  <code>class</code> line - it is not part of the <code>AddItemViewController</code> object):
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">protocol</span> <span class="hljs-title">AddItemViewControllerDelegate</span>: <span class="hljs-title">class</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">addItemViewControllerDidCancel</span><span class="hljs-params">(
+                          <span class="hljs-number">_</span> controller: AddItemViewController)</span></span>
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">addItemViewController</span><span class="hljs-params">(
+                 <span class="hljs-number">_</span> controller: AddItemViewController, 
+         didFinishAdding item: ChecklistItem)</span></span>
+}</pre>
+<p>This defines the <code>AddItemViewControllerDelegate</code> protocol. You should recognize the lines inside the <code>protocol { ... }</code> block as method declarations, but unlike the previous methods you&apos;ve seen, these don’t have any source code in them. The protocol just lists the names of the methods.
+</p>
+<p>Think of the delegate protocol as a contract between screen B, in this case the Add Item View Controller, and any screens that wish to use it.
+</p>
+<p>And if you&apos;re wondering why you have the keyword <code>class</code> after the colon in the protocol name, let me explain. You might have noticed that the syntax for the protocol declaration looks very similar to how you&apos;d declared classes previously, giving the name of our class followed by a colon and then specifying the class our class inherited from.
+</p>
+<p>This is exactly the same thing here with protocols, you can have one protocol inherit from another protocol. But you can also specify a particular type of object which can adopt your protocol. The <code>class</code> keyword identifies that we want the <code>AddItemViewControllerDelegate</code> protocol to be limited to class types.
+</p>
+<p>And if you ask me at this point, &quot;Why is that?&quot;, I can give you a fairly long-winded explanation about why this is so, but it all boils down to the fact that we mark any references to this protcol as <code>weak</code> and in order to have weak references, we need a protocol which can only be used with a <i>reference type</i>.
+</p>
+<p>We&apos;ll discuss <code>weak</code> references just a bit further along in this chapter and it might become a little bit more clearer at that point :]
+</p>
+<h4 class="segment-chapter">Protocols</h4>
+
+<p>In Swift, a <i>protocol</i> doesn’t have anything to do with computer networks or meeting royalty. It is simply a name for a group of methods.
+</p>
+<p>A protocol normally doesn’t implement any of the methods it declares. It just says: any object that conforms to this protocol must implement methods X, Y and Z. (There are special cases where you might want to provide a default implementation for a protocol, but that&apos;s an advanced topic that we don&apos;t need to get into right now :])
+</p>
+<p>The two methods listed in the <code>AddItemViewControllerDelegate</code> protocol are:
+</p>
+<ul>
+<li>
+<p><code>addItemViewControllerDidCancel(_:)</code>
+</p></li>
+
+<li>
+<p><code>addItemViewController(_:didFinishAdding:)</code>
+</p></li>
+</ul>
+
+<p>Delegates often have very long method names!
+</p>
+<p>The first method is for when the user presses Cancel, the second is for when they press Done. In the latter case, the <code>didFinishAdding</code> parameter passes along the new <code>ChecklistItem</code> object.
+</p>
+<p>To make the <code>ChecklistViewController</code> conform to this protocol, it must provide implementations for these two methods. From then on, you can refer to <code>ChecklistViewController</code> using the protocol name, instead of the class name.
+</p>
+<p>(If you’ve programmed in other languages before, you may recognize protocols as being very similar to “interfaces”.)
+</p>
+<p>In <code>AddItemViewController</code>, you can use the following to refer back to <code>ChecklistViewController</code>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> delegate: <span class="hljs-type">AddItemViewControllerDelegate</span></pre>
+<p>The variable <code>delegate</code> is nothing more than a reference to <i>some</i> object that implements the methods of the <code>AddItemViewControllerDelegate</code> protocol. You can send messages to the object referenced by the <code>delegate</code> variable without knowing what kind of object it really is.
+</p>
+<p>Of course, <i>you</i> know the object referenced by <code>delegate</code> is the <code>ChecklistViewController</code>, but <code>AddItemViewController</code> doesn’t need to be aware of that. All it sees is some object that implements its delegate protocol.
+</p>
+<p>If you wanted to, you could make some other object implement the protocol and <code>AddItemViewController</code> would be perfectly OK with that. That’s the power of delegation: you have removed – or <i>abstracted</i> away – the dependency between the <code>AddItemViewController</code> and the rest of the app.
+</p>
+<p>It may seem a little overkill for a simple app such as this, but delegates are one of the cornerstones of iOS development. The sooner you master them, the better!
+</p>
+<h3 class="segment-chapter">Notify the delegate</h3>
+
+<p>You’re not done yet in <em>AddItemViewController.swift</em>. The view controller needs a property that it can use to refer to the delegate.
+</p>
+<p>➤ Add this inside the <code>AddItemViewController</code> class, below the outlets:
+</p><pre class="code-block"><span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> delegate: <span class="hljs-type">AddItemViewControllerDelegate</span>?</pre>
+<p>It looks like a regular instance variable declaration, with two differences: <code>weak</code> and the question mark.
+</p>
+<p>Delegates are usually declared as being <i>weak</i> – not a statement of their moral character but a way to describe the relationship between the view controller and its delegate. Delegates are also <i>optional</i> (the question mark - which you learnt a bit about in the previous chapter).
+</p>
+<p>You’ll learn more about those things in a moment.
+</p>
+<p>➤ Replace the <code>cancel()</code> and <code>done()</code> actions with the following:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">cancel</span><span class="hljs-params">()</span></span> {
+  delegate?.addItemViewControllerDidCancel(<span class="hljs-keyword">self</span>)
+}
+
+<span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">done</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> item = <span class="hljs-type">ChecklistItem</span>()
+  item.text = textField.text!
+
+  delegate?.addItemViewController(<span class="hljs-keyword">self</span>, didFinishAdding: item)
+}</pre>
+<p>Let’s look at the changes you made. When the user taps the Cancel button, you send the <code>addItemViewControllerDidCancel(_:)</code> message back to the delegate.
+</p>
+<p>You do something similar for the Done button, except that the message is <code>addItemViewController(_:didFinishAdding:)</code> and you pass along a new <code>ChecklistItem</code> object that has the text string from the text field.
+</p>
+<div class="note">
+<p><em>Note</em>: It is customary for the delegate methods to have a reference to their owner as the first (or only) parameter.
+</p>
+<p>Doing this is not required, but still a good idea. For example, in the case of table views, it may happen that an object is the delegate or data source for more than one table view. In that case, you need to be able to distinguish between those table views. To allow for this, the table view delegate methods have a parameter for the <code>UITableView</code> object that sent the notification. Having this reference also saves you from having to make an <code>@IBOutlet</code> for the table view.
+</p>
+<p>That explains why you pass <code>self</code> to your delegate methods. Recall that <code>self</code> refers to the object itself, in this case <code>AddItemViewController</code>. It’s also why all the delegate method names start with <code>addItemViewController</code>.
+</p></div>
+
+<p>➤ Run the app and try the Cancel and Done buttons. They no longer work!
+</p>
+<p>I hope you’re not too surprised… The Add Item screen now depends on a delegate to make it close, but you haven’t told the Add Item screen who its delegate is yet.
+</p>
+<p>That means the <code>delegate</code> property has no value and the messages aren’t being sent to anyone – there is no one listening for them.
+</p>
+<h4 class="segment-chapter">Optionals</h4>
+
+<p>I mentioned a few times that variables and constants in Swift must always have a value. In other programming languages the special symbol <code>nil</code> or <code>NULL</code> is often used to indicate that a variable has no value. This is not allowed in Swift for normal variables.
+</p>
+<p>The problem with <code>nil</code> and <code>NULL</code> is that they are a frequent cause of crashing apps. If an app attempts to use a variable that is <code>nil</code> when you don’t expect it to be <code>nil</code>, the app will crash. This is the dreaded “null pointer dereference” error.
+</p>
+<p>Swift stops this by preventing you from using <code>nil</code> with regular variables.
+</p>
+<p>However, sometimes a variable does need to have “no value”. In that case you can make it an <i>optional</i>. You mark something as optional in Swift using either a question mark <code>?</code> or an exclamation point <code>!</code>.
+</p>
+<p>Only variables that are made optional can have the value <code>nil</code>.
+</p>
+<p>You’ve already seen the question mark used with <code>IndexPath?</code>, the return type of <code>tableView(_:willSelectRowAt:)</code>. Returning <code>nil</code> from this method is a valid response; it means that the table should not select a particular row.
+</p>
+<p>The question mark tells Swift that it’s OK for the method to return <code>nil</code> instead of an actual <code>IndexPath</code> object.
+</p>
+<p>Variables that refer to a delegate are usually marked as optional too. You can tell because there is a question mark behind the type:
+</p><pre class="code-block"><span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> delegate: <span class="hljs-type">AddItemViewControllerDelegate</span>?</pre>
+<p>Thanks to the <code>?</code> it’s perfectly acceptable for a delegate to be <code>nil</code>.
+</p>
+<p>You may be wondering why the delegate would ever be <code>nil</code>. Doesn’t that negate the idea of having a delegate in the first place? There are two reasons.
+</p>
+<p>Often, delegates are truly optional; a <code>UITableView</code> works fine even if you don’t implement any of its delegate methods (but you do need to provide at least some of its data source methods).
+</p>
+<p>More importantly, when <code>AddItemViewController</code> is loaded from the storyboard and instantiated, it won’t know right away who its delegate is. Between the time the view controller is loaded and the delegate is assigned, the <code>delegate</code> variable will be <code>nil</code>. And variables that can be <code>nil</code>, even if it is only temporary, must be optionals.
+</p>
+<p>When <code>delegate</code> is <code>nil</code>, you don’t want <code>cancel()</code> or <code>done()</code> to send any of the messages. Doing that would crash the app because there is no one to receive the messages.
+</p>
+<p>Swift has a handy shorthand for skipping the work when <code>delegate</code> is not set:
+</p><pre class="code-block">delegate?.addItemViewControllerDidCancel(<span class="hljs-keyword">self</span>)</pre>
+<p>Here the <code>?</code> tells Swift not to send the message if <code>delegate</code> is <code>nil</code>. You can read this as, “Is there a delegate? Then send the message.” This practice is called <i>optional chaining</i> and it’s used a lot in Swift.
+</p>
+<p>In this app it should never happen that <code>delegate</code> is <code>nil</code> – that would get users stuck on the Add Item screen. But Swift doesn’t know that. So you’ll have to pretend that it can happen anyway and use optional chaining to send messages to the delegate.
+</p>
+<p>Optionals aren’t common in other programming languages, so they may take some getting used to. I find that optionals do make programs clearer – most variables never have to be <code>nil</code>, so it’s good to prevent them from becoming <code>nil</code> and avoid these potential sources of bugs.
+</p>
+<p>Remember, if you see <code>?</code> or <code>!</code> in a Swift program, you’re dealing with optionals. In the course of this app I’ll come back to this topic a few more times and explain the finer points of using optionals in more detail.
+</p>
+<h3 class="segment-chapter">Conform to the delegate protocol</h3>
+
+<p>Before you can give <code>AddItemViewController</code> its delegate, you first need to make the <code>ChecklistViewController</code> suitable to play the role of delegate.
+</p>
+<p>➤ In <em>ChecklistViewController.swift</em>, change the class line to the following (this goes all on one line):
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ChecklistViewController</span>: <span class="hljs-title">UITableViewController</span>, 
+                               <span class="hljs-title">AddItemViewControllerDelegate</span> </span>{</pre>
+<p>This tells the compiler that <code>ChecklistViewController</code> now promises to do the things from the <code>AddItemViewControllerDelegate</code> protocol. Or, in programming terminology, that it <i>conforms</i> to the <code>AddItemViewControllerDelegate</code> protocol.
+</p>
+<p>Xcode should now throw up an error: “Type ChecklistViewController does not conform to protocol AddItemViewControllerDelegate.”
+</p><div class="image-90"><img src="graphics/img268.png"  alt="" title="Xcode warns about not conforming to protocol" /></div>
+<p>That is correct: you still need to add the methods that are listed in <code>AddItemViewControllerDelegate</code>. With the latest Xcode, there is an easy way to get started with fixing this issue - see that &quot;Fix&quot; button? Simply click it :]
+</p>
+<p>Xcode will add in the stubs (the bare minimum code) for the missing methods. You will have to add in the actual implementation for each method, of course.
+</p>
+<p>➤ Add the implementations for the protocol methods to <code>ChecklistViewController</code>:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Add Item ViewController Delegates</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">addItemViewControllerDidCancel</span><span class="hljs-params">(
+                       <span class="hljs-number">_</span> controller: AddItemViewController)</span></span> {
+  navigationController?.popViewController(animated:<span class="hljs-literal">true</span>)
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">addItemViewController</span><span class="hljs-params">(
+               <span class="hljs-number">_</span> controller: AddItemViewController, 
+       didFinishAdding item: ChecklistItem)</span></span> {
+  navigationController?.popViewController(animated:<span class="hljs-literal">true</span>)
+}</pre>
+<p>Currently, both methods simply close the Add Item screen. This is what the <code>AddItemViewController</code> used to do in its <code>cancel()</code> and <code>done()</code> actions. You’ve simply moved that responsibility to the delegate.
+</p>
+<p>The code that adds the new <code>ChecklistItem</code> object to the table view is yet to be added. You’ll do that in a moment, but there’s something else you need to do first.
+</p>
+<div class="note">
+<p><em>Delegates in five easy steps</em>
+</p>
+<p>These are the steps for setting up the delegate pattern between two objects, where object A is the delegate for object B, and object B will send messages back to A. The steps are:
+</p>
+<p>1 - Define a delegate <code>protocol</code> for object B.
+</p>
+<p>2 - Give object B an optional <code>delegate</code> variable. This variable should be <code>weak</code>.
+</p>
+<p>3 - Update object B to send messages to its delegate when something interesting happens, such as the user pressing the Cancel or Done buttons, or when it needs a piece of information. You write <code>delegate?.methodName(self, . . .)</code>
+</p>
+<p>4 - Make object A conform to the delegate protocol. It should put the name of the protocol in its <code>class</code> line and implement the methods from the protocol.
+</p></div>
+
+<div class="note">
+<p>5 - Tell object B that object A is now its delegate.
+</p></div>
+
+<p>You’ve done steps 1 - 4, so there is just one more thing you need to do - step 5: tell <code>AddItemViewController</code> that <code>ChecklistViewController</code> is its delegate.
+</p>
+<p>The proper place to do that is in the <code>prepare(for:sender:)</code> method, also known as <i>prepare-for-segue</i>.
+</p>
+<p>The <code>prepare(for:sender:)</code> method is invoked by UIKit when a segue from one screen to another is about to be performed. Recall that the segue is the arrow between two view controllers in the storyboard.
+</p>
+<p>Using prepare-for-segue allows you to pass data to the new view controller before it is displayed. Usually you’ll do this by setting one or more of the new view controller&apos;s properties.
+</p>
+<p>➤ Add this method to <em>ChecklistViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Navigation</span>
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">prepare</span><span class="hljs-params">(<span class="hljs-keyword">for</span> segue: UIStoryboardSegue, 
+                         sender: Any?)</span></span> {
+  <span class="hljs-comment">// 1</span>
+  <span class="hljs-keyword">if</span> segue.identifier == <span class="hljs-string">"AddItem"</span> {
+    <span class="hljs-comment">// 2</span>
+    <span class="hljs-keyword">let</span> controller = segue.destination
+                     <span class="hljs-keyword">as</span>! <span class="hljs-type">AddItemViewController</span>
+    <span class="hljs-comment">// 3</span>
+    controller.delegate = <span class="hljs-keyword">self</span>
+  }
+}</pre>
+<p>This is what the above code does, step-by-step:
+</p>
+<ol>
+<li>
+<p>Because there may be more than one segue per view controller, it’s a good idea to give each segue a unique identifier and to check for that identifier first to make sure you’re handling the correct segue. Swift’s <code>==</code> comparison operator works on not just numbers but also on strings and some other types of objects.
+</p></li>
+
+<li>
+<p>The new view controller to be displayed can be found in <code>segue.destination</code>, but <code>destination</code> is of type <code>UIViewContoller</code> since the new view controller could be any view controller sub-class.
+</p>
+<p>So, you <i>cast</i> <code>destination</code> to <code>AddItemViewController</code> to get a reference to an object with the right type. (The <code>as!</code> keyword is known as a <i>type cast</i> or a <i>force downcast</i> since you are casting an object of one type to a different type.
+</p>
+<p>Do note that if you downcast objects of completely different types, you might get a <code>nil</code> value. The casting works here because <code>AddItemViewController</code> is a sub-class of <code>UIViewContoller</code>.)
+</p></li>
+</ol>
+
+<ol>
+<li>
+<p>Once you have a reference to the <code>AddItemViewController</code> object, you set its <code>delegate</code> property to <code>self</code> and the connection is complete. This tells <code>AddItemViewController</code> that from now on, the object identified as <code>self</code> is its delegate. But what is “self” here? Well, since you’re editing <em>ChecklistViewController.swift</em>, <code>self</code> refers to <code>ChecklistViewController</code>.
+</p></li>
+</ol>
+
+<p>Excellent! <code>ChecklistViewController</code> is now the delegate of <code>AddItemViewController</code>. It took some work, but you’re almost set now - except for one teensy thing :]
+</p>
+<h3 class="segment-chapter">Set the segue identifier</h3>
+
+<p>See the segue identifier mentioned in the code above? Where was it set? The answer is, that it wasn&apos;t! We need to set the identifier in order for the above code to work. (If you forget to, then you won&apos;t get the delegate set up correctly when seguing to the Add Item screen.)
+</p>
+<p>➤ Open the storyboard and select the segue between the Checklist View Controller and the Add Item View Controller.
+</p>
+<p>➤ In the <em>Attributes inspector</em>, type <em>AddItem</em> into the <em>Identifier</em> field:
+</p><div class="image-100"><img src="graphics/img269.png"  alt="" title="Naming the segue between the Checklists scene and the Add Item scene" /></div>
+<p>➤ Run the app to see if it works. (Make sure the storyboard is saved before you press Run, or the app may crash or not work correctly.)
+</p>
+<p>Pressing the + button will perform the segue to the Add Item screen with the Checklists screen set as its delegate.
+</p>
+<p>When you press Cancel or Done, <code>AddItemViewController</code> sends a message to its delegate, <code>ChecklistViewController</code>. Currently the delegate simply closes the Add Item screen. But now that you know it works, you can make it do more.
+</p>
+<p>Let’s add the new <code>ChecklistItem</code> to the data model and the table view. Finally!
+</p>
+<h3 class="segment-chapter">Add new to-do items</h3>
+
+<p>➤ Change the implementation of the <code>didFinishAdding</code> delegate method in <em>ChecklistViewController.swift</em> to the following:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">addItemViewController</span><span class="hljs-params">(
+              <span class="hljs-number">_</span> controller: AddItemViewController, 
+      didFinishAdding item: ChecklistItem)</span></span> {
+  <span class="hljs-keyword">let</span> newRowIndex = items.<span class="hljs-built_in">count</span>
+  items.append(item)
+
+  <span class="hljs-keyword">let</span> indexPath = <span class="hljs-type">IndexPath</span>(row: newRowIndex, section: <span class="hljs-number">0</span>)
+  <span class="hljs-keyword">let</span> indexPaths = [indexPath]
+  tableView.insertRows(at: indexPaths, with: .automatic)
+  navigationController?.popViewController(animated:<span class="hljs-literal">true</span>)
+}</pre>
+<p>This is basically the same as what you did in <code>addItem()</code> before. In fact, I simply copied the contents of <code>addItem()</code> and pasted that into this method with some slight modifications. Compare the two methods and see for yourself.
+</p>
+<p>The only difference is that you no longer create the <code>ChecklistItem</code> object here; that happens in the <code>AddItemViewController</code>. You merely insert this new object into the <code>items</code> array.
+</p>
+<p>As before, you tell the table view you have a new row for it and then close the Add Items screen.
+</p>
+<p>➤ Remove <code>addItem()</code> from <em>ChecklistViewController.swift</em> as you no longer need this method.
+</p>
+<p>Just to make sure, open the storyboard and double-check that the + button is no longer connected to the <code>addItem</code> action. You should have already removed the connection to the action when you set up the segue to the Add Items scene, but it doesn&apos;t hurt to check since bad things happen if buttons are connected to methods that no longer exist…
+</p>
+<p>(You can check this in the Connections inspector for the + button, under <em>Sent Actions</em>. Nothing should be connected there. Only the segue under Triggered Segues should be present.)
+</p>
+<p>➤ Run the app and you should be able to add your own items to the list!
+</p><div class="image-25"><img src="graphics/img270.png"  alt="" title="You can finally add new items to the to-do list" /></div>
+<h4 class="segment-chapter">Weak</h4>
+
+<p>I still owe you an explanation about the <code>weak</code> keyword. Relationships between objects can be weak or strong. You use weak relationships to avoid what is known as an <i>ownership cycle</i>.
+</p>
+<p>When object A has a strong reference to object B, and at the same time object B also has a strong reference back to A, then these two objects are involved in a dangerous kind of romance: an ownership cycle.
+</p>
+<p>Normally, an object is destroyed – or <i>deallocated</i> – when there are no more strong references to it. But because A and B have strong references to each other, they keep each other alive.
+</p>
+<p>The result is a potential <i>memory leak</i> where an object that ought to be destroyed, isn’t, and the memory for its data is never reclaimed. With enough such leaks, iOS will run out of available memory and your app will crash. I told you it was dangerous!
+</p>
+<p>Due to the strong references between them, A owns B and at the same time, B also owns A:
+</p><div class="image-40"><img src="graphics/img271.png"  alt="" title="" /></div>
+<p>To avoid ownership cycles you can make one of these references weak.
+</p>
+<p>In the case of a view controller and its delegate, screen A usually has a strong reference to screen B, but B only has a weak reference back to its delegate, A.
+</p>
+<p>Because of the weak reference, B no longer owns A:
+</p><div class="image-40"><img src="graphics/img272.png"  alt="" title="" /></div>
+<p>Now there is no ownership cycle.
+</p>
+<p>Such cycles can occur in other situations too, but they are most common with delegates. Therefore, delegates are always made <code>weak</code>.
+</p>
+<p>(There is another relationship type, <code>unowned</code>, that is similar to <code>weak</code> and can be used for delegates too. The difference is that weak variables are allowed to become <code>nil</code> again. You may forget this right now.)
+</p>
+<p><code>@IBOutlets</code> are usually also declared with the <code>weak</code> keyword. This isn’t done to avoid an ownership cycle, but to make it clear that the view controller isn’t really the owner of the views from the outlets.
+</p>
+<p>In the course of this book, you’ll learn more about <code>weak</code>, <code>strong</code>, optionals, and the relationships between objects. These are important concepts in Swift, but they may take a while to make sense. If you don&apos;t understand them immediately, don’t lose any sleep over it!
+</p>
+<p>You can find the project files for the app up to this point under <em>13 - Delegates and Protocols</em> in the Source Code folder.
+</p></body></html>

@@ -1,0 +1,13 @@
+version: "Apple Swift version 4.2 (swiftlang-1000.11.37.1 clang-1000.11.45.1)"
+options: "9bd70ac158fff5c0784e46dd81279776"
+build_time: [1566321706, 795640000]
+inputs:
+  "/Users/ahmed/Desktop/MyProjects/githup project/chapter-20-final/Checklists/ChecklistViewController.swift": [1529718016, 0]
+  "/Users/ahmed/Desktop/MyProjects/githup project/chapter-20-final/Checklists/ListDetailViewController.swift": [1529718016, 0]
+  "/Users/ahmed/Desktop/MyProjects/githup project/chapter-20-final/Checklists/ItemDetailViewController.swift": [1529718016, 0]
+  "/Users/ahmed/Desktop/MyProjects/githup project/chapter-20-final/Checklists/IconPickerViewController.swift": [1529718016, 0]
+  "/Users/ahmed/Desktop/MyProjects/githup project/chapter-20-final/Checklists/Checklist.swift": [1529718016, 0]
+  "/Users/ahmed/Desktop/MyProjects/githup project/chapter-20-final/Checklists/ChecklistItem.swift": [1529718016, 0]
+  "/Users/ahmed/Desktop/MyProjects/githup project/chapter-20-final/Checklists/DataModel.swift": [1529718016, 0]
+  "/Users/ahmed/Desktop/MyProjects/githup project/chapter-20-final/Checklists/AllListsViewController.swift": [1529718016, 0]
+  "/Users/ahmed/Desktop/MyProjects/githup project/chapter-20-final/Checklists/AppDelegate.swift": [1529718016, 0]

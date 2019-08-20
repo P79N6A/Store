@@ -1,0 +1,751 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 19: UI Improvements</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 19: UI Improvements</h1>
+
+<p><i>Checklists</i> now has full functionality and is starting to come together. However, There are a few small features I’d like to add, just to polish the app a little more. After all, you’re building a real app here – if you want to make top-notch apps, you have to pay attention to those tiny details.
+</p>
+<p>This chapter covers the following:
+</p>
+<ul>
+<li>
+<p><em>Show counts:</em> Show the number of to-do items remaining for each list.
+</p></li>
+
+<li>
+<p><em>Sort the lists:</em> Sort the list of checklist items alphabetically.
+</p></li>
+
+<li>
+<p><em>Add icons:</em> Add the ability to specify a helpful icon for each list item to indicate what the list is about.
+</p></li>
+
+<li>
+<p><em>Make the app look good:</em> Improve how the app looks by making a few basic colour changes to give it its own unique style.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Show counts</h2>
+
+<p>On the main screen, for each checklist, the app will show the number of to-do items that do not have checkmarks yet:
+</p><div class="image-30"><img src="graphics/img325.png"  alt="" title="Each checklist shows how many items are still left to-do" /></div>
+<h3 class="segment-chapter">Count the unchecked items</h3>
+
+<p>First, you need a way to count these items.
+</p>
+<p>➤ Add the following method to <em>Checklist.swift</em>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">countUncheckedItems</span><span class="hljs-params">()</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">var</span> <span class="hljs-built_in">count</span> = <span class="hljs-number">0</span>
+  <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> items <span class="hljs-keyword">where</span> !item.checked {
+    <span class="hljs-built_in">count</span> += <span class="hljs-number">1</span>
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">count</span>
+}</pre>
+<p>This method asks the <code>Checklist</code> object how many of its <code>ChecklistItem</code> objects do not yet have their checkmark set. The method returns this count as an <code>Int</code> value.
+</p>
+<p>You use a <code>for...in</code> to loop through the <code>ChecklistItem</code> objects from the <code>items</code> array. If an <code>item</code> object has its <code>checked</code> property set to <code>false</code>, you increment the local variable <code>count</code> by 1.
+</p>
+<p>Remember that the <code>!</code> operator negates the result. So if <code>item.checked</code> is <code>true</code>, then <code>!item.checked</code> will make it <code>false</code>. You should read it as “where not item.checked”.
+</p>
+<div class="note">
+<p><em>Note:</em> If the <code>!</code> symbol is written in front of something then it is the logical <em>not</em> operator, as you see here. When the <code>!</code> is written behind something, it’s related to optionals. This is another example of a symbol that has more than one meaning in Swift. The correct interpretation depends on the context where it is being used.
+</p></div>
+
+<p>When the loop is over and you’ve looked at all the objects, you return the total value of the count to the caller.
+</p>
+<div class="note">
+<p><em>Exercise:</em> What would happen if you used <code>let</code> instead of <code>var</code> to make the <code>count</code> variable?
+</p></div>
+
+<p>Answer: When <code>count</code> is a constant, Swift won’t let you change its value, so the line that does <code>+= 1</code> will show an error message.
+</p>
+<p>By the way, you could also have written the loop as follows:
+</p><pre class="code-block">  <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> items {
+    <span class="hljs-keyword">if</span> !item.checked {
+      <span class="hljs-built_in">count</span> += <span class="hljs-number">1</span>
+    }
+  }</pre>
+<p>This uses the more familiar <code>if</code> statement instead. Personally, I like the brevity of the <code>for...in where</code> loop, but using an <code>if</code> is just as valid.
+</p>
+<h3 class="segment-chapter">Display the unchecked item count</h3>
+
+<p>Currently, the table view cells in the All Lists scene display one line of text. This is using the default table view cell style. As I mentioned previously, there are other styles that we can use, one of which is the <i>subtitle</i> style. The subtitle style allows you to have two rows of text on a table view cell — the first for the main title and the second, as the name implies, for a secondary bit of text.
+</p>
+<p>However, our current way of creating cells — by calling <code>dequeueReusableCell(withIdentifier: for:)</code> - does not allow us to specify a custom table view cell style. So, we&apos;re going to have to modify the code a bit to get things to work.
+</p>
+<p>Incidentally, this method is pretty close to how you originally had to create table view cells in iOS.
+</p>
+<p>➤ Go to <em>AllListsViewController.swift</em> and remove the <code>register(_:forCellReuseIdentifier:)</code> line from <code>viewDidLoad</code> since we will not require that. Instead, we will create the table view cells by hand if a cached cell is not available.
+</p>
+<p>If you forget to remove the above line, your app will crash when you try to run it later. I will explain why in the next step.
+</p>
+<p>➤ In <code>tableView(_:cellForRowAt:)</code> replace the first line — the one dequeuing a cell — with the following lines of code:
+</p><pre class="code-block"><span class="hljs-comment">// Get cell</span>
+<span class="hljs-keyword">let</span> cell: <span class="hljs-type">UITableViewCell</span>!
+<span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-built_in">c</span> = tableView.dequeueReusableCell(
+    withIdentifier: cellIdentifier) {
+  cell = <span class="hljs-built_in">c</span>
+} <span class="hljs-keyword">else</span> {
+  cell = <span class="hljs-type">UITableViewCell</span>(style: .subtitle, 
+               reuseIdentifier: cellIdentifier)
+}</pre>
+<p>Here, you define a constant to hold the newly created cell and then see if you can dequeue a cell from the table view for the given identfier. If there is no cell — meaning that there are no cached cells that can be re-used — then you create a new <code>UITableViewCell</code> instance with the cell style, and the identifier, that you want. If there is a cell, then you assign its reference to the previously declared constant.
+</p>
+<p>These new cells would, of course, be added to the available pool of table view cells and would be available for re-use from this point onwards.
+</p>
+<p>If you did not remove the table view class registration in the previous step, the dequeue step in the above code will never fail since the <code>dequeueReusableCell( withIdentifier:)</code> method will automatically create a new cell of the registered class if a cached instance does not exist. However, this new table view cell instance would not be of the subtitle style — instead, it will have the default style. So, any references to the subtitle lable in the table view cell — unless properly guarded against — will cause your app to crash.
+</p>
+<p>The “subtitle” cell style adds a second, smaller label below the main label. You can use the cell’s <code>detailTextLabel</code> property to access this subtitle label.
+</p>
+<p>➤ That happens in <code>tableView(_:cellForRowA:t)</code> too. Add the following line just before <code>return cell</code>:
+</p><pre class="code-block">cell.detailTextLabel!.text = 
+                 <span class="hljs-string">"<span class="hljs-subst">\(checklist.countUncheckedItems()</span>) Remaining"</span></pre>
+<p>You call the <code>countUncheckedItems()</code> method on the <code>Checklist</code> object and put the count into a new string that you display using the <code>detailTextLabel</code>.
+</p>
+<p>As usual, you use <code>\(…)</code> to do the string interpolation. Notice that you can even call methods inside interpolated strings. Sweet!
+</p>
+<h4 class="segment-chapter">Force unwrapping</h4>
+
+<p>To put text into the cell’s labels, you wrote:
+</p><pre class="code-block">cell.textLabel!.text = someString
+cell.detailTextLabel!.text = anotherString</pre>
+<p>The <code>!</code> is necessary because <code>textLabel</code> and <code>detailTextLabel</code> are optionals.
+</p>
+<p>The <code>textLabel</code> property is only present on table view cells that use one of the built-in cell styles; it is <code>nil</code> on custom cell designs. Likewise, not all of the cell styles have a detail label and <code>detailTextLabel</code> will be <code>nil</code> in those cases.
+</p>
+<p>Here you’re using the “subtitle” cell style, which is guaranteed to have both labels. Because these optionals will never be <code>nil</code> for a “subtitle” cell, you can use <code>!</code> to <i>force unwrap</i> them. This turns the optional into an actual object that you can use.
+</p>
+<p>Be careful with this, though… using <code>!</code> on an optional that <i>is</i> <code>nil</code> will crash your app immediately.
+</p>
+<p>You could also have written the above code as:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> label = cell.textLabel {
+  label.text = someString
+}
+<span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> label = cell.detailTextLabel {
+  label.text = anotherString
+}</pre>
+<p>That is safer — no chance of crashing here — but also a bit more cumbersome. Writing <code>!</code> was just more convenient in this case.
+</p>
+<p>➤ Run the app. For each checklist it will now show how many items still remain unchecked.
+</p><div class="image-30"><img src="graphics/img326.png"  alt="" title="The cells now have a subtitle label" /></div>
+<h3 class="segment-chapter">Update the unchecked item count on changes</h3>
+
+<p>One problem: The to-do count never changes. If you toggle a checkmark on or off, or add new items, the “to do” count remains the same. That’s because you create these table view cells once and never update their labels. (Try it out!)
+</p>
+<div class="note">
+<p><em>Exercise:</em> Think of all the situations that will cause this “still to do” count to change.
+</p></div>
+
+<p>Answer:
+</p>
+<ul>
+<li>
+<p>The user toggles a checkmark on an item. When the checkmark is set, the count goes down. When the checkmark gets removed, the count goes up again.
+</p></li>
+
+<li>
+<p>The user adds a new item. New items don’t have their checkmark set, so adding a new item should increment the count.
+</p></li>
+
+<li>
+<p>The user deletes an item. The count should go down but only if that item had no checkmark.
+</p></li>
+</ul>
+
+<p>These changes all happen in the <code>ChecklistViewController</code> but the “still to do” label is shown in the <code>AllListsViewController</code>.
+</p>
+<p>So, how do you let the All Lists View Controller know about this?
+</p>
+<p>If you thought, “That’s easy, let’s use a delegate!”, then you’re starting to get the hang of this. You could make a new <code>ChecklistViewControllerDelegate</code> protocol that sends messages when the following things happen:
+</p>
+<ul>
+<li>
+<p>The user toggles a checkmark on an item
+</p></li>
+
+<li>
+<p>The user adds a new item
+</p></li>
+
+<li>
+<p>The user deletes an item
+</p></li>
+</ul>
+
+<p>But what would the delegate — which would be <code>AllListsViewController</code> — do in response? It would simply set some new text on the cell’s <code>detailTextLabel</code> in all cases.
+</p>
+<p>The delegate approach sounds good, but you’re going to cheat and not use a delegate at all :] There is a simpler solution, and a smart programmer always picks the simplest way to solve a problem.
+</p>
+<p>➤ Go to <em>AllListsViewController.swift</em> and add the <code>viewWillAppear()</code> method to do the following:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewWillAppear</span><span class="hljs-params">(<span class="hljs-number">_</span> animated: Bool)</span></span> {
+  <span class="hljs-keyword">super</span>.viewWillAppear(animated)
+  tableView.reloadData()
+}</pre>
+<p>Don’t confuse this method with <code>viewDidAppear()</code>. The difference is in the verb: <i>will</i> versus <i>did</i>. <code>viewWillAppear()</code> is called before <code>viewDidAppear()</code>, when the view is about to become visible but the animation hasn’t started yet. <code>viewDidAppear()</code> is called after the view is visible on the screen and the animation has completed. There may be half a second or so difference between them as the animation takes place.
+</p>
+<p>The iOS API often does this: there is a “will” method that is invoked before something happens and a “did” method that is invoked after that something happenes. Sometimes you need to do things before, sometimes after, and having two methods gives you the ability to choose whichever situation works best for you.
+</p>
+<div class="note">
+<p><em>API (ay-pee-eye)</em> stands for <em>A</em>pplication <em>P</em>rogramming <em>I</em>nterface. When people say “the iOS API” they mean all the frameworks, objects, protocols and functions that are provided by iOS that you as a programmer can use to write apps.
+</p>
+<p>The iOS API consists of everything from UIKit, Foundation, Core Graphics, and so on. Likewise, when people talk about “the Facebook API” or “the Google API”, they mean the services that these companies provide that allow you to write apps for those platforms.
+</p></div>
+
+<p>Here, <code>viewWillAppear()</code> tells the table view to reload its entire contents. That will cause <code>tableView(_:cellForRowAt:)</code> to be called again for every visible row.
+</p>
+<p>When you tap the back button on the <code>ChecklistViewController</code>’s navigation bar, the <code>AllListsViewController</code> screen will slide back into view. Just before that happens, <code>viewWillAppear()</code> is called. Thanks to the call to <code>tableView.reloadData()</code> the app will update all of the table cells, including the <code>detailTextLabels</code>.
+</p>
+<p>Reloading all of the cells may seem like overkill, but in this situation you can easily get away with it. It’s unlikely the All Lists screen will contain many rows (say, less than 100) and only about 14 visible cells, so reloading them is quite fast. And it saves you the work of having to create yet another delegate.
+</p>
+<p>Sometimes a delegate is the best solution; sometimes you just reload the entire table :]
+</p>
+<p>➤ Run the app and test that it works!
+</p>
+<h3 class="segment-chapter">Display a completion message when all items are done</h3>
+
+<div class="note">
+<p><em>Exercise.</em> Change the label to read “All Done!” when there are no more to-do items left to check.
+</p></div>
+
+<p>Answer: Change the relevant code in <code>tableView(_:cellForRowAt:)</code> to:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> <span class="hljs-built_in">count</span> = checklist.countUncheckedItems()
+cell.detailTextLabel!.text = <span class="hljs-built_in">count</span> == <span class="hljs-number">0</span> ? <span class="hljs-string">"All Done"</span> : <span class="hljs-string">"<span class="hljs-subst">\(<span class="hljs-built_in">count</span>)</span> Remaining"</span></pre>
+<p>You put the count into a local constant because you will refer to it more than once. Calculating the count once and storing it into a temporary constant is more optimal than doing the same calculation twice.
+</p>
+<p>But what about the second line of code? It has something new/interesting going on, right?
+</p>
+<p>It&apos;s actually just a simpler way to do an <code>if...else</code> block. The <code>condition ? If true : else</code> construct is known as a <i>ternary conditional operator</i> — if the first part (the bit before the ?) evaluates to <code>true</code>, then the result of the expression would be the item after the ?. Otherwise, the result is the item after the :. It can be very handy in a lot of places to write simpler, more succinct code.
+</p>
+<p>The same thing could have been done with an <code>if...else</code> block but that would have taken five lines. Personally, I prefer to use the ternary operator where possible.
+</p>
+<h3 class="segment-chapter">Display an indicator when there are no items in a list</h3>
+
+<div class="note">
+<p><em>Exercise:</em> Now update the label to say “No Items” when the list is empty.
+</p></div>
+
+<p>Answer:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> <span class="hljs-built_in">count</span> = checklist.countUncheckedItems()
+<span class="hljs-keyword">if</span> checklist.items.<span class="hljs-built_in">count</span> == <span class="hljs-number">0</span> {
+  cell.detailTextLabel!.text = <span class="hljs-string">"(No Items)"</span>
+} <span class="hljs-keyword">else</span> {
+  cell.detailTextLabel!.text = <span class="hljs-built_in">count</span> == <span class="hljs-number">0</span> ? <span class="hljs-string">"All Done"</span> : <span class="hljs-string">"<span class="hljs-subst">\(<span class="hljs-built_in">count</span>)</span> Remaining"</span>
+}</pre>
+<p>Just looking at the result of <code>countUncheckedItems()</code> is not enough. If this returns 0, you don’t know whether that means all items are checked off or if the list has no items at all. You also need to look at the total number of items in the checklist, with <code>checklist.items.count</code>.
+</p>
+<p>You could have done the setting of the text as two nested ternary operators as well, but sometimes, it&apos;s better to write code that&apos;s clear rather than succinct :]
+</p><div class="image-30"><img src="graphics/img327.png"  alt="" title="The text in the detail label changes depending on how many items are checked off" /></div>
+<p>Little details like these matter – they make your app more fun to use. Ask yourself, what would make you feel better about having done your chores, the rather bland message “0 Remaining” or the joyous exclamation “All Done!”?
+</p>
+<h4 class="segment-chapter">A short diversion into Functional Programming</h4>
+
+<p>Swift is primarily an object-oriented language. But there is another style of coding that has become quite popular in recent years: <i>functional programming</i>.
+</p>
+<p>The term “functional” means that programs can be expressed purely in terms of mathematical functions that transform data.
+</p>
+<p>Unlike the methods and functions in Swift, these mathematical functions are not allowed to have “side effects”. For any given inputs, a function should always produce the same output. Methods are much less strict.
+</p>
+<p>Even though Swift is not a purely functional language, it does let you use certain functional programming techniques in your apps. They can really make your code a lot shorter.
+</p>
+<p>For example, let’s look at <code>countUncheckedItems()</code> again:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">countUncheckedItems</span><span class="hljs-params">()</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">var</span> <span class="hljs-built_in">count</span> = <span class="hljs-number">0</span>
+  <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> items <span class="hljs-keyword">where</span> !item.checked {
+    <span class="hljs-built_in">count</span> += <span class="hljs-number">1</span>
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-built_in">count</span>
+}</pre>
+<p>That’s quite a bit of code for something that’s fairly simple. You can actually write this in a single line of code:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">countUncheckedItems</span><span class="hljs-params">()</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">return</span> items.<span class="hljs-built_in">reduce</span>(<span class="hljs-number">0</span>) { cnt, 
+                        item <span class="hljs-keyword">in</span> cnt + (item.checked ? <span class="hljs-number">0</span> : <span class="hljs-number">1</span>) }
+}</pre>
+<p><code>reduce()</code> is a method that looks at each item in the array and performs the code in the <code>{ }</code> block. Initially, the <code>cnt</code> variable contains the value 0, but after each item it is incremented by either 0 or 1, depending on whether the item was checked — that check is done using our new friend, the ternary operator.
+</p>
+<p>When <code>reduce()</code> is done, its return value is the total count of unchecked items.
+</p>
+<p>You don’t have to remember any of this for now, but it’s pretty cool to see that Swift allows you to express this kind of algorithm very succinctly.
+</p>
+<h2 class="segment-chapter">Sort the lists</h2>
+
+<p>Another thing you often need to do with lists is sort them in some particular order.
+</p>
+<p>Let’s sort the list of checklists by name. Currently when you add a new checklist it is always appended to the end of the table, regardless of alphabetical order.
+</p>
+<h3 class="segment-chapter">When do you do the sorting?</h3>
+
+<p>Before we figure out how to sort an array, let’s think about when you need to perform this sort:
+</p>
+<ul>
+<li>
+<p>When a new checklist is added
+</p></li>
+
+<li>
+<p>When a checklist is renamed
+</p></li>
+</ul>
+
+<p>There is no need to re-sort when a checklist is deleted because that doesn’t have any impact on the order of the other objects.
+</p>
+<p>Currently you handle these two situations in <code>AllListsViewController</code>’s implementation of <code>didFinishAdding</code> and <code>didFinishEditing</code>.
+</p>
+<p>➤ Change these methods to the following:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">listDetailViewController</span><span class="hljs-params">(
+                 <span class="hljs-number">_</span> controller: ListDetailViewController, 
+    didFinishAdding checklist: Checklist)</span></span> {
+  dataModel.lists.append(checklist)
+  dataModel.sortChecklists()    
+  tableView.reloadData()
+  navigationController?.popViewController(animated: <span class="hljs-literal">true</span>)
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">listDetailViewController</span><span class="hljs-params">(
+                 <span class="hljs-number">_</span> controller: ListDetailViewController, 
+   didFinishEditing checklist: Checklist)</span></span> {
+  dataModel.sortChecklists()
+  tableView.reloadData()
+  navigationController?.popViewController(animated: <span class="hljs-literal">true</span>)
+}</pre>
+<p>You were able to remove a bunch of code from both methods because you now always do <code>reloadData()</code> on the table view.
+</p>
+<p>It is no longer necessary to insert the new row manually, or to update the cell’s <code>textLabel</code>. Instead you simply call <code>tableView.reloadData()</code> to refresh the entire table’s contents after you&apos;ve sorted the data.
+</p>
+<p>Again, you can get away with this because the table will only hold a handful of rows. If this table had hundreds of rows, a more advanced approach might be necessary. (You could figure out where the new or renamed <code>Checklist</code> object should be inserted and just update that row.)
+</p>
+<h3 class="segment-chapter">The sorting algorithm</h3>
+
+<p>The <code>sortChecklists()</code> method on <code>DataModel</code> is new and you still need to add it. But before that, we need to have a short discussion about how sorting works.
+</p>
+<p>When you sort a list of items, the app will compare the items one-by-one to figure out what the proper order is. But what does it mean to compare two <code>Checklist</code> objects?
+</p>
+<p>In <i>Checklists</i> we obviously want to sort them by name, but we need some way to tell the app that’s what we mean.
+</p>
+<p>➤ Add the following method to <em>DataModel.swift</em>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">sortChecklists</span><span class="hljs-params">()</span></span> {
+  lists.<span class="hljs-built_in">sort</span>(by: { list1, list2 <span class="hljs-keyword">in</span>   
+    <span class="hljs-keyword">return</span> list1.name.localizedStandardCompare(list2.name) 
+                  == .orderedAscending })
+}</pre>
+<p>Here you tell the <code>lists</code> array that the <code>Checklist</code>s it contains should be sorted using some specific logic.
+</p>
+<p>That logic is provided in the shape of a <i>closure</i>. You can tell it&apos;s a closure by the <code>{ }</code> brackets around the sorting code:
+</p><pre class="code-block">lists.<span class="hljs-built_in">sort</span>(by: { <span class="hljs-comment">/* the sorting code goes here */</span> })</pre>
+<p>You’ve briefly seen closures with the alert box in the <i>Bull’s Eye</i> app. They wrap a piece of source code into an anonymous, inline method.
+</p>
+<p>The purpose of the closure is to determine whether one <code>Checklist</code> object comes before another, based on our rules for sorting.
+</p>
+<p>The sort algorithm will repeatedly ask one <code>Checklist</code> object from the list how it compares to the other <code>Checklist</code> objects using the logic from the closure, and then shuffle them around until the array is sorted.
+</p>
+<p>This allows <code>sort()</code> to sort the contents of the array in any order you desire. If you wanted to sort on other criteria, all you’d have to do is change the logic inside the closure.
+</p>
+<p>The actual sorting code is this:
+</p><pre class="code-block">list1.name.localizedStandardCompare(list2.name) == .orderedAscending</pre>
+<p>To compare these two <code>Checklist</code> objects, you’re only looking at their names.
+</p>
+<p>The <code>localizedStandardCompare(_:)</code> method compares the two name strings while ignoring lowercase vs. uppercase (so “a” and “A” are considered equal) and taking into consideration the rules of the current <i>locale</i>.
+</p>
+<p>A locale is an object that knows about country and language-specific rules. Sorting in German may be different than sorting in English, for example.
+</p>
+<p>That’s all you have to do to sort the array: call <code>sort()</code> and give it a closure with the logic that compares two <code>Checklist</code> objects.
+</p>
+<p>➤ Just to make sure the existing lists are also sorted in the right order, you should also call <code>sortChecklists()</code> when the plist file is loaded:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">loadChecklists</span><span class="hljs-params">()</span></span> {
+    . . .
+    lists = <span class="hljs-keyword">try</span> decoder.decode([<span class="hljs-type">Checklist</span>].<span class="hljs-keyword">self</span>, from: data)
+    sortChecklists()       <span class="hljs-comment">// Add this</span>
+  } <span class="hljs-keyword">catch</span> {
+    ...
+}</pre>
+<p>➤ Run the app and add some new checklists. Change their names and notice that the list is always sorted alphabetically.
+</p><div class="image-30"><img src="graphics/img328.png"  alt="" title="New checklists are always sorted alphabetically" /></div>
+<h2 class="segment-chapter">Add icons</h2>
+
+<p>Because true iOS developers can’t get enough of view controllers and delegates, let’s add a new property to the <code>Checklist</code> object that lets you choose an icon — we’re really going to cement these principles in your mind!
+</p>
+<p>When you’re done, the Add/Edit Checklist screen will look like this:
+</p><div class="image-25"><img src="graphics/img329.png"  alt="" title="You can assign an icon to a checklist" /></div>
+<p>You are going to add a row to the Add/Edit Checklist screen that opens a new screen for picking an icon. This icon picker is a new view controller and you will show it by pushing it on to the navigation stack, just like your previous view controllers.
+</p>
+<h3 class="segment-chapter">Add the icons to the project</h3>
+
+<p>The Resources folder for the book contains a folder named <em>Checklist Icons</em> with a selection of PNG images that depict different categories.
+</p><div class="image-40"><img src="graphics/img330.png"  alt="" title="The various checklist icon images" /></div>
+<p>➤ Add the images from this folder to the asset catalog. Select <em>Assets.xcassets</em> in the project navigator, click the <em>+</em> button at the bottom and choose <em>Import…</em>
+</p><div class="image-50"><img src="graphics/img331.png"  alt="" title="Importing new images into the asset catalog" /></div>
+<p>Navigate to the <em>Checklist Icons</em> folder and select all the files inside:
+</p><div class="image-50"><img src="graphics/img332.png"  alt="" title="Selecting the image files to import" /></div>
+<p><em>Note</em>: Make sure to select the actual image files, not just the folder.
+</p>
+<p>Click <em>Open</em> to import the images. The asset catalog should now look like this:
+</p><div class="image-50"><img src="graphics/img333.png"  alt="" title="The asset catalog after importing the checklist icons" /></div>
+<p>Each image comes with a 2x version for Retina devices and a 3x version for the Retina HD devices.
+</p>
+<p>As I pointed out previously, you don’t need low-resolution 1x graphics anymore. All iPhone, iPad, and iPod touch devices that can run iOS 12 have Retina 2x or 3x screens.
+</p>
+<h3 class="segment-chapter">Update the data model</h3>
+
+<p>➤ Add the following property to <em>Checklist.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> iconName = <span class="hljs-string">""</span></pre>
+<p>The <code>iconName</code> variable holds the name of the icon image.
+</p>
+<p>The above code initializes <code>iconName</code> to have no icon set by default. But what if you actually wanted to create new <code>Checklist</code> objects with a default icon?
+</p>
+<p>It&apos;s very easy to implement a default icon. Say, you want all new checklists to have the “Appointments” icon — then change the above line to this:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> iconName = <span class="hljs-string">"Appointments"</span></pre>
+<p>And that&apos;s all you need to do :]
+</p>
+<h3 class="segment-chapter">Display the icon</h3>
+
+<p>At this point, you just want to see that you can make an icon — any icon — show up in the table view. When that works, you can worry about letting the user pick their own icons. So, make sure that the above change for displaying the &quot;Appointments&quot; icon is made before you do the next step.
+</p>
+<p>➤ Change <code>tableView(_:cellForRowAt:)</code> in <em>AllListsViewController.swift</em> to put the icon into the table view cell:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+             cellForRowAt indexPath: IndexPath)</span></span> 
+             -&gt; <span class="hljs-type">UITableViewCell</span> {
+  . . .
+
+  cell.imageView!.image = <span class="hljs-type">UIImage</span>(named: checklist.iconName)
+  <span class="hljs-keyword">return</span> cell
+}</pre>
+<p>Cells using the standard <code>.subtitle</code> cell style come with a built-in <code>UIImageView</code> on the left. You can simply pass it an image and it will be displayed automatically. Easy peasy.
+</p>
+<div class="note">
+<p><em>Note:</em> When you run the app, you will not see any of your previoulsy saved checklist items. Can you guess why?The addition of <code>iconName</code> changed the <code>Checklist</code> object and the previously saved information for the object is no longer valid. So, the decoder will run into issues when trying to decode the previously saved file and so, you will end up with no saved items. Sorry.
+</p></div>
+
+<p>➤ Run the app, create a few checklists and now each of them should have an alarm clock icon.
+</p><div class="image-30"><img src="graphics/img334.png"  alt="" title="The checklists have an icon" /></div>
+<h3 class="segment-chapter">The default icon</h3>
+
+<p>Now that you know it works, you can change <code>Checklist</code> to give each <code>Checklist</code> object an icon named “No Icon” by default.
+</p>
+<p>➤ In <em>Checklist.swift</em>, change the <code>iconName</code> declaration to:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> iconName = <span class="hljs-string">"No Icon"</span></pre>
+<p>The “No Icon” image is a fully transparent PNG image with the same dimensions as the other icons. Using a transparent image is necessary to make all the checklists line up properly, even if they have no icon.
+</p>
+<p>If you were to set <code>iconName</code> to an empty string instead, the image view in the table view cell would remain empty and the text would align with the left margin of the screen. That looks bad when other cells do have icons:
+</p><div><img src="graphics/img335.png" Sewidth="60%"  alt="" title="Using an empty image to properly align the text labels (right)" /></div>
+<h3 class="segment-chapter">The icon picker class</h3>
+
+<p>Now, let’s create the icon picker screen.
+</p>
+<p>➤ Add a new Swift file to the project. Name it <em>IconPickerViewController</em>.
+</p>
+<p>➤ Replace the contents of <em>IconPickerViewController.swift</em> with:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> UIKit
+
+<span class="hljs-class"><span class="hljs-keyword">protocol</span> <span class="hljs-title">IconPickerViewControllerDelegate</span>: <span class="hljs-title">class</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">iconPicker</span><span class="hljs-params">(<span class="hljs-number">_</span> picker: IconPickerViewController, 
+                  didPick iconName: String)</span></span>
+}
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">IconPickerViewController</span>: <span class="hljs-title">UITableViewController</span> </span>{
+  <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> delegate: <span class="hljs-type">IconPickerViewControllerDelegate</span>?
+}</pre>
+<p>This defines the <code>IconPickerViewController</code> object, which is a table view controller, and a delegate protocol that it uses to communicate with other objects in the app.
+</p>
+<p>➤ Add a constant (inside the <code>class</code> implementation) to hold the array of icons:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> icons = [ <span class="hljs-string">"No Icon"</span>, <span class="hljs-string">"Appointments"</span>, <span class="hljs-string">"Birthdays"</span>, <span class="hljs-string">"Chores"</span>, 
+  <span class="hljs-string">"Drinks"</span>, <span class="hljs-string">"Folder"</span>, <span class="hljs-string">"Groceries"</span>, <span class="hljs-string">"Inbox"</span>, <span class="hljs-string">"Photos"</span>, <span class="hljs-string">"Trips"</span> ]</pre>
+<p>This is an array that contains a list of icon names. These strings are both the text you will show on the screen and the name of the PNG file inside the asset catalog.
+</p>
+<p>The <code>icons</code> array is the data model for this table view. Note that it is a non-mutable array — it is defined with <code>let</code> and arrays are “value” types — because the user cannot add or delete icons.
+</p>
+<p>This new view controller is a <code>UITableViewController</code>, so you have to implement the data source methods for the table view.
+</p>
+<p>➤ Add the following methods to the source file:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Table View Delegates</span>
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+      numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">return</span> icons.<span class="hljs-built_in">count</span>
+}</pre>
+<p>This simply returns the number of icons in the array.
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+             cellForRowAt indexPath: IndexPath)</span></span> 
+             -&gt; <span class="hljs-type">UITableViewCell</span> {
+  <span class="hljs-keyword">let</span> cell = tableView.dequeueReusableCell(
+                             withIdentifier: <span class="hljs-string">"IconCell"</span>, 
+                                        <span class="hljs-keyword">for</span>: indexPath)
+  <span class="hljs-keyword">let</span> iconName = icons[indexPath.row]
+  cell.textLabel!.text = iconName
+  cell.imageView!.image = <span class="hljs-type">UIImage</span>(named: iconName)
+  <span class="hljs-keyword">return</span> cell
+}</pre>
+<p>Here, you obtain a table view cell and give it a title and an image. You will design this cell in the storyboard momentarily. It will be a prototype cell with the “default” cell style (or “Basic” as it is called in Interface Builder). Cells with this style already contain a text label and an image view, which is very convenient.
+</p>
+<h3 class="segment-chapter">The icon picker storyboard changes</h3>
+
+<p>➤ Open the storyboard. Drag a new <em>Table View Controller</em> from the Objects Library and place it next to the Add Checklist scene.
+</p>
+<p>➤ In the <em>Identity inspector</em>, change the class of this new table view controller to <em>IconPickerViewController</em>.
+</p>
+<p>➤ Select the prototype cell and set its <em>Style</em> to <em>Basic</em> and its (re-use) <em>Identifier</em> to <em>IconCell</em>.
+</p>
+<p>That takes care of the design for the icon picker. Now you need to have some place to call it from. To do this, you will add a new row to the Add Checklist screen.
+</p>
+<p>➤ Go to the <em>Add Checklist View Controller</em> and add a new section to the table view. You can do this by changing the <em>Sections</em> value in the <em>Attributes inspector</em> for the table view from 1 to 2. This will duplicate the existing section.
+</p>
+<p>➤ Delete the Text Field from the new cell; you don’t need it.
+</p>
+<p>➤ Add a <em>Label</em> to this cell and change its text to <em>Icon</em>.
+</p>
+<p>➤ Set the cell’s <em>Accessory</em> to <em>Disclosure Indicator</em>. That adds a gray chevron.
+</p>
+<p>➤ Add an <em>Image View</em> to the right of the cell. Make it 36 × 36 points big. (Tip: use the Size inspector for this.)
+</p>
+<p>➤ Once the Label and Image View are sized and positioned, add <em>width</em>, <em>height</em>, <em>top</em>, <em>right</em>, and <em>bottom</em> Auto Layout constraints to the Image View using the <em>Add New Constraints menu</em> available via the icon at the bottom of the canvas.
+</p><div class="image-60"><img src="graphics/img336.png"  alt="" title="Adding constraints to the Image View" /></div>
+<p>What you want to happen is that the image view stays glued to the right edge of the screen, always at the same distance from the disclosure indicator. When the view controller grows or shrinks to fit the iPhone screen, the image view should move along with it.
+</p>
+<p>The image view should now look like this:
+</p><div class="image-40"><img src="graphics/img337.png"  alt="" title="The Image View with the constraints" /></div>
+<p>Make sure the bars representing the constraints are blue. If they are orange or red you may have forgotten something in the Add New Constraints menu. (Either try again or use the <em>Editor → Resolve Auto Layout Issues → Update Frames</em> menu item.)
+</p>
+<p>The most important constraint is the one on the right. This tells UIKit that the right-hand side of the image view should always stick to the right-hand edge of the table view cell’s content view.
+</p>
+<p>In other words, no matter how wide or narrow the screen is, the image view will always have the same location relative to the disclosure indicator.
+</p>
+<p>The other constraints — top, bottom, width, and height — were necessary only because all views must always have enough constraints to determine their position and size. You could have left out the bottom one, but here you need it because the whole cell size is determined based on the image view height and its top and bottom spacing.
+</p>
+<p>➤ To verify that your changes do the right thing you don’t necessarily need to run the app in the simulator. Use the <em>View as:</em> panel at the bottom to switch between the different iPhone models right inside Interface Builder. If your constraints are correct, then the icon should always be in the right place.
+</p>
+<p>While you’re at it, you might as well fix the text field so that it stretches the entire width of the screen.
+</p>
+<p>➤ Add <em>left</em> and <em>right</em> constraints to the Label via the <em>Add New Constraints menu</em>. Finally, <em>vertically center</em> the Label to the Image View by Control-dragging from the Label to the Image View in the Document Outline and selecting <em>Center Vertically</em> from the pop up menu.
+</p><div class="image-40"><img src="graphics/img338.png"  alt="" title="The Image View with the constraints" /></div>
+<p>➤ Use the <em>Assistant Editor</em> to add an outlet property for the cell to <em>ListDetailViewController.swift</em> and name it <em>iconImage</em>.
+</p>
+<p>That completes the designs for both screens — you can now connect them via a segue.
+</p>
+<p>➤ <em>Control-drag</em> from the “Icon” table view cell to the Icon Picker View Controller and add a segue of type <em>Selection Segue – Show</em>. (Make sure you’re dragging from the Table View Cell, not its Content View or any of the other subviews. If you are unable to do this accurately from the scene, remember that you can also Control-drag from the Document Outline.)
+</p>
+<p>➤ Give the segue the identifier <em>PickIcon</em>.
+</p>
+<p>➤ Thanks to the segue, the new view controller has been given a navigation bar. (However, it might not have a Navigation Item - if it doesn&apos;t, drag one from the Objects Library on to the Icon Picker scene.) Double-click the navigation bar and change its title to <em>Choose Icon</em>.
+</p>
+<p>This part of the storyboard should now look like this:
+</p><div class="image-60"><img src="graphics/img339.png"  alt="" title="The Icon Picker view controller in the storyboard" /></div>
+<h3 class="segment-chapter">Display the icon picker</h3>
+
+<p>➤ In <em>ListDetailViewController.swift</em>, change the <code>willSelectRowAt</code> table view delegate method to:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+          willSelectRowAt indexPath: IndexPath)</span></span> 
+          -&gt; <span class="hljs-type">IndexPath</span>? {
+  <span class="hljs-keyword">return</span> indexPath.section == <span class="hljs-number">1</span> ? indexPath : <span class="hljs-literal">nil</span>
+}</pre>
+<p>Without this change you cannot tap the “Icon” cell to trigger the segue.
+</p>
+<p>Previously this method always returned <code>nil</code>, which meant tapping on rows was not possible. Now, however, you want to allow the user to tap the Icon cell, so this method should return the index-path for that cell.
+</p>
+<p>Because the Icon cell is the only row in the second section, you only have to check <code>indexPath.section</code>. There is no need to check the row number too. Users still can’t select the cell with the text field (from section 0).
+</p>
+<p>➤ Run the app and verify that there is now an Icon row in the Add/Edit Checklist screen. Tapping it will open the Choose Icon screen and show a list of icons.
+</p><div class="image-25"><img src="graphics/img340.png"  alt="" title="The icon picker screen" /></div>
+<h3 class="segment-chapter">Handle icon selection</h3>
+
+<p>You can press the back button to go back but selecting an icon doesn’t do anything yet. It just colors the row gray but doesn’t put the icon into the checklist.
+</p>
+<p>To make this work, you have to hook up the icon picker to the Add/Edit Checklist screen through its own delegate protocol.
+</p>
+<p>➤ First, add an instance variable in <em>ListDetailViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> iconName = <span class="hljs-string">"Folder"</span></pre>
+<p>You use this variable to keep track of the chosen icon name.
+</p>
+<p>Even though the <code>Checklist</code> object now has an <code>iconName</code> property, you cannot keep track of the chosen icon in the <code>Checklist</code> object for the simple reason that you may not always have a <code>Checklist</code> object, i.e. when the user is adding a new checklist.
+</p>
+<p>So, you’ll store the icon name in a temporary variable and copy that into the <code>Checklist</code>’s <code>iconName</code> property at the right time.
+</p>
+<p>You should initialize the <code>iconName</code> variable with something reasonable. Let’s go with the folder icon. This is only necessary for new <code>Checklist</code>s, which get the Folder icon by default.
+</p>
+<p>➤ Update <code>viewDidLoad()</code> to the following:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  . . .
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> checklist = checklistToEdit {
+    . . .
+    iconName = checklist.iconName              <span class="hljs-comment">// add this</span>
+  }
+  iconImage.image = <span class="hljs-type">UIImage</span>(named: iconName)   <span class="hljs-comment">// add this</span>
+}</pre>
+<p>This has two new lines: If the <code>checklistToEdit</code> optional is not <code>nil</code>, then you copy the <code>Checklist</code> object’s icon name into the <code>iconName</code> instance variable. You also load the icon’s image file into a new <code>UIImage</code> object and set it as the cell&apos;s image so it shows up in the Icon row.
+</p>
+<p>Earlier you created a push segue named “PickIcon”. You still need to implement <code>prepare(for:sender:)</code> in order to tell the <code>IconPickerViewController</code> that this screen is now its delegate.
+</p>
+<p>➤ First, add the name of that protocol to the <code>class</code> line in <em>ListDetailViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ListDetailViewController</span>: <span class="hljs-title">UITableViewController</span>, 
+        <span class="hljs-title">UITextFieldDelegate</span>, <span class="hljs-title">IconPickerViewControllerDelegate</span> </span>{</pre>
+<p>➤ Next, add the implementation of the method from that delegate protocol:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Icon Picker View Controller Delegate</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">iconPicker</span><span class="hljs-params">(<span class="hljs-number">_</span> picker: IconPickerViewController, 
+        didPick iconName: String)</span></span> {
+  <span class="hljs-keyword">self</span>.iconName = iconName
+  iconImage.image = <span class="hljs-type">UIImage</span>(named: iconName)
+  navigationController?.popViewController(animated: <span class="hljs-literal">true</span>)
+}</pre>
+<p>This puts the name of the chosen icon into the <code>iconName</code> variable to remember it, and also updates the image view with the new image.
+</p>
+<p>After you do all that, you use <code>popViewController(animated:)</code> to “pop” the Icon Picker View Controller off the navigation stack.
+</p>
+<p>Recall that <code>navigationController</code> is an optional property of the view controller, so you need to use <code>?</code> (or <code>!</code>) to access the actual <code>UINavigationController</code> object.
+</p>
+<p>➤ Now, add the following method to <em>ListDetailViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Navigation</span>
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">prepare</span><span class="hljs-params">(<span class="hljs-keyword">for</span> segue: UIStoryboardSegue, 
+                         sender: Any?)</span></span> {
+  <span class="hljs-keyword">if</span> segue.identifier == <span class="hljs-string">"PickIcon"</span> {
+    <span class="hljs-keyword">let</span> controller = segue.destination 
+                     <span class="hljs-keyword">as</span>! <span class="hljs-type">IconPickerViewController</span>
+    controller.delegate = <span class="hljs-keyword">self</span>
+  }
+}</pre>
+<p>This code should have no big surprises for you.
+</p>
+<p>➤ Change the <code>done()</code> action so that it puts the chosen icon name into the <code>Checklist</code> object when the user closes the screen:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">done</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> checklist = checklistToEdit {
+    checklist.name = textField.text!
+    checklist.iconName = iconName                  <span class="hljs-comment">// add this</span>
+    delegate?.listDetailViewController(<span class="hljs-keyword">self</span>, 
+                     didFinishEditing: checklist)
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">let</span> checklist = <span class="hljs-type">Checklist</span>(name: textField.text!)
+    checklist.iconName = iconName                  <span class="hljs-comment">// add this</span>
+    delegate?.listDetailViewController(<span class="hljs-keyword">self</span>, 
+                      didFinishAdding: checklist)
+  }
+}</pre>
+<p>Finally, you must change <code>IconPickerViewController</code> to actually call the delegate method when a row is tapped.
+</p>
+<p>➤ Add the following method to the bottom of <em>IconPickerViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+           didSelectRowAt indexPath: IndexPath)</span></span> {
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> delegate = delegate {
+    <span class="hljs-keyword">let</span> iconName = icons[indexPath.row]
+    delegate.iconPicker(<span class="hljs-keyword">self</span>, didPick: iconName)
+  }
+}</pre>
+<p>And that’s it. You can now set icons on the <code>Checklist</code> objects.
+</p>
+<p>To recap, you:
+</p>
+<ul>
+<li>
+<p>Added a new view controller object.
+</p></li>
+
+<li>
+<p>Designed its user interface in the storyboard editor.
+</p></li>
+
+<li>
+<p>Hooked it up to the Add/Edit Checklist screen using a segue and a delegate.
+</p></li>
+</ul>
+
+<p>Those are the basic steps you need to take with any new screen that you add.
+</p>
+<p>➤ Run the app to try it out.
+</p><div class="image-30"><img src="graphics/img341.png"  alt="" title="You can now give each list its own icon" /></div>
+<p>Achievement unlocked: users can pick icons!
+</p>
+<h3 class="segment-chapter">Code refactoring</h3>
+
+<p>There’s still a small improvement you can make to the code. In <code>done()</code>, you currently do this:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> checklist = <span class="hljs-type">Checklist</span>(name: textField.text!)
+checklist.iconName = iconName</pre>
+<p>Setting the icon name can be considered part of the initialization of <code>Checklist</code>, so it would be nice if you could pass the icon name to the <code>Checklist</code> initializer. And you can :]
+</p>
+<p>➤ Switch to <em>Checklist.swift</em> and modify the <code>init</code> method as follows:
+</p><pre class="code-block"><span class="hljs-keyword">init</span>(name: <span class="hljs-type">String</span>, iconName: <span class="hljs-type">String</span> = <span class="hljs-string">"No Icon"</span>) {
+  <span class="hljs-keyword">self</span>.name = name
+  <span class="hljs-keyword">self</span>.iconName = iconName
+  <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>()
+}</pre>
+<p>The modified <code>init</code> method looks almost the same as the previous one except for taking a new <code>iconName</code> parameter and assigning it to the object&apos;s <code>iconName</code> property.
+</p>
+<p>But what is the <code>= &quot;No Icon&quot;</code> bit after the second parameter? That&apos;s called a <i>default parameter value</i>. When you specify a default parameter value for a method, when the method is called, you can omit the parameters with default values and the method call would still work, but the default values would be used for the parameters that were omitted. Nifty, huh?
+</p>
+<p>➤ In <em>ListDetailViewController.swift</em>’s <code>done()</code> method, replace the code that creates the new <code>Checklist</code> object with this (and remove the line after that which sets the <code>iconName</code> property):
+</p><pre class="code-block"><span class="hljs-keyword">let</span> checklist = <span class="hljs-type">Checklist</span>(name: textField.text!, 
+                      iconName: iconName)</pre>
+<p>➤ Build the app to verify it still works.
+</p>
+<div class="note">
+<p><em>Exercise:</em> Give <code>ChecklistItem</code> an <code>init(text:)</code> method that is used instead of the parameter-less <code>init()</code>. Or how about an <code>init(text:checked:)</code> method?
+</p></div>
+
+<h2 class="segment-chapter">Make the app look good</h2>
+
+<p>For <i>Checklists</i>, you’re going to keep things simple as far as fancying up the graphics goes. The standard look of navigation controllers and table views is perfectly adequate, although a little bland. In the next apps you’ll see how you can customize the look of these UI elements.
+</p>
+<h3 class="segment-chapter">Change the tint color</h3>
+
+<p>Even though this app uses the stock visuals, there is a simple trick to give the app its own personality: changing the <em>tint color</em>.
+</p>
+<p>The tint color is what UIKit uses to indicate that things, such as buttons, can be interacted with. The default tint color is a medium blue.
+</p><div class="image-40"><img src="graphics/img342.png"  alt="" title="The buttons all use the same tint color" /></div>
+<p>Changing the tint color is pretty easy.
+</p>
+<p>➤ Open the storyboard and go to the <em>File inspector</em> (the first tab). Make sure you select a scene on the storyboard, otherwise you might not see the setting you need for the next step.
+</p>
+<p>➤ Show the dropdown for <em>Global Tint</em>, click <em>Custom...</em> to open the color picker, and choose Red: 4, Green: 169, Blue: 235. That makes the tint color a lighter shade of blue.
+</p><div class="image-40"><img src="graphics/img343.png"  alt="" title="Changing the Global Tint color for the storyboard" /></div>
+<p>Tip: If the color picker only shows a black &amp; white bar, then click the dropdown at the top that says Gray Scale Slider and change it to <em>RGB Sliders</em>.
+</p>
+<h3 class="segment-chapter">Set the color of the checkmark</h3>
+
+<p>It would also look nice if the checkmark wasn’t black but used the tint color too.
+</p>
+<p>➤ To make that happen, select the checkmark label in the storyboard, switch to the Attributes inspector and change the <em>Color</em> setting to the same color as the global tint color.
+</p>
+<p>➤ Run the app. It already looks a lot more interesting:
+</p><div class="image-30"><img src="graphics/img344.png"  alt="" title="The tint color makes the app less plain looking" /></div>
+<h3 class="segment-chapter">Add app icons</h3>
+
+<p>No app is complete without an icon. The Resources folder for this app contains a folder named <em>Icon</em> with the app icon image in various sizes. Notice that it uses the same blue as the tint color.
+</p>
+<p>➤ Add these icons to the asset catalog (<em>Assets.xcassets</em>). Recall that icons go into the <em>AppIcon</em> section. Simply drag them from the Finder into the slots.
+</p><div class="image-80"><img src="graphics/img345.png"  alt="" title="The app icons in the asset catalog" /></div>
+<h3 class="segment-chapter">Set the launch image</h3>
+
+<p>Apps should also have a launch image or launch file. Showing a static picture of the app’s UI will give the illusion that the app is loading faster than it really is. It’s all smoke and mirrors :]
+</p>
+<p>The Xcode template includes the file <em>LaunchScreen.storyboard</em> that is used as the launch file. With some effort you could make this look like the initial screen of the app, but there’s an easier solution.
+</p>
+<p>➤ Open the <em>Project Settings</em> screen. In the <em>General</em> tab, scroll down to the <em>App Icons and Launch Images</em> section.
+</p>
+<p>➤ In the <em>Launch Screen File</em> box, press the arrow and select <em>Main.storyboard</em>.
+</p><div class="image-100"><img src="graphics/img346.png"  alt="" title="Changing the launch screen file" /></div>
+<p>This tells the app you’ll be using the design from the storyboard as the launch file.
+</p>
+<p>Upon startup, the app finds the initial view controller and converts it into a static launch image. For this app that is the All Lists View Controller inside its navigation controller.
+</p>
+<p>➤ Delete <em>LaunchScreen.storyboard</em> from the project.
+</p>
+<p>➤ From the <em>Product</em> menu choose <em>Clean Build Folder</em>. It’s also a good idea to delete the app from the Simulator just so it no longer has any copies of the old launch file lying around (hold down on the icon until it starts to wiggle, just like on a real iPhone).
+</p>
+<p>➤ Run the app. Just before the real UI appears you should briefly see the following launch screen:
+</p><div class="image-20"><img src="graphics/img347.png"  alt="" title="The empty launch screen" /></div>
+<p>The launch screen simply has a navigation bar and an empty table view. This gives the illusion the app’s UI has already been loaded, though in reality, the data hasn’t been filled in yet.
+</p>
+<p>Using a proper launch screen makes the app look more professional – and faster!
+</p>
+<p>For many apps, you can simply use the main storyboard as the launch file, making it a no-brainer to add.
+</p>
+<h3 class="segment-chapter">Test on all iOS devices</h3>
+
+<p>The app should run without major problems on all current iOS devices, from the smallest (iPhone SE) to the largest (iPad Pro). Table view controllers are very flexible and will automatically resize to fit the screen, no matter how large or small. Give it a try in the different Simulators!
+</p>
+<p>Of course, there&apos;s a bit of a gap between <i>should</i> and <i>does</i> — so make sure to test on all the different device types to make sure that nothing was missed :]
+</p>
+<p>But if all your testing turns up nothing amiss, then you should be good to go!
+</p>
+<p>You can find the project for the app up to this point under <em>19 - UI Improvements</em> in the Source Code folder.
+</p></body></html>

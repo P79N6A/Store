@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 7: The New Look</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 7: The New Look</h1>
+
+<p><i>Bull&apos;s Eye</i> is looking good, the gameplay elements are done, and there&apos;s one item left in your to-do list - &quot;Make it look pretty&quot;.
+</p>
+<p>You have to admit the game still doesn’t look great. If you were to put this on the App Store in its current form, I’m not sure many people would be excited to download it. Fortunately, iOS makes it easy for you to create good-looking apps, so let’s give <i>Bull’s Eye</i> a makeover and add some visual flair.
+</p>
+<p>This chapter covers the following:
+</p>
+<ul>
+<li>
+<p><em>Landscape orientation revisited:</em> Project changes to make landscape orientation support work better.
+</p></li>
+
+<li>
+<p><em>Spice up the graphics:</em> Replace the app UI with custom graphics to give it a more polished look.
+</p></li>
+
+<li>
+<p><em>The about Screen:</em> Add an about screen to the app and make it look spiffy.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Landscape orientation revisited</h2>
+
+<p>First, let&apos;s quickly revisit another item in the to-do list - &quot;Put the app in landscape orientation.&quot; You already did this, right? But there&apos;s a little bit of clean up to be done with regards to that item.
+</p>
+<p>Apps in landscape mode do not display the iPhone status bar, unless you tell them to. That’s great for your app - games require a more immersive experience and the status bar detracts from that.
+</p>
+<p>Even though the system automatically handles hiding the status bar for your game, there is still one thing you can do to improve the way <i>Bull’s Eye</i> handles the status bar.
+</p>
+<p>➤ Go to the <em>Project Settings</em> screen and scroll down to <em>Deployment Info</em>. Under <em>Status Bar Style</em>, check <em>Hide status bar</em>.
+</p>
+<p>This will ensure that the status bar is hidden during application launch.
+</p><div class="image-100"><img src="graphics/img81.png"  alt="" title="Hiding the status bar when the app launches" /></div>
+<p>It’s a good idea to hide the status bar while the app is launching. It takes a few seconds for the operating system to load the app into memory and start it up, and during that time the status bar remains visible, unless you hide it using this option.
+</p>
+<p>It’s only a small detail, but the difference between a mediocre app and a great app is that great apps get all the small details right.
+</p>
+<p>➤ That’s it. Run the app and you’ll see that the status bar is history.
+</p>
+<h4 class="segment-chapter">Info.plist</h4>
+
+<p>Most of the options from the Project Settings screen, such as the supported device orientations and whether the status bar is visible during launch, get stored in your app’s Info.plist file.
+</p>
+<p>Info.plist is a configuration file inside the application bundle that tells iOS how the app will behave. It also describes certain characteristics of the app, such as the version number, that don’t really fit anywhere else.
+</p>
+<p>With some earlier versions of Xcode, you often had to edit Info.plist by hand, but with the latest Xcode versions this is hardly necessary anymore. You can make most of the changes directly from the Project Settings screen.
+</p>
+<p>However, it’s good to know that Info.plist exists and what it looks like.
+</p>
+<p>➤ Go to the <em>Project navigator</em> and select the file named <em>Info.plist</em> to take a peek at its contents.
+</p><div class="image-90"><img src="graphics/img82.png"  alt="" title="" /></div>
+<p>The Info.plist file is just a list of configuration options and their values. Most of these may not make sense to you, but that’s OK – they don’t always make sense to me either.
+</p>
+<p>Notice the option <em>Status bar is initially hidden</em>. It has the value YES. This is the option that you just changed.
+</p>
+<h2 class="segment-chapter">Spice up the graphics</h2>
+
+<p>Getting rid of the status bar is only the first step. We want to go from this:
+</p><div class="image-55"><img src="graphics/img83.png"  alt="" title="Yawn…" /></div>
+<p>To something that’s more like this:
+</p><div class="image-55"><img src="graphics/img84.png"  alt="" title="Cool :-)" /></div>
+<p>The actual controls won’t change. You’ll simply be using images to smarten up their look, and you will also adjust the colors and typefaces.
+</p>
+<p>You can put an image in the background, on the buttons, and even on the slider, to customize the appearance of each. The images you use should generally be in PNG format, though JPG files would work too.
+</p>
+<h3 class="segment-chapter">Add the image assets</h3>
+
+<p>If you are artistically challenged, then don’t worry, I have provided a set of images for you. But if you do have mad Photoshop skillz, then by all means feel free to design (and use) your own images.
+</p>
+<p>The Resources folder that comes with this book contains a subfolder named Images. You will first import these images into the Xcode project.
+</p>
+<p>➤ In the <em>Project navigator</em>, find <em>Assets.xcassets</em> and click on it.
+</p>
+<p>This item is known as the asset catalog for the app and it contains all the app’s images. Right now, it is empty and contains just a placeholder for the app icon, which you’ll add soon.
+</p><div class="image-90"><img src="graphics/img85.png"  alt="" title="The asset catalog is initially empty" /></div>
+<p>➤ At the bottom of the secondary pane, the one with AppIcon, there is a <em>+</em> button. Click it and then select the <em>Import…</em> option:
+</p><div class="image-40"><img src="graphics/img86.png"  alt="" title="Choose Import to put existing images into the asset catalog" /></div>
+<p>Xcode shows a file picker. Select the <em>Images</em> folder from the resources and press <em>⌘+A</em> to select all the files inside this folder.
+</p><div class="image-60"><img src="graphics/img87.png"  alt="" title="Choosing the images to import" /></div>
+<p>Click <em>Open</em> and Xcode copies all the image files from that folder into the asset catalog:
+</p><div class="image-60"><img src="graphics/img88.png"  alt="" title="The images are now inside the asset catalog" /></div>
+<p>If Xcode added a folder named “Images” instead of the individual image files, then try again and this time make sure that you select the files inside the Images folder rather than the folder itself before you click Open.
+</p>
+<div class="note">
+<p><em>Note:</em> Instead of using the <em>Import…</em> menu option as above, you could also simply drag the necessary files from Finder on to the Xcode asset catalog view. As ever, there&apos;s more than one way to do the same thing in Xcode.
+</p></div>
+
+<h4 class="segment-chapter">1x, 2x, and 3x displays</h4>
+
+<p>Each image set in the asset catalog has a slot for a “2x” image, but you can also specify 1x and 3x images. Having multiple versions of the same image in varying sizes allows your apps to support the wide variety of iPhone and iPad displays in existence.
+</p>
+<p><em>1x</em> is for low-resolution screens, the ones with the big, chunky pixels. There are no low-resolution devices in existence that can actually run iOS 12 – they are too old to bother with – so you’re not likely to come across many 1x images anymore. 1x is only a concern if you’re working on an app that still needs to support iOS 9 or older.
+</p>
+<p><em>2x</em> is for high-resolution Retina screens. This covers most modern iPhones, iPod touches, and iPads. Retina images are twice as big as the low-res images, hence the 2x. The images you imported just now are 2x images.
+</p>
+<p><em>3x</em> is for the super high-resolution Retina HD screen of the iPhone Plus devices. If you want your app to have extra sharp images on these top-of-the-line iPhone models, then you can drop them into the “3x” slot in the asset catalog.
+</p>
+<p>There is a special naming convention for image files. If the filename ends in <em>@2x</em> or <em>@3x</em> then that’s considered the Retina or Retina HD version. Low-resolution 1x images have no special name (you don’t have to write @1x).
+</p><div class="image-100"><img src="graphics/img89.png"  alt="" title="" /></div>
+<h3 class="segment-chapter">Put up the wallpaper</h3>
+
+<p>Let’s begin by changing the drab white background in <i>Bull&apos;s Eye</i> to something more fancy.
+</p>
+<p>➤ Open <em>Main.storyboard</em>, open the <em>Library</em> panel (via the top toolbar) and locate an <em>Image View</em>. (Tip: if you type “image” into the search box at the top of the Library panel, it will quickly filter out all the other views.)
+</p><div class="image-30"><img src="graphics/img90.png"  alt="" title="The Image View control in the Objects Library" /></div>
+<p>➤ Drag the image view on top of the existing user interface. It doesn’t really matter where you put it, as long as it’s inside the Bull’s Eye View Controller.
+</p><div class="image-70"><img src="graphics/img91.png"  alt="" title="Dragging the Image View into the view controller" /></div>
+<p>➤ With the image view still selected, go to the <em>Size inspector</em> (that’s the one next to the Attributes inspector) and set X and Y to 0, Width to 568 and Height to 320.
+</p>
+<p>This will make the image view cover the entire screen.
+</p><div class="image-30"><img src="graphics/img92.png"  alt="" title="The Size inspector settings for the Image View" /></div>
+<p>➤ Go to the <em>Attributes inspector</em> for the image view. At the top there is an option named <em>Image</em>. Click the downward arrow and choose <em>Background</em> from the list.
+</p>
+<p>This will put the image named “Background” from the asset catalog into the image view.
+</p><div class="image-30"><img src="graphics/img93.png"  alt="" title="Setting the background image on the Image View" /></div>
+<p>There is only one problem: the image now covers all the other controls. There is an easy fix for that; you have to move the image view behind the other views.
+</p>
+<p>➤ With the image view selected, in the <em>Editor</em> menu in Xcode’s menu bar at the top of the screen, choose <em>Arrange → Send to Back</em>.
+</p>
+<p>Sometimes Xcode gives you a hard time with this (it still has a few bugs) and you might not see the Send to Back item enabled. If so, try de-selecting the Image View and then selecting it again. Now the menu item should be available.
+</p>
+<p>Alternatively, pick up the image view in the Document Outline and drag it to the top of the list of views, just below Safe Area, to accomplish the same thing. (The items in the Document Outline view are listed so that the backmost item is at the top of the list and the frontmost one is at the bottom.)
+</p>
+<p>Your interface should now look something like this:
+</p><div class="image-60"><img src="graphics/img94.png"  alt="" title="The game with the new background image" /></div>
+<p>That takes care of the background. Run the app and marvel at the new graphics.
+</p>
+<h3 class="segment-chapter">Change the labels</h3>
+
+<p>Because the background image is quite dark, the black text labels have become hard to read. Fortunately, Interface Builder lets you change label color. While you’re at it, you might change the font as well.
+</p>
+<p>➤ Still in the storyboard, select the label at the top, open the <em>Attributes inspector</em> and click on the <em>Color</em> item to show a dropdown for color values. Select <em>Custom...</em> at the bottom of the list.
+</p><div class="image-80"><img src="graphics/img95.png"  alt="" title="Setting the text color on the label" /></div>
+<p>This opens the Color Picker, which has several ways to select colors. I prefer the sliders (second tab). If all you see is a gray scale slider, then select <em>RGB Sliders</em> from the picker at the top.
+</p><div class="image-30"><img src="graphics/img96.png"  alt="" title="The Color Picker" /></div>
+<p>➤ Pick a pure white color, Red: 255, Green: 255, Blue: 255, Opacity: 100%. Alternatively, you can simply pick <em>White Color</em> from the initial dropdown instead of opening the Color Picker at all, but it&apos;s good to know that the Color Picker is there in case you want to do custom colors.
+</p>
+<p>➤ Click on the <em>Shadow</em> item from the Attributes inspector. This lets you add a subtle shadow to the label. By default this color is transparent (also known as “Clear Color”) so you won’t see the shadow. Using the Color Picker, choose a pure black color that is half transparent, Red: 0, Green: 0, Blue: 0, Opacity: 50%.
+</p>
+<p><em>Note:</em> Sometimes when you change the Color or Shadow attributes, the background color of the view also changes. This is a bug in Xcode. Put it back to Clear Color if that happens.
+</p>
+<p>➤ Change the <em>Shadow Offset</em> to Width: 0, Height: 1. This puts the shadow below the label.
+</p>
+<p>The shadow you’ve chosen is very subtle. If you’re not sure that it’s actually visible, then toggle the height offset between 1 and 0 a few times. Look closely and you should be able to see the difference. As I said, it’s very subtle.
+</p>
+<p>➤ Click on the <em>[</em><em>T</em><em>]</em> icon of the <em>Font</em> attribute. This opens the Font Picker.
+</p>
+<p>By default, the System font is selected. That uses whatever is the standard system font for the user’s device. The system font is nice enough but we want something more exciting for this game.
+</p><div class="image-35"><img src="graphics/img97.png"  alt="" title="Font picker with the System font" /></div>
+<p>➤ Choose <em>Font: Custom</em>. That enables the Family field. Choose <em>Family: Arial Rounded MT Bold</em>. Set the Size to 16.
+</p><div class="image-80"><img src="graphics/img98.png"  alt="" title="Setting the label’s font" /></div>
+<p>➤ The label also has an attribute <em>Autoshrink</em>. Make sure this is set to <em>Fixed Font Size</em>.
+</p>
+<p>If enabled, Autoshrink will dynamically change the size of the font if the text is larger than will fit into the label. That is useful in certain apps, but not in this one. Instead, you’ll change the size of the label to fit the text rather than the other way around.
+</p>
+<p>➤ With the label selected, press <em>⌘=</em> on your keyboard, or choose <em>Size to Fit Content</em> from the <em>Editor</em> menu.
+</p>
+<p>(If the Size to Fit Content menu item is disabled, then de-select the label and select it again. Sometimes Xcode gets confused about what is selected. Poor thing.)
+</p>
+<p>The label will now become slightly larger or smaller so that it fits snugly around the text. If the text got cut off when you changed the font, now all the text will show again.
+</p>
+<p>You don’t have to set these properties for the other labels one by one; that would be a big chore. You can speed up the process by selecting multiple labels and then applying these changes to that entire selection.
+</p>
+<p>➤ Click on the <em>Score:</em> label to select it. Hold <em>⌘</em> and click on the <em>Round:</em> label. Now both labels will be selected. Repeat what you did above for these labels:
+</p>
+<ul>
+<li>
+<p>Set Color to pure white, 100% opaque.
+</p></li>
+
+<li>
+<p>Set Shadow to pure black, 50% opaque.
+</p></li>
+
+<li>
+<p>Set Shadow Offset to width 0, height 1.
+</p></li>
+
+<li>
+<p>Set Font to Arial Rounded MT Bold, size 16.
+</p></li>
+
+<li>
+<p>Make sure Autoshrink is set to Fixed Font Size.
+</p></li>
+</ul>
+
+<p>As you can see, in my storyboard the text no longer fits into the Score and Round labels:
+</p><div class="image-80"><img src="graphics/img99.png"  alt="" title="The font is too large to fit all the text in the Score and Round labels" /></div>
+<p>You can either make the labels larger by dragging their handles to resize them manually, or you can use the <em>Size to Fit Content</em> option (<em>⌘=</em>). I prefer the latter because it’s less work.
+</p>
+<p><em>Tip:</em> Xcode is smart enough to remember the colors you have used recently. Instead of going into the Color Picker all the time, you can simply choose a color from the Recently Used Colors menu which is part of the dropdown you get when you click on any color option:
+</p><div class="image-35"><img src="graphics/img100.png"  alt="" title="Quick access to recently used colors and several handy presets" /></div>
+<div class="note">
+<p><em>Exercise:</em> You still have a few labels to go. Repeat what you just did for the other labels. They should all become white, have the same shadow and have the same font. However, the two labels on either side of the slider (1 and 100) will have font size 14, while the other labels (the ones that will hold the target value, the score and the round number) will have font size 20 so they stand out more.
+</p></div>
+
+<p>Because you’ve changed the sizes of some of the labels, your carefully constructed layout may have been messed up a bit. You may want to clean it up a little.
+</p>
+<p>At this point, the game screen should look something like this:
+</p><div class="image-65"><img src="graphics/img101.png"  alt="" title="What the storyboard looks like after styling the labels" /></div>
+<p>All right, it’s starting to look like something now. By the way, feel free to experiment with the fonts and colors. If you want to make it look completely different, then go right ahead. It’s your app!
+</p>
+<h3 class="segment-chapter">The buttons</h3>
+
+<p>Changing the look of the buttons works very much the same way.
+</p>
+<p>➤ Select the <em>Hit Me</em><em>!</em> button. In the <em>Size inspector</em> set its Width to 100 and its Height to 37.
+</p>
+<p>➤ Center the position of the button on the inner circle of the background image.
+</p>
+<p>➤ Go to the <em>Attributes inspector</em>. Change <em>Type</em> from System to <em>Custom</em>.
+</p>
+<p>A “system” button just has a label and no border. By making it a custom button, you can style it any way you wish.
+</p>
+<p>➤ Still in the <em>Attributes inspector</em>, press the arrow on the <em>Background</em> field and choose <em>Button-Normal</em> from the list.
+</p>
+<p>➤ Set the <em>Font</em> to <em>Arial Rounded MT Bold</em>, size 20.
+</p>
+<p>➤ Set the <em>Text Color</em> to red: 96, green: 30, blue: 0, opacity: 100%. This is a dark brown color.
+</p>
+<p>➤ Set the <em>Shadow Color</em> to pure white, 50% opacity. The shadow offset should be Width 0, Height 1.
+</p>
+<div class="note">
+<p><em>Blending in</em>
+</p>
+<p>Setting the opacity to anything less than 100% will make the color slightly transparent (with opacity of 0% being fully transparent). Partial transparency makes the color blend in with the background and makes it appear softer.
+</p>
+<p>Try setting the shadow color to 100% opaque pure white and notice the difference.
+</p></div>
+
+<p>This finishes the setup for the Hit Me! button in its “default” state:
+</p><div class="image-30"><img src="graphics/img102.png"  alt="" title="The attributes for the Hit Me button in the default state" /></div>
+<p>Buttons can have more than one state. When you tap a button and hold it down, it should appear “pressed down” to let you know that the button will be activated when you lift your finger. This is known as the <i>highlighted</i> state and is an important visual cue to the user.
+</p>
+<p>➤ With the button still selected, click the <em>State Config</em> setting and pick <em>Highlighted</em> from the menu. Now the attributes in this section reflect the highlighted state of the button.
+</p>
+<p>➤ In the <em>Background</em> field, select <em>Button-Highlighted</em>.
+</p>
+<p>➤ Make sure the highlighted <em>Text Color</em> is the same color as before (red 96, green 30, blue 0, or simply pick it from the Recently Used Colors menu). Change the <em>Shadow Color</em> to half-transparent white again.
+</p>
+<p>➤ Check the <em>Reverses On Highlight</em> option. This will give the appearance of the label being pressed down when the user taps the button.
+</p>
+<p>You could change the other properties too, but don’t get too carried away. The highlight effect should not be too jarring.
+</p><div class="image-30"><img src="graphics/img103.png"  alt="" title="The attributes for the highlighted Hit Me button" /></div>
+<p>To test the highlighted look of the button in Interface Builder you can toggle the <em>Highlighted</em> box in the <em>Control</em> section, but make sure to turn it off again or the button will initially appear highlighted when the screen is shown.
+</p>
+<p>That’s it for the Hit Me! button. Styling the Start Over button is very similar, except you will replace its title text with an icon.
+</p>
+<p>➤ Select the <em>Start Over</em> button and change the following attributes:
+</p>
+<ul>
+<li>
+<p>Set Type to Custom.
+</p></li>
+
+<li>
+<p>Remove the text “Start Over” from the button.
+</p></li>
+
+<li>
+<p>For Image choose <em>StartOverIcon</em>
+</p></li>
+
+<li>
+<p>For Background choose <em>SmallButton</em>
+</p></li>
+
+<li>
+<p>Set Width and Height to 32.
+</p></li>
+</ul>
+
+<p>You won’t set a highlighted state on this button - let UIKit take care of this. If you don’t specify a different image for the highlighted state, UIKit will automatically darken the button to indicate that it is pressed.
+</p>
+<p>➤ Make the same changes to the <em>ⓘ</em> button, but this time choose <em>InfoButton</em> for the image.
+</p>
+<p>The user interface is almost done. Only the slider is left…
+</p><div class="image-60"><img src="graphics/img104.png"  alt="" title="Almost done!" /></div>
+<h3 class="segment-chapter">The slider</h3>
+
+<p>Unfortunately, you can only customize the slider a little bit in Interface Builder. For the more advanced customization that this game needs – putting your own images on the thumb and the track – you have to resort to writing code.
+</p>
+<p>Do note that everything you&apos;ve done so far in Interface Builder you could also have done in code. Setting the color on a button, for example, can be done by sending the <code>setTitleColor()</code> message to the button. (You would normally do this in <code>viewDidLoad</code>.)
+</p>
+<p>However, I find that doing visual design work is much easier and quicker in a visual editor such as Interface Builder than writing the equivalent source code. But for the slider you have no choice.
+</p>
+<p>➤ Go to <em>ViewController.swift</em>, and add the following to <code>viewDidLoad()</code>:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> thumbImageNormal = <span class="hljs-type">UIImage</span>(named: <span class="hljs-string">"SliderThumb-Normal"</span>)!
+slider.setThumbImage(thumbImageNormal, <span class="hljs-keyword">for</span>: .normal)
+
+<span class="hljs-keyword">let</span> thumbImageHighlighted = <span class="hljs-type">UIImage</span>(named: <span class="hljs-string">"SliderThumb-Highlighted"</span>)!
+slider.setThumbImage(thumbImageHighlighted, <span class="hljs-keyword">for</span>: .highlighted)
+
+<span class="hljs-keyword">let</span> insets = <span class="hljs-type">UIEdgeInsets</span>(top: <span class="hljs-number">0</span>, <span class="hljs-keyword">left</span>: <span class="hljs-number">14</span>, bottom: <span class="hljs-number">0</span>, <span class="hljs-keyword">right</span>: <span class="hljs-number">14</span>)
+
+<span class="hljs-keyword">let</span> trackLeftImage = <span class="hljs-type">UIImage</span>(named: <span class="hljs-string">"SliderTrackLeft"</span>)!
+<span class="hljs-keyword">let</span> trackLeftResizable =
+                 trackLeftImage.resizableImage(withCapInsets: insets)
+slider.setMinimumTrackImage(trackLeftResizable, <span class="hljs-keyword">for</span>: .normal)
+
+<span class="hljs-keyword">let</span> trackRightImage = <span class="hljs-type">UIImage</span>(named: <span class="hljs-string">"SliderTrackRight"</span>)!
+<span class="hljs-keyword">let</span> trackRightResizable =
+                 trackRightImage.resizableImage(withCapInsets: insets)
+slider.setMaximumTrackImage(trackRightResizable, <span class="hljs-keyword">for</span>: .normal)</pre>
+<p>This sets four images on the slider: two for the thumb and two for the track. (And if you&apos;re wondering what the &quot;thumb&quot; is, that&apos;s the little circle in the center of the slider, the one that you drag around to set the slider value.)
+</p>
+<p>The thumb works like a button so it gets an image for the normal (un-pressed) state and one for the highlighted state.
+</p>
+<p>The slider uses different images for the track on the left of the thumb (green) and the track to the right of the thumb (gray).
+</p>
+<p>➤ Run the app. You have to admit it looks fantastic now!
+</p><div class="image-60"><img src="graphics/img105.png"  alt="" title="The game with the customized slider graphics" /></div>
+<div class="note">
+<p><em>To .png or not to .png</em>
+</p>
+<p>If you recall, the images that you imported into the asset catalog had filenames like <em>SliderThumb-Normal@2x.png</em> and so on.
+</p>
+<p>When you create a <code>UIImage</code> object, you don’t use the original filename but the name that is listed in the asset catalog, <em>SliderThumb-Normal</em>.
+</p>
+<p>That means you can leave off the <em>@2x</em> bit and the <em>.</em><em>png</em> file extension.
+</p></div>
+
+<h2 class="segment-chapter">The About Screen</h2>
+
+<p>Your game looks awesome and your to-do list is done. So, does this mean that you are done with <i>Bull&apos;s Eye</i>?
+</p>
+<p>Not so fast :] Remember the <em>ⓘ</em> button on the game screen? Try tapping it. Does it do anything? No?
+</p>
+<p>Ooops! Looks as if we forgot to add any functionality to that button! It&apos;s time to rectify that - let&apos;s add an &quot;about&quot; screen to the game which shows some information about the game and have it display when the user taps on the <em>ⓘ</em> button.
+</p>
+<p>Initially, the screen will look something like this (but we&apos;ll prettify it soon enough):
+</p><div class="image-60"><img src="graphics/img106.png"  alt="" title="The new About screen" /></div>
+<p>This new screen contains a <i>text view</i> with the gameplay rules and a button to close the screen.
+</p>
+<p>Most apps have more than one screen, even very simple games. So, this is as good a time as any to learn how to add additional screens to your apps.
+</p>
+<p>I have pointed it out a few times already: each screen in your app will have its own view controller. If you think “screen”, think “view controller”.
+</p>
+<p>Xcode automatically created the main <code>ViewController</code> object for you, but you’ll have to create the view controller for the About screen yourself.
+</p>
+<h3 class="segment-chapter">Add a new view controller</h3>
+
+<p>➤ Go to Xcode’s <em>File</em> menu and choose <em>New → File…</em> In the window that pops up, choose the <em>Cocoa Touch Class</em> template (if you don’t see it then make sure <em>iOS</em> is selected at the top).
+</p><div class="image-55"><img src="graphics/img107.png"  alt="" title="Choosing the file template for Cocoa Touch Class" /></div>
+<p>Click <em>Next</em>. Xcode gives you some options to fill out:
+</p><div class="image-65"><img src="graphics/img108.png"  alt="" title="The options for the new file" /></div>
+<p>Choose the following:
+</p>
+<ul>
+<li>
+<p>Class: <em>AboutViewController</em>
+</p></li>
+
+<li>
+<p>Subclass of: <em>UIViewController</em>
+</p></li>
+
+<li>
+<p>Also create XIB file: Leave this box unchecked.
+</p></li>
+
+<li>
+<p>Language: <em>Swift</em>
+</p></li>
+</ul>
+
+<p>Click <em>Next</em>. Xcode will ask you where to save this new view controller.
+</p><div class="image-50"><img src="graphics/img109.png"  alt="" title="Saving the new file" /></div>
+<p>➤ Choose the <em>BullsEye</em> folder (this folder should already be selected).
+</p>
+<p>Also make sure <em>Group</em> says <em>BullsEye</em> and that there is a checkmark in front of BullsEye in the list of <em>Targets</em>. (If you don’t see this panel, click the Options button at the bottom of the dialog.)
+</p>
+<p>➤ Click <em>Create</em>.
+</p>
+<p>Xcode will create a new file and add it to your project. As you might have guessed, the new file is <em>AboutViewController.swift</em>.
+</p>
+<h3 class="segment-chapter">Design the view controller in Interface Builder</h3>
+
+<p>To design this new view controller, you need to pay a visit to Interface Builder.
+</p>
+<p>➤ Open <em>Main.storyboard</em>. There is no scene representing the About view controller in the storyboard yet. So, you’ll have to add this first.
+</p>
+<p>➤ From the <em>Library</em>, choose <em>View Controller</em> and drag it on to the canvas, to the right of the main View Controller.
+</p><div class="image-70"><img src="graphics/img110.png"  alt="" title="Dragging a new View Controller from the Objects Library" /></div>
+<p>This new view controller is totally blank. You may need to rearrange the storyboard so that the two view controllers don’t overlap. Interface Builder isn’t very tidy about where it puts things.
+</p>
+<p>➤ Drag a new <em>Button</em> on to the screen and give it the title <em>Close</em>. Put it somewhere around the bottom center of the view (use the blue guidelines to help with positioning).
+</p>
+<p>➤ Drag a <em>Text View</em> on to the view and make it cover most of the space above the button.
+</p>
+<p>You can find these components in the Library. If you don’t feel like scrolling, you can filter the components by typing in the field at the top:
+</p><div class="image-30"><img src="graphics/img111.png"  alt="" title="Searching for text components" /></div>
+<p>Note that there is also a Text Field, which is a single-line text component - that&apos;s not what you want. You’re looking for Text View, which can contain multiple lines of text.
+</p>
+<p>After dragging both the text view and the button on to the canvas, it should look something like this:
+</p><div class="image-50"><img src="graphics/img112.png"  alt="" title="The About screen in the storyboard" /></div>
+<p>➤ Double-click the text view to make its content is editable. By default, the Text View contains a bunch of Latin placeholder text (also known as “Lorem Ipsum”).
+</p>
+<p>Enter this new text into the Text View:
+</p><pre class="code-block">*** Bull’s Eye ***
+
+Welcome to the awesome game of Bull’s Eye where you can win points and fame by dragging a slider.
+
+Your goal is to place the slider as close as possible to the target value. The closer you are, the more points you score. Enjoy!</pre>
+<p>You can also enter that text into the Attributes inspector&apos;s <em>Text</em> property for the text view if you find that easier.
+</p>
+<p>➤ Make sure to uncheck the <em>Editable</em> checkbox in the Attribute Inspector. Otherwise, the user can actually type into the text view and you don&apos;t want that.
+</p><div class="image-25"><img src="graphics/img113.png"  alt="" title="The Attributes inspector for the text view" /></div>
+<p>That’s the design of the screen done for now.
+</p>
+<h3 class="segment-chapter">Show the new view controller</h3>
+
+<p>So how do you open this new About screen when the user presses the <em>ⓘ</em> button? Storyboards have a neat trick for this: <i>segues</i> (pronounced “seg-way” like the silly scooters). A segue is a transition from one screen to another. They are really easy to add.
+</p>
+<p>➤ Click the <em>ⓘ</em> button in the <em>View Controller</em> to select it. Then hold down <em>Control</em> and drag over to the <em>About</em> screen.
+</p><div class="image-80"><img src="graphics/img114.png"  alt="" title="Control-drag from one view controller to another to make a segue" /></div>
+<p>➤ Let go of the mouse button and a popup appears with several options. Choose <em>Present Modally</em>.
+</p><div class="image-20"><img src="graphics/img115.png"  alt="" title="Choosing the type of segue to create" /></div>
+<p>Now an arrow will appear between the two screens. This arrow represents the segue from the main scene to the About scene.
+</p>
+<p>➤ Click the arrow to select it. Segues also have attributes. In the <em>Attributes inspector</em>, choose <em>Transition</em>, <em>Flip Horizontal</em>. That is the animation that UIKit will use to move between these screens.
+</p><div class="image-90"><img src="graphics/img116.png"  alt="" title="Changing the attributes for the segue" /></div>
+<p>➤ Now you can run the app. Press the <em>ⓘ</em> button to see the new screen.
+</p><div class="image-40"><img src="graphics/img117.png"  alt="" title="The About screen appears with a flip animation" /></div>
+<p>The About screen should appear with a neat animation. Good, that seems to work.
+</p>
+<h3 class="segment-chapter">Dismiss the About view controller</h3>
+
+<p>Did you notice that there&apos;s an obvious issue here? Tapping the Close button seems to have no effect. Once the user enters the About screen they can never leave… that doesn’t sound like good user interface design, does it?
+</p>
+<p>The problem with segues is that they only go one way. To close this screen, you have to hook up some code to the Close button. As a budding iOS developer you already know how to do that: use an action method!
+</p>
+<p>This time you will add the action method to <code>AboutViewController</code> instead of <code>ViewController</code>, because the Close button is part of the About screen, not the main game screen.
+</p>
+<p>➤ Open <em>AboutViewController.swift</em> and replace its contents with the following:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> UIKit
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AboutViewController</span>: <span class="hljs-title">UIViewController</span> </span>{
+  <span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">close</span><span class="hljs-params">()</span></span> {
+    dismiss(animated: <span class="hljs-literal">true</span>, completion: <span class="hljs-literal">nil</span>)
+  }
+}</pre>
+<p>The code in the <code>close()</code> action method tells UIKit to close the About screen with an animation.
+</p>
+<p>If you had said <code>dismiss(animated: false, …)</code>, then there would be no page flip and the main screen would instantly reappear. From a user experience perspective, it’s often better to show transitions from one screen to another via an animation.
+</p>
+<p>That leaves you with one final step, hooking up the Close button’s Touch Up Inside event to this new <code>close</code> action.
+</p>
+<p>➤ Open the storyboard and Control-drag from the <em>Close</em> button to the About scene’s View Controller. Hmm, strange, the <em>close</em> action should be listed in this popup, but it isn’t. Instead, this is the same popup you saw when you made the segue:
+</p><div class="image-20"><img src="graphics/img118.png"  alt="" title="The “close” action is not listed in the popup" /></div>
+<div class="note">
+<p><em>Exercise:</em> Bonus points if you can spot the error. It’s a very common – and frustrating! – mistake.
+</p></div>
+
+<p>The problem is that this scene in the storyboard doesn&apos;t know yet that it is supposed to represent the <code>AboutViewController</code>.
+</p>
+<h3 class="segment-chapter">Set the class for a view controller</h3>
+
+<p>You first added the AboutViewController.swift source file, and then dragged a new view controller on to the storyboard. But, you haven’t told the storyboard that the design for this new view controller belongs to <code>AboutViewController</code>. (That’s why in the Document Outline it just says View Controller and not About View Controller.)
+</p>
+<p>➤ Fortunately, this is easily remedied. In Interface Builder, select the About scene’s <em>View Controller</em> and go to the <em>Identity inspector</em> (that’s the tab/icon to the left of the Attributes inspector).
+</p>
+<p>➤ Under <em>Custom Class</em>, enter <em>AboutViewController</em>.
+</p><div class="image-90"><img src="graphics/img119.png"  alt="" title="The Identity inspector for the About screen" /></div>
+<p>Xcode should auto-complete this for you once you type the first few characters. If it doesn’t, then double-check that you really have selected the View Controller and not one of the views inside it. (The view controller should also have a blue border on the storyboard to indicate it is selected.)
+</p>
+<p>Now you should be able to connect the Close button to the action method.
+</p>
+<p>➤ Control-drag from the <em>Close</em> button to <em>About View Controller</em> in the Document Outline (or to the yellow circle at the top of the scene in the storyboard). This should be old hat by now. The popup menu now does have an option for the <em>close</em> action (under Sent Events). Connect the button to that action.
+</p>
+<p>➤ Run the app again. You should now be able to return from the About screen.
+</p>
+<p>OK, that does get us a working about screen, but it does look a little plain doesn&apos;t it? What if you added some of the design changes you made to the main screen?
+</p>
+<div class="note">
+<p><em>Exercise:</em> Add a background image to the About screen. Also, change the Close button on the About screen to look like the Hit Me! button and play around with the Text View properties in the Attribute Inspector. You should be able to do this by yourself now. Piece of cake! Refer back to the instructions for the main screen if you get stuck.
+</p></div>
+
+<p>When you are done, you should have an About screen which looks something like this:
+</p><div class="image-60"><img src="graphics/img120.png"  alt="" title="The new and improved About screen" /></div>
+<p>That looks good, but it could be better :] So how do you improve upon it?
+</p>
+<h3 class="segment-chapter">Use a web view for HTML content</h3>
+
+<p>➤ Now select the <em>text view</em> and press the <em>Delete</em> key on your keyboard. (Yep, you’re throwing it away, and after all those changes, too! But don&apos;t grieve for the Text View too much, you&apos;ll replace it with something better.)
+</p>
+<p>➤ Put a <em>WebKit View</em> in its place (as always, you can find this view in the Objects Library). There are two web view options - an older Web View, which is deprecated, or ready to be retired, and the WebKit View. Make sure that you select the WebKit View.
+</p>
+<p>This view can show web pages. All you have to do is give it the URL to a web site or the name of a file to load. The WebKit View object is named <code>WKWebView</code>.
+</p>
+<p>For this app, you will make it display a static HTML page from the application bundle, so it won’t actually have to go online and download anything.
+</p>
+<p>➤ Go to the <em>Project navigator</em> and right-click on the <em>BullsEye</em> group (the yellow folder). From the menu, choose <em>Add Files to “BullsEye”…</em>
+</p><div class="image-50"><img src="graphics/img121.png"  alt="" title="Using the right-click menu to add existing files to the project" /></div>
+<p>➤ In the file picker, select the <em>BullsEye.html</em> file from the Resources folder. This is an HTML5 document that contains the gameplay instructions.
+</p><div class="image-60"><img src="graphics/img122.png"  alt="" title="Choosing the file to add" /></div>
+<p>Make sure that <em>Copy items if needed</em> is selected and that under <em>Add to targets</em>, there is a checkmark in front of <em>BullsEye</em>. (If you don’t see these options, click the Options button at the bottom of the dialog.)
+</p>
+<p>➤ Press <em>Add</em> to add the HTML file to the project.
+</p>
+<p>➤ In <em>AboutViewController.swift</em>, add an outlet for the web view:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AboutViewController</span>: <span class="hljs-title">UIViewController</span> </span>{
+  <span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> webView: <span class="hljs-type">WKWebView</span>!
+  . . .
+}</pre>
+<p>Xcode will complain soon after you add the above line. The error should look something like this:
+</p><div class="image-60"><img src="graphics/img123.png"  alt="" title="Xcode complains about WKWebView" /></div>
+<p>What does this error mean? It means that Xcode, or rather the compiler, does not know what <code>WKWebView</code> is.
+</p>
+<p>But how can that be? We selected the component from Xcode&apos;s own Objects Library and so it should be supported, right?
+</p>
+<p>The answer to this lies with this line of code at the top of both your view controller source files:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> UIKit</pre>
+<p>I&apos;m sure you saw this line and wondered what it was about. That statement tells the compiler that you want to use the objects from a framework named <code>UIKit</code>. Frameworks, or libraries if you prefer, bundle together one or more objects which perform a particular type of task (or tasks). The <code>UIKit</code> library provides all ther UI components for iOS.
+</p>
+<p>So why does <code>UIKit</code> not contain <code>WKWebView</code>, you ask? That&apos;s because the previously mentioned deprecated WebView is the one which is included with <code>UIKit</code>. The newer (and improved) <code>WKWebView</code> comes from a different framework called <code>WebKit</code>.
+</p>
+<p>➤ Add the following code at the top of <em>AboutViewController.swift</em>, right below the existing <code>import</code> statement:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> WebKit</pre>
+<p>That tells the compiler that we want to use objects from the <code>WebKit</code> framework and since now the compiler knows about all the objects in the <code>WebKit</code> framework, the Xcode error will go away.
+</p>
+<p>➤ In the storyboard file, connect the <code>UIWebView</code> to this new outlet. The easiest way to do this is to Control-drag from <em>About View Controller</em> (in the Document Outline) to the <em>Web View</em>.
+</p>
+<p>➤ In <em>AboutViewController.swift</em>, add a <code>viewDidLoad()</code> implementation:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">super</span>.viewDidLoad()
+  
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> url = <span class="hljs-type">Bundle</span>.main.url(forResource: <span class="hljs-string">"BullsEye"</span>, 
+                             withExtension: <span class="hljs-string">"html"</span>) {
+    <span class="hljs-keyword">let</span> request = <span class="hljs-type">URLRequest</span>(url: url)
+    webView.load(request)
+  }
+}</pre>
+<p>This displays the HTML file using the web view.
+</p>
+<p>The code first gets the URL (Uniform Resource Locator) for the <em>BullsEye.html</em> file in the application bundle. A URL, as you might be familiar with from the Interwebs, is a way to identify the location of a resource, like a web page. Here, the URL provides the location of the HTML file in your application bundle.
+</p>
+<p>It then creates a <code>URLRequest</code> using that URL since that&apos;s one of the easiest ways to send a load request to the web view.
+</p>
+<p>Finally, the code asks the web view to load the contents specified by the URL request.
+</p>
+<p>➤ Run the app and press the info button. The About screen should appear with a description of the gameplay rules, this time in the form of an HTML document:
+</p><div class="image-50"><img src="graphics/img124.png"  alt="" title="The About screen in all its glory" /></div>
+<p>Congrats! This completes the game. All the functionality is there and – as far as I can tell – there are no bugs to spoil the fun.
+</p>
+<p>You can find the project files for the finished app under <em>07 - The New Look</em> in the Source Code folder.
+</p></body></html>

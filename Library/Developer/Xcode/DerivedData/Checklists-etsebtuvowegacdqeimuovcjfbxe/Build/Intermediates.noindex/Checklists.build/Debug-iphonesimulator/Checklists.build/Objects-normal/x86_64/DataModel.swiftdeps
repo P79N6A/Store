@@ -1,0 +1,487 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "DataModel"
+provides-nominal:
+- "10Checklists9DataModelC"
+provides-member:
+- ["10Checklists9DataModelC", ""]
+provides-dynamic-lookup:
+depends-top-level:
+- !private "+"
+- !private "=="
+- "AssignmentPrecedence"
+- !private "BooleanLiteralType"
+- "CastingPrecedence"
+- "Checklist"
+- !private "Data"
+- "DataModel"
+- !private "Dictionary"
+- !private "FileManager"
+- !private "FloatLiteralType"
+- "Int"
+- !private "IntegerLiteralType"
+- !private "PropertyListDecoder"
+- !private "PropertyListEncoder"
+- !private "String"
+- !private "StringLiteralType"
+- "URL"
+- !private "UserDefaults"
+- !private "print"
+depends-member:
+- !private ["Sa", "append"]
+- ["Sa", "init"]
+- !private ["Sa", "sort"]
+- !private ["Sa", "subscript"]
+- !private ["s13ArrayProtocolP", "append"]
+- ["s13ArrayProtocolP", "init"]
+- !private ["s13ArrayProtocolP", "sort"]
+- !private ["s13ArrayProtocolP", "subscript"]
+- !private ["SK", "WritingOptions"]
+- !private ["SK", "append"]
+- ["SK", "init"]
+- !private ["SK", "init"]
+- !private ["SK", "localizedStandardCompare"]
+- !private ["SK", "sort"]
+- !private ["SK", "subscript"]
+- !private ["SK", "write"]
+- !private ["Sb", "_getBuiltinLogicValue"]
+- !private ["s7CVarArgP", "_getBuiltinLogicValue"]
+- !private ["s7CVarArgP", "append"]
+- !private ["s7CVarArgP", "bool"]
+- !private ["s7CVarArgP", "default"]
+- ["s7CVarArgP", "init"]
+- !private ["s7CVarArgP", "init"]
+- !private ["s7CVarArgP", "integer"]
+- !private ["s7CVarArgP", "localizedStandardCompare"]
+- !private ["s7CVarArgP", "name"]
+- !private ["s7CVarArgP", "register"]
+- !private ["s7CVarArgP", "set"]
+- !private ["s7CVarArgP", "sort"]
+- !private ["s7CVarArgP", "standard"]
+- !private ["s7CVarArgP", "subscript"]
+- !private ["s7CVarArgP", "synchronize"]
+- !private ["s7CVarArgP", "urls"]
+- !private ["10Checklists9ChecklistC", "deinit"]
+- !private ["10Checklists9ChecklistC", "init"]
+- !private ["10Checklists9ChecklistC", "name"]
+- !private ["Sl", "WritingOptions"]
+- !private ["Sl", "append"]
+- ["Sl", "init"]
+- !private ["Sl", "init"]
+- !private ["Sl", "localizedStandardCompare"]
+- !private ["Sl", "sort"]
+- !private ["Sl", "subscript"]
+- !private ["Sl", "write"]
+- !private ["SL", "init"]
+- !private ["SL", "init"]
+- !private ["SL", "localizedStandardCompare"]
+- !private ["So18NSComparisonResultV", "orderedAscending"]
+- !private ["s28CustomDebugStringConvertibleP", "WritingOptions"]
+- !private ["s28CustomDebugStringConvertibleP", "append"]
+- !private ["s28CustomDebugStringConvertibleP", "appendingPathComponent"]
+- !private ["s28CustomDebugStringConvertibleP", "bool"]
+- !private ["s28CustomDebugStringConvertibleP", "default"]
+- ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "integer"]
+- !private ["s28CustomDebugStringConvertibleP", "localizedStandardCompare"]
+- !private ["s28CustomDebugStringConvertibleP", "name"]
+- !private ["s28CustomDebugStringConvertibleP", "register"]
+- !private ["s28CustomDebugStringConvertibleP", "set"]
+- !private ["s28CustomDebugStringConvertibleP", "sort"]
+- !private ["s28CustomDebugStringConvertibleP", "standard"]
+- !private ["s28CustomDebugStringConvertibleP", "subscript"]
+- !private ["s28CustomDebugStringConvertibleP", "synchronize"]
+- !private ["s28CustomDebugStringConvertibleP", "urls"]
+- !private ["s28CustomDebugStringConvertibleP", "write"]
+- !private ["s29CustomPlaygroundQuickLookableP", "_getBuiltinLogicValue"]
+- !private ["s29CustomPlaygroundQuickLookableP", "appendingPathComponent"]
+- !private ["s29CustomPlaygroundQuickLookableP", "init"]
+- !private ["s29CustomPlaygroundQuickLookableP", "init"]
+- !private ["s29CustomPlaygroundQuickLookableP", "localizedStandardCompare"]
+- !private ["s17CustomReflectableP", "WritingOptions"]
+- !private ["s17CustomReflectableP", "_getBuiltinLogicValue"]
+- !private ["s17CustomReflectableP", "append"]
+- ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "localizedStandardCompare"]
+- !private ["s17CustomReflectableP", "sort"]
+- !private ["s17CustomReflectableP", "subscript"]
+- !private ["s17CustomReflectableP", "write"]
+- !private ["s23CustomStringConvertibleP", "WritingOptions"]
+- !private ["s23CustomStringConvertibleP", "_getBuiltinLogicValue"]
+- !private ["s23CustomStringConvertibleP", "append"]
+- !private ["s23CustomStringConvertibleP", "appendingPathComponent"]
+- !private ["s23CustomStringConvertibleP", "bool"]
+- !private ["s23CustomStringConvertibleP", "default"]
+- ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "integer"]
+- !private ["s23CustomStringConvertibleP", "localizedStandardCompare"]
+- !private ["s23CustomStringConvertibleP", "name"]
+- !private ["s23CustomStringConvertibleP", "register"]
+- !private ["s23CustomStringConvertibleP", "set"]
+- !private ["s23CustomStringConvertibleP", "sort"]
+- !private ["s23CustomStringConvertibleP", "standard"]
+- !private ["s23CustomStringConvertibleP", "subscript"]
+- !private ["s23CustomStringConvertibleP", "synchronize"]
+- !private ["s23CustomStringConvertibleP", "urls"]
+- !private ["s23CustomStringConvertibleP", "write"]
+- !private ["10Foundation4DataV", "WritingOptions"]
+- !private ["10Foundation4DataV", "init"]
+- !private ["10Foundation4DataV", "write"]
+- ["10Checklists9DataModelC", "Checklist"]
+- !private ["10Checklists9DataModelC", "Data"]
+- !private ["10Checklists9DataModelC", "FileManager"]
+- ["10Checklists9DataModelC", "Int"]
+- !private ["10Checklists9DataModelC", "PropertyListDecoder"]
+- !private ["10Checklists9DataModelC", "PropertyListEncoder"]
+- !private ["10Checklists9DataModelC", "String"]
+- ["10Checklists9DataModelC", "URL"]
+- !private ["10Checklists9DataModelC", "UserDefaults"]
+- ["10Checklists9DataModelC", "dataFilePath"]
+- ["10Checklists9DataModelC", "deinit"]
+- ["10Checklists9DataModelC", "documentsDirectory"]
+- ["10Checklists9DataModelC", "handleFirstTime"]
+- ["10Checklists9DataModelC", "indexOfSelectedChecklist"]
+- ["10Checklists9DataModelC", "init"]
+- ["10Checklists9DataModelC", "lists"]
+- ["10Checklists9DataModelC", "loadChecklists"]
+- ["10Checklists9DataModelC", "nextChecklistItemID"]
+- !private ["10Checklists9DataModelC", "print"]
+- ["10Checklists9DataModelC", "registerDefaults"]
+- ["10Checklists9DataModelC", "saveChecklists"]
+- ["10Checklists9DataModelC", "sortChecklists"]
+- !private ["Se", "WritingOptions"]
+- !private ["Se", "_getBuiltinLogicValue"]
+- !private ["Se", "append"]
+- !private ["Se", "appendingPathComponent"]
+- ["Se", "init"]
+- !private ["Se", "init"]
+- !private ["Se", "localizedStandardCompare"]
+- !private ["Se", "name"]
+- !private ["Se", "sort"]
+- !private ["Se", "subscript"]
+- !private ["Se", "write"]
+- !private ["SE", "WritingOptions"]
+- !private ["SE", "_getBuiltinLogicValue"]
+- !private ["SE", "append"]
+- !private ["SE", "appendingPathComponent"]
+- ["SE", "init"]
+- !private ["SE", "init"]
+- !private ["SE", "localizedStandardCompare"]
+- !private ["SE", "name"]
+- !private ["SE", "sort"]
+- !private ["SE", "subscript"]
+- !private ["SE", "write"]
+- !private ["SQ", "WritingOptions"]
+- !private ["SQ", "_getBuiltinLogicValue"]
+- !private ["SQ", "append"]
+- !private ["SQ", "appendingPathComponent"]
+- !private ["SQ", "atomic"]
+- !private ["SQ", "bool"]
+- !private ["SQ", "default"]
+- !private ["SQ", "documentDirectory"]
+- ["SQ", "init"]
+- !private ["SQ", "init"]
+- !private ["SQ", "integer"]
+- !private ["SQ", "localizedStandardCompare"]
+- !private ["SQ", "name"]
+- !private ["SQ", "orderedAscending"]
+- !private ["SQ", "register"]
+- !private ["SQ", "set"]
+- !private ["SQ", "sort"]
+- !private ["SQ", "standard"]
+- !private ["SQ", "subscript"]
+- !private ["SQ", "synchronize"]
+- !private ["SQ", "urls"]
+- !private ["SQ", "userDomainMask"]
+- !private ["SQ", "write"]
+- !private ["s5ErrorP", "localizedDescription"]
+- !private ["s25ExpressibleByArrayLiteralP", "append"]
+- !private ["s25ExpressibleByArrayLiteralP", "atomic"]
+- ["s25ExpressibleByArrayLiteralP", "init"]
+- !private ["s25ExpressibleByArrayLiteralP", "sort"]
+- !private ["s25ExpressibleByArrayLiteralP", "subscript"]
+- !private ["s25ExpressibleByArrayLiteralP", "userDomainMask"]
+- !private ["s27ExpressibleByBooleanLiteralP", "_getBuiltinLogicValue"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "localizedStandardCompare"]
+- !private ["s26ExpressibleByStringLiteralP", "init"]
+- !private ["s26ExpressibleByStringLiteralP", "init"]
+- !private ["s26ExpressibleByStringLiteralP", "localizedStandardCompare"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "init"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "init"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "localizedStandardCompare"]
+- !private ["So13NSFileManagerC", "default"]
+- !private ["So13NSFileManagerC", "urls"]
+- !private ["SH", "WritingOptions"]
+- !private ["SH", "_getBuiltinLogicValue"]
+- !private ["SH", "append"]
+- !private ["SH", "appendingPathComponent"]
+- !private ["SH", "bool"]
+- !private ["SH", "default"]
+- !private ["SH", "documentDirectory"]
+- ["SH", "init"]
+- !private ["SH", "init"]
+- !private ["SH", "integer"]
+- !private ["SH", "localizedStandardCompare"]
+- !private ["SH", "name"]
+- !private ["SH", "orderedAscending"]
+- !private ["SH", "register"]
+- !private ["SH", "set"]
+- !private ["SH", "sort"]
+- !private ["SH", "standard"]
+- !private ["SH", "subscript"]
+- !private ["SH", "synchronize"]
+- !private ["SH", "urls"]
+- !private ["SH", "write"]
+- !private ["s25LosslessStringConvertibleP", "_getBuiltinLogicValue"]
+- !private ["s25LosslessStringConvertibleP", "init"]
+- !private ["s25LosslessStringConvertibleP", "init"]
+- !private ["s25LosslessStringConvertibleP", "localizedStandardCompare"]
+- !private ["s10MirrorPathP", "init"]
+- !private ["s10MirrorPathP", "init"]
+- !private ["s10MirrorPathP", "localizedStandardCompare"]
+- !private ["SM", "WritingOptions"]
+- !private ["SM", "append"]
+- ["SM", "init"]
+- !private ["SM", "sort"]
+- !private ["SM", "subscript"]
+- !private ["SM", "write"]
+- !private ["So8NSCodingP", "localizedStandardCompare"]
+- !private ["So9NSCopyingP", "localizedStandardCompare"]
+- !private ["So21NSItemProviderReadingP", "localizedStandardCompare"]
+- !private ["So21NSItemProviderWritingP", "localizedStandardCompare"]
+- !private ["So16NSMutableCopyingP", "localizedStandardCompare"]
+- !private ["So8NSObjectC", "bool"]
+- !private ["So8NSObjectC", "default"]
+- !private ["So8NSObjectC", "integer"]
+- !private ["So8NSObjectC", "localizedStandardCompare"]
+- !private ["So8NSObjectC", "name"]
+- !private ["So8NSObjectC", "register"]
+- !private ["So8NSObjectC", "set"]
+- !private ["So8NSObjectC", "standard"]
+- !private ["So8NSObjectC", "synchronize"]
+- !private ["So8NSObjectC", "urls"]
+- !private ["So8NSObjectP", "bool"]
+- !private ["So8NSObjectP", "default"]
+- !private ["So8NSObjectP", "init"]
+- !private ["So8NSObjectP", "integer"]
+- !private ["So8NSObjectP", "localizedStandardCompare"]
+- !private ["So8NSObjectP", "name"]
+- !private ["So8NSObjectP", "register"]
+- !private ["So8NSObjectP", "set"]
+- !private ["So8NSObjectP", "standard"]
+- !private ["So8NSObjectP", "synchronize"]
+- !private ["So8NSObjectP", "urls"]
+- !private ["So14NSSecureCodingP", "localizedStandardCompare"]
+- !private ["So8NSStringC", "localizedStandardCompare"]
+- !private ["s9OptionSetP", "atomic"]
+- !private ["s9OptionSetP", "userDomainMask"]
+- !private ["10Foundation19PropertyListDecoderC", "decode"]
+- !private ["10Foundation19PropertyListDecoderC", "init"]
+- !private ["10Foundation19PropertyListEncoderC", "encode"]
+- !private ["10Foundation19PropertyListEncoderC", "init"]
+- !private ["Sk", "WritingOptions"]
+- !private ["Sk", "append"]
+- ["Sk", "init"]
+- !private ["Sk", "sort"]
+- !private ["Sk", "subscript"]
+- !private ["Sk", "write"]
+- !private ["Sm", "WritingOptions"]
+- !private ["Sm", "append"]
+- ["Sm", "init"]
+- !private ["Sm", "init"]
+- !private ["Sm", "localizedStandardCompare"]
+- !private ["Sm", "sort"]
+- !private ["Sm", "subscript"]
+- !private ["Sm", "write"]
+- !private ["SY", "atomic"]
+- !private ["SY", "documentDirectory"]
+- !private ["SY", "orderedAscending"]
+- !private ["SY", "userDomainMask"]
+- !private ["10Foundation20ReferenceConvertibleP", "WritingOptions"]
+- !private ["10Foundation20ReferenceConvertibleP", "appendingPathComponent"]
+- !private ["10Foundation20ReferenceConvertibleP", "init"]
+- !private ["10Foundation20ReferenceConvertibleP", "write"]
+- !private ["So21NSSearchPathDirectoryV", "documentDirectory"]
+- !private ["So22NSSearchPathDomainMaskV", "userDomainMask"]
+- !private ["ST", "WritingOptions"]
+- !private ["ST", "append"]
+- ["ST", "init"]
+- !private ["ST", "init"]
+- !private ["ST", "localizedStandardCompare"]
+- !private ["ST", "sort"]
+- !private ["ST", "subscript"]
+- !private ["ST", "write"]
+- !private ["s10SetAlgebraP", "atomic"]
+- !private ["s10SetAlgebraP", "userDomainMask"]
+- !private ["SS", "init"]
+- !private ["SS", "init"]
+- !private ["SS", "localizedStandardCompare"]
+- !private ["Sy", "init"]
+- !private ["Sy", "init"]
+- !private ["Sy", "localizedStandardCompare"]
+- !private ["s16TextOutputStreamP", "init"]
+- !private ["s16TextOutputStreamP", "init"]
+- !private ["s16TextOutputStreamP", "localizedStandardCompare"]
+- !private ["s20TextOutputStreamableP", "init"]
+- !private ["s20TextOutputStreamableP", "init"]
+- !private ["s20TextOutputStreamableP", "localizedStandardCompare"]
+- !private ["10Foundation3URLV", "appendingPathComponent"]
+- !private ["So14NSUserDefaultsC", "bool"]
+- !private ["So14NSUserDefaultsC", "integer"]
+- !private ["So14NSUserDefaultsC", "register"]
+- !private ["So14NSUserDefaultsC", "set"]
+- !private ["So14NSUserDefaultsC", "standard"]
+- !private ["So14NSUserDefaultsC", "synchronize"]
+- !private ["So20NSDataWritingOptionsV", "atomic"]
+- !private ["s24_DestructorSafeContainerP", "append"]
+- ["s24_DestructorSafeContainerP", "init"]
+- !private ["s24_DestructorSafeContainerP", "sort"]
+- !private ["s24_DestructorSafeContainerP", "subscript"]
+- !private ["s35_ExpressibleByBuiltinBooleanLiteralP", "_getBuiltinLogicValue"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "localizedStandardCompare"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "localizedStandardCompare"]
+- !private ["s39_ExpressibleByBuiltinUTF16StringLiteralP", "init"]
+- !private ["s39_ExpressibleByBuiltinUTF16StringLiteralP", "init"]
+- !private ["s39_ExpressibleByBuiltinUTF16StringLiteralP", "localizedStandardCompare"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "init"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "init"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "localizedStandardCompare"]
+- !private ["s34_ExpressibleByFileReferenceLiteralP", "appendingPathComponent"]
+- !private ["s33_ExpressibleByStringInterpolationP", "init"]
+- !private ["s33_ExpressibleByStringInterpolationP", "init"]
+- !private ["s33_ExpressibleByStringInterpolationP", "localizedStandardCompare"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "append"]
+- ["s35_HasCustomAnyHashableRepresentationP", "init"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "localizedStandardCompare"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "sort"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "subscript"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "bool"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "default"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "init"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "integer"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "localizedStandardCompare"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "name"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "register"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "set"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "standard"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "synchronize"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "urls"]
+- !private ["s21_ObjectiveCBridgeableP", "WritingOptions"]
+- !private ["s21_ObjectiveCBridgeableP", "_getBuiltinLogicValue"]
+- !private ["s21_ObjectiveCBridgeableP", "append"]
+- !private ["s21_ObjectiveCBridgeableP", "appendingPathComponent"]
+- ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s21_ObjectiveCBridgeableP", "localizedStandardCompare"]
+- !private ["s21_ObjectiveCBridgeableP", "sort"]
+- !private ["s21_ObjectiveCBridgeableP", "subscript"]
+- !private ["s21_ObjectiveCBridgeableP", "write"]
+- !private ["s16_SwiftStringViewP", "init"]
+- !private ["s16_SwiftStringViewP", "init"]
+- !private ["s16_SwiftStringViewP", "localizedStandardCompare"]
+depends-nominal:
+- "Sa"
+- "s13ArrayProtocolP"
+- "SK"
+- !private "Sb"
+- "s7CVarArgP"
+- !private "10Checklists9ChecklistC"
+- "Sl"
+- !private "SL"
+- !private "So18NSComparisonResultV"
+- "s28CustomDebugStringConvertibleP"
+- !private "s29CustomPlaygroundQuickLookableP"
+- "s17CustomReflectableP"
+- "s23CustomStringConvertibleP"
+- !private "10Foundation4DataV"
+- "10Checklists9DataModelC"
+- "Se"
+- "SE"
+- "SQ"
+- !private "s5ErrorP"
+- "s25ExpressibleByArrayLiteralP"
+- !private "s27ExpressibleByBooleanLiteralP"
+- !private "s43ExpressibleByExtendedGraphemeClusterLiteralP"
+- !private "s26ExpressibleByStringLiteralP"
+- !private "s33ExpressibleByUnicodeScalarLiteralP"
+- !private "So13NSFileManagerC"
+- "SH"
+- !private "s25LosslessStringConvertibleP"
+- !private "s10MirrorPathP"
+- "SM"
+- !private "So8NSCodingP"
+- !private "So9NSCopyingP"
+- !private "So21NSItemProviderReadingP"
+- !private "So21NSItemProviderWritingP"
+- !private "So16NSMutableCopyingP"
+- !private "So8NSObjectC"
+- !private "So8NSObjectP"
+- !private "So14NSSecureCodingP"
+- !private "So8NSStringC"
+- !private "s9OptionSetP"
+- !private "10Foundation19PropertyListDecoderC"
+- !private "10Foundation19PropertyListEncoderC"
+- "Sk"
+- "Sm"
+- !private "SY"
+- !private "10Foundation20ReferenceConvertibleP"
+- !private "So21NSSearchPathDirectoryV"
+- !private "So22NSSearchPathDomainMaskV"
+- "ST"
+- !private "s10SetAlgebraP"
+- !private "SS"
+- !private "Sy"
+- !private "s16TextOutputStreamP"
+- !private "s20TextOutputStreamableP"
+- !private "10Foundation3URLV"
+- !private "So14NSUserDefaultsC"
+- !private "So20NSDataWritingOptionsV"
+- "s24_DestructorSafeContainerP"
+- !private "s35_ExpressibleByBuiltinBooleanLiteralP"
+- !private "s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP"
+- !private "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "s39_ExpressibleByBuiltinUTF16StringLiteralP"
+- !private "s41_ExpressibleByBuiltinUnicodeScalarLiteralP"
+- !private "s34_ExpressibleByFileReferenceLiteralP"
+- !private "s33_ExpressibleByStringInterpolationP"
+- "s35_HasCustomAnyHashableRepresentationP"
+- !private "10Foundation27_KeyValueCodingAndObservingP"
+- "s21_ObjectiveCBridgeableP"
+- !private "s16_SwiftStringViewP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.apinotesc"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreImage.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/QuartzCore.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Metal.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Swift.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/UIKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.0.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.0.sdk/System/Library/Frameworks/OpenGLES.framework/Headers/OpenGLES.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.0.sdk/System/Library/Frameworks/CoreImage.framework/Headers/CoreImage.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.0.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/QuartzCore.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.0.sdk/System/Library/Frameworks/Metal.framework/Headers/Metal.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.0.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.0.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.0.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.0.sdk/System/Library/Frameworks/UserNotifications.framework/Headers/UserNotifications.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.0.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKit.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.0.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator12.0.sdk/System/Library/Frameworks/Security.framework/Headers/Security.apinotes"
+interface-hash: "f878ea979babe859b6845c9081352634"

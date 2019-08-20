@@ -1,0 +1,535 @@
+WEBVTT
+
+00:00.570 --> 00:06.120
+Das erste, was wir tun werden, ist ein Terminal zu öffnen und in Terminal navigieren
+
+00:06.120 --> 00:08.000
+wir zu unserem Desktop.
+
+00:08.010 --> 00:13.650
+Wenn Sie also nicht mit der Befehlszeile vertraut sind und Sie Marchal nicht in der Befehlszeile beobachtet haben,
+
+00:13.980 --> 00:18.390
+empfehle ich Ihnen, sie jetzt anzusehen, da wir viele Befehle zum Erstellen von
+
+00:18.390 --> 00:20.790
+Verzeichnissen verwenden werden und navigieren Sie herum.
+
+00:20.790 --> 00:25.290
+Wenn Sie also noch nicht vertraut sind, sollten Sie sich das mal ansehen.
+
+00:26.010 --> 00:33.600
+Das erste, was ich tun werde, ist, ich werde eine CD
+
+00:33.600 --> 00:43.920
+in meinen Desktop aufnehmen. Hier werde ich ein neues Verzeichnis mit dem Namen "story" erstellen.
+
+00:43.920 --> 00:45.870
+Sie können sehen, dass es völlig leer ist.
+
+00:45.990 --> 00:50.420
+Und im Finder kann ich Ihnen dasselbe zeigen.
+
+00:50.430 --> 00:54.600
+Lassen Sie uns also einige Textdateien erstellen.
+
+00:54.660 --> 01:01.590
+Also benutze ich touch, um eine Datei mit dem Namen Kapitel 1-Punkttext zu erstellen, und dann werde ich den
+
+01:01.590 --> 01:09.690
+Text von Kapitel 1 öffnen. Sie können dies entweder tun, indem Sie einfach auf open schreiben und es in der Standardanwendung öffnen, die
+
+01:09.750 --> 01:11.880
+Text enthält auf einem Mac.
+
+01:12.120 --> 01:18.130
+Alternativ können Sie einen Text innerhalb des Terminals verwenden, z. B. Vin.
+
+01:18.210 --> 01:21.770
+Das ist jetzt nur für Leute, die sich damit wirklich auskennen.
+
+01:21.780 --> 01:24.050
+Es liegt also ganz bei Ihnen, was Sie verwenden möchten.
+
+01:24.090 --> 01:30.180
+Wenn Sie jedoch nicht mit der Verwendung von Terminal-basierten Editoren vertraut sind, ist es wahrscheinlich eine gute Idee,
+
+01:30.180 --> 01:33.920
+einfach mit dem Befehl open zu bleiben und textedit zu verwenden.
+
+01:33.930 --> 01:43.350
+Also lasst uns weitermachen und Kapitel 1 öffnen und etwas in Jawi schreiben. OK.
+
+01:43.360 --> 01:45.270
+Das ist also mein Meisterwerk.
+
+01:45.390 --> 01:49.440
+Ich werde weitermachen und auf "Speichern" klicken und Textedit beenden.
+
+01:49.570 --> 01:53.190
+Das war also unser erstes Kapitel.
+
+01:53.380 --> 02:01.100
+Jetzt erstellen wir ein lokales Get-Repository und beginnen mit dem Nachverfolgen einiger dieser Dateiänderungen.
+
+02:01.450 --> 02:06.350
+Um zu initialisieren, schreiben wir einfach hinein.
+
+02:06.340 --> 02:12.490
+Und wie Sie sehen, ist es initialisiert und leer, um das Repository im Story-Verzeichnis zu laden.
+
+02:12.490 --> 02:17.230
+Wenn Sie nun einen Blick in den Finder werfen, können Sie diesen Punkt überhaupt nicht gut sehen.
+
+02:17.320 --> 02:18.900
+Aber wie wir vorher gelernt haben.
+
+02:18.970 --> 02:20.720
+Wenn Sie LS A verwenden.
+
+02:20.920 --> 02:26.620
+Sie können alle versteckten Dateien sehen, und Sie können sehen, dass sich Dogget genau dort befindet und es
+
+02:26.710 --> 02:32.320
+wird verwendet, um alle Ihre Änderungen zu verfolgen, um Ihre Änderungen zu übernehmen und die Versionskontrolle durchzuführen.
+
+02:32.320 --> 02:38.100
+Wir befinden uns also derzeit im Story-Verzeichnis und Sie können dies auch als Arbeitsverzeichnis bezeichnen.
+
+02:38.110 --> 02:45.250
+Wie ich bereits erwähnte, bevor Sie es verwenden und etwas über die Versionskontrolle lernen, enthält es einige seiner eigenen
+
+02:45.340 --> 02:46.570
+Terminologie und Sprache.
+
+02:46.570 --> 02:51.370
+Ich werde versuchen, einige dieser Begriffe zu entlarven und zu vereinfachen, auf die Sie stoßen werden, damit
+
+02:51.370 --> 02:55.440
+wir alle auf derselben Seite sein können und wir alle verstehen, was los ist.
+
+02:55.720 --> 03:01.770
+Derzeit befinden wir uns im Arbeitsverzeichnis, dem Story-Verzeichnis.
+
+03:02.050 --> 03:07.750
+Und hier fangen Sie einfach an, die Änderungen meiner Dateien zu verfolgen.
+
+03:07.750 --> 03:15.350
+Zum Beispiel, Punkt 1 Punkt Text, dann muss ich diese Datei zu einem sogenannten Staging-Bereich hinzufügen.
+
+03:15.790 --> 03:23.230
+Dies ist im Grunde ein Zwischenplatz, an dem Sie auswählen können, welche Dateien in
+
+03:23.230 --> 03:26.270
+Ihrem Arbeitsverzeichnis Sie festschreiben möchten.
+
+03:26.320 --> 03:33.220
+Um zu sehen, was sich aktuell in Ihrem Bereitstellungsbereich befindet, können Sie den Befehl "Get Status" verwenden. Er
+
+03:33.220 --> 03:39.630
+zeigt an, dass nicht gespeicherte Dateien in Rot angezeigt werden. Dies ist etwas, das sich einfach in
+
+03:39.630 --> 03:41.080
+einem Arbeitsverzeichnis befindet.
+
+03:41.080 --> 03:42.410
+Also hier drinnen.
+
+03:42.550 --> 03:45.560
+Aber es ist noch nicht im Inszenierungsbereich.
+
+03:45.610 --> 03:52.570
+Um es dem Staging-Bereich hinzuzufügen und Änderungen zu verfolgen, müssen Sie den Befehl
+
+03:52.570 --> 03:53.940
+get verwenden.
+
+03:54.020 --> 03:58.930
+Wir geben also get ein und geben den Dateinamen ein.
+
+03:58.930 --> 04:01.730
+In diesem Fall handelt es sich also um alten Text in Kapitel 1.
+
+04:01.960 --> 04:08.710
+Fahren Sie fort und drücken Sie die Eingabetaste. Wenn Sie dann erneut den Status abrufen versuchen, können Sie sehen, dass diese Datei
+
+04:08.800 --> 04:11.820
+als neue Datei hinzugefügt wurde und jetzt grün ist.
+
+04:11.830 --> 04:16.380
+Das ist jetzt im Staging-Bereich und es kann losgehen.
+
+04:16.390 --> 04:20.260
+Also, machen Sie das und machen Sie dies unter Versionskontrolle.
+
+04:20.260 --> 04:28.480
+Der Befehl lautet also get commit und ich werde den Bindestrich und das Flag verwenden, um eine Commit-Nachricht hinzuzufügen.
+
+04:28.480 --> 04:31.450
+Die Commit-Nachricht ist also wirklich sehr wichtig.
+
+04:31.630 --> 04:38.140
+Dies hilft Ihnen, den Überblick zu behalten, welche Änderungen Sie bei jedem Commit vorgenommen haben.
+
+04:38.140 --> 04:47.200
+Wenn Sie also einen neuen Sicherungspunkt erstellen, möchten Sie möglichst genau angeben, welche Änderungen zwischen dem letzten Sicherungspunkt
+
+04:47.230 --> 04:50.380
+und diesem aktuellen Sicherungspunkt vorgenommen wurden.
+
+04:50.380 --> 04:58.420
+Für unser anfängliches Commit können wir etwas sehr einfaches verwenden, wie das Initial Commit, und dies zeigt, dass dies
+
+04:58.420 --> 04:59.880
+unser Ausgangspunkt ist.
+
+05:00.100 --> 05:05.920
+Alternativ, wenn Sie etwas genauer sein möchten, weil wir in unserem Fall Kapitel 1 tatsächlich
+
+05:05.920 --> 05:07.090
+abgeschlossen haben.
+
+05:07.090 --> 05:11.180
+So können Sie das vollständige Kapitel 1 schreiben.
+
+05:11.200 --> 05:16.540
+Nun werden Sie feststellen, dass sie bei Commit-Nachrichten normalerweise in der Gegenwart geschrieben
+
+05:16.540 --> 05:17.050
+werden.
+
+05:17.260 --> 05:18.600
+Und das ist die beste Praxis.
+
+05:18.610 --> 05:25.210
+Während es wahrscheinlich sinnvoller wäre, denke ich zumindest in meinem Kopf, das erste Kapitel
+
+05:25.270 --> 05:28.200
+als diesen Sicherungspunkt zu schreiben.
+
+05:28.240 --> 05:32.680
+Es ist eigentlich Konvention, dass Sie immer das Präsens verwenden sollten.
+
+05:32.680 --> 05:36.910
+Es ist also so, als würden Sie es jetzt tun, wenn Sie Ihre Änderungen jetzt einreichen.
+
+05:37.000 --> 05:44.200
+Gehen wir also weiter und drücken Sie, um unser erstes Commit durchzuführen. Mit dem Befehl Get log können
+
+05:44.200 --> 05:47.290
+Sie sehen, welche Commits Sie gemacht haben.
+
+05:47.560 --> 05:53.320
+Sie können also sehen, dass diese Zusage zu diesem Zeitpunkt von dieser Person gemacht wurde.
+
+05:53.540 --> 06:00.720
+Und es hat auch einen Hash, und dieser Hash identifiziert dieses bestimmte Commit eindeutig.
+
+06:00.910 --> 06:06.620
+Und am Ende sehen Sie diese Commit-Nachricht, worum es bei diesem Sicherungspunkt ging.
+
+06:07.870 --> 06:12.310
+Ich werde jetzt zwei weitere Kapitel erstellen.
+
+06:12.340 --> 06:25.450
+Lassen Sie uns also einfach Kapitel zwei Punkttext und Kapitel drei Punkttext erstellen. Jetzt haben wir drei Kapitel, und ich
+
+06:25.720 --> 06:29.640
+werde einige dieser Textdateien ändern.
+
+06:29.680 --> 06:31.030
+Also sagen wir
+
+06:41.270 --> 06:43.710
+k, also ist Kapitel 2 fertig.
+
+06:43.960 --> 06:49.330
+Und zum Schluss machen wir weiter und öffnen einfach Kapitel 3 und bearbeiten das auch.
+
+07:00.930 --> 07:01.420
+Gut.
+
+07:01.450 --> 07:03.720
+Alle drei Dateien wurden also geändert.
+
+07:03.760 --> 07:09.070
+Und hier im Finder können Sie einen kurzen Blick auf die Inhalte werfen, die wirklich
+
+07:09.070 --> 07:14.520
+nützlich für mich sein werden, um Ihnen zeigen zu können, was es hinter dem Hintergrund tut.
+
+07:14.800 --> 07:20.860
+Also, lasst uns jetzt diese beiden neuen Dateien in unseren Staging-Bereichen lesen.
+
+07:20.860 --> 07:28.180
+Wenn wir also den get-Status verwenden, können Sie sehen, dass es zwei Dateien gibt, die nicht aufgezeichnet wurden und
+
+07:28.180 --> 07:31.970
+nur im Arbeitsverzeichnis und noch nicht im Staging-Bereich liegen.
+
+07:32.290 --> 07:38.630
+So können wir es in den Inszenierungsbereich einfügen, indem wir einfach jeden von ihnen wie zuvor hinzufügen.
+
+07:38.650 --> 07:42.610
+Holen Sie sich etwas wie Kapitel Zwei Erkennungsmarken hinzufügen und schreiben.
+
+07:42.630 --> 07:45.430
+Und dann mache es Kapitel drei Punkt Text.
+
+07:45.640 --> 07:51.940
+Aber wie Sie sich vorstellen können, wenn Sie viele Dateien haben, kann es unglaublich langweilig werden, dies
+
+07:51.940 --> 07:53.580
+nacheinander tun zu müssen.
+
+07:53.590 --> 07:56.070
+Es gibt natürlich einen besseren Weg.
+
+07:56.080 --> 08:01.870
+Anstatt diese Dateien einzeln hinzuzufügen, können wir einfach sagen, dass Sie ADD hinzufügen
+
+08:01.870 --> 08:07.050
+und dann mit dem Punkt alles in diesem aktuellen Verzeichnis angeben.
+
+08:07.060 --> 08:09.840
+Also alles im Story-Verzeichnis.
+
+08:10.090 --> 08:14.740
+Also, wenn ich jetzt weiter gehe und die Eingabetaste drücke und dann wieder Statoren bekommen.
+
+08:14.920 --> 08:22.150
+Sie können sehen, dass die beiden neuen Dateien zum Staging-Bereich hinzugefügt wurden, und jetzt legen wir diese beiden
+
+08:22.270 --> 08:26.580
+Dateien für einen neuen Commit an einen neuen Sicherungspunkt fest.
+
+08:26.920 --> 08:30.110
+Und Sie wissen, was zu tun ist, wenn Sie mir folgen.
+
+08:30.130 --> 08:35.570
+Mach weiter und versuch es.
+
+08:35.570 --> 08:35.930
+Gut.
+
+08:35.930 --> 08:43.430
+Wenn Sie also ein Mitglied des Befehls sind, geben Sie get ein Commit ein, und
+
+08:43.430 --> 08:51.920
+wir werden das M-Flag verwenden, um eine Commit-Nachricht anzugeben, und wir werden eine Nachricht schreiben, die sich
+
+08:51.920 --> 08:58.120
+im Präsens befindet, also sagen wir vollständiges Kapitel zwei und drei.
+
+08:58.940 --> 09:05.590
+Das ist also alles, was ich zwischen dem ersten Kommentar und diesem Commit getan habe.
+
+09:05.600 --> 09:10.230
+Der einzige Unterschied ist die Tatsache, dass ich jetzt Kapitel zwei in Kapitel drei abgeschlossen habe.
+
+09:10.250 --> 09:13.170
+Also gehen wir weiter und drücken Sie die Eingabetaste.
+
+09:13.550 --> 09:17.060
+Also noch einmal mit Get Log.
+
+09:17.120 --> 09:24.170
+Wir können sehen, dass wir jetzt zwei Commits haben, die beide unterschiedliche Hashes haben, weil sie einzigartig und
+
+09:24.170 --> 09:25.230
+unterschiedlich sind.
+
+09:25.280 --> 09:32.990
+Das erste war also vollständig Kapitel 1 und es wurde zu dieser Zeit fertiggestellt und später, etwa fünf Minuten später,
+
+09:32.990 --> 09:36.100
+habe ich Kapitel zwei und drei abgeschlossen.
+
+09:36.170 --> 09:38.110
+Und das war das zweite Commit.
+
+09:38.480 --> 09:41.230
+Und hier sind wir gerade jetzt.
+
+09:41.270 --> 09:49.480
+Sie können also durch den Kopf an diesem Holzkopf sehen. Dies ist die Position oder der aktuelle Zustand, in dem wir uns befinden.
+
+09:49.490 --> 09:52.720
+Ich möchte also nur kurz wiederholen, was wir gerade gemacht haben.
+
+09:52.970 --> 09:58.440
+Wir haben also eine Datei in unserem Arbeitsverzeichnis in unserem Story-Verzeichnis erstellt.
+
+09:58.630 --> 10:05.990
+Das Arbeitsverzeichnis ist also der Ordner oder das Verzeichnis, in dem Sie Ihr get-Repository initialisieren.
+
+10:06.100 --> 10:10.390
+Als wir gesagt haben, machen wir das im Story-Verzeichnis.
+
+10:10.460 --> 10:12.540
+Das wird also zu einem Arbeitsverzeichnis.
+
+10:12.740 --> 10:18.890
+Und von jetzt an wird es versuchen, die Änderungen zwischen dem Arbeitsverzeichnis und
+
+10:19.310 --> 10:22.090
+dem lokalen Repository zu verfolgen.
+
+10:22.490 --> 10:31.040
+Am Anfang haben wir eine Datei in unserem Arbeitsverzeichnis in Story erstellt und dann zum
+
+10:31.040 --> 10:34.310
+Hinzufügen in den Staging-Bereich hinzugefügt.
+
+10:34.310 --> 10:39.740
+Nun, der Grund, warum es diesen Zwischen-Staging-Bereich gibt, weil Sie sich vielleicht fragen, warum Sie
+
+10:39.740 --> 10:42.470
+nicht einfach vom Arbeitsverzeichnis zum Repository gehen.
+
+10:42.500 --> 10:44.690
+Warum brauchen wir diesen zusätzlichen Schritt.
+
+10:44.840 --> 10:52.430
+Manchmal möchten Sie möglicherweise nicht alle Dateien hinzufügen, die verfolgt werden sollen, oder alle Dateien, die festgeschrieben
+
+10:52.430 --> 10:53.550
+werden sollen.
+
+10:53.600 --> 10:59.240
+Der Staging-Bereich ist also ein guter Ort, um herauszufinden, welche Dinge Sie ignorieren möchten.
+
+10:59.390 --> 11:01.970
+Und eines der Dinge, die Sie verfolgen möchten.
+
+11:02.210 --> 11:09.200
+Wenn wir also die Datei in den Staging-Bereich verschoben haben und wir mit den
+
+11:09.200 --> 11:17.160
+Änderungen, die wir vornehmen werden, zufrieden sind, besteht der nächste Schritt darin, den Befehl „Festschreiben“ auszuführen.
+
+11:17.180 --> 11:25.730
+Nun befindet sich unsere Datei in unserem lokalen Repository, so dass dot get und dieser Version über die Commit-Nachricht einen
+
+11:25.730 --> 11:27.340
+Namen gegeben wird.
+
+11:27.350 --> 11:35.540
+Das bedeutet, dass selbst wenn wir unsere Datei durcheinander gebracht haben, wir immer noch die letzte Version verwenden
+
+11:35.540 --> 11:43.820
+können, die der Versionskontrolle unterliegt, und wir können den speziellen Befehl Get check out verwenden, um zur letzten Position
+
+11:43.820 --> 11:46.200
+in unserem lokalen Repository zurückzukehren.
+
+11:46.370 --> 11:52.080
+Lassen Sie mich Ihnen also zeigen, wie das in der Kommandozeile aussieht und wie wir das in der Praxis tun würden.
+
+11:52.100 --> 11:57.410
+Im Moment habe ich drei gut geschriebene Kapitel und ich habe das Gefühl, dass mein Buch ein
+
+11:57.410 --> 11:58.430
+Verkaufsschlager sein wird.
+
+11:58.450 --> 12:06.530
+Nehmen wir also an, Sie wissen, dass ich an Kapitel 3 gearbeitet habe, und ich habe alles komplett durcheinander
+
+12:06.530 --> 12:13.910
+gebracht. Nur wissen Sie, dass ich auf meiner Tastatur eingeschlafen bin und ich meine Datei gespeichert habe.
+
+12:13.910 --> 12:20.140
+Und wenn Sie jetzt einen Blick darauf werfen, ist es jetzt nur noch Mumbojumbo und ich habe mein Meisterwerk ruiniert.
+
+12:20.360 --> 12:25.170
+Aber ffin on on, weil wir Versionskontrolle haben und es aktiviert haben.
+
+12:25.370 --> 12:28.270
+Wir müssen uns also keine Sorgen machen.
+
+12:28.610 --> 12:33.750
+Ich kann die Änderungen, die ich lokal in meinem Arbeitsverzeichnis vorgenommen habe, tatsächlich rückgängig machen.
+
+12:33.770 --> 12:39.290
+An dieser Stelle können Sie mit get-Statoren feststellen, dass wir in unserem Kapitel 3-Punkt-Textdatei
+
+12:39.280 --> 12:44.780
+Änderungen vorgenommen haben, die noch nicht festgeschrieben oder dem Staging-Bereich hinzugefügt wurden.
+
+12:44.840 --> 12:50.920
+Wenn wir also wollten, können wir dies tatsächlich auf den vorherigen Glanz zurückführen.
+
+12:51.230 --> 12:57.920
+Aber bevor wir das tun, können wir einen guten Befehl verwenden, um einen der Unterschiede zwischen der
+
+12:57.920 --> 13:03.100
+aktuellen Version von Kapitel 3 und dem letzten Sicherungspunkt in unserem get-Repository herauszufinden.
+
+13:03.230 --> 13:06.860
+Dazu können Sie den Befehl get diff verwenden.
+
+13:06.950 --> 13:12.350
+Also diesen Unterschied und wir geben ihm den Dateinamen von Kapitel 3.
+
+13:12.650 --> 13:17.210
+Und wenn Sie die Eingabetaste drücken, können Sie sehen, dass dies der Teil ist, der gelöscht wurde.
+
+13:17.210 --> 13:23.860
+Der Teil in Rot und dann dieser Teil, der hinzugefügt wurde, ist unser Gobbledygook.
+
+13:24.050 --> 13:29.600
+Nun, wenn ich mir diese Unterschiede angesehen habe, könnte es sein, dass Sie wissen, dass es
+
+13:29.930 --> 13:36.480
+in meiner neuen Version von Kapitel 3 nur ein paar Fehler gibt, und ich möchte vielleicht nur ein paar Dinge
+
+13:36.480 --> 13:41.390
+kopieren oder sehen, wie ich bestimmte Dinge zuvor gemacht habe meine aktuelle Datei ändern
+
+13:41.700 --> 13:46.910
+In anderen Fällen kann es jedoch sein, dass Sie wissen, dass Sie nur die neue Datei in Brand setzen möchten.
+
+13:46.920 --> 13:49.120
+Sie wollen einfach nichts damit zu tun haben.
+
+13:49.140 --> 13:52.710
+Und Sie würden viel lieber zur vorherigen Version zurückkehren.
+
+13:52.980 --> 13:59.370
+Wenn Sie das wollen, gibt es einen Befehl namens Check out, der für Sie wirklich nützlich
+
+13:59.370 --> 14:00.510
+sein wird.
+
+14:00.810 --> 14:03.190
+Also check out.
+
+14:03.210 --> 14:07.920
+Und dann geben wir den Namen der Datei an, die wir
+
+14:07.920 --> 14:14.170
+auschecken möchten. Dies ist Kapitel 3-Punkttext. Wenn Sie hier nur die Vorschau der aktuellen Version
+
+14:14.170 --> 14:23.070
+von Kapitel 3-Punkttext betrachten, sobald Sie die Eingabetaste drücken Dieser Befehl fordert grundsätzlich dazu auf, dieses Kapitel 3 auf die letzte
+
+14:23.070 --> 14:26.550
+in unserem lokalen Repository festgeschriebene Version zurückzusetzen.
+
+14:26.550 --> 14:33.900
+Wenn ich also die Eingabetaste drücke, können Sie sehen, dass mein Kapitel 3 fast sofort wieder in den ursprünglichen Zustand
+
+14:34.440 --> 14:41.610
+versetzt wurde. Dies ist die Version von Kapitel 3 am letzten Kontrollpunkt, an dem ich es festgelegt habe.
+
+14:41.640 --> 14:46.000
+Das war also das Kapitel 2 und 3.
+
+14:46.020 --> 14:51.770
+In dieser Lektion haben wir uns jedoch hauptsächlich mit lokalen Implementierungen von Kindern befasst.
+
+14:51.840 --> 14:58.460
+Wenn Sie diese Versionen in der nächsten Lektion lokal auf unserem Computer speichern, werde ich darüber
+
+14:58.830 --> 15:02.580
+sprechen, wie Sie einen Hub einrichten und Remote-Repositorys erstellen.

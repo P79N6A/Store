@@ -1,0 +1,971 @@
+
+
+  
+
+      <div class="border-bottom shelf intro-shelf js-notice mb-0 pb-4">
+  <div class="width-full container">
+    <div class="width-full mx-auto shelf-content">
+      <h2 class="shelf-title">Learn Git and GitHub without any code!</h2>
+      <p class="shelf-lead">
+          Using the Hello World guide, you’ll start a branch, write comments, and open a pull request.
+      </p>
+      <a class="btn btn-primary shelf-cta" target="_blank" data-hydro-click="{&quot;event_type&quot;:&quot;repository.click&quot;,&quot;payload&quot;:{&quot;target&quot;:&quot;READ_GUIDE&quot;,&quot;repository_id&quot;:200929889,&quot;client_id&quot;:&quot;1376813244.1566195565&quot;,&quot;originating_request_id&quot;:&quot;C0CD:364EE:BCEA60:11D5954:5D5C355B&quot;,&quot;originating_url&quot;:&quot;https://github.com/AhmedMagdyOmar/Story/settings?_pjax=%23js-repo-pjax-container&quot;,&quot;referrer&quot;:&quot;https://github.com/AhmedMagdyOmar/Story&quot;,&quot;user_id&quot;:53269957}}" data-hydro-click-hmac="5cbb4d7bb883f8fd4bbc7d9d9dc3abfba4d4bdfbb667f1f6703753886cd762cd" href="https://guides.github.com/activities/hello-world/">Read the guide</a>
+    </div>
+    <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="shelf-dismiss js-notice-dismiss" action="/dashboard/dismiss_bootcamp" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="_method" value="delete" /><input type="hidden" name="authenticity_token" value="4w6dNNYSDMyd0/BjqE+l2JMreD1G+mL5Bm/q2QID574ZQ5WRQ0+zBq8/63fRz/Q8Wx8lkfC93IdjanC+bWjMFQ==" />
+      <button name="button" type="submit" class="mr-1 close-button tooltipped tooltipped-w" aria-label="Hide this notice forever" data-hydro-click="{&quot;event_type&quot;:&quot;repository.click&quot;,&quot;payload&quot;:{&quot;target&quot;:&quot;DISMISS_BANNER&quot;,&quot;repository_id&quot;:200929889,&quot;client_id&quot;:&quot;1376813244.1566195565&quot;,&quot;originating_request_id&quot;:&quot;C0CD:364EE:BCEA60:11D5954:5D5C355B&quot;,&quot;originating_url&quot;:&quot;https://github.com/AhmedMagdyOmar/Story/settings?_pjax=%23js-repo-pjax-container&quot;,&quot;referrer&quot;:&quot;https://github.com/AhmedMagdyOmar/Story&quot;,&quot;user_id&quot;:53269957}}" data-hydro-click-hmac="528e57d7a7ac679f3f46438c9d42615c45bcf8c2d8b3a3eb0485ca7f315ef80a">
+        <svg aria-label="Hide this notice forever" class="octicon octicon-x v-align-text-top" viewBox="0 0 12 16" version="1.1" width="12" height="16" role="img"><path fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48L7.48 8z"/></svg>
+</button></form>  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <div class="pagehead repohead instapaper_ignore readability-menu experiment-repo-nav  ">
+    <div class="repohead-details-container clearfix container">
+
+      <ul class="pagehead-actions">
+
+
+
+
+  <li>
+    
+    <!-- '"` --><!-- </textarea></xmp> --></option></form><form data-remote="true" class="clearfix js-social-form js-social-container" action="/notifications/subscribe" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="f/WR5Q+3i4twxuZi4yYEJfQSrFZ1mgVL8CKb2EboHd9tRYq470/LAlHrkPSDZYoDBs40CmcNjMHylzLxXi2hnw==" />      <input type="hidden" name="repository_id" value="200929889">
+
+      <details class="details-reset details-overlay select-menu float-left">
+        <summary class="select-menu-button float-left btn btn-sm btn-with-count" data-hydro-click="{&quot;event_type&quot;:&quot;repository.click&quot;,&quot;payload&quot;:{&quot;target&quot;:&quot;WATCH_BUTTON&quot;,&quot;repository_id&quot;:200929889,&quot;client_id&quot;:&quot;1376813244.1566195565&quot;,&quot;originating_request_id&quot;:&quot;C0CD:364EE:BCEA60:11D5954:5D5C355B&quot;,&quot;originating_url&quot;:&quot;https://github.com/AhmedMagdyOmar/Story/settings?_pjax=%23js-repo-pjax-container&quot;,&quot;referrer&quot;:&quot;https://github.com/AhmedMagdyOmar/Story&quot;,&quot;user_id&quot;:53269957}}" data-hydro-click-hmac="2755f6a31264706b507ffde75b0b1bfcf6777391b8c333fd8afa7cb204d20b59" data-ga-click="Repository, click Watch settings, action:edit_repositories#options">          <span data-menu-button>
+              <svg class="octicon octicon-eye v-align-text-bottom" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.06 2C3 2 0 8 0 8s3 6 8.06 6C13 14 16 8 16 8s-3-6-7.94-6zM8 12c-2.2 0-4-1.78-4-4 0-2.2 1.8-4 4-4 2.22 0 4 1.8 4 4 0 2.22-1.78 4-4 4zm2-4c0 1.11-.89 2-2 2-1.11 0-2-.89-2-2 0-1.11.89-2 2-2 1.11 0 2 .89 2 2z"/></svg>
+              Unwatch
+          </span>
+</summary>        <details-menu
+          class="select-menu-modal position-absolute mt-5"
+          style="z-index: 99;">
+          <div class="select-menu-header">
+            <span class="select-menu-title">Notifications</span>
+          </div>
+          <div class="select-menu-list">
+            <button type="submit" name="do" value="included" class="select-menu-item width-full" aria-checked="false" role="menuitemradio">
+              <svg class="octicon octicon-check select-menu-item-icon" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"/></svg>
+              <div class="select-menu-item-text">
+                <span class="select-menu-item-heading">Not watching</span>
+                <span class="description">Be notified only when participating or @mentioned.</span>
+                <span class="hidden-select-button-text" data-menu-button-contents>
+                  <svg class="octicon octicon-eye v-align-text-bottom" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.06 2C3 2 0 8 0 8s3 6 8.06 6C13 14 16 8 16 8s-3-6-7.94-6zM8 12c-2.2 0-4-1.78-4-4 0-2.2 1.8-4 4-4 2.22 0 4 1.8 4 4 0 2.22-1.78 4-4 4zm2-4c0 1.11-.89 2-2 2-1.11 0-2-.89-2-2 0-1.11.89-2 2-2 1.11 0 2 .89 2 2z"/></svg>
+                  Watch
+                </span>
+              </div>
+            </button>
+
+            <button type="submit" name="do" value="release_only" class="select-menu-item width-full" aria-checked="false" role="menuitemradio">
+              <svg class="octicon octicon-check select-menu-item-icon" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"/></svg>
+              <div class="select-menu-item-text">
+                <span class="select-menu-item-heading">Releases only</span>
+                <span class="description">Be notified of new releases, and when participating or @mentioned.</span>
+                <span class="hidden-select-button-text" data-menu-button-contents>
+                  <svg class="octicon octicon-eye v-align-text-bottom" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.06 2C3 2 0 8 0 8s3 6 8.06 6C13 14 16 8 16 8s-3-6-7.94-6zM8 12c-2.2 0-4-1.78-4-4 0-2.2 1.8-4 4-4 2.22 0 4 1.8 4 4 0 2.22-1.78 4-4 4zm2-4c0 1.11-.89 2-2 2-1.11 0-2-.89-2-2 0-1.11.89-2 2-2 1.11 0 2 .89 2 2z"/></svg>
+                  Unwatch releases
+                </span>
+              </div>
+            </button>
+
+            <button type="submit" name="do" value="subscribed" class="select-menu-item width-full" aria-checked="true" role="menuitemradio">
+              <svg class="octicon octicon-check select-menu-item-icon" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"/></svg>
+              <div class="select-menu-item-text">
+                <span class="select-menu-item-heading">Watching</span>
+                <span class="description">Be notified of all conversations.</span>
+                <span class="hidden-select-button-text" data-menu-button-contents>
+                  <svg class="octicon octicon-eye v-align-text-bottom" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.06 2C3 2 0 8 0 8s3 6 8.06 6C13 14 16 8 16 8s-3-6-7.94-6zM8 12c-2.2 0-4-1.78-4-4 0-2.2 1.8-4 4-4 2.22 0 4 1.8 4 4 0 2.22-1.78 4-4 4zm2-4c0 1.11-.89 2-2 2-1.11 0-2-.89-2-2 0-1.11.89-2 2-2 1.11 0 2 .89 2 2z"/></svg>
+                  Unwatch
+                </span>
+              </div>
+            </button>
+
+            <button type="submit" name="do" value="ignore" class="select-menu-item width-full" aria-checked="false" role="menuitemradio">
+              <svg class="octicon octicon-check select-menu-item-icon" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"/></svg>
+              <div class="select-menu-item-text">
+                <span class="select-menu-item-heading">Ignoring</span>
+                <span class="description">Never be notified.</span>
+                <span class="hidden-select-button-text" data-menu-button-contents>
+                  <svg class="octicon octicon-mute v-align-text-bottom" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8 2.81v10.38c0 .67-.81 1-1.28.53L3 10H1c-.55 0-1-.45-1-1V7c0-.55.45-1 1-1h2l3.72-3.72C7.19 1.81 8 2.14 8 2.81zm7.53 3.22l-1.06-1.06-1.97 1.97-1.97-1.97-1.06 1.06L11.44 8 9.47 9.97l1.06 1.06 1.97-1.97 1.97 1.97 1.06-1.06L13.56 8l1.97-1.97z"/></svg>
+                  Stop ignoring
+                </span>
+              </div>
+            </button>
+          </div>
+        </details-menu>
+      </details>
+        <a class="social-count js-social-count"
+          href="/AhmedMagdyOmar/Story/watchers"
+          aria-label="1 user is watching this repository">
+          1
+        </a>
+</form>
+  </li>
+
+  <li>
+      <div class="js-toggler-container js-social-container starring-container ">
+    <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="starred js-social-form" action="/AhmedMagdyOmar/Story/unstar" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="RxzOdCSByjuTvyWQ/Mux55wjaIAgfWRHyDqvRnlERXwWWIzqZ/Z8VIE0/3tJPaxob0jemNGmVhDNoLsbjHwQ9A==" />
+      <input type="hidden" name="context" value="repository"></input>
+      <button type="submit" class="btn btn-sm btn-with-count js-toggler-target" aria-label="Unstar this repository" title="Unstar AhmedMagdyOmar/Story" data-hydro-click="{&quot;event_type&quot;:&quot;repository.click&quot;,&quot;payload&quot;:{&quot;target&quot;:&quot;UNSTAR_BUTTON&quot;,&quot;repository_id&quot;:200929889,&quot;client_id&quot;:&quot;1376813244.1566195565&quot;,&quot;originating_request_id&quot;:&quot;C0CD:364EE:BCEA60:11D5954:5D5C355B&quot;,&quot;originating_url&quot;:&quot;https://github.com/AhmedMagdyOmar/Story/settings?_pjax=%23js-repo-pjax-container&quot;,&quot;referrer&quot;:&quot;https://github.com/AhmedMagdyOmar/Story&quot;,&quot;user_id&quot;:53269957}}" data-hydro-click-hmac="fd7de78cf9ee25a78c7e46766d4beb47d1d5302d129364c028f919178430e79f" data-ga-click="Repository, click unstar button, action:edit_repositories#options; text:Unstar">        <svg class="octicon octicon-star v-align-text-bottom" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M14 6l-4.9-.64L7 1 4.9 5.36 0 6l3.6 3.26L2.67 14 7 11.67 11.33 14l-.93-4.74L14 6z"/></svg>
+        Unstar
+</button>        <a class="social-count js-social-count" href="/AhmedMagdyOmar/Story/stargazers"
+           aria-label="0 users starred this repository">
+           0
+        </a>
+</form>
+    <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="unstarred js-social-form" action="/AhmedMagdyOmar/Story/star" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="uUchTTLG3jKbW1CUUVgGV/j4tEIj8D3MGTIZdiSp0bi7GXrgWdbEOW3QqLmqzCkvqjQp/RDIgnNUbrku3HgFIA==" />
+      <input type="hidden" name="context" value="repository"></input>
+      <button type="submit" class="btn btn-sm btn-with-count js-toggler-target" aria-label="Unstar this repository" title="Star AhmedMagdyOmar/Story" data-hydro-click="{&quot;event_type&quot;:&quot;repository.click&quot;,&quot;payload&quot;:{&quot;target&quot;:&quot;STAR_BUTTON&quot;,&quot;repository_id&quot;:200929889,&quot;client_id&quot;:&quot;1376813244.1566195565&quot;,&quot;originating_request_id&quot;:&quot;C0CD:364EE:BCEA60:11D5954:5D5C355B&quot;,&quot;originating_url&quot;:&quot;https://github.com/AhmedMagdyOmar/Story/settings?_pjax=%23js-repo-pjax-container&quot;,&quot;referrer&quot;:&quot;https://github.com/AhmedMagdyOmar/Story&quot;,&quot;user_id&quot;:53269957}}" data-hydro-click-hmac="ebb912e81ccf75a4222798d03d0f9d61d795f6488fbdac6c151c123c3bb7e328" data-ga-click="Repository, click star button, action:edit_repositories#options; text:Star">        <svg class="octicon octicon-star v-align-text-bottom" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M14 6l-4.9-.64L7 1 4.9 5.36 0 6l3.6 3.26L2.67 14 7 11.67 11.33 14l-.93-4.74L14 6z"/></svg>
+        Star
+</button>        <a class="social-count js-social-count" href="/AhmedMagdyOmar/Story/stargazers"
+           aria-label="0 users starred this repository">
+          0
+        </a>
+</form>  </div>
+
+  </li>
+
+  <li>
+        <span class="btn btn-sm btn-with-count disabled tooltipped tooltipped-sw" aria-label="Cannot fork because you own this repository and are not a member of any organizations and repository is empty.">
+          <svg class="octicon octicon-repo-forked v-align-text-bottom" viewBox="0 0 10 16" version="1.1" width="10" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8 1a1.993 1.993 0 0 0-1 3.72V6L5 8 3 6V4.72A1.993 1.993 0 0 0 2 1a1.993 1.993 0 0 0-1 3.72V6.5l3 3v1.78A1.993 1.993 0 0 0 5 15a1.993 1.993 0 0 0 1-3.72V9.5l3-3V4.72A1.993 1.993 0 0 0 8 1zM2 4.2C1.34 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm3 10c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm3-10c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z"/></svg>
+          Fork
+</span>
+    <a href="/AhmedMagdyOmar/Story/network/members" class="social-count"
+       aria-label="0 users forked this repository">
+      0
+    </a>
+  </li>
+</ul>
+
+      <h1 class="public ">
+    <svg class="octicon octicon-repo" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9H3V8h1v1zm0-3H3v1h1V6zm0-2H3v1h1V4zm0-2H3v1h1V2zm8-1v12c0 .55-.45 1-1 1H6v2l-1.5-1.5L3 16v-2H1c-.55 0-1-.45-1-1V1c0-.55.45-1 1-1h10c.55 0 1 .45 1 1zm-1 10H1v2h2v-1h3v1h5v-2zm0-10H2v9h9V1z"/></svg>
+  <span class="author" itemprop="author"><a class="url fn" rel="author" data-hovercard-type="user" data-hovercard-url="/hovercards?user_id=53269957" data-octo-click="hovercard-link-click" data-octo-dimensions="link_type:self" href="/AhmedMagdyOmar">AhmedMagdyOmar</a></span><!--
+--><span class="path-divider">/</span><!--
+--><strong itemprop="name"><a data-pjax="#js-repo-pjax-container" href="/AhmedMagdyOmar/Story">Story</a></strong>
+  
+
+</h1>
+
+    </div>
+    
+<nav class="hx_reponav reponav js-repo-nav js-sidenav-container-pjax container"
+     itemscope
+     itemtype="http://schema.org/BreadcrumbList"
+    aria-label="Repository"
+     data-pjax="#js-repo-pjax-container">
+
+  <span itemscope itemtype="http://schema.org/ListItem" itemprop="itemListElement">
+    <a class="js-selected-navigation-item reponav-item" itemprop="url" data-hotkey="g c" data-selected-links="repo_source repo_downloads repo_commits repo_releases repo_tags repo_branches repo_packages /AhmedMagdyOmar/Story" href="/AhmedMagdyOmar/Story">
+      <svg class="octicon octicon-code" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M9.5 3L8 4.5 11.5 8 8 11.5 9.5 13 14 8 9.5 3zm-5 0L0 8l4.5 5L6 11.5 2.5 8 6 4.5 4.5 3z"/></svg>
+      <span itemprop="name">Code</span>
+      <meta itemprop="position" content="1">
+</a>  </span>
+
+    <span itemscope itemtype="http://schema.org/ListItem" itemprop="itemListElement">
+      <a itemprop="url" data-hotkey="g i" class="js-selected-navigation-item reponav-item" data-selected-links="repo_issues repo_labels repo_milestones /AhmedMagdyOmar/Story/issues" href="/AhmedMagdyOmar/Story/issues">
+        <svg class="octicon octicon-issue-opened" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"/></svg>
+        <span itemprop="name">Issues</span>
+        <span class="Counter">0</span>
+        <meta itemprop="position" content="2">
+</a>    </span>
+
+  <span itemscope itemtype="http://schema.org/ListItem" itemprop="itemListElement">
+    <a data-hotkey="g p" itemprop="url" class="js-selected-navigation-item reponav-item" data-selected-links="repo_pulls checks /AhmedMagdyOmar/Story/pulls" href="/AhmedMagdyOmar/Story/pulls">
+      <svg class="octicon octicon-git-pull-request" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11 11.28V5c-.03-.78-.34-1.47-.94-2.06C9.46 2.35 8.78 2.03 8 2H7V0L4 3l3 3V4h1c.27.02.48.11.69.31.21.2.3.42.31.69v6.28A1.993 1.993 0 0 0 10 15a1.993 1.993 0 0 0 1-3.72zm-1 2.92c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zM4 3c0-1.11-.89-2-2-2a1.993 1.993 0 0 0-1 3.72v6.56A1.993 1.993 0 0 0 2 15a1.993 1.993 0 0 0 1-3.72V4.72c.59-.34 1-.98 1-1.72zm-.8 10c0 .66-.55 1.2-1.2 1.2-.65 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2zM2 4.2C1.34 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z"/></svg>
+      <span itemprop="name">Pull requests</span>
+      <span class="Counter">0</span>
+      <meta itemprop="position" content="3">
+</a>  </span>
+
+
+    <a data-hotkey="g b" class="js-selected-navigation-item reponav-item" data-selected-links="repo_projects new_repo_project repo_project /AhmedMagdyOmar/Story/projects" href="/AhmedMagdyOmar/Story/projects">
+      <svg class="octicon octicon-project" viewBox="0 0 15 16" version="1.1" width="15" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M10 12h3V2h-3v10zm-4-2h3V2H6v8zm-4 4h3V2H2v12zm-1 1h13V1H1v14zM14 0H1a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1z"/></svg>
+      Projects
+      <span class="Counter" >0</span>
+</a>
+
+    <a class="js-selected-navigation-item reponav-item" data-hotkey="g w" data-selected-links="repo_wiki /AhmedMagdyOmar/Story/wiki" href="/AhmedMagdyOmar/Story/wiki">
+      <svg class="octicon octicon-book" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M3 5h4v1H3V5zm0 3h4V7H3v1zm0 2h4V9H3v1zm11-5h-4v1h4V5zm0 2h-4v1h4V7zm0 2h-4v1h4V9zm2-6v9c0 .55-.45 1-1 1H9.5l-1 1-1-1H2c-.55 0-1-.45-1-1V3c0-.55.45-1 1-1h5.5l1 1 1-1H15c.55 0 1 .45 1 1zm-8 .5L7.5 3H2v9h6V3.5zm7-.5H9.5l-.5.5V12h6V3z"/></svg>
+      Wiki
+</a>
+    <a data-skip-pjax="true" class="js-selected-navigation-item reponav-item" data-selected-links="security alerts policy /AhmedMagdyOmar/Story/network/alerts" href="/AhmedMagdyOmar/Story/network/alerts">
+      <svg class="octicon octicon-shield" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M0 2l7-2 7 2v6.02C14 12.69 8.69 16 7 16c-1.69 0-7-3.31-7-7.98V2zm1 .75L7 1l6 1.75v5.268C13 12.104 8.449 15 7 15c-1.449 0-6-2.896-6-6.982V2.75zm1 .75L7 2v12c-1.207 0-5-2.482-5-5.985V3.5z"/></svg>
+      Security
+</a>
+    <a class="js-selected-navigation-item reponav-item" data-selected-links="repo_graphs repo_contributors dependency_graph pulse people /AhmedMagdyOmar/Story/pulse" href="/AhmedMagdyOmar/Story/pulse">
+      <svg class="octicon octicon-graph" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M16 14v1H0V0h1v14h15zM5 13H3V8h2v5zm4 0H7V3h2v10zm4 0h-2V6h2v7z"/></svg>
+      Insights
+</a>
+    <a class="js-selected-navigation-item selected reponav-item" aria-current="page" data-selected-links="repo_settings repo_branch_settings hooks integration_installations repo_keys_settings issue_template_editor secrets_settings /AhmedMagdyOmar/Story/settings" href="/AhmedMagdyOmar/Story/settings">
+      <svg class="octicon octicon-gear" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M14 8.77v-1.6l-1.94-.64-.45-1.09.88-1.84-1.13-1.13-1.81.91-1.09-.45-.69-1.92h-1.6l-.63 1.94-1.11.45-1.84-.88-1.13 1.13.91 1.81-.45 1.09L0 7.23v1.59l1.94.64.45 1.09-.88 1.84 1.13 1.13 1.81-.91 1.09.45.69 1.92h1.59l.63-1.94 1.11-.45 1.84.88 1.13-1.13-.92-1.81.47-1.09L14 8.75v.02zM7 11c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"/></svg>
+      Settings
+</a>
+</nav>
+
+
+  </div>
+<div class="container-lg clearfix new-discussion-timeline experiment-repo-nav  px-3">
+  <div class="repository-content ">
+
+    
+    
+  <div class="gutter d-flex">
+    
+<div class="col-3" data-pjax>
+  <nav class="menu" aria-label="Repository settings">
+    <a class="js-selected-navigation-item selected menu-item" aria-current="page" data-selected-links=" /AhmedMagdyOmar/Story/settings" href="/AhmedMagdyOmar/Story/settings">Options</a>
+
+      <a class="js-selected-navigation-item menu-item" data-selected-links=" /AhmedMagdyOmar/Story/settings/collaboration" href="/AhmedMagdyOmar/Story/settings/collaboration">Collaborators</a>
+
+
+    <a class="js-selected-navigation-item menu-item" data-selected-links="hooks /AhmedMagdyOmar/Story/settings/hooks" href="/AhmedMagdyOmar/Story/settings/hooks">Webhooks</a>
+    <a class="js-selected-navigation-item menu-item" data-selected-links="notifications /AhmedMagdyOmar/Story/settings/notifications" href="/AhmedMagdyOmar/Story/settings/notifications">Notifications</a>
+    <a class="js-selected-navigation-item menu-item" data-selected-links="integration_installations /AhmedMagdyOmar/Story/settings/installations" href="/AhmedMagdyOmar/Story/settings/installations">Integrations &amp; services</a>
+
+    <a class="js-selected-navigation-item menu-item" data-selected-links="repo_keys_settings /AhmedMagdyOmar/Story/settings/keys" href="/AhmedMagdyOmar/Story/settings/keys">Deploy keys</a>
+
+
+
+  </nav>
+
+
+
+    <nav class="menu" aria-label="Repository moderation settings" data-pjax>
+      <h3 class="menu-heading">
+        Moderation
+      </h3>
+      <a class="js-selected-navigation-item menu-item" data-selected-links="interaction_limits /AhmedMagdyOmar/Story/settings/interaction_limits" href="/AhmedMagdyOmar/Story/settings/interaction_limits">
+        Interaction limits
+</a>    </nav>
+</div>
+
+
+    <div class="col-9">
+      
+  <div id="options_bucket">
+    <div class="Subhead">
+      <h2 class="Subhead-heading">Settings</h2>
+    </div>
+      <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="d-flex" action="/AhmedMagdyOmar/Story/settings/rename" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="QsCPK5J0JC7/bbF01k2hgfnGyjUX1+6V/evvngrAZGMgbOrpB3m85RUSYcrbBDubYjgodqeo962VHzwxpp9nqw==" />
+  <auto-check required src="/repositories/check-name?current_name=Story&amp;owner=AhmedMagdyOmar" csrf="4lAE20IA52Fy++MEkhtjhi6pohuhVrL3eKk3xDrkUej3vACHJghMM7D2RwhuaAvDNxx+CjgUu/HPrrTG3YaqeQ==">
+    <dl class="form-group d-inline-block my-0">
+      <dt class="input-label">
+        <label for="rename-field">Repository name</label>
+      </dt>
+      <dd>
+        <input
+          type="text"
+          name="new_name"
+          value="Story"
+          class="form-control js-repo-name short js-with-permission-fields"
+          id="rename-field"
+          maxlength="100"
+          autocapitalize="off"
+          autofocus
+          required>
+      </dd>
+    </dl>
+  </auto-check>
+  <input type="text" name="required_field_4814" id="required_field_4814" hidden="hidden" class="form-control" />
+<input type="hidden" name="timestamp" value="1566324073952" class="form-control" />
+<input type="hidden" name="timestamp_secret" value="638ee68a657de28c7941c38762e34ae8f305a3fbc977862c229c068935d62af0" class="form-control" />
+
+  <button type="submit" class="btn flex-self-end" data-disable-invalid>Rename</button>
+</form>
+      
+<!-- '"` --><!-- </textarea></xmp> --></option></form><form class="js-repo-features-form" data-autosubmit="true" action="/AhmedMagdyOmar/Story/settings/update" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="_method" value="put" /><input type="hidden" name="authenticity_token" value="WOo87NftPiW5NDugGk3qeBL/cfHr3vsWvQDCxi+xSG8uBjXZO5oD7qju/aaFbb+YVlH6jXvgCZgqttBCAK9lcw==" />
+  <input type="hidden" name="has_wiki" value="1">
+    <input type="hidden" name="wiki_access_to_pushers" value="1">
+  <input type="hidden" name="has_issues" value="1">
+    <input type="hidden" name="enable_repository_funding_links" value="0">
+    <input type="hidden" name="projects_enabled" value="1">
+      <input type="hidden" name="vulnerability_alerts_enabled" value="1">
+
+  <div class="form-checkbox js-repo-option">
+    <input type="hidden" name="template" value="0">
+    <input type="checkbox" name="template" value="1" id="template-feature">
+    <label for="template-feature">Template repository</label>
+    <span class="status-indicator ml-1 js-status-indicator">
+      <svg class="octicon octicon-check" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"/></svg>
+      <svg class="octicon octicon-x" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48L7.48 8z"/></svg>
+    </span>
+    <p class="note">
+      Template repositories let users generate new repositories with the same
+      directory structure and files. Indicate if
+      <strong>AhmedMagdyOmar/Story</strong>
+      can be used as a template for creating other repositories.
+    </p>
+  </div>
+  <noscript>
+    <button class="btn btn-primary" type="submit">Save changes</button>
+</noscript></form>
+
+        
+<!-- '"` --><!-- </textarea></xmp> --></option></form><form data-remote="true" action="/AhmedMagdyOmar/Story/settings/open-graph-image" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="_method" value="put" /><input type="hidden" name="authenticity_token" value="AjsNbuZo7ojEZ3SH6oqb9u7Ql8hZQHgi149WYokVIhTKeNOeFx5cePo212k5KB1MzEm4WgKB+qG4b1VgX7MSiA==" />
+  <file-attachment class="js-upload-repository-image is-default" data-upload-repository-id="200929889" novalidate="novalidate" data-upload-policy-url="/upload/policies/repository-images" data-upload-policy-authenticity-token="KuqGZ7u55TO8eCcOZPUZlSKi+ce/AE+X6BcZ7y44KKjGxa0nyBEbFh1DL1kolrj70eOTm16JMjZ/BceJlzA1JA==">
+    <input type="file" id="repo-image-file-input" class="js-manual-file-chooser" style="display: none">
+    <dl class="form-group d-inline-block mb-0 mt-6">
+      <dt class="input-label">
+        <label>Social preview</label>
+      </dt>
+      <dd class="avatar-upload-container">
+        <p>
+          Upload an image to customize your repository&rsquo;s social media preview.
+        </p>
+        <p>
+          Images should be at least 640&times;320px (1280&times;640px for best display).<br>
+          <a href="/AhmedMagdyOmar/Story/settings/og-template" class="text-bold">Download template</a>
+        </p>
+        <div class="avatar-upload position-relative">
+          <div class="upload-state pt-0 loading position-absolute width-full text-center">
+            <img width="16" height="16" alt="" class="v-align-text-bottom" src="https://github.githubassets.com/images/spinners/octocat-spinner-32.gif" /> Uploading...
+          </div>
+          <div class="upload-state pt-0 text-red file-empty">
+            This file is empty.
+          </div>
+
+          <div class="upload-state pt-0 text-red too-big">
+            Please upload a picture smaller than 1 MB.
+          </div>
+
+          <div class="upload-state pt-0 text-red bad-dimensions">
+            Please upload a picture smaller than 10,000x10,000.
+          </div>
+
+          <div class="upload-state pt-0 text-red bad-file">
+            We only support PNG, GIF, or JPG pictures.
+          </div>
+
+          <div class="upload-state pt-0 text-red failed-request">
+            Something went really wrong and we can&rsquo;t process that picture.
+          </div>
+
+          <div class="upload-state pt-0 text-red bad-format">
+            File contents don&rsquo;t match the file extension.
+          </div>
+        </div>
+      </dd>
+    </dl>
+</file-attachment></form>
+<div class="avatar-upload position-relative">
+  <details class="dropdown details-reset details-overlay">
+    <summary>
+      <div class="blankslate border rounded-2 repository-og-image js-repository-image-container"></div>
+      <div class="position-absolute bg-gray-dark rounded-2 text-white px-2 py-1 left-0 bottom-0 ml-2 mb-2">
+        <svg height="16" width="16" class="octicon octicon-pencil" viewBox="0 0 14 16" version="1.1" aria-hidden="true"><path fill-rule="evenodd" d="M0 12v3h3l8-8-3-3-8 8zm3 2H1v-2h1v1h1v1zm10.3-9.3L12 6 9 3l1.3-1.3a.996.996 0 0 1 1.41 0l1.59 1.59c.39.39.39 1.02 0 1.41z"/></svg> Edit
+      </div>
+    </summary>
+    <details-menu class="dropdown-menu dropdown-menu-se" style="z-index: 99">
+      <label for="repo-image-file-input" class="dropdown-item btn-link text-normal" role="menuitem" tabindex="0">
+        Upload an image&hellip;
+      </label>
+
+      <!-- '"` --><!-- </textarea></xmp> --></option></form><form action="/AhmedMagdyOmar/Story/settings/open-graph-image" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="_method" value="delete" /><input type="hidden" name="authenticity_token" value="RGUXhUvcsZasGH6do1wVCxIl1iRD/22i8oQ0re0qA2ttNderZ2vlWruClJX11tdOtaxqucKe+2OudO9p76q8Jw==" />
+        <input type="hidden" name="id" class="js-repository-image-id" value="">
+        <button class="dropdown-item btn-link js-remove-repository-image-button" role="menuitem" type="submit" data-disable-with data-confirm="Are you sure you want to remove AhmedMagdyOmar/Story's promotional image?" hidden>
+          Remove image
+        </button>
+</form>    </details-menu>
+  </details>
+</div>
+
+
+      <div class="Subhead Subhead--spacious border-bottom-0 mb-0">
+        <h2 class="Subhead-heading">
+          Features
+        </h2>
+      </div>
+      
+<!-- '"` --><!-- </textarea></xmp> --></option></form><form class="js-repo-features-form" data-autosubmit="true" action="/AhmedMagdyOmar/Story/settings/update" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="_method" value="put" /><input type="hidden" name="authenticity_token" value="kQrwUN5ihy34IpfJMxKqbGW5K9mSOeKyq3NV8zbybG/n5vllMhW65un4Uc+sMv+MIRegpQIHEDw8xUd3GexBcw==" />
+  <ul class="Box">
+    <li class="Box-row py-0">
+      <div class="form-checkbox js-repo-option" >
+        <input type="hidden" name="has_wiki" value="0">
+        <input
+          type="checkbox"
+          name="has_wiki"
+          value="1"
+          id="wiki-feature" checked
+          
+        >
+        <label for="wiki-feature">Wikis</label>
+        <span class="status-indicator ml-1 js-status-indicator">
+          <svg class="octicon octicon-check" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"/></svg>
+          <svg class="octicon octicon-x" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48L7.48 8z"/></svg>
+        </span>
+        <p class="note">
+          GitHub Wikis is a simple way to let others contribute content.
+          Any GitHub user can create and edit pages to use for documentation,
+          examples, support, or anything you wish.
+        </p>
+      </div>
+      <div class="mb-3">
+        
+
+      </div>
+    </li>
+
+      <li class="Box-row py-0">
+        <div class="form-checkbox js-repo-option">
+          <input type="hidden" name="wiki_access_to_pushers" value="0">
+          <input type="checkbox" name="wiki_access_to_pushers" value="1" id="wiki-pusher-access" checked>
+            <label for="wiki-pusher-access">Restrict editing to collaborators only</label>
+          <span class="status-indicator ml-1 js-status-indicator">
+            <svg class="octicon octicon-check" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"/></svg>
+            <svg class="octicon octicon-x" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48L7.48 8z"/></svg>
+          </span>
+            <p class="note">Public wikis will still be readable by everyone.</p>
+        </div>
+      </li>
+
+    <li class="Box-row py-0">
+      <div class="form-checkbox js-repo-option">
+        <input type="hidden" name="has_issues" value="0">
+        <input type="checkbox" name="has_issues" value="1" id="issue-feature" checked>
+        <label for="issue-feature">Issues</label>
+        <span class="status-indicator ml-1 js-status-indicator">
+          <svg class="octicon octicon-check" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"/></svg>
+          <svg class="octicon octicon-x" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48L7.48 8z"/></svg>
+        </span>
+        <p class="note">
+          Issues integrate lightweight task tracking into your repository.
+          Keep projects on track with issue labels and milestones, and reference them in commit messages.
+        </p>
+
+          <div class="bg-blue-light border border-blue-light rounded-1 pl-5 p-3 my-3">
+            <div class="container-md">
+              <div class="d-flex flex-items-center">
+                <div>
+                  <strong class="mb-2">Get organized with issue templates</strong>
+                  <p class="pr-6 mb-0">Give contributors issue templates that help you cut through the noise and help them push your project forward.</p>
+                </div>
+                <div>
+                  <a href="/AhmedMagdyOmar/Story/issues/templates/edit" class="btn btn-primary mr-5">
+                    Set up templates
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </li>
+
+
+      <li class="Box-row py-0">
+        <div class="form-checkbox js-repo-option">
+          <input type="hidden" name="enable_repository_funding_links" value="0">
+          <input type="checkbox" name="enable_repository_funding_links" id="repository-funding-links-feature" value="1" >
+          <label for="repository-funding-links-feature">Sponsorships</label>
+          &nbsp;
+          <span class="status-indicator v-align-top ml-1 js-status-indicator">
+            <svg class="octicon octicon-check" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"/></svg>
+            <svg class="octicon octicon-x" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48L7.48 8z"/></svg>
+          </span>
+          <p class="note">
+            Sponsorships help your community know how to financially support this repository.
+          </p>
+            <div class="bg-blue-light border border-blue-light rounded-1 pl-5 p-3 my-3">
+              <div class="container-md">
+                <div class="d-flex flex-items-center">
+                  <div>
+                      <strong class="mb-2">
+                        Display a "Sponsor" button
+                      </strong>
+                      <p class="pr-6 mb-0">
+                        Add links to GitHub Sponsors or third-party methods your repository accepts for financial contributions to your project.
+                      </p>
+                  </div>
+
+                  <div>
+                      <a class="btn btn-primary mr-5" data-hydro-click="{&quot;event_type&quot;:&quot;sponsors.repo_funding_links_button_click&quot;,&quot;payload&quot;:{&quot;platforms&quot;:[],&quot;repo_id&quot;:200929889,&quot;owner_id&quot;:53269957,&quot;user_id&quot;:53269957,&quot;is_mobile&quot;:false,&quot;client_id&quot;:&quot;1376813244.1566195565&quot;,&quot;originating_request_id&quot;:&quot;C0CD:364EE:BCEA60:11D5954:5D5C355B&quot;,&quot;originating_url&quot;:&quot;https://github.com/AhmedMagdyOmar/Story/settings?_pjax=%23js-repo-pjax-container&quot;,&quot;referrer&quot;:&quot;https://github.com/AhmedMagdyOmar/Story&quot;}}" data-hydro-click-hmac="f145e2f2c37fd041f38d600e376319ec1bd48828629aedad5a6b92bd1f7eb505" href="/AhmedMagdyOmar/Story/new/master?repository_funding=1">Set up sponsor button</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </li>
+
+      <li class="Box-row py-0">
+        <div class="form-checkbox js-repo-option">
+          <input type="hidden" name="projects_enabled" value="0">
+          <input type="checkbox" name="projects_enabled" id="projects-feature" value="1" checked  >
+          <label for="projects-feature">Projects</label>
+          <span class="status-indicator v-align-top ml-1 js-status-indicator">
+            <svg class="octicon octicon-check" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"/></svg>
+            <svg class="octicon octicon-x" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48L7.48 8z"/></svg>
+          </span>
+          <p class="note">
+            Project boards on GitHub help you organize and prioritize your work.
+            You can create project boards for specific feature work,
+            comprehensive roadmaps, or even release checklists.
+          </p>
+        </div>
+      </li>
+  </ul>
+
+
+    <div class="Subhead Subhead--spacious">
+      <h2 class="Subhead-heading">Data services</h2>
+    </div>
+    <p>Use the data from your repository to power these enhanced features.
+    </p>
+    <div class="Box js-repo-data-services">
+        <div class="Box-row py-0">
+          <div class="form-checkbox js-repo-option">
+            <input type="hidden" name="vulnerability_alerts_enabled" value="0">
+            <input type="checkbox" name="vulnerability_alerts_enabled" class="js-repo-data-option"
+              data-octo-click="repo_vuln_alerts"
+              data-octo-dimensions="enabled:false,location:settings"
+              value="1" id="vulnerability-alerts-feature"
+              checked>
+            <label for="vulnerability-alerts-feature">
+              Security alerts
+            </label>
+            <span class="status-indicator ml-1 js-status-indicator">
+              <svg class="octicon octicon-check" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"/></svg>
+              <svg class="octicon octicon-x" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48L7.48 8z"/></svg>
+            </span>
+            <p class="note text-gray-light">
+              Receive alerts when a new vulnerability is found in one of your dependencies.
+            </p>
+          </div>
+        </div>
+
+      
+    </div>
+
+  <noscript>
+    <button class="btn btn-primary" type="submit">Save changes</button>
+</noscript></form>
+
+      <div class="Subhead Subhead--spacious">
+        <h2 class="Subhead-heading" id="merge-button-settings">
+          Merge button
+        </h2>
+      </div>
+      <p id="merge-button-settings-desc">
+        When merging pull requests, you can allow any combination of
+        merge commits, squashing, or rebasing. At least one option must be enabled.
+      </p>
+      <!-- '"` --><!-- </textarea></xmp> --></option></form><form class="repository-merge-features js-merge-features-form" data-autosubmit="true" action="/AhmedMagdyOmar/Story/settings/update_merge_settings" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="_method" value="put" /><input type="hidden" name="authenticity_token" value="8dJk0Wm1B67UNVsDMQP4YrmGhncYXcRUN4THaZqUNIib48xFQB7/Ti0Ls+3VzKPtHEDwTXtjh9w4gJJoD49I3g==" />
+    <div class="Box">
+      <div class="flash flash-full flash-warn d-none js-select-one-warning">
+        You must select at least one option
+      </div>
+
+      <ul aria-labelledby="merge-button-settings" aria-describedby="merge-button-settings-desc">
+        <li class="Box-row py-0">
+          <div class="form-group js-repo-option">
+            <div class="form-checkbox">
+              <label for="merge_types_merge_commit">Allow merge commits</label>
+              <span class="status-indicator js-status-indicator">
+                <svg class="octicon octicon-check" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"/></svg>
+              </span>
+              <input type="checkbox"
+                     name="merge_types[]"
+                     value="merge_commit"
+                     id="merge_types_merge_commit"
+                     checked>
+              <p class="note">Add all commits from the head branch to the base branch with a merge commit.</p>
+            </div>
+          </div>
+        </li>
+
+        <li class="Box-row py-0">
+          <div class="form-group js-repo-option">
+            <div class="form-checkbox">
+              <label for="merge_types_squash">Allow squash merging</label>
+              <span class="status-indicator js-status-indicator">
+                <svg class="octicon octicon-check" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"/></svg>
+              </span>
+              <input type="checkbox"
+                     name="merge_types[]"
+                     value="squash_merge"
+                     id="merge_types_squash"
+                     checked>
+              <p class="note">Combine all commits from the head branch into a single commit in the base branch.</p>
+            </div>
+          </div>
+        </li>
+
+        <li class="Box-row py-0">
+          <div class="form-group js-repo-option">
+            <div class="form-checkbox">
+              <label for="merge_types_rebase">Allow rebase merging</label>
+              <span class="status-indicator js-status-indicator">
+                <svg class="octicon octicon-check" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"/></svg>
+              </span>
+              <input type="checkbox"
+                     name="merge_types[]"
+                     value="rebase_merge"
+                     id="merge_types_rebase"
+                     checked>
+              <p class="note">Add all commits from the head branch onto the base branch individually.</p>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <p class="mt-3">
+      After pull requests are merged, you can have head branches deleted automatically.
+    </p>
+    <div class="Box">
+      <ul>
+        <li class="Box-row py-0">
+          <div class="form-group js-repo-option">
+            <div class="form-checkbox">
+              <label for="merge_types_delete_branch">Automatically delete head branches</label>
+              <span class="status-indicator js-status-indicator">
+                <svg class="octicon octicon-check" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"/></svg>
+              </span>
+              <input type="checkbox"
+                     name="merge_types[]"
+                     value="delete_branch"
+                     id="merge_types_delete_branch"
+                     >
+              <p class="note">Deleted branches will still be able to be restored.</p>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+  <noscript>
+    <button class="btn btn-primary" type="submit">Save changes</button>
+</noscript></form>
+
+        <div class="Subhead Subhead--spacious">
+          <h2 class="Subhead-heading">
+            GitHub Pages
+          </h2>
+        </div>
+        <p><a href="https://pages.github.com">GitHub Pages</a> is designed to host your personal, organization, or project pages from a GitHub repository.</p>
+
+          
+
+
+
+          <div class="Box">
+            
+
+
+<div class="Box-row">
+  <!-- '"` --><!-- </textarea></xmp> --></option></form><form action="/AhmedMagdyOmar/Story/settings/pages/source" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="_method" value="put" /><input type="hidden" name="authenticity_token" value="GgaWSRVxU21wHMgfI9xIKaCG4pjYrPLtO+Yb1uhQFHo6FT6/nHDmM2iwp2guweuY/JhsUtkHiDVkf91WtIUI4Q==" />
+    <strong>Source</strong>
+    <p>
+        GitHub Pages is currently disabled.
+          You must first add content to your repository before you can publish a GitHub Pages site.
+      <a href="https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/">Learn more</a>.
+    </p>
+      <details class="select-menu details-reset details-overlay">
+        <summary class="btn select-menu-button">
+          <span class="pr-1" data-menu-button>None</span>
+        </summary>
+        <details-menu class="select-menu-modal position-absolute" style="z-index: 99;">
+          <div class="select-menu-list">
+            <div class="select-menu-header">
+              <span class="select-menu-title">Select source</span>
+            </div>
+                <button type="submit" class="select-menu-item width-full disabled"
+                  aria-checked="false"
+                  disabled
+                  name="source"
+                  value="master"
+                  role="menuitemradio">
+                  <svg class="octicon octicon-check select-menu-item-icon" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"/></svg>
+                  <div class="select-menu-item-text">
+                    <span class="select-menu-item-heading" data-menu-button-text>master branch</span>
+                    <span class="description">Use the <code>master</code> branch for GitHub Pages.</span>
+                  </div>
+                </button>
+                <button type="submit" class="select-menu-item width-full disabled"
+                  aria-checked="false"
+                  disabled
+                  name="source"
+                  value="master /docs"
+                  role="menuitemradio">
+                  <svg class="octicon octicon-check select-menu-item-icon" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"/></svg>
+                  <div class="select-menu-item-text">
+                    <span class="select-menu-item-heading" data-menu-button-text>master branch /docs folder</span>
+                    <span class="description">Use only the <code>/docs</code> folder for GitHub Pages.</span>
+                  </div>
+                </button>
+                <button type="submit" class="select-menu-item width-full "
+                  aria-checked="true"
+                  
+                  name="source"
+                  value="none"
+                  role="menuitemradio">
+                  <svg class="octicon octicon-check select-menu-item-icon" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z"/></svg>
+                  <div class="select-menu-item-text">
+                    <span class="select-menu-item-heading" data-menu-button-text>None</span>
+                    <span class="description">Disable GitHub Pages.</span>
+                  </div>
+                </button>
+          </div>
+        </details-menu>
+      </details>
+</form>
+    <strong class="d-block mt-3">Theme Chooser</strong>
+    <div>
+      Select a theme to publish your site with a Jekyll theme using the <code>master branch</code>.
+      <a href="https://help.github.com/articles/creating-a-github-pages-site-with-the-jekyll-theme-chooser/">Learn more</a>.
+    </div>
+    <a
+      class="btn mt-2"
+      href="/AhmedMagdyOmar/Story/settings/pages/themes?source=master">
+        Choose a theme
+    </a>
+</div>
+
+
+
+
+
+          </div>
+
+    <div class="Subhead Subhead--spacious border-bottom-0 mb-0">
+      <h2 class="Subhead-heading">
+        Danger Zone
+      </h2>
+    </div>
+    <div class="Box Box--danger">
+      <ul>
+        <li class="Box-row">
+          
+      <details class="details-reset details-overlay details-overlay-dark">
+        <summary class="btn btn-danger boxed-action">Make private</summary>
+        <details-dialog class="anim-fade-in fast Box Box--overlay d-flex flex-column">
+          <div class="Box-header">
+            <button class="Box-btn-octicon btn-octicon float-right" type="button" aria-label="Close dialog" data-close-dialog>
+              <svg class="octicon octicon-x" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48L7.48 8z"/></svg>
+            </button>
+            <h3 class="Box-title">Make this repository private</h3>
+          </div>
+          <div class="flash flash-full flash-warn">
+            <svg class="octicon octicon-alert" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 0 0 0 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 0 0 .01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z"/></svg>
+            Warning: this is a potentially destructive action.
+          </div>
+          <div class="Box-body overflow-auto">
+            <ul class="ml-3">
+                <li class="mb-3">You will <strong>permanently</strong> lose:</li>
+                <ul class="ml-3">
+                  <li class="mb-1">All <strong>stars and watchers</strong> of this repository.</li>
+                    <li>All <strong>pages</strong> published from this repository.</li>
+                </ul>
+
+
+                  <li class="my-3">You can
+                    <a data-hydro-click="{&quot;event_type&quot;:&quot;feature_gate_upsell.click&quot;,&quot;payload&quot;:{&quot;feature_name&quot;:null,&quot;user_id&quot;:53269957,&quot;client_id&quot;:&quot;1376813244.1566195565&quot;,&quot;originating_request_id&quot;:&quot;C0CD:364EE:BCEA60:11D5954:5D5C355B&quot;,&quot;originating_url&quot;:&quot;https://github.com/AhmedMagdyOmar/Story/settings?_pjax=%23js-repo-pjax-container&quot;,&quot;referrer&quot;:&quot;https://github.com/AhmedMagdyOmar/Story&quot;}}" data-hydro-click-hmac="15bd7d11d3eee778f74a27d7fd65627bbb40e7c4d93286835e367c4d5824007f" href="/settings/billing">upgrade your plan</a>
+                    to also avoid losing access to:
+                  </li>
+                  <ul class="ml-3">
+                    <li class="mb-1"><strong>Codeowners</strong> functionality.</li>
+                    <li class="mb-1">Any existing <strong>wikis.</strong></li>
+                    <li class="mb-1"><strong>Pulse, Contributors, Community, Traffic, Commits, Code Frequency</strong> and <strong>Network</strong> on the <strong>Insights page.</strong></li>
+                    <li class="mb-1">Unlimited collaborators. This repository will now be <strong>limited to 3 collaborators.</strong></li>
+                    <li>Branch protection rules.</li>
+                  </ul>
+            </ul>
+          </div>
+          <div class="Box-body">
+            <p>Please type in the name of the repository to confirm.</p>
+            <!-- '"` --><!-- </textarea></xmp> --></option></form><form action="/AhmedMagdyOmar/Story/settings/toggle_permission" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="qFTGsRBTBrtUK7XhlZvv7njvM6qyNQGNsQHqsKiuy2HjI4tAvhO8RW92DS8oizI6ZSvhOQaIhb6qvkXk/HPt/w==" />
+              <p>
+                <input type="text" class="form-control input-block" autofocus required
+                       pattern="[sS][tT][oO][rR][yY]|[aA][hH][mM][eE][dD][mM][aA][gG][dD][yY][oO][mM][aA][rR]/[sS][tT][oO][rR][yY]"
+                       aria-label="Type in the name of the repository to confirm that you want to change the visibility of this repository."
+                       name="verify">
+              </p>
+              <div class="full-button">
+                <button type="submit" class="btn btn-block btn-danger" data-disable-invalid data-disable-with>I understand, make this repository private.</button>
+              </div>
+</form>          </div>
+        </details-dialog>
+      </details>
+
+    <strong>Make this repository private</strong>
+      <p>
+          Hide this repository from the public.
+      </p>
+
+        </li>
+        <li class="Box-row">
+          
+    <details class="details-reset details-overlay details-overlay-dark">
+      <summary class="btn btn-danger boxed-action">Transfer</summary>
+      <details-dialog class="anim-fade-in fast Box Box--overlay d-flex flex-column">
+        <div class="Box-header">
+          <button class="Box-btn-octicon btn-octicon float-right" type="button" aria-label="Close dialog" data-close-dialog>
+            <svg class="octicon octicon-x" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48L7.48 8z"/></svg>
+          </button>
+          <h3 class="Box-title">Transfer repository</h3>
+        </div>
+        <div class="flash flash-full flash-warn">
+          To understand admin access, teams, issue assignments, and redirects after a repository is
+          transferred, see "<strong><a href="https://help.github.com/articles/transferring-a-repository/">Transferring a repository</a></strong>"
+          in GitHub Help.
+        </div>
+        <div class="overflow-auto">
+          <div class="Box-body overflow-auto">
+              <p class="mb-0">Transferring may be delayed until the new owner approves the transfer.</p>
+
+            <!-- '"` --><!-- </textarea></xmp> --></option></form><form action="/AhmedMagdyOmar/Story/settings/transfer" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="Bh3axJGZLXo9nRaOec6h0GARUSLd1w2EBrp+lyI/JHyY1feEI5006WyoUbIYq1zDZxNP+eoFqAGOZWvmiejL0A==" />
+                <dl class="form-group">
+                  <dt><label for="confirm_repository_name">Type the name of the repository to confirm</label></dt>
+                  <dd>
+                    <input class="form-control" type="text" id="confirm_repository_name" autofocus required
+                           pattern="[sS][tT][oO][rR][yY]|[aA][hH][mM][eE][dD][mM][aA][gG][dD][yY][oO][mM][aA][rR]/[sS][tT][oO][rR][yY]"
+                           aria-label="Type in the name of the repository to confirm that you want to transfer this repository.">
+                  </dd>
+                </dl>
+                <dl class="form-group">
+                  <dt><label for="confirm_new_owner">New owner’s GitHub username or organization name</label></dt>
+                  <dd><input id="confirm_new_owner" class="form-control" type="text" name="new_owner" id="transfer_field" required aria-label="Type in the username of the new owner."></dd>
+                </dl>
+              <button type="submit" class="btn btn-block btn-danger" data-disable-invalid>I understand, transfer this repository.</button>
+</form>          </div>
+        </div>
+      </details-dialog>
+    </details>
+
+  <strong>Transfer ownership</strong>
+    <p>
+      Transfer this repository to another user or to an organization where you
+      have the ability to create repositories.
+    </p>
+
+        </li>
+        <li class="Box-row">
+          
+<details class="details-reset details-overlay details-overlay-dark">
+  <summary class="btn btn-danger boxed-action">Archive this repository</summary>
+  <details-dialog class="anim-fade-in fast Box Box--overlay d-flex flex-column">
+    <div class="Box-header">
+      <button class="Box-btn-octicon btn-octicon float-right" type="button" aria-label="Close dialog" data-close-dialog>
+        <svg class="octicon octicon-x" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48L7.48 8z"/></svg>
+      </button>
+      <h3 class="Box-title">Archive repository</h3>
+    </div>
+    <div class="flash flash-full flash-warn">
+      Unexpected bad things will happen if you don’t read this!
+    </div>
+    <div class="Box-body overflow-auto">
+      <p>
+        This will make the <strong>AhmedMagdyOmar/Story</strong> repository, issues,
+        pull requests, labels, milestones, projects, wiki, releases, commits, tags, branches, reactions and
+        comments read-only and disable any future comments. The repository can still be forked.
+      </p>
+
+      <p>Ensure you’ve changed any repository settings, considered closing all open issues and pull requests and updated your README before you archive this repository.</p>
+
+      <p>Once archived, you can unarchive the repository at any time.</p>
+
+
+      <p>Please type in the name of the repository to confirm.</p>
+
+      <form action="/AhmedMagdyOmar/Story/settings/archive" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="gOmecu7cX9o+Yca0Ysd/omjVxfgp+TDCEC0aCPXdqkkjUniwpLWsb4ySqgZYo7XAVavo9+4kl6IJrafTUFee3Q==" />
+        <p>
+          <input type="text" class="form-control input-block" autofocus required
+                 pattern="[sS][tT][oO][rR][yY]|[aA][hH][mM][eE][dD][mM][aA][gG][dD][yY][oO][mM][aA][rR]/[sS][tT][oO][rR][yY]"
+                 aria-label="Type in the name of the repository to confirm that you want to archive this repository."
+                 name="verify">
+        </p>
+        <button type="submit" class="btn btn-block btn-danger" data-disable-invalid>I understand the consequences, archive this repository</button>
+</form>    </div>
+  </details-dialog>
+</details>
+
+<strong>Archive this repository</strong>
+<p>Mark this repository as archived and read-only.</p>
+
+        </li>
+        <li class="Box-row">
+          
+  <details class="details-reset details-overlay details-overlay-dark"  >
+    <summary class="btn btn-danger boxed-action" aria-haspopup="dialog">
+      Delete this repository
+    </summary>
+    <details-dialog class="Box Box--overlay d-flex flex-column anim-fade-in fast" aria-label="Delete repository">
+      <div class="Box-header">
+        <button class="Box-btn-octicon btn-octicon float-right" type="button" aria-label="Close dialog" data-close-dialog="">
+          <svg class="octicon octicon-x" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48L7.48 8z"/></svg>
+        </button>
+        <div class="Box-title">Are you absolutely sure?</div>
+      </div>
+      <div class="flash flash-warn flash-full">
+        Unexpected bad things will happen if you don’t read this!
+      </div>
+      <div class="Box-body overflow-auto">
+        <p>
+          This action <strong>cannot</strong> be undone. This will permanently delete the <strong>AhmedMagdyOmar/Story</strong>
+          repository, wiki, issues, and comments, and remove all collaborator associations.
+        </p>
+
+
+
+        <p>Please type in the name of the repository to confirm.</p>
+
+        <form action="/AhmedMagdyOmar/Story/settings/delete" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="_method" value="delete" /><input type="hidden" name="authenticity_token" value="12rw+VZ+LPCbL2wA3WO2VhAjhxSho/IoSOp6GoQPyxLmc2e8qJK7X42YrtXa/m2pJR6GJedz3OIeWivduuGTrg==" />
+          <p>
+          <input type="text" class="form-control input-block" autofocus required
+                 pattern="[sS][tT][oO][rR][yY]|[aA][hH][mM][eE][dD][mM][aA][gG][dD][yY][oO][mM][aA][rR]/[sS][tT][oO][rR][yY]"
+                 aria-label="Type in the name of the repository to confirm that you want to delete this repository."
+                 name="verify">
+          </p>
+          <button type="submit" class="btn btn-block btn-danger" data-disable-invalid>I understand the consequences, delete this repository</button>
+</form>      </div>
+    </details-dialog>
+  </details>
+
+<strong>Delete this repository</strong>
+
+  <p>
+    Once you delete a repository, there is no going back. Please be certain.
+  </p>
+
+        </li>
+      </ul>
+    </div>
+  </div><!-- /#options_bucket -->
+
+    </div>
+  </div>
+
+
+  </div>
+  <div class="modal-backdrop js-touch-events"></div>
+</div>
+
+
+
+
+<script crossorigin="anonymous" async="async" integrity="sha512-S67Nm1SPmqkDseGn+q0fd7m2CqdaJ1PVdrwoi7cjhIqoboYekZnobo/a3oSEgl3HE0whr9fcn7fBHXNajPDbzA==" type="application/javascript" src="https://github.githubassets.com/assets/settings-bootstrap-a7286dc6.js"></script>
+
+<div id="pjax-head">
+  <title>Options</title>
+  <meta name="selected-link" value="repo_settings">
+  
+  
+  <meta name="analytics-location" content="/&lt;user-name&gt;/&lt;repo-name&gt;/edit_repositories/options" data-pjax-transient="true" />
+  
+  <meta name="request-id" content="C0CD:364EE:BCEA60:11D5954:5D5C355B" data-pjax-transient>
+  
+
+
+    <link href="https://github.com/AhmedMagdyOmar/Story/commits/master.atom" rel="alternate" title="Recent Commits to Story:master" type="application/atom+xml">
+
+</div>
+
+<div id="js-flash-container">
+
+</div>
+
+

@@ -1,0 +1,218 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 LucidaGrande;\f2\fnil\fcharset178 GeezaPro;
+}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww12860\viewh11360\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Chapter 9:\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs36 \cf0 \
+Table views and navigation controllers\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs26 \cf0 \
+1-\'93A table view: is just shows a list of things\
+  - \'93 table view controller, which is a special type of view controller that makes working with  \
+           table views easier.\'94\
+  - table view Controller: consists of the view controller contains a Table View object\
+    remember that the controller is the whole screen while the table view is the object that \
+    actually draws the list.\'94\
+   - the second part in TableView is cells: \'93Tables display their data in cells. A cell is related to \
+     a row but it\'92s not exactly the same. A cell is a view that shows a row of data that happens \
+     to be visible at  that moment\'94\
+   - to design cells:  Xcode has a very handy feature named prototype cells that lets you \
+     design your cells visually in Interface Builder\'94\
+      . and this happen within \'93drag a Label from the Objects Library on to the white area in the \
+        table view representing the,\'93You need to drag the label on to the cell itself. not in the    \
+         tableView \
+      . every cell we created has to has a reuse identifier \
+      . Please note when you create cells you have to add the contraints otherwise will be error\
+   - once the VC is hooked up to a data source , the table view sends a numberOfrosin section \
+     Method to find out how many data there are\
+       . \'93And when the table view needs to draw a particular row on the screen it sends a \
+          cellForRowAt  message to ask the data source for a cell\'94
+\fs24 \
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+1- to implement tableView\
+    1- we make table view controller as a delegate and data source for TableView object \
+    2- Table view asks for data rows and also asks for a cell for each row , after that we need to put \
+        row data into the cells  \
+\
+\
+\
+  -Note: \'93Document Outline shows the view hierarchy of all the scenes in the storyboard\'94\
+  -Note: \'93There are two styles of tables: \'93plain\'94 and \'93grouped\'94\
+  -Note: a reuse identifier:This is an internal name that the table view uses to find free cells to reuse\
+             when rows scroll off the screen and new rows must become visible\'94\
+  -Note: \'93The data source is the link between your data and the table view. Usually, the view controller   \
+             plays the role of data source and implements the necessary methods and in this case \
+             The view controller is acting as a delegate on behalf of the \
+  -Note: \'93The table view doesn\'92t really care who its data source is or what kind of data your app deals  \
+              with, just that it can send the cellForRowAt message and receive a cell in return.\'94\
+\
+\
+2- \'93The navigation controller allows you to build a hierarchy of screens that lead from one screen to another. It\'94\
+
+\fs26 	-\'93The Navigation Controller is a special type of view controller that acts as a container for other view controllers. It comes with a navigation bar and has the ability to easily go from one screen to another,\'94\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f1\fs48 \cf0 Chapter 11 Navigation controller\
+
+\fs26 \
+1-\'93the navigation controller is probably the second most used iOS user interface component. It is the thing that lets you go from one screen to another\'94\
+\
+	-\'93The UINavigationController object takes care of most of this navigation stuff for you, which saves a lot of programming effort. It has a navigation bar with a title in the middle and a \'93back\'94 button that automatically takes the user back to the previous screen. You can put a button (or several buttons) of your own on the right.\'94\
+\
+ 	-once you embed your VC into Navigation view Controller, \'93the Interface Builder has added a new Navigation Controller scene and made a relationship between it and your view controller.\'94 And  \'93When the app starts up, the Checklist View Controller is automatically put inside a navigation controller.\'94\
+\
+	- please note once we embedded our view controller into navigation controller\
+We will note an object names navigation item was added in interface builder\
+And this object(navigation item) contains the title and button that appear in the \
+Navigation bar when this view controller becomes active, \
+Also you have to notice if you added a new VC in a navigation controller it just would came with navigation bar if you want to customize this navigation elements(\'93such as the navigation buttons, or the title\'94) you will add a navigation item	\'85. At least navigation item helps you to customize the navigation element\
+\
+\
+	-\'93 A navigation bar usually has left and right navigation item positions where you can drag either bar button items or views on to. If you are unable to drag an item on to the left/right positions of a navigation bar and the scene has a navigation bar, it is possible that the scene is missing a Navigation Item. Then, you have to first drag a Navigation Item on to the scene.\'94   1161\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \
+	- Generally there is a single navigation controller for a navigation flow , a single navigation controller could present \
+Multiple view controller as part of its navigation flow, each view controller has a reference to the navigation controller\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs26 \cf0 	- 
+\f1 when you are going to add new VC in a navigation controller you use a (show) segue which used in (\'93Pushes the new view controller onto the navigation stack so that the new view controller is at the top of the navigation stack. It also provides a back button to return to the previous view controller. If the view controllers are not embedded in a navigation controller, then the new view controller will be presented modally (see Present Modally in the list below as to what this means)\'94\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \
+-Note: \'93When the navigation controller slides a new view controller in, it replaces the contents of the navigation bar with the new view controller\'92s Navigation Item.\'94\
+\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs36 \cf0 Chapter 12 Add Item screen \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs24 \cf0 \
+1- there are Muti option you have to do in this screen \
+	First : keyboard options\
+		1- make the keyboard showed up automatically when screen is opened\
+		2- the keyboard options usually relates to text field object , so you can edit the keyboard option within it\
+		3- change return key text to done text like navigation bar\
+		4- you have to make the keyboard done button trigger the same action as the done button in navigation bar\
+		5- disallow auto enable return key \
+\
+	Second: Done Bar button option \
+		1- after typing the code , there are multi options have to do about the done bar button\
+		2- the done bar button is initially enabled when the the add item screen opens so it really should be disabled\
+			select the Done bar button and go to the Attributes inspector. Uncheck the Enabled box.		3- there are setting called clear button , this enables a handy button in text fields which allows you to clear text\
+			so you can set it to \'93Appear While Editing\'94 to give users a quick and easy way to clear text\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs36 \cf0 Chapter 13 delegation and protocol\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs24 \cf0 - as an introduction in delegation you can think this process as an object does some work on behalf on another object 
+\fs36 \
+
+\fs24 for example in the table view , you say to it this view controller is now your data source , you can ask it about the data you want \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs36 \cf0 - 
+\f1\fs24 delegate: \'93An object will often rely on another object to help it out with certain tasks. This separation of concerns keeps the system simple, as each object does only what it is good at and lets other objects take care of the rest\'94\
+
+\f0\fs36 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs24 \cf0 1- there are a general principle in iOS we don\'92t want screen (B) to know much about the screen that invoked it (A)\
+in case screen (B) needs to communicate to screen (A) \'97> the solution is to make screen A the delegate of screen B\
+\
+2- please note the cool thing about the delegate pattern is the screen B doesn\'92t really know anything about screen A\
+It just knows that some object is its delegate , but doesn\'92t really care who that is \
+\
+3- delegate go hand in hand with a protocols , the protocol just lists names of the methods or it is a simply a name for a group of method ,and don\'92t have any source code\
+In them \'97> think of the delegate protocol as a contract between screen B and any screens that wish to use it 
+\fs36 \
+\
+
+\fs24 4- also notice a protocol normally doesn\'92t implement	any of the methods it declares it just say any object that conforms to this protocol must provide implementation for these method \
+\
+5- Delegates in five steps :\
+	1- Define a delegate protocol for object B\
+	2- give object B an optional delegate variable , this VAR should be weak\
+	3-Update object B to send message to its delegate when something interesting happens , such as the user \
+		pressing the cancel or one buttons or when it needs a piece of information \
+	4- Make object A conform to the delegate protocol, it should put the name of the class line and implement the \
+		methods from the protocol\
+	5-Tell object B that object A is now its delegate \
+6- we mentioned before about delegation which screen B send data to screen A but you also do notice the screen A can give B the data it needs \'97> you simply make a new instance variable in B\'92s view controller , screen A then puts an object into this property right before screen b visible \'97> that\'92s mean the data transfer between view controllers in two ways
+\fs36 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs28 \cf0 optionals\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs24 \cf0 1- as we mentioned before variables and constants in swift must always have a value, it is not allowed to be nil \
+If an app attempts to use a variable that is already nil and you expect it has a value the app will crash, swift stops this \
+By preventing you from using nil with regular variable  \'97> but sometimes a variable does need to have \'93no value\'94\
+In that case you can make it an optional
+\fs36 \
+
+\fs24 \
+2- during make a delegation sequence you will see this step.\'97> delegate?.addItemViewControllerDidCancel(self)\
+What does it mean ??\
+The question mark(?) means it tells swift not to send message if delegate is nil ,it is goo but why delegate mitt be a nil?\
+\
+Because \'93when AddItemViewController is loaded from the storyboard and instantiated, it won\'92t know right away who its delegate is. Between the time the view controller is loaded and the delegate is assigned, the delegate variable will be nil. And variables that can be nil, even if it is only temporary, must be optionals\'94\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs36 \cf0 Chapter 14 the need for data persistence\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs24 \cf0 1- an app stays in memory when you close it and go back to the home screen or switch to another app , the app goes into suspended state where it does absolutely nothing , iOS will terminate the any suspended app in order to free up memory when necessary 
+\f1 and
+\f2  
+\f1 there
+\f2  
+\f1 for
+\f2  
+\f1 the data was lost\'97> so we need to persist this data in a file on the device\'92s long term flash storage
+\f0\fs36 \
+
+\fs24 \
+2- your apps can store files in the document folder in the app\'92s sandbox,  and when you release a new version of your app or users instal updates the document folder is left untouched \
+\
+3- app sandbox contains 4 folder\
+	1- document folder where the app will put its data fie\
+	2- the library folder has a cache file and preferences the contents of this file are managed by operating system\
+	3- the systemData folder is used by operating system to store any system level information relevant the app\
+	4- the tmp folder for temporary files , sometimes apps needs to create files for temporary usage \
+\
+4- \'93To save the checklist items, you\'92ll use Swift's Codable protocol, which lets objects which support the Codable protocol to store themselves in a structured file format, \'93it might be good to know that Codable is actually a protocol which combines these two other protocols, Encodable and Decodable \'97 one for each side of the serialization process.\'94\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f1 \cf0 5-
+\f2  
+\f0 \'93While Codable is a new protocol introduced in Swift 4, you have already used its Objective-C cousin, NSCoder, behind the scenes because that\'92s exactly how storyboards work. When you add a view controller to a storyboard, Xcode uses the NSCoder system to write this object to a file (encoding). Then when your application starts up, it uses NSCoder again to read the objects from the storyboard file (decoding). The Codable protocol works similarly.\
+\'94\
+\
+
+\f1 6-
+\f2  
+\f1 the
+\f2  
+\f1 idea
+\f2  
+\f1 place
+\f2  
+\f1 for handling app termination notification is inside (application delegate) which is the delegate object for notification that concern the App as a whole \'97> this where you receive the \'93app will terminate\'94 and \'93app will be suspended\'94 notifications  }

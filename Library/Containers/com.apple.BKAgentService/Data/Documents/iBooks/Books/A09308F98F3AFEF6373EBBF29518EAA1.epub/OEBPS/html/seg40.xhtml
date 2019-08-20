@@ -1,0 +1,637 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 32: Search Bar</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 32: Search Bar</h1>
+
+<p>One of the most common tasks for mobile apps is to talk to a server on the Internet — if you’re writing mobile apps, you need to know how to upload and download data.
+</p>
+<p>With this new app named <i>StoreSearch</i>, you’ll learn how to do HTTP GET requests to a web service, how to parse JSON data, and how to download files such as images.
+</p>
+<p>You&apos;re going to build an app that lets you search the iTunes store. Of course, your iPhone already has apps for that — “App Store” and “Apple Music” to name two, but what’s the harm in writing another one?
+</p>
+<p>Apple has made a web service available for searching the entire iTunes store and you’ll be using that to learn about networking.
+</p>
+<p>The finished app will look like this:
+</p><div class="image-80"><img src="graphics/img518.png"  alt="" title="The finished StoreSearch app" /></div>
+<p>You will add search capability to your old friend, the table view. There is an animated pop-up with extra information when you tap an item in the table. And when you flip the iPhone over to landscape, the layout of the app completely changes to show the search results in a different way.
+</p>
+<p>There will also be an iPad version of the app with a custom UI for the iPad:
+</p><div class="image-50"><img src="graphics/img519.png"  alt="" title="The app on the iPad" /></div>
+<p><i>StoreSearch</i> fills in the missing pieces and rounds off the knowledge you have gained from developing the previous apps. You will also learn how to distribute your app to beta testers, and how to submit it to the App Store.
+</p>
+<p>In this chapter, you will do the following:
+</p>
+<ul>
+<li>
+<p><em>Create the project:</em> Create a new project for your new app. Set up version control using Git.
+</p></li>
+
+<li>
+<p><em>Create the UI:</em> Create the user interface for <i>StoreSearch</i>.
+</p></li>
+
+<li>
+<p><em>Do fake searches:</em> Understand how the search bar works by getting the search term and populating the table view with fake search results.
+</p></li>
+
+<li>
+<p><em>Create the data model:</em> Create a data model to hold the data for search results and allow for future expansion.
+</p></li>
+
+<li>
+<p><em>No data found:</em> Handle &quot;no data&quot; situations when doing a search.
+</p></li>
+</ul>
+
+<p>There’s a lot of work ahead, so let’s get started!
+</p>
+<h2 class="segment-chapter">Create the project</h2>
+
+<p>Fire up Xcode and make a new project. Choose the <em>Single View App</em> template and fill in the options as follows:
+</p>
+<ul>
+<li>
+<p>Product Name: <em>StoreSearch</em>
+</p></li>
+
+<li>
+<p>Team: Default value
+</p></li>
+
+<li>
+<p>Organization Name: your name
+</p></li>
+
+<li>
+<p>Organization Identifier: com.yourname
+</p></li>
+
+<li>
+<p>Language: <em>Swift</em>
+</p></li>
+
+<li>
+<p>Use Core Data, Include Unit Tests, Include UI Tests: leave these unchecked
+</p></li>
+</ul>
+
+<p>When you save the project Xcode gives you the option to create a <em>Git repository</em>. You’ve ignored this option thus far, but now you should enable it:
+</p><div class="image-70"><img src="graphics/img520.png"  alt="" title="Creating a Git repository for the project" /></div>
+<p>If you don’t see this option, click the Options button at the bottom-left of the dialog.
+</p>
+<h4 class="segment-chapter">Git and version control</h4>
+
+<p>Git is a <em>version control system</em> — it allows you to make snapshots of your work so you can always go back later and see a history of the changes made to the project. Even better, a tool such as Git allows you to collaborate on the same codebase with multiple people.
+</p>
+<p>Imagine the chaos if two programmers changed the same source file at the same time. It’s possible that your changes could accidentally be overwritten by a colleague’s. I once had a job where I had to shout down the hall to another programmer, “Are you using file X?” just so we wouldn’t be destroying each other’s work.
+</p>
+<p>With a version control system such as Git, each programmer can work independently on the same files, without fear of undoing the work of another. Git is smart enough to automatically merge in all of the changes, and if there are any conflicting edits, it will let you resolve them manually.
+</p>
+<p>Git is not the only version control system out there, but it’s the most popular one for iOS. A lot of iOS developers share their source code on GitHub (<a href="https://github.com">github.com</a>), a free collaboration site that uses Git as its engine. Another popular system is Subversion, often abbreviated as SVN. Xcode has built-in support for Git and while it used to support Subversion in past versions, that is no longer the case since Xcode 10.
+</p>
+<p>For <i>StoreSearch</i>, you will use some basic Git functionality. Even if you work alone and don’t have to worry about other programmers messing up your code, it still makes sense to use it. After all, you might be the one messing up your own code, and with Git, you’ll always have a way to go back to your old — and working! — version of the code.
+</p>
+<h3 class="segment-chapter">The first screen</h3>
+
+<p>The first screen in <i>StoreSearch</i> will have a table view with a search bar — let’s create the view controller for that screen.
+</p>
+<p>➤ In the Project navigator, select <em>ViewController.swift</em>, move your cursor over the <code>ViewController</code> class name and right-click to show the context menu. Select <em>Refactor → Rename…</em> from the menu and rename the class (and associated files and storyboard references) to <code>SearchViewController</code>.
+</p>
+<div class="note">
+<p><em>Note:</em> Sometimes, the refactoring will do everything right except to rename your file correctly. If this happens, you&apos;ll see the new file name in red in the Project navigator because Xcode expects the new file but the file actually has the old file name still. If this happens to you, simply go via Finder to your project folder and rename the file manually.
+</p></div>
+
+<p>➤ Run the app to make sure everything works. You should see a white screen with the status bar at the top.
+</p>
+<p>Notice that the project navigator now shows <em>M</em> and <em>R</em> icons next to some of the filenames in the list:
+</p><div class="image-30"><img src="graphics/img521.png"  alt="" title="Xcode shows the files that are modified" /></div>
+<p>If you don’t see these icons, then choose the <em>Source Control → Fetch and Refresh Status</em> option from the Xcode menu bar. If that gives an error message or still doesn’t work, simply restart Xcode. That’s a good tip in general: if Xcode is acting weird, restart it.
+</p>
+<p>An <em>M</em> means the file has been modified since the last <i>commit</i> and an <em>R</em> means this is a file that has been renamed.
+</p>
+<p>So what is a <i>commit</i>?
+</p>
+<p>When you use a version control system such as Git, you’re supposed to make a snapshot every so often. Usually you’ll do that after you’ve added a new feature to your app or when you’ve fixed a bug, or whenever you feel like you’ve made changes that you want to keep. That is called a commit.
+</p>
+<h3 class="segment-chapter">Git version control</h3>
+
+<p>When you created the project, Xcode made the initial commit. You can see that in the Project History window.
+</p>
+<p>➤ Select the <em>Source Control navigator</em> from the Navigator pane and then click on the <em>project root</em> (the blue folder icon at the top) to see the project history:
+</p><div class="image-60"><img src="graphics/img522.png"  alt="" title="The history of commits for this project" /></div>
+<p>You may get a popup at this point asking for permission to access your contacts. That allows Xcode to add contact information to the names in the commit history. This can be useful if you’re collaborating with other developers. You can always change this later under Security &amp; Privacy in System Preferences.
+</p>
+<div class="note">
+<p><em>Note:</em> Your Git history might not look the same as mine since mine also shows a <i>branch</i> called ch-32. Branches are a Git mechanism for working on the same codebase along different paths. You will learn more about Git branches in a later chapter. For the moment, just ignore the ch-32 branch you see in the screenshot and know that if you don&apos;t have any other branches, that is fine — you are not supposed to :]
+</p></div>
+
+<p>➤ Let’s commit the change you just made. From the <em>Source Control</em> menu, choose <em>Commit...</em>:
+</p><div class="image-70"><img src="graphics/img523.png"  alt="" title="The Commit menu option" /></div>
+<p>This opens a new window that shows in detail what changes you made. This a good time to quickly review the code changes, just to make sure you’re not committing anything you didn’t intend to:
+</p><div class="image-80"><img src="graphics/img524.png"  alt="" title="Xcode shows the changes you’ve made since the last commit" /></div>
+<p>It’s always a good idea to write a short but clear reason for the commit in the text box at the bottom. Having a good description here will help you later to find specific commits in your project’s history.
+</p>
+<p>➤ Write: <em>Rename ViewController to SearchViewController</em> as the commit message.
+</p>
+<p>➤ Press the <em>Commit 3 Files</em> button. You’ll see that in the Project navigator the M and R icons are gone — at least until you make your next change.
+</p>
+<p>The Source Control navigator should now show two commits. If it doesn&apos;t, click on a different branch in the list and then click on the root folder again.
+</p><div class="image-60"><img src="graphics/img525.png"  alt="" title="Your commit is listed in the project history" /></div>
+<p>If you double-click a particular commit, Xcode will show you the changes for that commit. You’ll be doing commits on a regular basis and by the end of the book you’ll be a pro at it :]
+</p>
+<h2 class="segment-chapter">Create the UI</h2>
+
+<p><i>StoreSearch</i> still doesn’t do much yet. In this section, you’ll build the UI to look like this — a search bar on top of a table view:
+</p><div class="image-25"><img src="graphics/img526.png"  alt="" title="The app with a search bar and table view" /></div>
+<p>Even though this screen uses the familiar table view, it is not a <i>table</i> view controller but a regular <code>UIViewController</code> — check the class definition in SearchViewController.swift, if you are not sure.
+</p>
+<p>You are not required to use a <code>UITableViewController</code> as the base class for your view controller just because you have a table view in your UI. For this app I will show you how.
+</p>
+<h4 class="segment-chapter">UITableViewController vs. UIViewController</h4>
+
+<p>So what exactly is the difference between a <i>table</i> view controller and a regular view controller?
+</p>
+<p>First off, <code>UITableViewController</code> is a subclass of <code>UIViewController</code> — it can do everything that a regular view controller can. However, it is optimized for use with table views and has some cool extra features.
+</p>
+<p>For example, when a table cell contains a text field, tapping that text field will bring up the on-screen keyboard. <code>UITableViewController</code> automatically scrolls the cells out of the way of the keyboard so you can always see what you’re typing.
+</p>
+<p>You don’t get that behavior for free with a plain <code>UIViewController</code> — if you want that feature, you’ll have to program it yourself.
+</p>
+<p><code>UITableViewController</code> does have a big restriction: its main view must be a <code>UITableView</code> that takes up the entire screen space, except for a possible navigation bar at the top, and a toolbar or tab bar at the bottom.
+</p>
+<p>If your screen consists of just a <code>UITableView</code>, then it makes sense to make it a <code>UITableViewController</code>. But if you want to have other views as well, the more basic <code>UIViewController</code> is the option to go with.
+</p>
+<p>That’s the reason you’re not using a <code>UITableViewController</code> in this app. Beside the table view, the app has another view, a <code>UISearchBar</code>. It is possible to put the search bar <i>inside</i> the table view as a special header view, or have the searchbar appear as part of the navigation bar, but for this app you will have it sitting above the table view.
+</p>
+<h3 class="segment-chapter">Set up the storyboard</h3>
+
+<p>➤ Open the storyboard and use the <em>View as:</em> panel to switch to the <em>iPhone SE</em> dimensions. It doesn’t really matter which iPhone model you choose here, but the iPhone SE makes it easiest to follow along with this book.
+</p>
+<p>➤ Drag a new <em>Table View</em> — <i>not</i> a Table View Controller — into the existing view controller.
+</p>
+<p>➤ Make the Table View as big as the main view (320 by 568 points) and then use the <em>Add New Constraints menu</em> at the bottom to attach the Table View to the edges of the screen:
+</p><div class="image-55"><img src="graphics/img527.png"  alt="" title="Creating constraints to pin the Table View" /></div>
+<p>Remember how this works? This app uses Auto Layout, which you&apos;ve used for the previous apps. With Auto Layout you create <em>constraints</em> that determine how big the views are and where they go on the screen.
+</p>
+<p>➤ First, uncheck <em>Constrain to margins</em>, if it is checked. Each screen has 16-point margins on the left and right, but you can change their size. When “Constrain to margins” is enabled you’re pinning to these margins. That’s no good here; you want to pin the Table View to the edge of the screen instead.
+</p>
+<p>➤ In the <em>Spacing to nearest neighbor</em> section, select the red I-beams to make four constraints, one on each side of the Table View. Keep the spacing values at 0.
+</p>
+<p>This pins the Table View to the edges of its superview. Now the table will always fill up the entire screen, regardless of the size of the device screen.
+</p>
+<p>➤ Click the <em>Add 4 Constraints</em> button to finish.
+</p>
+<p>If you were successful, there should now be four blue bars surrounding the table view, one for each constraint. In the Document Outline there should also be a new Constraints section.
+</p><div class="image-30"><img src="graphics/img528.png"  alt="" title="The new constraints in the Document Outline" /></div>
+<p>➤ From the Objects Library, drag a <em>Search Bar</em> on to the view — be careful to pick the Search Bar and not “Search Bar and Search Display Controller”. Place it at Y = 20 so it sits right under the status bar.
+</p>
+<p>Make sure the Search Bar is not placed inside the table view. It should sit on the same level as the table view in the Document Outline:
+</p><div class="image-70"><img src="graphics/img529.png"  alt="" title="Search Bar must be below of Table View (left), not inside (right)" /></div>
+<p>If you did put the Search Bar inside the Table View, you can pick it up in the Document Outline and drag it below the Table View.
+</p>
+<p>➤ Pin the Search Bar to the <em>top</em>, <em>left</em>, and <em>right</em> edges — 3 constraints in total.
+</p><div class="image-30"><img src="graphics/img530.png"  alt="" title="The constraints for the Search Bar" /></div>
+<p>You don’t need to pin the bottom of the Search Bar or give it a height constraint. Search Bars have an <i>intrinsic</i> height of 44 points.
+</p>
+<p>➤ In the <em>Attributes inspector</em> for the Search Bar, change the <em>Placeholder</em> text to <em>App name, artist, song, album, e-book</em>.
+</p>
+<p>The view controller’s design should look like this:
+</p><div class="image-60"><img src="graphics/img531.png"  alt="" title="The search view controller with Search Bar and Table View" /></div>
+<h3 class="segment-chapter">Connect to outlets</h3>
+
+<p>You know what’s coming next: connecting the Search Bar and the Table View to outlets on the view controller.
+</p>
+<p>➤ Add the following outlets to <em>SearchViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> searchBar: <span class="hljs-type">UISearchBar</span>!
+<span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> tableView: <span class="hljs-type">UITableView</span>!</pre>
+<p>Recall that as soon as an object no longer has any strong references, it goes away — it is deallocated — and any weak references to it become <code>nil</code>.
+</p>
+<p>Per Apple’s recommendation, you’ve been making your outlets <code>weak</code>. You may be wondering, if the references to these view objects are weak, then won’t the objects get deallocated too soon?
+</p>
+<div class="note">
+<p><em>Exercise.</em> What is keeping these views from being deallocated?
+</p></div>
+
+<p>Answer: Views are always part of a view hierarchy and they will always have an owner with a strong reference — their superview.
+</p>
+<p>The <code>SearchViewController</code>’s main view object holds a reference to both the search bar and the table view. This is done inside UIKit and you don’t have to worry about it. As long as the view controller exists, so will these two outlets.
+</p><div class="image-60"><img src="graphics/img532.png"  alt="" title="Outlets can be weak because the view hierarchy already has strong references" /></div>
+<p>➤ Switch back to the storyboard and connect the Search Bar and the Table View to their respective outlets — Control-drag from the view controller to the object that you want to connect.
+</p>
+<h3 class="segment-chapter">Table view content insets</h3>
+
+<p>If you run the app now, you’ll notice a small problem: the first rows of the Table View are hidden beneath the Search Bar.
+</p><div class="image-30"><img src="graphics/img533.png"  alt="" title="The first row is only partially visible" /></div>
+<p>That’s not so strange because you put the Search Bar on top of the table, obscuring part of the table view below.
+</p>
+<p>You could fix this in several different ways:
+</p>
+<ol>
+<li>
+<p>Change the table view&apos;s top layout constraint to match the search bar&apos;s bottom edge.
+</p></li>
+
+<li>
+<p>Make the Search Bar partially translucent to let the contents of the table cells shine through.
+</p></li>
+
+<li>
+<p>Use the table view&apos;s <em>content inset</em> attribute to allow for the area covered by the search bar.
+</p></li>
+</ol>
+
+<p>You will go with option #3. Unfortunately, the content inset attribute is unavailable via Interface Builder. So, this has to be done from code.
+</p>
+<p>➤ Add the following line to the end of <code>viewDidLoad()</code> in <em>SearchViewController.swift</em>:
+</p><pre class="code-block">tableView.contentInset = <span class="hljs-type">UIEdgeInsets</span>(top: <span class="hljs-number">64</span>, <span class="hljs-keyword">left</span>: <span class="hljs-number">0</span>, 
+                                   bottom: <span class="hljs-number">0</span>, <span class="hljs-keyword">right</span>: <span class="hljs-number">0</span>)</pre>
+<p>This tells the table view to add a 64-point margin at the top — 20 points for the status bar and 44 points for the Search Bar.
+</p>
+<p>Now the first row will always be visible, and when you scroll the table view, the cells still go under the search bar. Nice.
+</p>
+<h2 class="segment-chapter">Do fake searches</h2>
+
+<p>Before you implement the iTunes store searching, it’s good to understand how the <code>UISearchBar</code> component works.
+</p>
+<p>In this section you’ll get the search term from the search bar and use that to put some fake search results into the table view. Once you’ve got that working, you can build in the web service. Baby steps!
+</p>
+<p>➤ Run the app. If you tap the search bar, the on-screen keyboard will appear — if you&apos;re on the simulator, you may need to press <em>⌘K</em> to bring up the keyboard, and <em>Shift+⌘K</em> to allow typing from your Mac keyboard.
+</p>
+<p>However, it won&apos;t do anything when you type in a search term and tap the Search button.
+</p><div class="image-20"><img src="graphics/img534.png"  alt="" title="Keyboard with Search button" /></div>
+<p>Listening to the search bar is done — how else? — with a delegate. Let’s put this delegate code into an extension.
+</p>
+<h3 class="segment-chapter">Add a search bar delegate</h3>
+
+<p>➤ Add the following to the bottom of <em>SearchViewController.swift</em>, after the final closing bracket:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">SearchViewController</span>: <span class="hljs-title">UISearchBarDelegate</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">searchBarSearchButtonClicked</span><span class="hljs-params">(<span class="hljs-number">_</span> searchBar: UISearchBar)</span></span> {
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"The search text is: '<span class="hljs-subst">\(searchBar.text!)</span>'"</span>)
+  }
+}</pre>
+<p>Recall that you can use extensions to organize your source code. By putting all the <code>UISearchBarDelegate</code> stuff into its own extension, you keep it together in one place and out of the way of the rest of the code.
+</p>
+<p>The <code>UISearchBarDelegate</code> protocol has a method <code>searchBarSearchButtonClicked(_:)</code> that is invoked when the user taps the Search button on the keyboard. You will implement this method to put some fake data into the table. Later, you’ll make this method send a network request to the iTunes store to find songs, movies and e-books that match the search text that the user typed, but let’s not do too many new things at once!
+</p>
+<p>At the moment, all the new code does is to output the search term from the search bar to the Xcode Console.
+</p>
+<div class="note">
+<p><em>Tip:</em> I always put strings between single quotes when I use <code>print()</code>. That way you can easily see whether there are any trailing or leading spaces in the string. Also note that <code>searchBar.text</code> is an optional, so we need to unwrap it. It will never actually return <code>nil</code>, so a <code>!</code> will do just fine.
+</p></div>
+
+<p>➤ In the storyboard, <em>Control-drag</em> from the Search Bar to Search View Controller, or the yellow circle at the top. Connect to <em>delegate</em>.
+</p>
+<p>➤ Run the app, type something in the search bar and press the Search button. The Xcode Debug pane should now print the text you typed.
+</p><div class="image-70"><img src="graphics/img535.png"  alt="" title="The search text in the Xcode Console" /></div>
+<h3 class="segment-chapter">Show fake results</h3>
+
+<p>➤ Add the following new (and empty) extension to <em>SearchViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">SearchViewController</span>: <span class="hljs-title">UITableViewDelegate</span>, 
+                                <span class="hljs-title">UITableViewDataSource</span> </span>{
+}</pre>
+<p>The above extension will handle all the table view related delegate methods. You could certainly have added them as two separate extensions if you liked, but I prefer to keep all the table view delegate related code in one place.
+</p>
+<p>Adding the <code>UITableViewDataSource</code> and <code>UITableViewDelegate</code> protocols wasn’t necessary for the previous apps because you used a <code>UITableViewController</code> in each case. <code>UITableViewController</code> already conforms to these protocols by necessity.
+</p>
+<p><code>SearchViewController</code> however, is a regular view controller and therefore you have to hook up the data source and delegate protocols yourself.
+</p>
+<p>➤ Xcode should be complain at this point that your code does not conform to the <code>UITableViewDataSource</code> protocol. Use the Xcode &quot;Fix&quot; option to add protocol stubs and then modify the code as follows to add the minimum code you need for the moment:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">SearchViewController</span>: <span class="hljs-title">UITableViewDelegate</span>, 
+                                <span class="hljs-title">UITableViewDataSource</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+       numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+  }
+  
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+      cellForRowAt indexPath: IndexPath)</span></span> -&gt; <span class="hljs-type">UITableViewCell</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-type">UITableViewCell</span>()
+  }
+}</pre>
+<p>This simply tells the table view that it has no rows yet. Soon you’ll give it some fake data to display, but for now you just want to be able to compile the code without errors.
+</p>
+<p>Often you can declare to conform to a protocol without implementing any of its methods — for example, this works fine for <code>UISearchBarDelegate</code>.
+</p>
+<p>A protocol can have optional and required methods. If you forget a required method, you&apos;ll generally see Xcode complain, like you did above.
+</p>
+<p>➤ In the storyboard, <em>Control-drag</em> from the Table View to Search View Controller. Connect to <em>dataSource</em>. Repeat to connect to <em>delegate</em>.
+</p>
+<p>In case you&apos;re wondering how you connected something to a <code>delegate</code> property in Search View Controller twice — first the Search Bar, and then the Table View — the way Interface Builder presents this is a little misleading: the delegate outlet is not from <code>SearchViewController</code>, but belongs to the thing that you Control-dragged from. So you connected the <code>SearchViewController</code> to the <code>delegate</code> outlet on the Search Bar and also to the <code>delegate</code> (and <code>dataSource</code>) outlets on the Table View:
+</p><div class="image-35"><img src="graphics/img536.png"  alt="" title="The connections from Search View Controller to the other objects" /></div>
+<p>➤ Build and run the app to make sure everything still works.
+</p>
+<div class="note">
+<p><em>Note:</em> Did you notice a difference between these data source methods and the ones from the previous apps? Look closely…
+</p>
+<p>Answer: They don’t have the <code>override</code> keyword.
+</p>
+<p>In the previous apps, <code>override</code> was necessary because you were dealing with a subclass of <code>UITableViewController</code>, which already provides its own version of the <code>tableView(_:numberOfRowsInSection:)</code> and <code>tableView(_:cellForRowAt:)</code> methods.
+</p>
+<p>In those apps, you were “overriding” or replacing those methods with your own  versions, hence the need for the <code>override</code> keyword.
+</p>
+<p>Here, however, your base class is not a table view controller but a regular <code>UIViewController</code>. Such a view controller doesn’t have any table view methods yet, so you’re not overriding anything here.
+</p></div>
+
+<p>As you know by now, a table view needs some kind of data model. Let’s start with a simple <code>Array</code>.
+</p>
+<p>➤ Add an instance variable for the array —this goes inside the <code>class</code> brackets, not in any of the extensions:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> searchResults = [<span class="hljs-type">String</span>]()</pre>
+<p>The search bar delegate method will put some fake data into this array and then display it using the table.
+</p>
+<p>➤ Replace the <code>searchBarSearchButtonClicked(_:)</code> method with:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">searchBarSearchButtonClicked</span><span class="hljs-params">(<span class="hljs-number">_</span> searchBar: UISearchBar)</span></span> {
+  searchResults = []
+  <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">0</span>...<span class="hljs-number">2</span> {
+    searchResults.append(<span class="hljs-type">String</span>(format: 
+        <span class="hljs-string">"Fake Result %d for '%@'"</span>, i, searchBar.text!))
+  }
+  tableView.reloadData()
+}</pre>
+<p>Here the notation <code>[]</code> means you instantiate a new <code>String</code> array and replace the contents of <code>searchResults</code> property with it. This is done each time the user performs a search. If there was already a previous array of results, then that is thrown away and deallocated. You could also have written <code>searchResults = [String]()</code> to do the same thing.
+</p>
+<p>You add a string with some text into the array. Just for fun, that is repeated 3 times so your data model will have three rows in it.
+</p>
+<p>When you write <code>for i in 0...2</code>, it creates a loop that repeats three times because the <i>closed range</i> <code>0...2</code> contains the numbers 0, 1, and 2. Note that this is different from the <i>half-open range</i> <code>0..&lt;2</code>, which only contains 0 and 1. You could also have written <code>1...3</code> but as you&apos;ve discovered by now, programmers like to start counting at 0 :]
+</p>
+<p>You’ve seen format strings before. The format specifier <code>%d</code> is a placeholder for integer numbers. Likewise, <code>%f</code> is for floating-point numbers. The placeholder <code>%@</code>is for all other kinds of objects, such as strings.
+</p>
+<p>The last statement in the method reloads the table view to make the new rows visible, which means you have to adapt the data source methods to read from this array as well.
+</p>
+<p>➤ Replace the methods in the table view delegate extension with the following:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+     numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">return</span> searchResults.<span class="hljs-built_in">count</span>
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+    cellForRowAt indexPath: IndexPath)</span></span> -&gt; <span class="hljs-type">UITableViewCell</span> {
+  <span class="hljs-keyword">let</span> cellIdentifier = <span class="hljs-string">"SearchResultCell"</span>
+  
+  <span class="hljs-keyword">var</span> cell:<span class="hljs-type">UITableViewCell</span>! = tableView.dequeueReusableCell(
+                              withIdentifier: cellIdentifier) 
+  <span class="hljs-keyword">if</span> cell == <span class="hljs-literal">nil</span> {
+    cell = <span class="hljs-type">UITableViewCell</span>(style: .<span class="hljs-keyword">default</span>,
+           reuseIdentifier: cellIdentifier)
+  }
+
+  cell.textLabel!.text = searchResults[indexPath.row]
+  <span class="hljs-keyword">return</span> cell
+}</pre>
+<p>All of the above code should be pretty familiar to you by now. You simply return the number of rows to display based on the contents of the <code>searchResults</code> array and you create a <code>UITableViewCell</code> by hand to display the table rows.
+</p>
+<p>➤ Run the app. If you search for anything, a few fake results get added to the data model and are shown in the table.
+</p>
+<p>Search for something else and the table view updates with new fake results.
+</p><div class="image-30"><img src="graphics/img537.png"  alt="" title="The app shows fake results when you search" /></div>
+<h2 class="segment-chapter">UI Improvements</h2>
+
+<p>There are some improvements you can make to the functionality of the app at this point.
+</p>
+<h3 class="segment-chapter">Dismiss keyboard on search</h3>
+
+<p>It’s not very nice that the keyboard stays on screen after you press the Search button. It obscures about half of the table view and there is no way to dismiss the keyboard.
+</p>
+<p>➤ Add the following line to the top of <code>searchBarSearchButtonClicked(_:)</code>:
+</p><pre class="code-block">searchBar.resignFirstResponder()</pre>
+<p>This tells the <code>UISearchBar</code> that it should no longer listen for keyboard input. As a result, the keyboard will hide itself until you tap on the search bar again.
+</p>
+<p>You can also configure the table view to dismiss the keyboard with a gesture.
+</p>
+<p>➤ In the storyboard, select the Table View. Go to the <em>Attributes inspector</em> and set <em>Keyboard</em> to <em>Dismiss interactively</em>.
+</p>
+<h3 class="segment-chapter">Extend search bar to status area</h3>
+
+<p>The search bar still has an ugly white gap above it for the status area. It would look a lot better if the status bar area was unified with the search bar. There&apos;s a delegate method for <code>UINavigationBar</code> and <code>UISearchBar</code> items which allows the item to indicate its top position.
+</p>
+<p>➤ Add the following method to the <code>SearchBarDelegate</code> extension:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">position</span><span class="hljs-params">(<span class="hljs-keyword">for</span> bar: UIBarPositioning)</span></span> -&gt; <span class="hljs-type">UIBarPosition</span> {
+  <span class="hljs-keyword">return</span> .topAttached
+}</pre>
+<p>Now the app looks way better:
+</p><div class="image-30"><img src="graphics/img538.png"  alt="" title="The search bar is “attached” to the top of the screen" /></div>
+<p>If you were to look in the API documentation for <code>UISearchBarDelegate</code> you wouldn’t find this <code>position(for:)</code> method. Instead, it is part of the <code>UIBarPositioningDelegate</code> protocol, which the <code>UISearchBarDelegate</code> protocol extends — like classes, protocols can inherit from other protocols.
+</p>
+<h4 class="segment-chapter">The API documentation</h4>
+
+<p>Xcode comes with a big library of documentation for developing iOS apps. Basically everything you need to know is in here. Learn to use the Xcode documentation browser — it will become your best friend!
+</p>
+<p>There are a few ways to get to the documentation for an item in Xcode. There is Quick Help, which shows info about the item under the text cursor:
+</p><div class="image-80"><img src="graphics/img539.png"  alt="" title="" /></div>
+<p>Simply have the <em>Quick Help inspector</em> — the second tab in the inspector pane — open and it will show context-sensitive help. Put the text cursor on the item you want to know more about and the inspector will provide a summary. You can click any of the blue text links in the summary to jump to the full documentation.
+</p>
+<p>You can also get pop-up help. Hold down the <em>Option</em> (Alt) key and hover over the item that you want to learn more about. Then click the mouse:
+</p><div class="image-60"><img src="graphics/img540.png"  alt="" title="" /></div>
+<p>And of course, there is the full-fledged documentation window. You can access it from the <em>Help</em> menu, under <em>Developer Documentation</em>. Use the bar at the top to search for the item that you want to know more about:
+</p><div class="image-70"><img src="graphics/img541.png"  alt="" title="" /></div>
+<h2 class="segment-chapter">Create the data model</h2>
+
+<p>So far you’ve added <code>String</code> objects to the <code>searchResults</code> array, but that’s a bit limited. The search results that you’ll get back from the iTunes store include the product name, the name of the artist, a link to an image, the purchase price, and much more.
+</p>
+<p>You can’t fit all of that in a single string, so let’s create a new class to hold this data.
+</p>
+<h3 class="segment-chapter">The SearchResult class</h3>
+
+<p>➤ Add a new file to the project using the <em>Swift File</em> template. Name the new class <em>SearchResult</em>.
+</p>
+<p>➤ Add the following to <em>SearchResult.swift</em>:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SearchResult</span> </span>{
+  <span class="hljs-keyword">var</span> name = <span class="hljs-string">""</span>
+  <span class="hljs-keyword">var</span> artistName = <span class="hljs-string">""</span>
+}</pre>
+<p>This adds two properties to the new <code>SearchResult</code> class. You’ll add several others in a bit.
+</p>
+<p>In <code>SearchViewController</code> you need to modify the <code>searchResults</code> array to hold instances of <code>SearchResult</code>.
+</p>
+<p>➤ In <em>SearchViewController.swift</em>, change the declaration of the property:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> searchResults = [<span class="hljs-type">SearchResult</span>]()</pre>
+<p>➤ Next, change the <code>for in</code> loop in the search bar delegate method to:
+</p><pre class="code-block"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">0</span>...<span class="hljs-number">2</span> {
+  <span class="hljs-keyword">let</span> searchResult = <span class="hljs-type">SearchResult</span>()
+  searchResult.name = <span class="hljs-type">String</span>(format: <span class="hljs-string">"Fake Result %d for"</span>, i)
+  searchResult.artistName = searchBar.text!
+  searchResults.append(searchResult)
+}</pre>
+<p>This creates an instance of the <code>SearchResult</code> object and simply puts some fake text into its <code>name</code> and <code>artistName</code> properties. Again, you do this in a loop because just having one search result by itself is a bit sad.
+</p>
+<p>➤ At this point, <code>tableView(_:cellForRowAt:)</code> still expects the array to contain strings. So, update that method:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+    cellForRowAt indexPath: IndexPath)</span></span> -&gt; <span class="hljs-type">UITableViewCell</span> {
+  . . .  
+  <span class="hljs-keyword">if</span> cell == <span class="hljs-literal">nil</span> {
+    cell = <span class="hljs-type">UITableViewCell</span>(style: .subtitle,       <span class="hljs-comment">// change</span>
+           reuseIdentifier: cellIdentifier)
+  }
+  <span class="hljs-comment">// Replace all the code below this point</span>
+  <span class="hljs-keyword">let</span> searchResult = searchResults[indexPath.row]
+  cell.textLabel!.text = searchResult.name  
+  cell.detailTextLabel!.text = searchResult.artistName
+  <span class="hljs-keyword">return</span> cell
+}</pre>
+<p>Instead of a regular table view cell, the code now uses a “subtitle” cell style. You put the contents of the <code>artistName</code> property into the subtitle text label.
+</p>
+<p>➤ Run the app; it should look like this:
+</p><div class="image-30"><img src="graphics/img542.png"  alt="" title="Fake results in a subtitle cell" /></div>
+<h2 class="segment-chapter">No results found</h2>
+
+<p>When you add search functionality to your apps, you have to handle the following situations:
+</p>
+<ol>
+<li>
+<p>The user did not perform a search yet.
+</p></li>
+
+<li>
+<p>The user performed the search and received one or more results. That’s what happens in the current version of the app: for every search you’ll get back a handful of <code>SearchResult</code> objects.
+</p></li>
+
+<li>
+<p>The user performed the search and there were no results. It’s usually a good idea to explicitly tell the user there were no results. If you display nothing at all, the user may wonder whether the search was actually performed or not.
+</p></li>
+</ol>
+
+<p>Even though the app doesn’t do any actual searching yet, there is no reason why you cannot fake the last scenario as well.
+</p>
+<h3 class="segment-chapter">Handle not getting any results</h3>
+
+<p>In defense of good taste, the app will return 0 results when a user searches for “justin bieber”, just so you know the app can handle this kind of situation.
+</p>
+<p>➤ In <code>searchBarSearchButtonClicked(_:)</code>, put the following <code>if</code> statement around the <code>for in</code> loop:
+</p><pre class="code-block">. . .
+<span class="hljs-keyword">if</span> searchBar.text! != <span class="hljs-string">"justin bieber"</span> {
+  <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">0</span>...<span class="hljs-number">2</span> {
+    . . .
+  }
+}
+. . .</pre>
+<p>The change here is pretty simple — you&apos;ve added an <code>if</code> statement that prevents the creation of any <code>SearchResult</code> objects if the text is equal to <code>&quot;justin bieber&quot;</code>.
+</p>
+<p>➤ Run the app and do a search for “justin bieber” — note the all lowercase. The table should remain empty.
+</p>
+<p>At this point, you don&apos;t know if the search failed, or if there were no results. You can improve the user experience by showing the text “(Nothing found)” instead, so the user knows beyond a shadow of a doubt that there were no search results.
+</p>
+<p>➤ Change the last part of <code>tableView(_:cellForRowAt:)</code> to:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> cell == <span class="hljs-literal">nil</span> {
+  . . .
+}
+<span class="hljs-comment">// New code</span>
+<span class="hljs-keyword">if</span> searchResults.<span class="hljs-built_in">count</span> == <span class="hljs-number">0</span> {
+  cell.textLabel!.text = <span class="hljs-string">"(Nothing found)"</span>  
+  cell.detailTextLabel!.text = <span class="hljs-string">""</span>
+} <span class="hljs-keyword">else</span> {
+  <span class="hljs-keyword">let</span> searchResult = searchResults[indexPath.row]
+  cell.textLabel!.text = searchResult.name
+  cell.detailTextLabel!.text = searchResult.artistName
+}
+<span class="hljs-comment">// End of new code</span>
+<span class="hljs-keyword">return</span> cell</pre>
+<p>That alone is not enough. When there is nothing in the array, <code>searchResults.count</code> is 0, right? But that also means that <code>numberOfRowsInSection</code> will return 0 and the table view will stay empty — this “Nothing found” row will never show up.
+</p>
+<p>➤ Change <code>tableView(_:numberOfRowsInSection:)</code> to:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+     numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">if</span> searchResults.<span class="hljs-built_in">count</span> == <span class="hljs-number">0</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">return</span> searchResults.<span class="hljs-built_in">count</span>
+  }
+}</pre>
+<p>Now, if there are no results, the method returns 1, for the row with the text “(Nothing Found)”. This works because both <code>numberOfRowsInSection</code> and <code>cellForRowAt</code> check for this special situation.
+</p>
+<p>➤ Try it out:
+</p><div class="image-30"><img src="graphics/img543.png"  alt="" title="One can hope…" /></div>
+<h3 class="segment-chapter">Handle no results when app starts</h3>
+
+<p>Unfortunately, the text “Nothing found” also appears initially when the user has not searched for anything yet. That’s just silly.
+</p>
+<p>The problem is that you have no way to distinguish between “not searched yet” and “nothing found”. Right now, you can only tell whether the <code>searchResults</code> array is empty, but not what caused this.
+</p>
+<div class="note">
+<p><em>Exercise.</em> How would you solve this little problem?
+</p></div>
+
+<p>There are two obvious solutions that come to mind:
+</p>
+<ul>
+<li>
+<p>Change <code>searchResults</code> to an optional. If it is <code>nil</code>, i.e. it has no value, then the user hasn’t searched yet. That’s different from the case where the user did search and no matches were found.
+</p></li>
+
+<li>
+<p>Use a separate boolean variable to keep track of whether a search has been done yet or not.
+</p></li>
+</ul>
+
+<p>It may be tempting to choose the optional, but it’s best to avoid optionals if you can. They complicate the logic, they can cause the app to crash if you don’t unwrap them properly, and they require <code>if let</code> statements everywhere. Optionals certainly have their uses, but here they are not really necessary.
+</p>
+<p>So, we’ll opt for the boolean. But do feel free to come back and try the optional on your own, and compare the differences. It’ll be a great exercise!
+</p>
+<p>➤ Still in <em>SearchViewController.swift</em>, add a new instance variable:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> hasSearched = <span class="hljs-literal">false</span></pre>
+<p>➤ In the search bar delegate method, set this variable to <code>true</code>. It doesn’t really matter where you do this, as long as it happens before the table view is reloaded.
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">searchBarSearchButtonClicked</span><span class="hljs-params">(<span class="hljs-number">_</span> searchBar: UISearchBar)</span></span> {
+  . . .
+  hasSearched = <span class="hljs-literal">true</span>      <span class="hljs-comment">// Add this line</span>
+  tableView.reloadData()
+}</pre>
+<p>➤ And finally, change <code>tableView(_:numberOfRowsInSection:)</code> to look at the value of this new variable:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+     numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">if</span> !hasSearched {
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> searchResults.<span class="hljs-built_in">count</span> == <span class="hljs-number">0</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">return</span> searchResults.<span class="hljs-built_in">count</span>
+  }
+}</pre>
+<p>Now, the table view remains empty until you first search for something. Try it out! Later on, you’ll see a much better way to handle this using an <code>enum</code> and it will blow your mind!
+</p>
+<h3 class="segment-chapter">Selection handling</h3>
+
+<p>One more thing, if you currently tap on a row it will become selected and stay selected.
+</p>
+<p>➤ To fix that, add the following methods to the table view delegate extension:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+     didSelectRowAt indexPath: IndexPath)</span></span> {
+  tableView.deselectRow(at: indexPath, animated: <span class="hljs-literal">true</span>)
+}
+  
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+     willSelectRowAt indexPath: IndexPath)</span></span> -&gt; <span class="hljs-type">IndexPath</span>? {
+  <span class="hljs-keyword">if</span> searchResults.<span class="hljs-built_in">count</span> == <span class="hljs-number">0</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">return</span> indexPath
+  }
+}</pre>
+<p>The <code>tableView(_:didSelectRowAt:)</code> method will simply deselect the row with an animation, while <code>willSelectRowAt</code> makes sure that you can only select rows when you have actual search results.
+</p>
+<p>If you tap on the <em>(Nothing Found)</em> row now, you will notice that it does not turn gray at all. Actually, the row may still turn gray if you press down on it for a short while. That happens because you did not change the <code>selectionStyle</code> property of the cell. You’ll fix that in a bit.
+</p>
+<p>➤ This is a good time to commit your changes. Go to <em>Source Control → Commit</em> — or press the <em>⌘+Option+C</em> keyboard shortcut.
+</p>
+<p>Make sure all the modified files are selected/checked in the list on the left, review your changes, and type a good commit message — something like “Add a search bar and table view. The search puts fake results in the table for now”. Press the <em>Commit</em> button to finish.
+</p>
+<div class="note">
+<p><em>Note:</em> It is customary to write commit messages in the present tense. That’s why I wrote “Add a search bar” instead of “Added a search bar”.
+</p></div>
+
+<h4 class="segment-chapter">Versions editor</h4>
+
+<p>If you ever want to look back through your commit history, you can do that from the Source Control navigator — as you learnt how at the beginning of this chapter — or from the <em>Version editor</em>, pictured below:
+</p><div class="image-80"><img src="graphics/img544.png"  alt="" title="Viewing revisions in the Version editor" /></div>
+<p>You switch to the Version editor using the relevant toolbar button on the top right of the Xcode window.
+</p>
+<p>In the screenshot above, the previous version is shown on the left and the current version on the right. You can switch between versions using the jump bar at the bottom of each pane. The Version editor is a very handy tool for viewing the history of changes in your source files.
+</p>
+<p>The app isn’t very impressive yet, but you’ve laid the foundation for what is to come. You have a search bar and know how to take action when the user presses the Search button. The app also has a simple data model that consists of an array with <code>SearchResult</code> objects, and it can display these search results in a table view.
+</p>
+<p>You can find the project files for this chaper under <em>32 – Search Bar</em> in the Source Code folder.
+</p></body></html>

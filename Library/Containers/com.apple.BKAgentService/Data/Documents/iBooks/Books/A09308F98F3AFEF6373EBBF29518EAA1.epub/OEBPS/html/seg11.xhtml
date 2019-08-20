@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 6: Polish</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 6: Polish</h1>
+
+<p>At this point, your game is fully playable. The gameplay rules are all implemented and the logic doesn’t seem to have any big flaws. As far as I can tell, there are no bugs either. But there&apos;s still some room for improvement.
+</p>
+<p>This chapter will cover the following:
+</p>
+<ul>
+<li>
+<p><em>Tweaks:</em> Small UI tweaks to make the game look and function better.
+</p></li>
+
+<li>
+<p><em>The alert:</em> Updating the alert view functionality so that the screen updates <i>after</i> the alert goes away.
+</p></li>
+
+<li>
+<p><em>Start over:</em> Resetting the game to start afresh.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Tweaks</h2>
+
+<p>Obviously, the game is not very pretty yet — you will get to work on that soon. In the mean time, there are a few smaller tweaks you can make.
+</p>
+<h3 class="segment-chapter">The alert title</h3>
+
+<p>Unless you already changed it, the title of the alert still says “Hello, World!” You could give it the name of the game, <i>Bull’s Eye</i>, but I have a better idea. What if you change the title depending on how well the player did?
+</p>
+<p>If the player put the slider right on the target, the alert could say: “Perfect!” If the slider is close to the target but not quite there, it could say, “You almost had it!” If the player is way off, the alert could say: “Not even close...” And so on. This gives the player a little more feedback on how well they did.
+</p>
+<div class="note">
+<p><em>Exercise:</em> Think of a way to accomplish this. Where would you put this logic and how would you program it? Hint: there are an awful lot of “if’s” in the preceding sentences.
+</p></div>
+
+<p>The right place for this logic is <code>showAlert()</code>, because that is where you create the <code>UIAlertController</code>. You already do some calculations to create the message text and now you will do something similar for the title text.
+</p>
+<p>➤ Here is the changed method in its entirety - replace the existing method with it:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showAlert</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> difference = <span class="hljs-built_in">abs</span>(targetValue - currentValue)
+  <span class="hljs-keyword">let</span> points = <span class="hljs-number">100</span> - difference
+  score += points
+
+  <span class="hljs-comment">// add these lines</span>
+  <span class="hljs-keyword">let</span> title: <span class="hljs-type">String</span>
+  <span class="hljs-keyword">if</span> difference == <span class="hljs-number">0</span> {
+    title = <span class="hljs-string">"Perfect!"</span>
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> difference &lt; <span class="hljs-number">5</span> {
+    title = <span class="hljs-string">"You almost had it!"</span>
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> difference &lt; <span class="hljs-number">10</span> {
+    title = <span class="hljs-string">"Pretty good!"</span>
+  } <span class="hljs-keyword">else</span> {
+    title = <span class="hljs-string">"Not even close..."</span>
+  }
+
+  <span class="hljs-keyword">let</span> message = <span class="hljs-string">"You scored <span class="hljs-subst">\(points)</span> points"</span>
+
+  <span class="hljs-keyword">let</span> alert = <span class="hljs-type">UIAlertController</span>(title: title,  <span class="hljs-comment">// change this</span>
+                              message: message, 
+                       preferredStyle: .alert)
+
+  <span class="hljs-keyword">let</span> action = <span class="hljs-type">UIAlertAction</span>(title: <span class="hljs-string">"OK"</span>, style: .<span class="hljs-keyword">default</span>, 
+                           handler: <span class="hljs-literal">nil</span>)
+  alert.addAction(action)
+  present(alert, animated: <span class="hljs-literal">true</span>, completion: <span class="hljs-literal">nil</span>)
+
+  startNewRound()
+}</pre>
+<p>You create a new string constant named <code>title</code>, which will contain the text that is set for the alert title. Initially, this <code>title</code> doesn’t have any value. (We&apos;ll discuss the <code>title</code> variable and how it is set up a bit more in detail just a little further on.)
+</p>
+<p>To decide which title text to use, you look at the difference between the slider position and the target:
+</p>
+<ul>
+<li>
+<p>If it equals 0, then the player was spot-on and you set <code>title</code> to “Perfect!” .
+</p></li>
+
+<li>
+<p>If the difference is less than 5, you use the text “You almost had it!”
+</p></li>
+
+<li>
+<p>A difference less than 10 is “Pretty good!”
+</p></li>
+
+<li>
+<p>However, if the difference is 10 or greater, then you consider the player’s attempt “Not even close...”
+</p></li>
+</ul>
+
+<p>Can you follow the logic here? It’s just a bunch of <code>if</code> statements that consider the different possibilities and choose a string in response.
+</p>
+<p>When you create the <code>UIAlertController</code> object, you now give it this <code>title</code> string instead of some fixed text.
+</p>
+<h4 class="segment-chapter">Constant initialization</h4>
+
+<p>In the above code, did you notice that  <code>title</code> was declared explicitly as being a <code>String</code> constant? And did you ask yourself why type inference wasn&apos;t used there instead? Also, if <code>title</code> is a constant, how do we have code which sets its value in multiple places?
+</p>
+<p>The answer to all of these questions lies in how constants (or <code>let</code> values, if you prefer) are initialized in Swift.
+</p>
+<p>You could certainly have used type inference to declare the type for <code>title</code> by setting the initial declaration to:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> title = <span class="hljs-string">""</span></pre>
+<p>But do you see the issue there? Now you&apos;ve actually set the value for <code>title</code> and since it&apos;s a constant, you can&apos;t change the value again. So, the following lines where the <code>if</code> condition logic sets a value for <code>title</code> would now throw a compiler error since you are trying to set a value to a constant which already has a value. (Go on, try it out for yourself! You know you want to … :])
+</p>
+<p>One way to fix this would be to declare <code>title</code> as a variable rather than a constant. Like this:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> title = <span class="hljs-string">""</span></pre>
+<p>The above would work great, and the compiler error would go away. But you&apos;ve got to ask yourself, do you really need a variable there? Or, would a constant do? I personally prefer to use constants where possible since they have less risk of unexpected side-effects because the value was accidentally changed in some fashion - for example, because one of your team members changed the code to use a variable that you had originally depended on being unchanged. That is why the code was written the way it was. However, you can go with whichever option you prefer since either approach would work.
+</p>
+<p>But if you do declare <code>title</code> as a constant, how is it that your code above assigns multiple values to it? The secret is in the fact that while there are indeed multiple values being assigned to <code>title</code> , only one value would be assigned per each call to <code>showAlert</code> since the branches of an  <code>if</code> condition are mutually exclusive. So, since <code>title</code> starts out without a value (the <code>let title: String</code> line only assigns a type, not a value), as long as the code ensures that <code>title</code> would always be initialized to a value before the value stored in <code>title</code> is accessed, the compiler will not complain.
+</p>
+<p>Again, you can test this by removing the <code>else</code> condition in the block of code where a value is assigned to <code>title</code>. Since an <code>if</code> condition is only one branch of a test, you need an <code>else</code> branch in order for the tests (and the assignment to <code>title</code>) to be exhaustive. So, if you remove the <code>else</code> branch, Xcode will immediately complain with an error like: &quot;Constant &apos;title&apos; used before being initialized&quot;.
+</p><div class="image-100"><img src="graphics/img77.png"  alt="" title="A constant needs to be initialized exhaustively" /></div>
+<p>Run the app and play the game for a bit. You’ll see that the title text changes depending on how well you’re doing. That <code>if</code> statement sure is handy!
+</p><div class="image-60"><img src="graphics/img78.png"  alt="" title="The alert with the new title" /></div>
+<h3 class="segment-chapter">Bonus points</h3>
+
+<div class="note">
+<p><em>Exercise:</em> Give players an additional 100 bonus points when they get a perfect score. This will encourage players to really try to place the bull’s eye right on the target. Otherwise, there isn’t much difference between 100 points for a perfect score and 98 or 95 points if you’re close but not quite there.
+</p>
+<p>Now there is an incentive for trying harder – a perfect score is no longer worth just 100 but 200 points! Maybe you can also give the player 50 bonus points for being just one off.
+</p></div>
+
+<p>➤ Here is how I would have made these changes:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showAlert</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> difference = <span class="hljs-built_in">abs</span>(targetValue - currentValue)
+  <span class="hljs-keyword">var</span> points = <span class="hljs-number">100</span> - difference     <span class="hljs-comment">// change let to var</span>
+
+  <span class="hljs-keyword">let</span> title: <span class="hljs-type">String</span>
+  <span class="hljs-keyword">if</span> difference == <span class="hljs-number">0</span> {
+    title = <span class="hljs-string">"Perfect!"</span>
+    points += <span class="hljs-number">100</span>                   <span class="hljs-comment">// add this line</span>
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> difference &lt; <span class="hljs-number">5</span> {
+    title = <span class="hljs-string">"You almost had it!"</span>
+    <span class="hljs-keyword">if</span> difference == <span class="hljs-number">1</span> {            <span class="hljs-comment">// add these lines</span>
+      points += <span class="hljs-number">50</span>                  <span class="hljs-comment">// add these lines</span>
+    }                               <span class="hljs-comment">// add these lines</span>
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> difference &lt; <span class="hljs-number">10</span> {
+    title = <span class="hljs-string">"Pretty good!"</span>
+  } <span class="hljs-keyword">else</span> {
+    title = <span class="hljs-string">"Not even close..."</span>
+  }
+  score += points                   <span class="hljs-comment">// move this line here from the top</span>
+  . . .
+}</pre>
+<p>You should notice a few things:
+</p>
+<ul>
+<li>
+<p>In the first <code>if</code> you’ll see a new statement between the curly brackets. When the difference is equal to zero, you now not only set <code>title</code> to “Perfect!” but also award an extra 100 points.
+</p></li>
+
+<li>
+<p>The second <code>if</code> has changed too. There is now an <code>if</code> inside another <code>if</code>. Nothing wrong with that! You want to handle the case where <code>difference</code> is 1 in order to give the player bonus points. That happens inside the new <code>if</code> statement.
+</p>
+<p>After all, if the difference is more than 0 but less than 5, it could be 1 (but not necessarily all the time). Therefore, you perform an additional check to see if the difference truly is 1, and if so, add 50 extra points.
+</p></li>
+</ul>
+
+<ul>
+<li>
+<p>Because these new <code>if</code> statements add extra points, <code>points</code> can no longer be a constant; it now needs to be a variable. That’s why you change it from <code>let</code> to <code>var</code>.
+</p></li>
+
+<li>
+<p>Finally, the line <code>score += points</code> has moved below the <code>if</code>s. This is necessary because the app updates the <code>points</code> variable inside those <code>if</code> statements (if the conditions are right) and you want those additional points to count towards the final score.
+</p></li>
+</ul>
+
+<p>If your code is slightly different, then that’s fine too, as long as it works! There is often more than one way to program something, and if the results are the same, then any approach is equally valid.
+</p>
+<p>➤ Run the app to see if you can score some bonus points!
+</p><div class="image-55"><img src="graphics/img79.png"  alt="" title="Raking in the points…" /></div>
+<h4 class="segment-chapter">Local variables recap</h4>
+
+<p>I would like to point out once more the difference between local variables and instance variables. As you should know by now, a local variable only exists for the duration of the method that it is defined in, while an instance variable exists as long as the view controller (or any object that owns it) exists. The same thing is true for constants.
+</p>
+<p>In <code>showAlert()</code>, there are six locals and you use three instance variables:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> difference = <span class="hljs-built_in">abs</span>(targetValue - currentValue)
+<span class="hljs-keyword">var</span> points = <span class="hljs-number">100</span> - difference
+<span class="hljs-keyword">let</span> title = . . . 
+score += points
+<span class="hljs-keyword">let</span> message = . . . 
+<span class="hljs-keyword">let</span> alert = . . .
+<span class="hljs-keyword">let</span> action = . . .</pre>
+<div class="note">
+<p><em>Exercise:</em> Point out which are the locals and which are the instance variables in the <code>showAlert()</code> method. Of the locals, which are variables and which are constants?
+</p></div>
+
+<p>Locals are easy to recognize, because the first time they are used inside a method their name is preceded with <code>let</code> or <code>var</code>:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> difference = . . .
+<span class="hljs-keyword">var</span> points = . . .
+<span class="hljs-keyword">let</span> title = . . . 
+<span class="hljs-keyword">let</span> message = . . . 
+<span class="hljs-keyword">let</span> alert = . . .
+<span class="hljs-keyword">let</span> action = . . .</pre>
+<p>This syntax creates a new variable (<code>var</code>) or constant (<code>let</code>). Because these variables and constants are created inside the method, they are locals.
+</p>
+<p>Those six items – <code>difference</code>, <code>points</code>, <code>title</code>, <code>message</code>, <code>alert</code>, and <code>action</code> – are restricted to the <code>showAlert()</code> method and do not exist outside of it. As soon as the method is done, the locals cease to exist.
+</p>
+<p>You may be wondering how <code>difference</code>, for example, can have a different value every time the player taps the Hit Me button, even though it is a constant – after all, aren’t constants given a value just once, never to change afterwards?
+</p>
+<p>Here’s why: each time a method is invoked, its local variables and constants are created anew. The old values have long been discarded and you get brand new ones.
+</p>
+<p>When <code>showAlert()</code> is called a second time, it creates a completely new instance of <code>difference</code> that is unrelated to the previous one. That particular constant value is only used until the end of <code>showAlert()</code> and then it is discarded.
+</p>
+<p>The next time <code>showAlert()</code> is called after that, it creates yet another new instance of <code>difference</code> (as well as new instances of the other locals <code>points</code>, <code>title</code>, <code>message</code>, <code>alert</code>, and <code>action</code>). And so on… There’s some serious recycling going on here!
+</p>
+<p>But inside a single invocation of <code>showAlert()</code>, <code>difference</code> can never change once it has a value assigned. The only local in <code>showAlert()</code> that can change is <code>points</code>, because it’s a <code>var</code>.
+</p>
+<p>The instance variables, on the other hand, are defined outside of any method. It is common to put them at the top of the file:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ViewController</span>: <span class="hljs-title">UIViewController</span> </span>{
+  <span class="hljs-keyword">var</span> currentValue = <span class="hljs-number">0</span>
+  <span class="hljs-keyword">var</span> targetValue = <span class="hljs-number">0</span>
+  <span class="hljs-keyword">var</span> score = <span class="hljs-number">0</span>
+  <span class="hljs-keyword">var</span> round = <span class="hljs-number">0</span></pre>
+<p>As a result, you can use these variables inside any method, without the need to declare them again, and they will keep their values till the object holding them (the view controller in this case) ceases to exist.
+</p>
+<p>If you were to do this:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showAlert</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> difference = <span class="hljs-built_in">abs</span>(targetValue - currentValue)
+  <span class="hljs-keyword">var</span> points = <span class="hljs-number">100</span> - difference
+
+  <span class="hljs-keyword">var</span> score = score + points       <span class="hljs-comment">// doesn’t work!</span>
+  . . .
+}</pre>
+<p>Then things wouldn’t work as you’d expect them to. Because you now put <code>var</code> in front of <code>score</code>, you have made it a new local variable that is only valid inside this method.
+</p>
+<p>In other words, this won’t add <code>points</code> to the <i>instance variable</i> <code>score</code> but to a new <i>local variable</i> that also happens to be named <code>score</code>. In this case, the instance variable <code>score</code> never changes, even though it has the same name.
+</p>
+<p>Obviously that is not what you want to happen here. Fortunately, the above won’t even compile. Swift knows there’s something fishy about that line.
+</p>
+<div class="note">
+<p><em>Note:</em> To make a distinction between the two types of variables, so that it’s always clear at a glance how long they will live, some programmers prefix the names of instance variables with an underscore.
+</p>
+<p>They would name the variable <code>_score</code> instead of just <code>score</code>. Now there is less confusion because names beginning with an underscore won’t be mistaken for being locals. This is only a convention. Swift doesn’t care one way or the other how you name your instance variables.
+</p>
+<p>Other programmers use different prefixes, such as “m” (for member) or “f” (for field) for the same purpose. Some even put the underscore <i>behind</i> the variable name. Madness!
+</p></div>
+
+<h2 class="segment-chapter">The alert</h2>
+
+<p>There is something that bothers me about the game. You may have noticed it too…
+</p>
+<p>As soon as you tap the Hit Me! button and the alert pops up, the slider immediately jumps back to its center position, the round number increments, and the target label already gets the new random number.
+</p>
+<p>What happens is that the new round has already begun while you’re still watching the results of the last round. That’s a little confusing (and annoying).
+</p>
+<p>It would be better to wait on starting the new round until <i>after</i> the player has dismissed the alert popup. Only then is the current round truly over.
+</p>
+<h3 class="segment-chapter">Asynchronous code execution</h3>
+
+<p>Maybe you’re wondering why this isn’t already happening? After all, in <code>showAlert()</code> you only call <code>startNewRound()</code> after you’ve shown the alert popup:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showAlert</span><span class="hljs-params">()</span></span> {
+  . . .
+  <span class="hljs-keyword">let</span> alert = <span class="hljs-type">UIAlertController</span>(. . .)
+  <span class="hljs-keyword">let</span> action = <span class="hljs-type">UIAlertAction</span>(. . .)
+  alert.addAction(action)
+
+  <span class="hljs-comment">// Here you make the alert visible:</span>
+  present(alert, animated: <span class="hljs-literal">true</span>, completion: <span class="hljs-literal">nil</span>)
+
+  <span class="hljs-comment">// Here you start the new round:</span>
+  startNewRound()
+}</pre>
+<p>Contrary to what you might expect, <code>present(alert:animated:completion:)</code> doesn’t hold up execution of the rest of the method until the alert popup is dismissed. That’s how alerts on other platforms tend to work, but not on iOS.
+</p>
+<p>Instead, <code>present(alert:animated:completion:)</code> puts the alert on the screen and immediately returns control to the next line of code in the method. The rest of the <code>showAlert()</code> method is executed right away, and the new round starts before the alert popup has even finished animating.
+</p>
+<p>In programmer-speak, alerts work <i>asynchronously</i>. We&apos;ll talk much more about that in a later chapter, but what it means for you right now is that you don’t know in advance when the alert will be done. But you can bet it will be well after <code>showAlert()</code> has finished.
+</p>
+<h3 class="segment-chapter">Alert event handling</h3>
+
+<p>So, if your code execution can’t wait in <code>showAlert()</code> until the popup is dismissed, then how do you wait for it to close?
+</p>
+<p>The answer is simple: events! As you’ve seen, a lot of the programming for iOS involves waiting for specific events to occur – buttons being tapped, sliders being moved, and so on. This is no different. You have to wait for the “alert dismissed” event somehow. In the mean time, you simply do nothing.
+</p>
+<p>Here’s how it works:
+</p>
+<p>For each button on the alert, you have to supply a <code>UIAlertAction</code> object. This object tells the alert what the text on the button is – “OK” – and what the button looks like (you’re using the default style here):
+</p><pre class="code-block"><span class="hljs-keyword">let</span> action = <span class="hljs-type">UIAlertAction</span>(title: <span class="hljs-string">"OK"</span>, style: .<span class="hljs-keyword">default</span>, handler: <span class="hljs-literal">nil</span>)</pre>
+<p>The third parameter, <code>handler</code>, tells the alert what should happen when the button is pressed. This is the “alert dismissed” event you’ve been looking for!
+</p>
+<p>Currently <code>handler</code> is <code>nil</code>, which means nothing happens. In case you&apos;re wondering, a <code>nil</code> in Swift indicates &quot;no value&quot;. You will learn more about <code>nil</code> values later on.
+</p>
+<p>You can however, give the <code>UIAlertAction</code> some code to execute when the OK button is tapped. When the user finally taps OK, the alert will remove itself from the screen and jump to your code. That’s your cue to start a new round.
+</p>
+<p>This is also known as the <i>callback</i> pattern. There are several ways this pattern manifests on iOS. Often you’ll be asked to create a new method to handle the event. But here you’ll use something new: a <i>closure</i>.
+</p>
+<p>➤ Change the bottom bit of <code>showAlert()</code> to:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showAlert</span><span class="hljs-params">()</span></span> {
+  . . .
+  <span class="hljs-keyword">let</span> alert = <span class="hljs-type">UIAlertController</span>(. . .)
+
+  <span class="hljs-keyword">let</span> action = <span class="hljs-type">UIAlertAction</span>(title: <span class="hljs-string">"OK"</span>, style: .<span class="hljs-keyword">default</span>, 
+                           handler: { <span class="hljs-number">_</span> <span class="hljs-keyword">in</span>
+                                         <span class="hljs-keyword">self</span>.startNewRound()
+                                    })
+
+  alert.addAction(action)
+  present(alert, animated: <span class="hljs-literal">true</span>, completion: <span class="hljs-literal">nil</span>)
+}</pre>
+<p>Two things have happened here:
+</p>
+<ol>
+<li>
+<p>You removed the call to <code>startNewRound()</code> from the bottom of the method. (Don’t forget this part!)
+</p></li>
+
+<li>
+<p>You placed it inside a block of code that you gave to <code>UIAlertAction</code>’s <code>handler</code> parameter.
+</p>
+<p>Such a block of code is called a <i>closure</i>. You can think of it as a method without a name. This code is not performed right away. Rather, it&apos;s performed only when the OK button is tapped. This particular closure tells the app to start a new round (and update the labels) when the alert is dismissed.
+</p></li>
+</ol>
+
+<p>➤ Run the app and see for yourself. I think the game feels a lot better this way.
+</p>
+<div class="note">
+<p><em>Self</em>
+</p>
+<p>You may be wondering why in the handler block you did <code>self.startNewRound()</code> instead of just writing <code>startNewRound()</code> like before.
+</p>
+<p>The <code>self</code> keyword allows the view controller to refer to itself. That shouldn’t be too strange a concept. When you say, “I want ice cream,” you use the word “I” to refer to yourself. Similarly, objects can talk about (or to) themselves as well.
+</p>
+<p>Normally you don’t need to use <code>self</code> to send messages to the view controller, even though it is allowed. The exception: inside closures you <i>do</i> have to use <code>self</code> to refer to the view controller.
+</p>
+<p>This is a rule in Swift. If you forget <code>self</code> in a closure, Xcode will complain (try it out). This rule exists because closures can “capture” variables, which comes with surprising side effects. You’ll learn more about that in later chapters.
+</p></div>
+
+<h2 class="segment-chapter">Start over</h2>
+
+<p>No, you’re not going to throw away the source code and start this project all over! I’m talking about the game’s “Start Over” button. This button is supposed to reset the score and start over from the first round.
+</p>
+<p>One use of the Start Over button is for playing against another person. The first player does ten rounds, then the score is reset and the second player does ten rounds. The player with the highest score wins.
+</p>
+<div class="note">
+<p><em>Exercise:</em> Try to implement the Start Over button on your own. You’ve already seen how you can make the view controller react to button presses, and you should be able to figure out how to change the <code>score</code> and <code>round</code> variables.
+</p></div>
+
+<p>How did you do? If you got stuck, then follow the instructions below.
+</p>
+<h3 class="segment-chapter">The new method</h3>
+
+<p>First, add a method to <em>ViewController.swift</em> that starts a new game. I suggest you put it near <code>startNewRound()</code> because the two are conceptually related.
+</p>
+<p>➤ Add the new method:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">startNewGame</span><span class="hljs-params">()</span></span> {
+  score = <span class="hljs-number">0</span>
+  round = <span class="hljs-number">0</span>
+  startNewRound()
+}</pre>
+<p>This method resets <code>score</code> and <code>round</code> to zero, and starts a new round as well.
+</p>
+<p>Notice that you set <code>round</code> to 0 here, not to 1. You use 0 because incrementing the value of <code>round</code> is the first thing that <code>startNewRound()</code> does. If you were to set <code>round</code> to 1, then <code>startNewRound()</code> would add another 1 to it and the first round would actually be labeled round 2.
+</p>
+<p>So, you begin at 0, let <code>startNewRound()</code> add one and everything works great.
+</p>
+<p>(It’s probably easier to figure this out from the code than from my explanation. This should illustrate why we don’t program computers in English.)
+</p>
+<p>You also need an action method to handle taps on the Start Over button. You could write a new method like the following:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">startOver</span><span class="hljs-params">()</span></span> {
+  startNewGame()
+}</pre>
+<p>But you&apos;ll notice that this method simply calls the previous method you added :] So, why not cut out the middleman? You can simply change the method you added previously to be an action instead, like this:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">startNewGame</span><span class="hljs-params">()</span></span> {
+  score = <span class="hljs-number">0</span>
+  round = <span class="hljs-number">0</span>
+  startNewRound()
+}</pre>
+<p>You could follow either of the above approaches since both are equally valid. Personally, I like to have less code since that means there&apos;s less stuff to maintain (and less of a chance of screwing something up :]). Sometimes, there could also be legitimate reasons for having a seperate action method which calls your own method, but in this particular case, it&apos;s better to keep things simple.
+</p>
+<p>Just to keep things consistent, in <code>viewDidLoad()</code> you should replace the call to <code>startNewRound()</code> with <code>startNewGame()</code>. Because <code>score</code> and <code>round</code> are already 0 when the app starts, it won’t really make any difference to how the app works, but it does make the intention of the source code clearer. (If you wonder whether you can call an <code>IBAction</code> method directly instead of hooking it up to an action in the storyboard, yes, you certainly can do so.)
+</p>
+<p>➤ Make this change:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">super</span>.viewDidLoad()
+  startNewGame()        <span class="hljs-comment">// this line changed</span>
+}</pre>
+<h3 class="segment-chapter">Connect the outlet</h3>
+
+<p>Finally, you need to connect the Start Over button to the action method.
+</p>
+<p>➤ Open the storyboard and Control-drag from the <em>Start Over</em> button to <em>View Controller</em>. Let go of the mouse button and pick <em>startNewGame</em> from the popup if you opted to have <code>startNewGame()</code> as the action method. Otherwise, pick the name of your action method .
+</p>
+<p>That connects the button’s Touch Up Inside event to the action you have just defined.
+</p>
+<p>➤ Run the app and play a few rounds. Press Start Over and the game puts you back at square one.
+</p>
+<p>Tip: If you’re losing track of what button or label is connected to what method, you can click on <em>View Controller</em> in the storyboard to see all the connections that you have made so far.
+</p>
+<p>You can either right-click on View Controller to get a popup, or simply view the connections in the <em>Connections inspector</em>. This shows all the connections for the view controller.
+</p><div class="image-70"><img src="graphics/img80.png"  alt="" title="All the connections from View Controller to the other objects" /></div>
+<p>Now your game is pretty polished and your task list has gotten really short :]
+</p>
+<p>You can find the project files for the current version of the app under <em>06 - Polish</em> in the Source Code folder.
+</p></body></html>

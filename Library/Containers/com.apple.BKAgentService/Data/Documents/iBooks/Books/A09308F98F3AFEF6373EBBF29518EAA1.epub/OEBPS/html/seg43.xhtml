@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 35: Asynchronous Networking</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 35: Asynchronous networking</h1>
+
+<p>You&apos;ve got your app doing network searches and it&apos;s working well. The synchronous network calls aren&apos;t so bad, are they?
+</p>
+<p>Yes they are, and I’ll show you why! Did you notice that whenever you performed a search, the app became unresponsive? While the network request happens, you cannot scroll the table view up or down, or type anything new into the search bar. The app is completely frozen for a few seconds.
+</p>
+<p>You may not have seen this if your network connection is very fast, but if you’re using your iPhone out in the wild, the network will be a lot slower than your home or office Wi-Fi, and a search can easily take ten seconds or more.
+</p>
+<p>To most users, an app that does not respond is an app that has crashed. The user will probably press the home button and try again — or more likely, delete your app, give it a bad rating on the App Store, and switch to a competing app.
+</p>
+<p>So, in this chapter you will learn how to use asynchronous networking to do away with the UI response issues. You&apos;ll do the following:
+</p>
+<ul>
+<li>
+<p><em>Extreme synchronous networking:</em> Learn how synchronous networking can affect the performance of your app by dialing up the synchronous networking to the maximum.
+</p></li>
+
+<li>
+<p><em>The activity indicator:</em> Add an activity indicator to show when a search is going on so that the user knows something is happening.
+</p></li>
+
+<li>
+<p><em>Make it asynchronous:</em> Change the code for web service requests to run on a background thread so that it does not lock up the app.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Extreme synchronous networking</h2>
+
+<p>Still not convinced of the evils of synchronous networking? Let’s slow down the network connection to pretend the app is running on an iPhone that someone may be using on a bus or in a train, not in the ideal conditions of a fast home or office network.
+</p>
+<p>First off, you’ll increase the amount of data the app receives — by adding a “limit” parameter to the URL, you can set the maximum number of results that the web service will return. The default value is 50, the maximum is 200.
+</p>
+<p>➤ Open <em>SearchViewController.swift</em> and in <code>iTunesURL(searchText:)</code>, change the line with the web service URL to the following:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> urlString = <span class="hljs-type">String</span>(format: 
+  <span class="hljs-string">"https://itunes.apple.com/search?term=%@&amp;limit=200"</span>, 
+  encodedText)</pre>
+<p>You added <code>&amp;limit=200</code> to the URL. Just so you know, parameters in URLs are separated by the <code>&amp;</code> sign, also known as the “and” or &quot;ampersand&quot; sign.
+</p>
+<p>➤ If you run the app now, the search should be quite a bit slower.
+</p>
+<h3 class="segment-chapter">The network link conditioner</h3>
+
+<p>Still too fast for you to see any app response issues? Then use the <em>Network Link Conditioner</em>. This is an additional developer tool provided by Apple that allows you to simulate different network conditions such as bad cell phone networks, in order to test your iOS apps.
+</p>
+<p>But first, before you can use it, you probaly have to install the Network Link Conditioner since that is not something that is installed by default either as part of macOS or as part of your Xcode installation.
+</p>
+<p>➤ Select <em>Open Developer Tool → More Developer Tools…</em> from the Xcode menu.
+</p><div class="image-60"><img src="graphics/img589.png"  alt="" title="The More Developer Tools menu option" /></div>
+<p>This should open the <a href="https://developer.apple.com/download/more/">Downloads for Apple Developers</a> web page in your default browser — you might be asked to login to the Apple Developer portal first since this is a resource which is only available to registered Apple developers.
+</p><div class="image-90"><img src="graphics/img590.png"  alt="" title="The Downloads for Apple Developers page" /></div>
+<p>➤ As shown in the screenshot, search for &quot;additional tools&quot;. You should get a list of different downloads. Select the most recent one based on Release Date, download it, open the DMG file, switch to the <em>Hardware</em> folder on the DMG, and then double-click <em>Network Link Conditioner.prefPane</em> to install it.
+</p>
+<p>The Network Link Conditioner is now available to you to use as a System Preferences panel option.
+</p>
+<p>➤ If you want to find it later, open <em>System Preferences</em> on your Mac and locate <em>Network Link Conditioner</em> — it should be in the last section of items, at the very bottom.
+</p><div class="image-60"><img src="graphics/img591.png"  alt="" title="The Network Link Conditioner preference pane" /></div>
+<p>Let’s simulate a really slow connection.
+</p>
+<p>➤ Click on <em>Manage Profiles</em> and create a new profile by clicking the plus button on the bottom left. Add the following settings:
+</p>
+<ul>
+<li>
+<p>Name: <em>Very slow connection</em>
+</p></li>
+
+<li>
+<p>Downlink Bandwidth: <em>48</em> Kbps
+</p></li>
+
+<li>
+<p>Downlink Packets Dropped: <em>0</em> %
+</p></li>
+
+<li>
+<p>Downlink Delay: <em>5000</em> ms, i.e. 5 seconds
+</p></li>
+</ul>
+<div class="image-60"><img src="graphics/img592.png"  alt="" title="Adding the profile for a very slow connection" /></div>
+<p>Press <em>OK</em> to add this profile and return to the main screen. Make sure this new profile is selected and flick the switch to ON to start the Network Link Conditioner.
+</p>
+<p>➤ Now run the app and search for something. The Network Link Conditioner tool will delay the HTTP request by 5 seconds in order to simulate a slow connection, and then downloads the data very slowly.
+</p>
+<div class="note">
+<p><em>Tip:</em> If the download still appears very fast, then try searching for some term you haven’t used before; the system may be caching the results from a previous search.
+</p></div>
+
+<p>Notice how the app totally doesn’t respond during this time? It feels like something is wrong. Did the app crash or is it still doing something? It’s impossible to tell and very confusing to your users when this happens.
+</p>
+<p>Even worse, if your program is unresponsive for too long, iOS may actually force kill it, in which case it really does crash. You don’t want that to happen!
+</p>
+<p>“Ah,” you say, “let’s show some type of animation to let the user know that the app is communicating with a server. Then at least they will know that the app is busy.”
+</p>
+<p>That sounds like a decent thing to do, so let’s get to it.
+</p>
+<div class="note">
+<p><em>Tip:</em> Even better than pretending to have a lousy connection on the Simulator is to use Network Link Conditioner on your device, so you can also test bad network connections on your actual iPhone. You can find it under <em>Settings → Developer → Network Link Conditioner</em>. Using these tools to test whether your app can deal with real-world network conditions is a must! Not every user has the luxury of broadband…
+</p>
+<p>Also, if you do not see the <em>Developer</em> option in the iOS Settings app, you might need to connect your iPhone to your computer via a USB cable, and launch the Xcode <em>Devices and Simulators</em> window so that your device is recognized by Xcode as a developer device.
+</p></div>
+
+<h2 class="segment-chapter">The activity indicator</h2>
+
+<p>You’ve used a spinning activity indicator before in <i>MyLocations</i> to show the user that the app was busy. Let’s create a new table view cell that you’ll show while the app is querying the iTunes store. It will look like this:
+</p><div class="image-30"><img src="graphics/img593.png"  alt="" title="The app shows that it is busy" /></div>
+<h3 class="segment-chapter">The activity indicator table view cell</h3>
+
+<p>➤ Create a new, empty nib file. Call it <em>LoadingCell.xib</em>.
+</p>
+<p>➤ Drag a new <em>Table View Cell</em> on to the canvas. Set its width to <em>320</em> points and its height to <em>80</em> points.
+</p>
+<p>➤ Set the reuse identifier of the cell to <em>LoadingCell</em> and set the <em>Selection</em> attribute to <em>None</em>.
+</p>
+<p>➤ Drag a new <em>Label</em> into the cell. Set the title to <em>Loading...</em> and change the font to <em>System 15</em>. The label’s text color should be 50% opaque black.
+</p>
+<p>➤ Drag a new <em>Activity Indicator View</em> into the cell and put it next to the label. Set its <em>Style</em> to <em>Gray</em> and give it the <em>Tag</em> 100.
+</p>
+<p>The design should look like this:
+</p><div class="image-40"><img src="graphics/img594.png"  alt="" title="The design of the LoadingCell nib" /></div>
+<p>To make this cell work properly on larger screens, you’ll add constraints that keep the label and the activity spinner centered in the cell. The easiest way to do this is to place these two items inside a container view and center that.
+</p>
+<p>➤ Select both the Label and the Activity Indicator View — hold down <em>⌘</em> to select multiple items. From the Xcode menu bar, choose <em>Editor → Embed In → View Without Inset</em>. This puts a white view behind the selected views.
+</p><div class="image-70"><img src="graphics/img595.png"  alt="" title="The label and the spinner now sit in a container view" /></div>
+<div class="note">
+<p><em>Note:</em> If you&apos;re wondering what the difference is between the <em>Embed In → View</em> and <em>Embed In → View Without Inset</em> options in the <em>Editor</em> menu is,  try it and you  should see what happens. The first option adds a view which is slightly larger than the items it encloses because it has <i>inset</i> the new view to add some padding around the enclosed items. The second option, the one you used, simply encloses all of the items without any pading.
+</p></div>
+
+<p>➤ With this new container view selected, click the <em>Align</em> button and put checkmarks in front of <em>Horizontally in Container</em> and <em>Vertically in Container</em> to make new constraints.
+</p><div class="image-40"><img src="graphics/img596.png"  alt="" title="The container view has red constraints" /></div>
+<p>You end up with a number of red constraints. That’s no good; we want to see blue ones. The reason your new constraints are red is that Auto Layout does not know how large this container view should be; you’ve only added constraints for the view’s position, not its size.
+</p>
+<p>To fix this, you’re going to add constraints to the label and activity indicator as well, so that the width and height of the container view are determined by the size of the two things inside it.
+</p>
+<p>This is especially important for later when you’re going to translate the app to another language. If the Loading… text becomes larger or smaller, then so should the container view, in order to stay centered inside the cell.
+</p>
+<p>➤ Select the label and click the <em>Add New Constraints</em> button. Simply pin it to all four sides and press <em>Add 4 Constraints</em>.
+</p>
+<p>➤ Repeat this for the Activity Indicator View. You don’t need to pin it to the left because that constraint already exists — pinning the label added it.
+</p>
+<p>Now the constraints for the label and the activity indicator should be all blue.
+</p>
+<p>At this point, the container view may still have orange lines indicating that the constraints are fine but that the view&apos;s frame is not in the proper position. If so, select it and choose <em>Editor → Resolve Auto Layout Issues → Update Frames</em> — under Selected Views. This will move the container view into the position dictated by its constraints.
+</p>
+<p>Cool, you now have a cell that automatically adjusts itself to any size screen.
+</p>
+<h3 class="segment-chapter">Use the activity indicator cell</h3>
+
+<p>To make this special table view cell appear, you’ll follow the same steps as for the “Nothing Found” cell.
+</p>
+<p>➤ Add the following line to the <code>TableView.CellIdentifiers</code> structure in <em>SearchViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">static</span> <span class="hljs-keyword">let</span> loadingCell = <span class="hljs-string">"LoadingCell"</span></pre>
+<p>➤ And register the nib in <code>viewDidLoad()</code>:
+</p><pre class="code-block">cellNib = <span class="hljs-type">UINib</span>(nibName: <span class="hljs-type">TableView</span>.<span class="hljs-type">CellIdentifiers</span>.loadingCell, 
+                bundle: <span class="hljs-literal">nil</span>)
+tableView.register(cellNib, forCellReuseIdentifier: 
+                   <span class="hljs-type">TableView</span>.<span class="hljs-type">CellIdentifiers</span>.loadingCell)</pre>
+<p>You now have to come up with some way to let the table view’s data source know that the app is currently in a state of downloading data from the server. The simplest way to do that is to add another boolean flag. If this variable is <code>true</code>, then the app is downloading stuff and the new Loading… cell should be shown; if the variable is <code>false</code>, you show the regular contents of the table view.
+</p>
+<p>➤ Add a new instance variable:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> isLoading = <span class="hljs-literal">false</span></pre>
+<p>➤ Change <code>tableView(_:numberOfRowsInSection:)</code> to:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+               numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">if</span> isLoading {
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> !hasSearched {
+    . . . 
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> . . . </pre>
+<p>The <code>if isLoading</code> condition returns 1, because you need a row in order to show a cell.
+</p>
+<p>➤ Update <code>tableView(_:cellForRowAt:)</code> as follows:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+    cellForRowAt indexPath: IndexPath)</span></span> -&gt; <span class="hljs-type">UITableViewCell</span> {
+  <span class="hljs-comment">// New code </span>
+  <span class="hljs-keyword">if</span> isLoading {
+    <span class="hljs-keyword">let</span> cell = tableView.dequeueReusableCell(withIdentifier: 
+        <span class="hljs-type">TableView</span>.<span class="hljs-type">CellIdentifiers</span>.loadingCell, <span class="hljs-keyword">for</span>: indexPath)
+        
+    <span class="hljs-keyword">let</span> spinner = cell.viewWithTag(<span class="hljs-number">100</span>) <span class="hljs-keyword">as</span>! 
+                  <span class="hljs-type">UIActivityIndicatorView</span>
+    spinner.startAnimating()
+    <span class="hljs-keyword">return</span> cell
+  } <span class="hljs-keyword">else</span> 
+  <span class="hljs-comment">// End of new code</span>
+  <span class="hljs-keyword">if</span> searchResults.<span class="hljs-built_in">count</span> == <span class="hljs-number">0</span> {
+    . . .</pre>
+<p>You added an <code>if</code> condition to return an instance of the new Loading… cell. It also looks up the <code>UIActivityIndicatorView</code> by its tag and then tells the spinner to start animating. The rest of the method stays the same.
+</p>
+<p>➤ Change <code>tableView(_:willSelectRowAt:)</code> to:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+     willSelectRowAt indexPath: IndexPath)</span></span> -&gt; <span class="hljs-type">IndexPath</span>? {
+  <span class="hljs-keyword">if</span> searchResults.<span class="hljs-built_in">count</span> == <span class="hljs-number">0</span> || isLoading {    <span class="hljs-comment">// Changed</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">return</span> indexPath
+  }
+}</pre>
+<p>You added <code>|| isLoading</code> to the <code>if</code> statement. Just like you don’t want users to select the “Nothing Found” cell, you also don’t want them to select the “Loading…” cell, so you return <code>nil</code> in both cases.
+</p>
+<p>There&apos;s only one thing remaining: you should set <code>isLoading</code> to <code>true</code> before you make the HTTP request to the iTunes server, and also reload the table view to make the Loading… cell appear.
+</p>
+<p>➤ Change <code>searchBarSearchButtonClicked(_:)</code> to:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">searchBarSearchButtonClicked</span><span class="hljs-params">(<span class="hljs-number">_</span> searchBar: UISearchBar)</span></span> {
+  <span class="hljs-keyword">if</span> !searchBar.text!.isEmpty {
+    searchBar.resignFirstResponder()
+    <span class="hljs-comment">// New code</span>
+    isLoading = <span class="hljs-literal">true</span>                    
+    tableView.reloadData()
+    <span class="hljs-comment">// End of new code</span>
+    . . .
+    isLoading = <span class="hljs-literal">false</span>                     <span class="hljs-comment">// New code</span>
+    tableView.reloadData()
+  }
+}</pre>
+<p>Before you do the networking request, you set <code>isLoading</code> to <code>true</code> and reload the table to show the activity indicator.
+</p>
+<p>After the request completes and you have the search results, you set <code>isLoading</code> back to <code>false</code> and reload the table again to show the <code>SearchResult</code> objects.
+</p>
+<p>Makes sense, right? Let’s fire up the app and see this in action!
+</p>
+<h3 class="segment-chapter">Test the new loading cell</h3>
+
+<p>➤ Run the app and perform a search. While search is taking place the Loading… cell with the spinning activity indicator should appear…
+</p>
+<p>…or should it?!
+</p>
+<p>The sad truth is that there is no spinner to be seen. And in the unlikely event that it does show up for you, it won’t be spinning — try it with Network Link Conditioner enabled.
+</p>
+<p>➤ To show you why, first change <code>searchBarSearchButtonClicked(_:)</code> as follows:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">searchBarSearchButtonClicked</span><span class="hljs-params">(<span class="hljs-number">_</span> searchBar: UISearchBar)</span></span> {
+  <span class="hljs-keyword">if</span> !searchBar.text!.isEmpty {
+    searchBar.resignFirstResponder()
+    isLoading = <span class="hljs-literal">true</span>
+    tableView.reloadData()
+    <span class="hljs-comment">/*
+       . . . the networking code (commented out) . . . 
+     */</span>
+  }
+}</pre>
+<p>Note that you don’t have to remove anything from the code — simply comment out everything after the first call to <code>tableView.reloadData()</code>.
+</p>
+<p>➤ Run the app and do a search. Now the activity spinner does show up!
+</p>
+<p>So at least you know that part of the code is working fine. But with the networking code enabled, the app is not only totally unresponsive to any input from the user, it also doesn’t want to redraw its screen. What’s going on here?
+</p>
+<h4 class="segment-chapter">The main thread</h4>
+
+<p>The CPU (<em>C</em>entral <em>P</em>rocessing <em>U</em>nit) in older iPhone and iPad models has one core, which means it can only do one thing at a time. More recent models have a CPU with two cores, which allows for a whopping two computations to happen simultaneously. Your Mac may have 4 cores.
+</p>
+<p>With so few cores available, how come modern computers can have many more applications and other processes — I count 287 active processes on my Mac right now — running at the same time?
+</p>
+<p>To get around the hardware limitation of having only one or two CPU cores, most computers, including the iPhone and iPad, use <em>preemptive multitasking</em> and <em>multithreading</em> to give the illusion that they can do many things at once.
+</p>
+<p>Multitasking is something that happens between different apps. Each app is said to have its own <em>process</em> and each process is given a small portion of each second of CPU time to perform its jobs. Then it is temporarily halted, or <i>pre-empted</i>, and control is given to the next process.
+</p>
+<p>Each process contains one or more <em>threads</em>. I just mentioned that each process is given a bit of CPU time to do its work. The process splits up that time among its threads. Each thread typically performs its own work and is as independent as possible from the other threads within that process.
+</p>
+<p>An app can have multiple threads and the CPU switches between them:
+</p><div class="image-60"><img src="graphics/img597.png"  alt="" title="" /></div>
+<p>If you go into the Xcode debugger and pause the app, the debugger will show you which threads are currently active and what they were doing before you stopped them.
+</p>
+<p>For the StoreSearch app, there were apparently six threads at the time the following screenshot was taken:
+</p><div class="image-40"><img src="graphics/img598.png"  alt="" title="" /></div>
+<p>Most of these threads are managed by iOS itself and you don’t have to worry about them. Also, you may see less or more than six threads. However, there is one thread that requires special care: the <em>main thread</em>. In the image above, that is <em>Thread 1</em>.
+</p>
+<p>The main thread is the app’s initial thread and from there all the other threads are spawned. The main thread is responsible for handling user interface events and also for drawing the UI. Most of your app’s activities take place on the main thread. Whenever the user taps a button in your app, it is the main thread that performs your action method.
+</p>
+<p>Because it’s so important, you should be careful not to hold up, or “block”, the main thread. If your action method takes more than a fraction of a second to run, then doing all these computations on the main thread is not a good idea because that would lock up your main thread.
+</p>
+<p>The app becomes unresponsive because the main thread cannot handle any UI events while you’re keeping it busy doing something else — and if the operation takes too long, the app may even be killed by the system.
+</p>
+<p>In <i>StoreSearch</i>, you’re doing a lengthy network operation on the main thread. It could potentially take many seconds, maybe even minutes, to complete.
+</p>
+<p>After you set the <code>isLoading</code> flag to <code>true</code>, you tell the <code>tableView</code> to reload its data so that the user can see the spinning animation. But that never comes to pass. Telling the table view to reload schedules a “redraw” event, but the main thread gets no chance to handle that event as you immediately start the networking operation, keeping the main thread busy for a long time.
+</p>
+<p>This is why the current synchronous approach to doing networking is bad: <em>Never block the main thread</em>. It’s one of the cardinal sins of iOS programming!
+</p>
+<h2 class="segment-chapter">Make it asynchronous</h2>
+
+<p>To prevent blocking the main thread, any operation that might take a while to complete should be <em>asynchronous</em>. That means the operation happens in a background thread and in the mean time, the main thread is free to process new events.
+</p>
+<p>That is not to say you should create your own thread. If you’ve programmed on other platforms before, you may not think twice about creating new threads, but on iOS that is often not the best solution.
+</p>
+<p>You see, threads are tricky. Not threads per se, but doing things in parallel. I won’t go into too much detail here, but generally, you want to avoid the situation where two threads are modifying the same piece of data at the same time. That can lead to very surprising — but not very pleasant — results.
+</p>
+<p>Rather than making your own threads, iOS has several more convenient ways to start background processes. For this app you’ll be using <em>queues</em> and <em>Grand Central Dispatch</em>, or GCD. GCD greatly simplifies tasks that require parallel programming. You’ve already briefly played with GCD in <i>MyLocations</i>, but now you’ll put it to even better use.
+</p>
+<p>In short, GCD has a number of queues with different priorities. To perform a job in the background, you put the job in a closure and then pass that closure to a queue and forget about it. It’s as simple as that.
+</p>
+<p>GCD will get the closures — or “blocks” as it calls them — from the queues one-by-one and perform their code in the background. Exactly how it does that is not important, you’re only guaranteed it happens on a background thread somewhere. Queues are not exactly the same as threads, but they use threads to do their job.
+</p><div class="image-60"><img src="graphics/img599.png"  alt="" title="Queues have a list of closures to perform on a background thread" /></div>
+<h3 class="segment-chapter">Put the web request in a background thread</h3>
+
+<p>To make the web service requests asynchronous, you’re going to put the networking part from <code>searchBarSearchButtonClicked(_:)</code> into a closure and then place that closure on a medium priority queue.
+</p>
+<p>➤ Change <code>searchBarSearchButtonClicked(_:)</code> as follows:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">searchBarSearchButtonClicked</span><span class="hljs-params">(<span class="hljs-number">_</span> searchBar: UISearchBar)</span></span> {
+  <span class="hljs-keyword">if</span> !searchBar.text!.isEmpty {
+    . . .
+    searchResults = []
+    <span class="hljs-comment">// Replace all code after this with new code below</span>
+    <span class="hljs-comment">// 1</span>
+    <span class="hljs-keyword">let</span> queue = <span class="hljs-type">DispatchQueue</span>.global()
+    <span class="hljs-keyword">let</span> url = <span class="hljs-keyword">self</span>.iTunesURL(searchText: searchBar.text!)
+    <span class="hljs-comment">// 2</span>
+    queue.async {
+      
+      <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> data = <span class="hljs-keyword">self</span>.performStoreRequest(with: url) {
+        <span class="hljs-keyword">self</span>.searchResults = <span class="hljs-keyword">self</span>.parse(data: data)
+        <span class="hljs-keyword">self</span>.searchResults.<span class="hljs-built_in">sort</span>(by: &lt;)
+        <span class="hljs-comment">// 3</span>
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">"DONE!"</span>)
+        <span class="hljs-keyword">return</span>
+      }
+    }
+  }
+}</pre>
+<p>Here is the new stuff:
+</p>
+<ol>
+<li>
+<p>This gets a reference to the queue. You’re using a “global” queue, which is a queue provided by the system. You can also create your own queues, but using a standard queue is fine for this app. You also get the URL for your search here, outside the closure.
+</p></li>
+
+<li>
+<p>Once you have the queue, you can dispatch a closure on it — everything between <code>queue.async {</code> and the closing <code>}</code> is the closure. Whatever code in the closure will be put on the queue and be executed asynchronously in the background. After scheduling this closure, the main thread is immediately free to continue. It is no longer blocked.
+</p></li>
+</ol>
+
+<ol>
+<li>
+<p>Inside the closure, I have removed the code that reloads the table view after the search is done, as well as the error handling code. For now, this has been replaced by <code>print()</code> statements. There is a good reason for this and we’ll get to it in a second. First let’s try the app again.
+</p></li>
+</ol>
+
+<p>➤ Run the app and do a search. The “Loading…” cell should be visible, complete with animating spinner! After a short while you should see the “DONE!” message appear in the Console.
+</p>
+<p>Of course, the Loading… cell sticks around forever because you still haven’t told it to go away.
+</p>
+<h3 class="segment-chapter">Put UI updates on the main thread</h3>
+
+<p>The reason I removed all the user interface code from the closure — and moved getting the search URL outside the closure — is that UIKit has a rule that UI code should <i>always</i> be performed on the main thread. This is important!
+</p>
+<p>Accessing the same data from multiple threads can create all sorts of misery, so the designers of UIKit decided that changing the UI from other threads would not be allowed. That means you cannot reload the table view from within this closure, because it runs on a queue that is on a background thread, not the main thread.
+</p>
+<p>As it happens, there is also a “main queue” that is associated with the main thread. If you need to do anything on the main thread from a background queue, you can simply create a new closure and schedule the main thread actions on the main queue.
+</p>
+<p>➤ Replace the line in <code>searchBarSearchButtonClicked(_:)</code> that says <code>print(&quot;DONE!&quot;)</code> with:
+</p><pre class="code-block"><span class="hljs-type">DispatchQueue</span>.main.async {
+  <span class="hljs-keyword">self</span>.isLoading = <span class="hljs-literal">false</span>
+  <span class="hljs-keyword">self</span>.tableView.reloadData()
+}</pre>
+<p>With <code>DispatchQueue.main.async</code> you can schedule a new closure on the main queue. This new closure sets <code>isLoading</code> back to <code>false</code> and reloads the table view. Note that <code>self</code> is required because this code sits inside a closure.
+</p>
+<p>➤ Try it out. With these changes in place, your networking code no longer occupies the main thread and the app suddenly feels a lot more responsive!
+</p>
+<h4 class="segment-chapter">All kinds of queues</h4>
+
+<p>When working with GCD queues you will often see this pattern:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> queue = <span class="hljs-type">DispatchQueue</span>.global()
+queue.async {
+  <span class="hljs-comment">// code that needs to run in the background</span>
+  
+  <span class="hljs-type">DispatchQueue</span>.main.async {
+    <span class="hljs-comment">// update the user interface</span>
+  }
+}</pre>
+<p>Basically, while you do your work in a background thread, you still have to switch over to the main thread to do any user interface updates. That&apos;s just the way it is.
+</p>
+<p>There is also <code>queue.sync</code>, without the “a”, which takes the next closure from the queue and performs it in the background, but makes you wait until that closure is done. That can be useful in some cases but most of the time you’ll want to use <code>queue.async</code>. No one likes to wait!
+</p>
+<h3 class="segment-chapter">The main thread checker</h3>
+
+<p>I mentioned previously that you should not run UI code on a background thread. However, till Xcode 9, there was no easy way to discover UI code running on background threads except by scouring the source code laboriously line-by-line trying to determine what code ran on the main thread and what ran on a background thread.
+</p>
+<p>With Xcode 9, Apple introduced a new diagnostic setting called the Main Thread Checker which would warn you if you had any UI code running on a background thread. This setting is supposed to be enabled by default, but if it is not, you can enable it quite easily — I would suggest that you have it enabled at all times if possible since it can be quite invaluable.
+</p>
+<p>➤ Click on the scheme dropdown in the Xcode toolbar and select Edit Scheme...
+</p><div class="image-60"><img src="graphics/img600.png"  alt="" title="Edit scheme" /></div>
+<p>➤ Select <em>Run</em> in the left panel, switch to the <em>Diagnostics</em> tab, and make sure <em>Main Thread Checker</em> is checked under Runtime API Checking.
+</p><div class="image-80"><img src="graphics/img601.png"  alt="" title="Main Thread Checker setting" /></div>
+<p>➤ Now, move the following line from outside the closure:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> url = <span class="hljs-keyword">self</span>.iTunesURL(searchText: searchBar.text!)</pre>
+<p>to be inside the closure like this:
+</p><pre class="code-block">queue.async {
+    <span class="hljs-keyword">let</span> url = <span class="hljs-keyword">self</span>.iTunesURL(searchText: searchBar.text!)
+    ...
+} </pre>
+<p>➤ Run StoreSearch and do a search for an item, you should see something like the following in the Xcode Console:
+</p><pre class="code-block">Main Thread Checker: UI API called on a background thread: -[UISearchBar text]
+PID: 12986, TID: 11267540, Thread name: (none), Queue name: com.apple.root.default-qos, QoS: 0
+Backtrace:
+4   StoreSearch                         0x000000010bccfa75 $S11StoreSearch0B14ViewControllerC09searchBarB13ButtonClickedyySo08UISearchF0CFyycfU_ + 469
+5   StoreSearch                         0x000000010bcd0101 $S11StoreSearch0B14ViewControllerC09searchBarB13ButtonClickedyySo08UISearchF0CFyycfU_TA + 17
+6   StoreSearch                         0x000000010bcd02bd $SIeg_IeyB_TR + 45
+7   libdispatch.dylib                   0x000000010f3a1225 _dispatch_call_block_and_release + 12
+8   libdispatch.dylib                   0x000000010f3a22e0 _dispatch_client_callout + 8
+9   libdispatch.dylib                   0x000000010f3a4d8a _dispatch_queue_override_invoke + 1028
+10  libdispatch.dylib                   0x000000010f3b2daa _dispatch_root_queue_drain + 351
+11  libdispatch.dylib                   0x000000010f3b375b _dispatch_worker_thread2 + 130
+12  libsystem_pthread.dylib             0x000000010f791169 _pthread_wqthread + 1387
+13  libsystem_pthread.dylib             0x000000010f790be9 start_wqthread + 13
+2018-07-28 11:39:02.726132+0200 StoreSearch[12986:11267540] [reports] Main Thread Checker: UI API called on a background thread: -[UISearchBar text]
+PID: 12986, TID: 11267540, Thread name: (none), Queue name: com.apple.root.default-qos, QoS: 0
+Backtrace:
+4   StoreSearch                         0x000000010bccfa75 $S11StoreSearch0B14ViewControllerC09searchBarB13ButtonClickedyySo08UISearchF0CFyycfU_ + 469
+5   StoreSearch                         0x000000010bcd0101 $S11StoreSearch0B14ViewControllerC09searchBarB13ButtonClickedyySo08UISearchF0CFyycfU_TA + 17
+6   StoreSearch                         0x000000010bcd02bd $SIeg_IeyB_TR + 45
+7   libdispatch.dylib                   0x000000010f3a1225 _dispatch_call_block_and_release + 12
+8   libdispatch.dylib                   0x000000010f3a22e0 _dispatch_client_callout + 8
+9   libdispatch.dylib                   0x000000010f3a4d8a _dispatch_queue_override_invoke + 1028
+10  libdispatch.dylib                   0x000000010f3b2daa _dispatch_root_queue_drain + 351
+11  libdispatch.dylib                   0x000000010f3b375b _dispatch_worker_thread2 + 130
+12  libsystem_pthread.dylib             0x000000010f791169 _pthread_wqthread + 1387
+13  libsystem_pthread.dylib             0x000000010f790be9 start_wqthread + 13</pre>
+<p>You might also notice that the Xcode toolbar&apos;s activity view now has a purple icon and that there&apos;s a purple icon on the right corner of the jump bar, where errors are normally displayed.
+</p><div class="image-80"><img src="graphics/img602.png"  alt="" title="Purple icons indicating Main Thread Checker issues" /></div>
+<p>If you click on the icon in the activity view, you will be taken to the <em>Runtime</em> tab of the <em>Issue navigator</em>, where you can click on a listed issue to be taken to the offending line in your source code:
+</p><div class="image-90"><img src="graphics/img603.png"  alt="" title="Issue navigator" /></div>
+<p>And you finally see what the issue is — you access the data from a UI control, the Search Bar, in a background thread. It might be better to do this in the main thread. Since we created this issue to illustrate the background thread checker, the fix is simple, just move the line of code back to where it was originally :]
+</p>
+<h3 class="segment-chapter">Commit your code</h3>
+
+<p>➤ I think with this important improvement, the app deserves a new version number. So commit the changes and create a tag for <em>v0.2</em>. You will have to do this as two seprate steps — first create a commit with a suitable message, and then create a tag for your latest commit.
+</p>
+<p>You can find the project files for this chaper under <em>35 – Asynchronous Networking</em> in the Source Code folder.
+</p></body></html>

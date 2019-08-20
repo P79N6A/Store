@@ -1,0 +1,835 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 16: Lists</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 16: Lists</h1>
+
+<p>Just to make sure you fully understand everything you’ve done so far, next up, you’ll expand the app with new features that more or less repeat what you just did.
+</p>
+<p>But I’ll also throw in a few twists to keep it interesting…
+</p>
+<p>The app is named <i>Checklists</i> for a reason: it allows you to keep more than one list of to-do items. So far though, the app has only supported a single list. Now you’ll add the capability to handle multiple checklists.
+</p>
+<p>In order to complete the functionality for this chapter, you will need two new screens, and that means two new view controllers:
+</p>
+<ol>
+<li>
+<p><code>AllListsViewController</code> shows all the user’s lists.
+</p></li>
+
+<li>
+<p><code>ListDetailViewController</code> allows adding a new list and editing the name and icon of an existing list.
+</p></li>
+</ol>
+
+<p>This chapter covers the following:
+</p>
+<ul>
+<li>
+<p><em>The All Lists view controllers:</em> Add a new view controller to show all the lists of to-do items.
+</p></li>
+
+<li>
+<p><em>The All Lists UI:</em> Complete the user interface for the All Lists screen.
+</p></li>
+
+<li>
+<p><em>View the checklists:</em> Display the to-do items for a selected list from the All Lists screen.
+</p></li>
+
+<li>
+<p><em>Manage checkists:</em> Add a view controller to add/edit checklists.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">The All Lists view controller</h2>
+
+<p>You will first add <code>AllListsViewController</code>. This becomes the new main screen of the app.
+</p>
+<p>When you’re done, this is what it will look like:
+</p><div class="image-30"><img src="graphics/img299.png"  alt="" title="The new main screen of the app" /></div>
+<p>This screen is very similar to what you created before. It’s a table view controller that shows a list of <code>Checklist</code> objects (not <code>ChecklistItem</code> objects).
+</p>
+<p>From now on, I will refer to this screen as the “All Lists” screen, and to the screen that shows the to-do items from a single checklist as the “Checklist” screen.
+</p>
+<h3 class="segment-chapter">Add the new view controller</h3>
+
+<p>➤ Right-click the Checklists group in the project navigator and choose <em>New File</em>. Choose the <em>Cocoa Touch Class</em> template (under iOS, Source).
+</p>
+<p>In the next step, choose the following options:
+</p>
+<ul>
+<li>
+<p>Class: <em>AllListsViewController</em>
+</p></li>
+
+<li>
+<p>Subclass of: <em>UITableViewController</em>
+</p></li>
+
+<li>
+<p>Also create XIB file: Make sure this is <em>not</em> checked
+</p></li>
+
+<li>
+<p>Language: <em>Swift</em>
+</p></li>
+</ul>
+<div class="image-50"><img src="graphics/img300.png"  alt="" title="Choosing the options for the new view controller" /></div>
+<div class="note">
+<p><em>Note:</em> Make sure the “Subclass of” field is set to <em>UITableViewController</em>, not “UIViewController”. Also be careful that Xcode didn’t rename what you typed into Class to “AllListsTableViewController” with the extra word “Table” when you change the &quot;Subclass of&quot; value. It can be sneaky like that…
+</p></div>
+
+<p>➤ Press <em>Next</em> and then <em>Create</em> to finish.
+</p>
+<p>As you might remember from a previous chapter, the Xcode template for a table view controller puts a lot of boilerplate code that you don’t need. Let’s clean that up first.
+</p>
+<p>You’ll also put some fake data in the table view just to get it up and running. As you know by now, I always like to take as small a step as possible and then run the app to see if it’s working. Once everything works, you can move forward and put in the real data.
+</p>
+<h3 class="segment-chapter">Clean up the boilerplate code</h3>
+
+<p>➤ In <em>AllListsViewController.swift</em>, remove all the commented out code from <code>viewDidLoad</code>.
+</p>
+<p>➤ Remove the <code>numberOfSections(in:)</code> method. Without it, there will always be a single section in the table view.
+</p>
+<p>➤ Change the <code>tableView(_:numberOfRowsInSection:)</code> method to:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+      numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-number">3</span>
+}</pre>
+<p>➤ Implement the <code>tableView(_:cellForRowAt:)</code> method to put some text into the cells, just so there is something to see.
+</p>
+<p>Note that the boilerplate code already contains a commented-out version of this method. You can uncomment it by removing the <code>/*</code> and <code>*/</code> surrounding the method, and make your changes there.
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+         cellForRowAt indexPath: IndexPath)</span></span> -&gt; <span class="hljs-type">UITableViewCell</span> {
+  <span class="hljs-keyword">let</span> cell = tableView.dequeueReusableCell(
+                withIdentifier: cellIdentifier, <span class="hljs-keyword">for</span>: indexPath)
+  cell.textLabel!.text = <span class="hljs-string">"List <span class="hljs-subst">\(indexPath.row)</span>"</span>
+  <span class="hljs-keyword">return</span> cell
+}</pre>
+<p>In <code>ChecklistViewController</code> the table view used prototype cells that you designed in Interface Builder. Just for the fun of it, in <code>AllListsViewController</code> you will take a different approach where you’ll create the cells in code instead.
+</p>
+<p>The code approach is simplicity itself — you simply dequeue the cell from the table view and then set the cell up as normal.
+</p>
+<p>➤ At this point you&apos;ll get an error about <code>cellIdentifier</code> being unknown. Let&apos;s add a constant to the class for the cell identifier — you&apos;ll see why in a moment. Add the following to at the top of the class implementation (where you normally add instance variables):
+</p><pre class="code-block"><span class="hljs-keyword">let</span> cellIdentifier = <span class="hljs-string">"ChecklistCell"</span></pre>
+<p>You’re using <code>dequeueReusableCell(withIdentifier:)</code> here too, just as you did with prototype cells. However, we don&apos;t have a prototype cell here. So, we need a way to let the app know what type of table view cell (or rather cell class) is to be created for a call to <code>dequeueReusableCell(withIdentifier:)</code> with our custom cell identifier specified in the <code>cellIdentifier</code> constant.
+</p>
+<p>To do that, we need to add a bit of code to <code>viewDidLoad</code> to register the cell identifier with the underlying table view.
+</p>
+<p>➤ Add the following code to the end of <code>viewDidLoad</code>:
+</p><pre class="code-block">tableView.register(<span class="hljs-type">UITableViewCell</span>.<span class="hljs-keyword">self</span>, forCellReuseIdentifier: cellIdentifier)</pre>
+<p>The above registers our cell identifier with the table view so that the table view knows which cell class should be used to create a new table view cell instance when a dequeue request comes in with that cell identifier. Also, in this case, we have registered the standard table view cell class as the one to be used for creating new cells, But if you wanted, you could also register custom table view cell classes here.
+</p>
+<p>You should now see why we set up the cell identifier to be at the class level - because we need access to the identifier from at least two different methods.
+</p>
+<p>➤ Remove all the other commented-out cruft from <em>AllListsViewController.swift</em>. Xcode puts it there to be helpful, but it also makes a mess of things.
+</p>
+<h3 class="segment-chapter">Storyboard changes</h3>
+
+<p>The final step is to add the new view controller to the storyboard.
+</p>
+<p>➤ Open the storyboard and drag a new <em>Table View Controller</em> onto the canvas. Put it somewhere near the initial navigation controller.
+</p>
+<p>➤ <em>Control-drag</em> from the navigation controller to this new table view controller:
+</p><div class="image-70"><img src="graphics/img301.png"  alt="" title="Control-drag from the navigation controller to the new table view controller" /></div>
+<p>From the popup menu choose <em>Relationship Segue - root view controller</em>:
+</p><div class="image-20"><img src="graphics/img302.png"  alt="" title="Relationships are also segues" /></div>
+<p>This will break the existing connection between the navigation controller and the <code>ChecklistViewController</code> so that “Checklists” is no longer the app’s main screen.
+</p>
+<p>➤ Select the new table view controller and set its <em>Class</em> in the <em>Identity inspector</em> to <em>AllListsViewController</em>.
+</p>
+<p>➤ Select the new view controller’s Navigation Item in the Document Outline and then change its title to <em>Checklists</em> via the Attributes Inspector.
+</p>
+<p>This may make Xcode rename the view controller in the Document Outline from All Lists View Controller to just Checklists. (Sometimes it won&apos;t happen till you restart Xcode.) This is a bit confusing because there’s a Checklists view controller already.
+</p>
+<p>It&apos;s simple enough to fix the scene names. Normally, the scene name is based on either the underlying view controller name or the navigation item title. But you can set whatever you want as the scene name by simply changing the displayed title on the Document Outline :]
+</p>
+<p>➤ Tap the new view controller in the Document Outline (the yellow circle, not the rectangle representing the scene) and then tap it again to put the title into edit mode. Then, just rename it to <em>All Lists</em>.
+</p><div class="image-40"><img src="graphics/img303.png"  alt="" title="Rename scene" /></div>
+<p>➤ Repeat the above step to rename the remaining Checklists scene to <em>Checklist</em> (note the missing &quot;s&quot; at the end).
+</p>
+<p>You may want to reorganize your storyboard at this point to make everything look neat again. The All Lists scene goes in between the other scenes.
+</p>
+<p>As I mentioned, you’re not going to use prototype cells for this table view. It would be perfectly fine if you did, and as an exercise you could rewrite the code to use prototype cells later, but I want to show you another way of making table view cells.
+</p>
+<p>➤ Delete the empty prototype cell from the All Lists scene. (Simply select the Table View Cell and press <em>delete</em> on your keyboard.)
+</p>
+<p>➤ <em>Control-drag</em> from the yellow circle icon at the top of All Lists scene on to the Checklist scene and create a <em>Show</em> segue.
+</p><div class="image-80"><img src="graphics/img304.png"  alt="" title="Control-dragging from the All Lists scene to the Checklist scene" /></div>
+<p>This adds a “push” transition from the All Lists screen to the Checklist screen. It also puts the navigation bar back on the Checklist scene (the one on the right).
+</p>
+<p>➤ Double-click the navigation bar on the Checklist scene to change its title to <em>(Name of the Checklist)</em>. This is just placeholder text.
+</p>
+<p>➤ If you enabled/disabled large titles via the storyboard (which is what I prefer to do), then disable large titles for the Checklist scene by setting the Navigation Item&apos;s <em>Large Title</em> attribute to <em>Never</em>.
+</p>
+<p>Note that the new segue isn’t attached to any button or table view cell.
+</p>
+<p>There is nothing on the All Lists screen that you can tap or otherwise interact with in order to trigger this segue. That means you have to perform the segue programmatically.
+</p>
+<h3 class="segment-chapter">Perform a segue via code</h3>
+
+<p>➤ Click on the new segue to select it, go to the <em>Attributes inspector</em> and give it the identifier <em>ShowChecklist</em>.
+</p>
+<p>The segue <em>Kind</em> should be <em>Show (e.g. Push)</em> because you’re pushing the Checklist View Controller onto the navigation stack when performing this segue.
+</p>
+<p>➤ In <em>AllListsViewController.swift</em>, add the <code>tableView(_:didSelectRowAt:)</code> method:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+           didSelectRowAt indexPath: IndexPath)</span></span> {
+  performSegue(withIdentifier: <span class="hljs-string">"ShowChecklist"</span>, sender: <span class="hljs-literal">nil</span>)
+}</pre>
+<p>Recall that this table view delegate method is invoked when you tap a row.
+</p>
+<p>Previously, a tap on a row would automatically perform the segue because you had hooked up the segue to the prototype cell. However, the table view for this screen isn’t using prototype cells. Therefore, you have to perform the segue manually.
+</p>
+<p>That’s simple enough: just call <code>performSegue(withIdentifier:sender:)</code> with the name of the segue and things will start moving.
+</p>
+<p>➤ Run the app. It might now look like this (or it might be slightly different depending on whether you set up large title enabling/dsiabling via code or storyboards) :
+</p><div class="image-60"><img src="graphics/img305.png"  alt="" title="The first version of the All Lists screen (left). Tapping a row opens the Checklist screen (right). " /></div>
+<p>Tap a row and the familiar <code>ChecklistViewController</code> slides into the screen.
+</p>
+<p>You can tap the “Back” button in the top-left to go back to the main list. Now you’re truly using the power of the navigation controller!
+</p>
+<h3 class="segment-chapter">Fix the titles (maybe?)</h3>
+
+<p>If you configured large titles via code, the second screen, Checklist, might have the large title while the first one doesn&apos;t! This would be because you originally set up large titles for ChecklistViewController.swift.
+</p>
+<div class="note">
+<p><em>Exercise:</em> Can you fix the titles on your own so that the large titles are enabled by AllListsViewController.swift and the Checklist screen does not show a large title?
+</p></div>
+
+<p>The change is simple enough to implement.
+</p>
+<p>➤ Move the following lines of code from <code>viewDidLoad</code> in <em>ChecklistViewController.swift</em> to <code>viewDidLoad</code> in <em>AllListsViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-comment">// Enable large titles</span>
+navigationController?.navigationBar.prefersLargeTitles = <span class="hljs-literal">true</span></pre>
+<p>➤ Add this code to <code>viewDidLoad</code> in <em>ChecklistViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-comment">// Disable large titles for this view controller</span>
+navigationItem.largeTitleDisplayMode = .never</pre>
+<p>In each case, the comments explain what the code does :]
+</p>
+<p>Run the app again and verify that the titles now display correctly.
+</p>
+<h2 class="segment-chapter">The All Lists UI</h2>
+
+<p>You’re going to duplicate most of the functionality from the Checklist View Controller for this new All Lists screen.
+</p>
+<p>There will be a + button at the top that lets users add new checklists, they can do swipe-to-delete, and they can tap the disclosure button to edit the name of the checklist.
+</p>
+<p>Of course, you’ll also save the array of <code>Checklist</code> objects to the Checklists.plist file.
+</p>
+<p>As you’ve already seen how this works, we’ll go through the steps a bit quicker this time.
+</p>
+<h3 class="segment-chapter">The data model</h3>
+
+<p>You begin by creating a data model object that represents a checklist.
+</p>
+<p>➤ Add a new file to the project based on the <em>Cocoa Touch Class</em> template. Name it <em>Checklist</em> and make it a subclass of <em>NSObject</em>. (Also make sure that the language is set to <em>Swift</em>.)
+</p>
+<p>This adds the file Checklist.swift to the project.
+</p>
+<p>Just like <code>ChecklistItem</code>, you’re building <code>Checklist</code> on top of <code>NSObject</code>. As you found out previously, this is a requirement when you need to compare objects (in order to find a list item in an array of lists).
+</p>
+<p>➤ Give <em>Checklist.swift</em> a <code>name</code> property:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> UIKit
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Checklist</span>: <span class="hljs-title">NSObject</span> </span>{
+  <span class="hljs-keyword">var</span> name = <span class="hljs-string">""</span>
+}</pre>
+<p>Next, you’ll give <code>AllListsViewController</code> an array that will store these new <code>Checklist</code> objects.
+</p>
+<p>➤ Add a new instance variable to <em>AllListsViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> lists = [<span class="hljs-type">Checklist</span>]()</pre>
+<p>This is an array that will hold the <code>Checklist</code> objects.
+</p>
+<div class="note">
+<p><em>Note:</em> You can also write the above as follows:
+</p>
+<p><code>var lists = Array&lt;Checklist&gt;()</code>
+</p>
+<p>The version with the square brackets is what’s known as <i>syntactic sugar</i> for the complete notation, which is <code>Array&lt;</code><i>type of the objects to put in the array</i><code>&gt;</code>.
+</p>
+<p>You will see both forms used in Swift programs and they do exactly the same thing. Because arrays are used a lot, the designers of Swift included the handy shorthand with the square brackets.
+</p></div>
+
+<p>As a first step, you will fill this new array with test data, which you’ll do from <code>viewDidLoad()</code> as before. Remember that UIKit automatically invokes this method when the view controller is first loaded.
+</p>
+<h3 class="segment-chapter">Dummy data</h3>
+
+<p>In <em>AllListsViewController.swift</em> you could add the following to <code>viewDidLoad()</code> (don’t actually add it just yet, just read along with the description):
+</p><pre class="code-block"><span class="hljs-comment">// 1</span>
+<span class="hljs-keyword">var</span> list = <span class="hljs-type">Checklist</span>()
+list.name = <span class="hljs-string">"Birthdays"</span>
+lists.append(list)
+
+<span class="hljs-comment">// 2</span>
+list = <span class="hljs-type">Checklist</span>()
+list.name = <span class="hljs-string">"Groceries"</span>
+lists.append(list)
+
+list = <span class="hljs-type">Checklist</span>()
+list.name = <span class="hljs-string">"Cool Apps"</span>
+lists.append(list)
+
+list = <span class="hljs-type">Checklist</span>()
+list.name = <span class="hljs-string">"To Do"</span>
+lists.append(list)</pre>
+<p>You’ve seen something very much like it a while ago when you added the fake test data to <code>ChecklistViewController</code>. Here is what it does step-by-step:
+</p>
+<ol>
+<li>
+<p>Create a new <code>Checklist</code> object, give it a name, and add it to the array.
+</p></li>
+
+<li>
+<p>You create three more <code>Checklist</code> objects. Because you declared the local variable <code>list</code> as <code>var</code> instead of <code>let</code>, you can re-use it.
+</p></li>
+</ol>
+
+<p>Notice how this is performing the same two steps for every new <code>Checklist</code> object you’re creating?
+</p><pre class="code-block">list = <span class="hljs-type">Checklist</span>()
+list.name = <span class="hljs-string">"Name of the checklist"</span></pre>
+<p>It seems likely that every <code>Checklist</code> you’ll ever make will also have a name. You can make this a requirement by writing your own <code>init</code> method that takes the name as a parameter. Then you can simply write:
+</p><pre class="code-block">list = <span class="hljs-type">Checklist</span>(name: <span class="hljs-string">"Name of the checklist"</span>)</pre>
+<p>➤ Go to <em>Checklist.swift</em> and add the new <code>init</code> method:
+</p><pre class="code-block"><span class="hljs-keyword">init</span>(name: <span class="hljs-type">String</span>) {
+  <span class="hljs-keyword">self</span>.name = name
+  <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>()
+}</pre>
+<p>This initializer takes one parameter, <code>name</code>, and places it into the property called <code>name</code>.
+</p>
+<p>Notice that while the parameter and property are both named <code>name</code> - they are two distinct entities. So, you use <code>self.name</code> to refer to the property (or instance variable, if you prefer that term).
+</p>
+<p>If you used this code instead:
+</p><pre class="code-block"><span class="hljs-keyword">init</span>(name: <span class="hljs-type">String</span>) {
+  name = name
+  <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>()
+}</pre>
+<p>Then Swift wouldn’t understand that the first <code>name</code> referred to the property.
+</p>
+<p>To disambiguate, you use <code>self</code>. Recall that <code>self</code> refers to the object that you’re in, so <code>self.name</code> means the <code>name</code> variable of the current <code>Checklist</code> object.
+</p>
+<p>➤ Go back to <em>AllListsViewController.swift</em> and add the following code to the end of <code>viewDidLoad()</code>, for real this time:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  . . .
+  <span class="hljs-comment">// Add placeholder data</span>
+  <span class="hljs-keyword">var</span> list = <span class="hljs-type">Checklist</span>(name: <span class="hljs-string">"Birthdays"</span>)
+  lists.append(list)
+
+  list = <span class="hljs-type">Checklist</span>(name: <span class="hljs-string">"Groceries"</span>)
+  lists.append(list)
+
+  list = <span class="hljs-type">Checklist</span>(name: <span class="hljs-string">"Cool Apps"</span>)
+  lists.append(list)
+
+  list = <span class="hljs-type">Checklist</span>(name: <span class="hljs-string">"To Do"</span>)
+  lists.append(list)
+}</pre>
+<p>That’s a bit shorter than what I showed you before, and it guarantees that new <code>Checklist</code> objects will now always have their <code>name</code> property filled in.
+</p>
+<p>Note that you don’t write:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> list = <span class="hljs-type">Checklist</span>.<span class="hljs-keyword">init</span>(name: <span class="hljs-string">"Birthdays"</span>)</pre>
+<p>Even though the method is named <code>init</code>, it’s not a regular method. Initializers are only used to construct new objects and you write that as:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> object = <span class="hljs-type">ObjectName</span>(parameter1: value1, parameter2: value2, . . .)</pre>
+<p>Depending on the parameters that you specified, Swift will locate the corresponding <code>init</code> method and call that.
+</p>
+<p>Clear? Great! Let’s continue building the All Lists screen.
+</p>
+<h3 class="segment-chapter">Display data in table view</h3>
+
+<p>➤ Change the <code>tableView(_:numberOfRowsInSection:)</code> method to return the number of objects in the new array:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+      numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">return</span> lists.<span class="hljs-built_in">count</span>
+}</pre>
+<p>➤ Finally, change <code>tableView(_:cellForRowAt:)</code> to fill in the cells for the rows:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+             cellForRowAt indexPath: IndexPath)</span></span> 
+             -&gt; <span class="hljs-type">UITableViewCell</span> {
+  <span class="hljs-keyword">let</span> cell = makeCell(<span class="hljs-keyword">for</span>: tableView)
+  <span class="hljs-comment">// Update cell information</span>
+  <span class="hljs-keyword">let</span> checklist = lists[indexPath.row]
+  cell.textLabel!.text = checklist.name
+  cell.accessoryType = .detailDisclosureButton
+
+  <span class="hljs-keyword">return</span> cell
+}</pre>
+<p>➤ Run the app. It should look like this:
+</p><div class="image-25"><img src="graphics/img306.png"  alt="" title="The table view shows Checklist objects" /></div>
+<p>You now have a table view with cells representing <code>Checklist</code> objects. The rest of the screen doesn’t do much yet, but it’s a start.
+</p>
+<h4 class="segment-chapter">The many ways to make table view cells</h4>
+
+<p>Creating a new table view cell in <code>AllListsViewController</code> is a little more involved than how it was done in <code>ChecklistViewController</code>. There you just did the following to obtain a new table view cell:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> cell = tableView.dequeueReusableCell(
+              withIdentifier: <span class="hljs-string">"ChecklistItem"</span>, <span class="hljs-keyword">for</span>: indexPath)</pre>
+<p>But here you have three separate bits of code to accomplish the same:
+</p><pre class="code-block"><span class="hljs-comment">// At the top of the class implementation</span>
+<span class="hljs-keyword">let</span> cellIdentifier = <span class="hljs-string">"ChecklistCell"</span>
+<span class="hljs-comment">// In viewDidLoad</span>
+tableView.register(<span class="hljs-type">UITableViewCell</span>.<span class="hljs-keyword">self</span>, forCellReuseIdentifier: cellIdentifier)
+<span class="hljs-comment">// In tableView(_:cellForRowAt:)</span>
+<span class="hljs-keyword">let</span> cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, <span class="hljs-keyword">for</span>: indexPath)</pre>
+<p>The call to <code>dequeueReusableCell(withIdentifier:for:)</code> is still there, except that previously the storyboard had a prototype cell with that identifier and now it doesn’t.
+</p>
+<p>There are four ways that you can make table view cells:
+</p>
+<ol>
+<li>
+<p>Using prototype cells. This is the simplest and quickest way. You did this in <code>ChecklistViewController</code>.
+</p></li>
+
+<li>
+<p>Using static cells. You did this for the Add/Edit Item screen. Static cells are limited to screens where you know in advance which cells you’ll have. The big advantage with static cells is that you don’t need to provide any of the data source methods (<code>cellForRowAt</code> etc.).
+</p></li>
+
+<li>
+<p>Using a <i>nib</i> file. A nib (also known as a XIB) is like a mini storyboard that only contains a single customized <code>UITableViewCell</code> object. This is very similar to using prototype cells, except that you can do it outside of a storyboard.
+</p></li>
+
+<li>
+<p>By hand, like what you did above. This is fairly similar to how you were supposed to do it in the early days of iOS, but you can get a little bit more closer to the metal, so to speak.
+</p>
+<p>When you create a cell by hand, you can specify a certain <em>cell style</em>, which gives you a cell with a preconfigured layout that already has labels and an image view.
+</p>
+<p>For the All Lists scene you’re using the “Default” style. Later on you’ll switch it to “Subtitle”, which gives the cell a second, smaller label below the main label. Then you&apos;ll see how to go really old school :]
+</p></li>
+</ol>
+
+<p>Using standard cell styles means you don’t have to design your own cell layout. For many apps these standard layouts are sufficient, so that saves you some work.
+</p>
+<p>Prototype cells and static cells can also use these standard cell styles. The default style for a prototype or static cell is “Custom”, which requires you to use your own labels, but you can change that to one of the built-in styles via Interface Builder.
+</p>
+<p>And finally, a gentle warning: Sometimes I see code that creates a new cell for every row rather than trying to reuse cells by dequeuing them. Don’t do that! Always ask the table view first whether it has a cell available that can be recycled, using one of the <code>dequeueReusableCell</code> methods. In case you hadn&apos;t noticed, there are two <code>dequeueReusableCell</code> variants — you&apos;ll learn about the second one later.
+</p>
+<p>Creating a new cell for each row will cause your app to slow down, as object creation is slower than simply re-using an existing object. Creating all these new objects also takes up more memory, a precious commodity on mobile devices. For the best performance, reuse those cells!
+</p>
+<h2 class="segment-chapter">View the checklists</h2>
+
+<p>Right now, the data model consists of the <code>lists</code> array from <code>AllListsViewController</code> that contains a handful of <code>Checklist</code> objects. There is also a separate <code>items</code> array in <code>ChecklistViewController</code> with <code>ChecklistItem</code> objects.
+</p>
+<p>You may have noticed that when you tap the name of a list, the Checklist screen slides into view but it currently always shows the same to-do items, regardless of which list you tapped on.
+</p>
+<p>Each checklist should really have its own to-do items. You’ll work on that later on, as this requires a significant change to the data model.
+</p>
+<p>As a start, let’s set the title of the Checklist screen to reflect the chosen checklist.
+</p>
+<h3 class="segment-chapter">Set the title of the screen</h3>
+
+<p>➤ Add a new instance variable to <em>ChecklistViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> checklist: <span class="hljs-type">Checklist</span>!</pre>
+<p>I’ll explain why the exclamation mark is necessary in a moment.
+</p>
+<p>➤ Change <code>viewDidLoad</code> in <em>ChecklistViewController.swift</em> to:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  . . .
+  title = checklist.name
+}</pre>
+<p>This changes the title of the screen, which is shown in the navigation bar, to the name of the <code>Checklist</code> object.
+</p>
+<p>You’ll pass the necessary <code>Checklist</code> object to <code>ChecklistViewController</code> when the segue is performed.
+</p>
+<p>➤ In <em>AllListsViewController.swift</em>, update <code>tableView(_:didSelectRowAt:)</code> to the following:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+           didSelectRowAt indexPath: IndexPath)</span></span> {
+  <span class="hljs-keyword">let</span> checklist = lists[indexPath.row]
+  performSegue(withIdentifier: <span class="hljs-string">"ShowChecklist"</span>, 
+                       sender: checklist)
+}</pre>
+<p>As before, you use <code>performSegue()</code> to start the segue. This method has a <code>sender</code> parameter that you previously set to <code>nil</code>. Now you’ll use it to send along the <code>Checklist</code> object from the row that the user tapped on.
+</p>
+<p>You can put anything you want into <code>sender</code>. If the segue is performed by the storyboard (rather than manually like you do here) then <code>sender</code> will refer to the control that triggered it, for example, the <code>UIBarButtonItem</code> object for the Add button, or the <code>UITableViewCell</code> for a row in the table.
+</p>
+<p>But because you start this particular segue by hand, you can put whatever is most convenient into <code>sender</code>.
+</p>
+<p>Putting the <code>Checklist</code> object into the <code>sender</code> parameter doesn’t pass it to <code>ChecklistViewController</code> yet. That happens in “prepare-for-segue”, which you still need to add for this view controller.
+</p>
+<p>➤ Add the <code>prepare(for:sender:)</code> method to <em>AllListsViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Navigation</span>
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">prepare</span><span class="hljs-params">(<span class="hljs-keyword">for</span> segue: UIStoryboardSegue, 
+                         sender: Any?)</span></span> {
+  <span class="hljs-keyword">if</span> segue.identifier == <span class="hljs-string">"ShowChecklist"</span> {
+    <span class="hljs-keyword">let</span> controller = segue.destination 
+                     <span class="hljs-keyword">as</span>! <span class="hljs-type">ChecklistViewController</span>
+    controller.checklist = sender <span class="hljs-keyword">as</span>? <span class="hljs-type">Checklist</span>
+  }
+}</pre>
+<p>You’ve seen this method before. <code>prepare(for:sender:)</code> is called right before a segue happens from a view controller. Here you get a chance to set the properties of the new view controller before it becomes visible.
+</p>
+<p>Inside <code>prepare(for:sender:)</code>, you need to pass the <code>ChecklistViewController</code> the <code>Checklist</code> object from the row that the user tapped. That’s why you put that object in the <code>sender</code> parameter earlier.
+</p>
+<p>(You could have temporarily stored the <code>Checklist</code> object in an instance variable instead, but passing it along in the <code>sender</code> parameter is much easier and cleaner.)
+</p>
+<p>All of this happens a short time after <code>ChecklistViewController</code> is instantiated but just before <code>ChecklistViewController</code>’s view is loaded. That means its <code>viewDidLoad()</code> method is called after <code>prepare(for:sender:)</code>.
+</p>
+<p>At this point, the view controller’s <code>checklist</code> property is set to the <code>Checklist</code> object from <code>sender</code>, and <code>viewDidLoad()</code> can set the title of the screen accordingly.
+</p><div class="image-80"><img src="graphics/img307.png"  alt="" title="The steps involved in performing a segue" /></div>
+<p>This sequence of events is why the <code>checklist</code> property is declared as <code>Checklist!</code> with an exclamation point. That allows its value to be temporarily <code>nil</code> until <code>viewDidLoad()</code> happens.
+</p>
+<p><code>nil</code> is normally not an allowed value for non-optional variables in Swift, but by using the <code>!</code> you override that.
+</p>
+<p>Does this sound an awful lot like optionals? The exclamation point turns <code>checklist</code> into a special kind of optional. It’s very similar to optionals with a question mark, but you don’t have to write <code>if let</code> to unwrap it.
+</p>
+<p>Such <i>implicitly unwrapped</i> optionals should be used sparingly and with care, as they do not have any of the anti-crash protection that normal optionals do.
+</p>
+<p>➤ Run the app and notice that when you tap the row for a checklist, the next screen properly displays the checklist title.
+</p><div class="image-30"><img src="graphics/img308.png"  alt="" title="The name of the chosen checklist now appears in the navigation bar" /></div>
+<p>Note that passing the <code>Checklist</code> object to the <code>ChecklistViewController</code> does not make a copy of it.
+</p>
+<p>You only pass the view controller a <i>reference</i> to that object — any changes the user makes to that <code>Checklist</code> object are also seen by <code>AllListsViewController</code>.
+</p>
+<p>Both view controllers have access to the exact same <code>Checklist</code> object. You’ll use that to your advantage later in order to add new <code>ChecklistItems</code> to the selected <code>Checklist</code>.
+</p>
+<h4 class="segment-chapter">Type Casts</h4>
+
+<p>In <code>prepare(for:sender:)</code> you do this:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">prepare</span><span class="hljs-params">(<span class="hljs-keyword">for</span> segue: UIStoryboardSegue, 
+                         sender: Any?)</span></span> {
+  . . .
+  controller.checklist = sender <span class="hljs-keyword">as</span>? <span class="hljs-type">Checklist</span>
+  . . .
+}</pre>
+<p>What is that <code>as? Checklist</code> bit?
+</p>
+<p>If you’ve been paying attention — of course you have! — then you’ve seen this “as something” used quite a few times now. This is known as a <i>type cast</i>.
+</p>
+<p>A type cast tells Swift to interpret a value as having a different data type.
+</p>
+<p>(It’s the opposite of what happens to certain actors in the movies. For them, typecasting results in always playing the same character; in Swift, a type cast actually changes the character of an object.)
+</p>
+<p>Here, <code>sender</code> has type <code>Any?</code>, meaning that it can be any sort of object: a <code>UIBarButtonItem</code>, a <code>UITableViewCell</code>, or in this case, a <code>Checklist</code>. Thanks to the question mark it can even be <code>nil</code>.
+</p>
+<p>But the <code>controller.checklist</code> property always expects a <code>Checklist</code> object – it wouldn’t know what to do with a <code>UITableViewCell</code>… Hence, Swift demands that you only put <code>Checklist</code> objects into the <code>checklist</code> property.
+</p>
+<p>By writing <code>sender as? Checklist</code>, you tell Swift that it can safely treat <code>sender</code> as a <code>Checklist</code> object, if it can be used as a <code>Checklist</code> object, or to send <code>nil</code> if if there is an issue.
+</p>
+<p>Another example of a typecast is:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> controller = segue.destination <span class="hljs-keyword">as</span>! <span class="hljs-type">ChecklistViewController</span></pre>
+<p>The segue’s <code>destination</code> property refers to the view controller on the receiving end of the segue. But obviously the engineers at Apple could not predict beforehand that we would call it <code>ChecklistViewController</code>. Unlike the previous <code>as?</code> type cast, this one force unwraps the value to be of the type that you specified, there is not supposed to be any posibility of the type cast failing.
+</p>
+<p>So you have to cast it from its generic type (<code>UIViewController</code>) to the specific type used in this app (<code>ChecklistViewController</code>) before you can access any of the properties specific to <code>ChecklistViewController</code>.
+</p>
+<p>Don’t worry if some of this goes over your head right now. You’ll see plenty more examples of type casting in action.
+</p>
+<p>The main reason you need all these type casts is for interoperability with the iOS frameworks that are written in Objective-C. Swift is less forgiving about types than Objective-C and requires you to be much more explicit about specifying the types of the various data items you work with.
+</p>
+<h2 class="segment-chapter">Manage checklists</h2>
+
+<p>Let’s quickly add the Add / Edit Checklist screen. This is going to be yet another <code>UITableViewController</code>, with static cells, and you’ll present it from the <code>AllListsViewController</code>.
+</p>
+<p>If the previous sentence made perfect sense to you, then you’re getting the hang of this!
+</p>
+<h3 class="segment-chapter">Add the view controller</h3>
+
+<p>➤ Add a new file to the project, <em>ListDetailViewController.swift</em>. You can use the <em>Swift File</em> template for this since you&apos;ll be adding the complete view controller implementation by hand.
+</p>
+<p>➤ Add the following to <em>ListDetailViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> UIKit
+
+<span class="hljs-class"><span class="hljs-keyword">protocol</span> <span class="hljs-title">ListDetailViewControllerDelegate</span>: <span class="hljs-title">class</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">listDetailViewControllerDidCancel</span><span class="hljs-params">(
+           <span class="hljs-number">_</span> controller: ListDetailViewController)</span></span>
+
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">listDetailViewController</span><span class="hljs-params">(
+           <span class="hljs-number">_</span> controller: ListDetailViewController, 
+           didFinishAdding checklist: Checklist)</span></span>
+
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">listDetailViewController</span><span class="hljs-params">(
+           <span class="hljs-number">_</span> controller: ListDetailViewController, 
+           didFinishEditing checklist: Checklist)</span></span>
+}
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ListDetailViewController</span>: <span class="hljs-title">UITableViewController</span>, 
+                                <span class="hljs-title">UITextFieldDelegate</span> </span>{
+  <span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> textField: <span class="hljs-type">UITextField</span>!
+  <span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> doneBarButton: <span class="hljs-type">UIBarButtonItem</span>!
+
+  <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> delegate: <span class="hljs-type">ListDetailViewControllerDelegate</span>?
+
+  <span class="hljs-keyword">var</span> checklistToEdit: <span class="hljs-type">Checklist</span>?
+}</pre>
+<p>I simply took the contents of <em>ItemDetailViewController.swift</em> and changed the names. Also, instead of a property for a <code>ChecklistItem</code> you’re now dealing with a <code>Checklist</code>.
+</p>
+<p>➤ Add the <code>viewDidLoad()</code> method:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">super</span>.viewDidLoad()
+
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> checklist = checklistToEdit {
+    title = <span class="hljs-string">"Edit Checklist"</span>
+    textField.text = checklist.name
+    doneBarButton.isEnabled = <span class="hljs-literal">true</span>
+  }
+}</pre>
+<p>This changes the title of the screen if the user is editing an existing checklist, and it puts the checklist’s name into the text field.
+</p>
+<p>➤ Also add the <code>viewWillAppear()</code> method to pop up the keyboard:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewWillAppear</span><span class="hljs-params">(<span class="hljs-number">_</span> animated: Bool)</span></span> {
+  <span class="hljs-keyword">super</span>.viewWillAppear(animated)
+  textField.becomeFirstResponder()
+}</pre>
+<h3 class="segment-chapter">The Cancel and Done buttons</h3>
+
+<p>➤ Add the action methods for the Cancel and Done buttons:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Actions</span>
+<span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">cancel</span><span class="hljs-params">()</span></span> {
+  delegate?.listDetailViewControllerDidCancel(<span class="hljs-keyword">self</span>)
+}
+
+<span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">done</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> checklist = checklistToEdit {
+    checklist.name = textField.text!
+    delegate?.listDetailViewController(<span class="hljs-keyword">self</span>, 
+                     didFinishEditing: checklist)
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">let</span> checklist = <span class="hljs-type">Checklist</span>(name: textField.text!)
+    delegate?.listDetailViewController(<span class="hljs-keyword">self</span>,
+                      didFinishAdding: checklist)
+  }
+}</pre>
+<p>This should look familiar as well. It’s essentially the same as what the Add/Edit Item screen does.
+</p>
+<p>To create the new <code>Checklist</code> object in <code>done()</code>, you use its <code>init(name:)</code> method and pass the contents of <code>textField.text</code> as the <code>name</code> parameter.
+</p>
+<p>You cannot write this the way you did for <code>ChecklistItems</code> – this won’t work:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> checklist = <span class="hljs-type">Checklist</span>()
+checklist.name = textField.text!</pre>
+<p>Because <code>Checklist</code> does not have an <code>init()</code> method that takes no parameters, writing <code>Checklist()</code> results in a compiler error. It only has an <code>init(name:)</code> method, and you must always use that initializer to create new <code>Checklist</code> objects.
+</p>
+<h3 class="segment-chapter">Other functionality</h3>
+
+<p>➤ Also make sure the user cannot select the table cell with the text field:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Table View Delegates</span>
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+          willSelectRowAt indexPath: IndexPath)</span></span> -&gt; <span class="hljs-type">IndexPath</span>? {
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+}</pre>
+<p>➤ And finally, add the text field delegate methods that enable or disable the Done button depending on whether the text field is empty or not.
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Text Field Delegates</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">textField</span><span class="hljs-params">(<span class="hljs-number">_</span> textField: UITextField,
+               shouldChangeCharactersIn range: NSRange,
+               replacementString string: String)</span></span> -&gt; <span class="hljs-type">Bool</span> {
+  
+  <span class="hljs-keyword">let</span> oldText = textField.text!
+  <span class="hljs-keyword">let</span> stringRange = <span class="hljs-type">Range</span>(range, <span class="hljs-keyword">in</span>:oldText)!
+  <span class="hljs-keyword">let</span> newText = oldText.replacingCharacters(<span class="hljs-keyword">in</span>: stringRange, 
+                                          with: string)
+  doneBarButton.isEnabled = !newText.isEmpty
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">textFieldShouldClear</span><span class="hljs-params">(<span class="hljs-number">_</span> textField: UITextField)</span></span> -&gt; <span class="hljs-type">Bool</span> {
+  doneBarButton.isEnabled = <span class="hljs-literal">false</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+}</pre>
+<p>Again, this is the same as what you did in <code>ItemDetailViewController</code>.
+</p>
+<p>Let’s create the user interface for this new view controller in Interface Builder.
+</p>
+<h3 class="segment-chapter">The storyboard</h3>
+
+<p>➤ Open the storyboard. Drag a new <em>Table View Controller</em> from the Objects Library on to the canvas and move it below the other view controllers.
+</p><div class="image-80"><img src="graphics/img309.png"  alt="" title="Adding a new table view controller to the canvas" /></div>
+<p>➤ Select the new Table View Controller and go to the <em>Identity inspector</em>. Change its class to <em>ListDetailViewController</em>.
+</p>
+<p>➤ <em>Control-drag</em> from the yellow cirlce at the top of the All Lists scene to the new scene. Select <em>Show</em> from the Manual Segue section of the popup menu.
+</p>
+<p>➤ Add a Navigation Item to the new scene.
+</p>
+<p>➤ Change the navigation bar title from “Title” to <em>Add Checklist</em>. (The new scene should now appear as Add Checklist scene in the Document Outline.)
+</p>
+<p>➤ Select the Navigation Item and set <em>Large Title</em> in the Attributes inspector to <em>Never</em>.
+</p>
+<p>➤ Add <em>Cancel</em> and <em>Done</em> bar button items to the navigation item and hook them up to the action methods in the Add Checklist scene. Also connect the Done button to the <em>doneBarButton</em> outlet and uncheck its <em>Enabled</em> option.
+</p>
+<p>Remember, you can Control-drag from a button to the view controller to connect it to an action method. To connect an outlet, do it the other way around: Control-drag from the view controller to the button.
+</p>
+<p><em>Tip:</em> My Xcode acted a bit buggy and wouldn’t let me drop the bar buttons on the navigation bar. If this happens to you too, drop them on the navigation item – now called Add Checklist – in the Document Outline. You can also Control-drag in the Document Outline to make the connections to the actions and the outlet.
+</p>
+<p>➤ Change the table view to <em>Static Cells</em>, style <em>Grouped</em>. You only need one cell, so remove the bottom two.
+</p>
+<p>➤ Drop a new <em>Text Field</em> on to the cell, adjust it&apos;s size and position and then set up <em>left</em>, <em>top</em>, <em>right</em>, and <em>bottom</em> Auto Layout constraints. Then, set the following configuration options via the <em>Attributes inspector</em>:
+</p>
+<ul>
+<li>
+<p>Border Style: none
+</p></li>
+
+<li>
+<p>Font size: 17
+</p></li>
+
+<li>
+<p>Placeholder text: <em>Name of the List</em>
+</p></li>
+
+<li>
+<p>(Optional) Clear Button: Appears while editing
+</p></li>
+
+<li>
+<p>Adjust to Fit: disabled
+</p></li>
+
+<li>
+<p>Capitalization: Sentences
+</p></li>
+
+<li>
+<p>Return Key: Done
+</p></li>
+
+<li>
+<p>Auto-enable Return key: check
+</p></li>
+</ul>
+
+<p>➤ Control-drag from the view controller to the Text Field and connect it to the <em>textField</em> outlet.
+</p>
+<p>➤ Then Control-drag the other way around, from the Text Field back to the view controller, and choose <em>delegate</em> under <em>Outlets</em>. Now the view controller is the delegate for the text field.
+</p>
+<p>➤ Connect the text field’s <em>Did End on Exit</em> event to the <em>done</em> action on the view controller.
+</p>
+<p>This completes setting up the new view controller to be the Add / Edit Checklist screen:
+</p><div class="image-40"><img src="graphics/img310.png"  alt="" title="The finished design of the ListDetailViewController" /></div>
+<h3 class="segment-chapter">Connect the view controllers</h3>
+
+<p>➤ Go to the <em>All Lists</em> scene (the one titled “Checklists”) and drag a <em>Bar Button Item</em> on to its right navigation item. Change it to an <em>Add</em> button.
+</p>
+<p>➤ <em>Control-drag</em> from this new bar button to the Add Checklist scene below to add a new <em>Show</em> segue.
+</p>
+<p>➤ Click on the new segue and name it <em>AddChecklist</em>.
+</p>
+<p>➤ Click on the other segue (the one not connected the the Add buton) and name it <em>EditChecklist</em>.
+</p>
+<p>Your storyboard should now look something like this:
+</p><div class="image-75"><img src="graphics/img311.png"  alt="" title="The full storyboard: 1 navigation controller, 4 table view controllers" /></div>
+<h3 class="segment-chapter">Set up the delegates</h3>
+
+<p>Almost there. You still have to make the <code>AllListsViewController</code> the delegate for the <code>ListDetailViewController</code> and then you’re done. Again, it’s very similar to what you did before.
+</p>
+<p>➤ Declare the All Lists view controller to conform to the delegate protocol by adding <code>ListDetailViewControllerDelegate</code> to its class line.
+</p>
+<p>You do this in <em>AllListsViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AllListsViewController</span>: <span class="hljs-title">UITableViewController</span>, 
+                              <span class="hljs-title">ListDetailViewControllerDelegate</span> </span>{</pre>
+<p>➤ Still in <em>AllListsViewController.swift</em>, extend <code>prepare(for:sender:)</code> to:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">prepare</span><span class="hljs-params">(<span class="hljs-keyword">for</span> segue: UIStoryboardSegue, 
+                         sender: Any?)</span></span> {
+  <span class="hljs-keyword">if</span> segue.identifier == <span class="hljs-string">"ShowChecklist"</span> {
+    . . .
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> segue.identifier == <span class="hljs-string">"AddChecklist"</span> {
+    <span class="hljs-keyword">let</span> controller = segue.destination 
+                     <span class="hljs-keyword">as</span>! <span class="hljs-type">ListDetailViewController</span>
+    controller.delegate = <span class="hljs-keyword">self</span>
+  }
+}</pre>
+<p>The first <code>if</code> doesn’t change. You’ve added a second <code>if</code> for the new “AddChecklist” segue that you just defined in the storyboard. As before, you look for the view controller and set its <code>delegate</code> property to <code>self</code>.
+</p>
+<p>➤ Next, implement the following delegate methods in <em>AllListsViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- List Detail View Controller Delegates</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">listDetailViewControllerDidCancel</span><span class="hljs-params">(
+                  <span class="hljs-number">_</span> controller: ListDetailViewController)</span></span> {
+  navigationController?.popViewController(animated: <span class="hljs-literal">true</span>)
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">listDetailViewController</span><span class="hljs-params">(
+                  <span class="hljs-number">_</span> controller: ListDetailViewController, 
+     didFinishAdding checklist: Checklist)</span></span> {
+  <span class="hljs-keyword">let</span> newRowIndex = lists.<span class="hljs-built_in">count</span>
+  lists.append(checklist)
+
+  <span class="hljs-keyword">let</span> indexPath = <span class="hljs-type">IndexPath</span>(row: newRowIndex, section: <span class="hljs-number">0</span>)
+  <span class="hljs-keyword">let</span> indexPaths = [indexPath]
+  tableView.insertRows(at: indexPaths, with: .automatic)
+
+  navigationController?.popViewController(animated: <span class="hljs-literal">true</span>)
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">listDetailViewController</span><span class="hljs-params">(
+                 <span class="hljs-number">_</span> controller: ListDetailViewController, 
+   didFinishEditing checklist: Checklist)</span></span> {
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> index = lists.index(of: checklist) {
+    <span class="hljs-keyword">let</span> indexPath = <span class="hljs-type">IndexPath</span>(row: index, section: <span class="hljs-number">0</span>)
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> cell = tableView.cellForRow(at: indexPath) {
+      cell.textLabel!.text = checklist.name
+    }
+  }
+  navigationController?.popViewController(animated: <span class="hljs-literal">true</span>)
+}</pre>
+<p>These methods are called when the user presses Cancel or Done inside the new Add/Edit Checklist screen.
+</p>
+<p>None of this code should surprise you. It’s exactly what you did before but now for the <code>ListDetailViewController</code> and <code>Checklist</code> objects.
+</p>
+<p>➤ Also add the table view data source method that allows the user to delete checklists:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(
+            <span class="hljs-number">_</span> tableView: UITableView,
+    commit editingStyle: UITableViewCell.EditingStyle,
+     forRowAt indexPath: IndexPath)</span></span> {
+  lists.remove(at: indexPath.row)
+  
+  <span class="hljs-keyword">let</span> indexPaths = [indexPath]
+  tableView.deleteRows(at: indexPaths, with: .automatic)
+}</pre>
+<p>➤ Run the app. Now you can add new checklists and delete them again:
+</p><div class="image-30"><img src="graphics/img312.png"  alt="" title="Adding new lists" /></div>
+<div class="note">
+<p><em>Note:</em> If the app crashes, then go back and make sure you made all the connections properly in Interface Builder. It’s really easy to miss just one tiny thing, but even the tiniest of mistakes can bring the app crashing down in flames…
+</p></div>
+
+<p>You can’t edit the names of existing lists yet though. That requires one last addition to the code.
+</p>
+<p>To bring up the Edit Checklist screen, the user taps the blue accessory button in the <code>ChecklistViewController</code> that triggered a segue. You could use a segue here too. If you want to go that route, you&apos;ve already set up a segue named &quot;EditChecklist&quot; on the storyboard that you can use for this purpose. But I want to show you another way.
+</p>
+<p>This time you’re not going to use a segue at all, but load the new view controller by hand from the storyboard. Just because you can — and because it is good to know multiple ways to do the same thing.
+</p>
+<h3 class="segment-chapter">Load a view controller via code</h3>
+
+<p>➤ Add the following <code>tableView(_:accessoryButtonTappedForRowWith:)</code> method to <em>AllListsViewController.swift</em>. This method comes from the table view delegate protocol and the name is hopefully obvious enough for you to guess what it does.
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+   accessoryButtonTappedForRowWith indexPath: IndexPath)</span></span> {
+
+  <span class="hljs-keyword">let</span> controller = storyboard!.instantiateViewController(
+                   withIdentifier: <span class="hljs-string">"ListDetailViewController"</span>)
+                   <span class="hljs-keyword">as</span>! <span class="hljs-type">ListDetailViewController</span>
+  controller.delegate = <span class="hljs-keyword">self</span>
+
+  <span class="hljs-keyword">let</span> checklist = lists[indexPath.row]
+  controller.checklistToEdit = checklist
+  
+  navigationController?.pushViewController(controller, 
+                                 animated: <span class="hljs-literal">true</span>)
+}</pre>
+<p>In this method, you create the view controller object for the Add/Edit Checklist screen and push it on to the navigation stack. This is roughly equivalent to what a segue would do behind the scenes. The view controller is embedded in a storyboard and you have to ask the storyboard object to load it.
+</p>
+<p>Where did you get that storyboard object? As it happens, each view controller has a <code>storyboard</code> property that refers to the storyboard the view controller was loaded from. You can use that property to do all kinds of things with the storyboard, such as instantiating other view controllers.
+</p>
+<p>The <code>storyboard</code> property is optional because view controllers are not always loaded from a storyboard. But this one is, which is why you can use <code>!</code> to <i>force unwrap</i> the optional. It’s like using <code>if let</code>, but because you can safely assume <code>storyboard</code> will not be <code>nil</code> in this app, you don’t have to unwrap it inside an <code>if</code> statement.
+</p>
+<p>The call to <code>instantiateViewController(withIdentifier:)</code> takes an identifier string, <code>ListDetailViewController</code>. That is how you ask the storyboard to create the new view controller. In your case, this will be the <code>ListDetailViewController</code>. Note that the identifier does not have to match the view controller class name — it could be any unique string value — even though we opted to use the view controller class name here.
+</p>
+<p>You still have to set this identifier on the navigation controller; otherwise the storyboard won&apos;t be able to find it. (And if you try to run the app without setting the identifier, it will crash.)
+</p>
+<p>➤ Open the storyboard and select the List Detail View Controller. Go to the <em>Identity inspector</em> and set <em>Storyboard ID</em> to <em>ListDetailViewController</em>:
+</p><div class="image-80"><img src="graphics/img313.png"  alt="" title="Setting the storyboard identifier" /></div>
+<p>➤ That should do the trick. Run the app and tap some detail disclosure buttons.
+</p>
+<p>(If the app crashes, make sure the storyboard is saved before you press Run.)
+</p>
+<h2 class="segment-chapter"><em>Are you still with me?</em></h2>
+
+<p>If at this point your eyes are glazing over and you feel like giving up: don’t.
+</p>
+<p>Learning new things is hard and programming doubly so. Set the book aside, sleep on it, and come back in a few days.
+</p>
+<p>Chances are that in the mean time you’ll have an a-ha! moment where the thing that didn’t make any sense suddenly becomes clear as day.
+</p>
+<p>If you have specific questions, join us on the forums at: <a href="https://forums.raywenderlich.com/">forums.raywenderlich.com</a>. I am around most of the time and respond to questions fast — if I&apos;m around. Many of our community members do as well. Don’t be embarrassed to ask for help!
+</p>
+<p>You can find the project files for the app up to this point under <em>16 - Lists</em> in the Source Code folder.
+</p></body></html>

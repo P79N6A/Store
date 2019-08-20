@@ -1,0 +1,769 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 LucidaGrande;\f2\fnil\fcharset178 GeezaPro;
+\f3\fnil\fcharset0 HelveticaNeue;\f4\fswiss\fcharset0 ArialMT;}
+{\colortbl;\red255\green255\blue255;\red27\green29\blue31;\red255\green255\blue255;\red251\green2\blue7;
+\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c14118\c15294\c16078;\cssrgb\c100000\c100000\c100000;\cssrgb\c100000\c14913\c0;
+\cssrgb\c0\c0\c0;}
+\margl1440\margr1440\vieww10120\viewh8820\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Short Notes \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+Chapter 9\
+\
+1-  \'93tableView(_:numberOfRowsInSection:) or tableView(_:cellForRowAt:). If you are wondering what these are, these are known as method signatures\'94 \'93 it is an easy way to uniquely identify a method without having to write out the full method name with the parameters.\'94\
+\
+2- \'93A tag is a numeric identifier that you can give to a user interface control in order to uniquely identify it later\'94\
+\
+3- \'93Using tags is a handy trick to get a reference to a UI element without having to make an @IBOutlet variable for it\'94\
+\
+4- \'93Usually, components will have just one delegate. But the table view splits up its delegate duties into two separate helpers: the UITableViewDataSource for putting rows into the table, and the UITableViewDelegate for handling taps on the rows and several other tasks\'94\
+\
+
+\f1 5-\'93Methods
+\f2  
+\f1 are
+\f2  
+\f1 not
+\f2  
+\f1 limited
+\f2  
+\f1 to
+\f2  
+\f1 just
+\f2  
+\f1 one
+\f2  
+\f1 or
+\f2  
+\f1 two
+\f2  
+\f1 parameters,
+\f2  
+\f1 they
+\f2  
+\f1 can
+\f2  
+\f1 have
+\f2  
+\f1 many
+\f2 . 
+\f1 But
+\f2  
+\f1 for
+\f2  
+\f1 practical
+\f2  
+\f1 reasons
+\f2  
+\f1 two
+\f2  
+\f1 or
+\f2  
+\f1 three
+\f2  
+\f1 is
+\f2  
+\f1 usually
+\f2  
+\f1 more
+\f2  
+\f1 than
+\f2  
+\f1 enough,
+\f2  
+\f1 and
+\f2  
+\f1 you
+\f2  
+\f1 won\'92t
+\f2  
+\f1 see
+\f2  
+\f1 many
+\f2  
+\f1 methods
+\f2  
+\f1 with
+\f2  
+\f1 more
+\f2  
+\f1 than
+\f2  
+\f1 five
+\f2  
+\f1 parameters
+\f2 .
+\f1 \'94
+\f2 \
+\
+
+\f1 6- delegate: \'93An object will often rely on another object to help it out with certain tasks. This separation of concerns keeps the system simple, as each object does only what it is good at and lets other objects take care of the rest\'94\
+\
+
+\f0 7-\'93Navigation controllers and table views are often used together.\
+\
+\
+
+\f1 8-
+\f2  
+\f1 \'93IndexPath
+\f2  
+\f1 is
+\f2  
+\f1 simply
+\f2  
+\f1 an
+\f2  
+\f1 object
+\f2  
+\f1 that
+\f2  
+\f1 points
+\f2  
+\f1 to
+\f2  
+\f1 a
+\f2  
+\f1 specific
+\f2  
+\f1 row
+\f2  
+\f1 in
+\f2  
+\f1 the
+\f2  
+\f1 table
+\f2 . 
+\f1 When
+\f2  
+\f1 the
+\f2  
+\f1 table
+\f2  
+\f1 view
+\f2  
+\f1 asks
+\f2  
+\f1 the
+\f2  
+\f1 data
+\f2  
+\f1 source
+\f2  
+\f1 for
+\f2  
+\f1 a
+\f2  
+\f1 cell,
+\f2  
+\f1 you
+\f2  
+\f1 can
+\f2  
+\f1 look
+\f2  
+\f1 at
+\f2  
+\f1 the
+\f2  
+\f1 row
+\f2  
+\f1 number
+\f2  
+\f1 inside
+\f2  
+\f1 the
+\f2  
+\f1 indexPath\'94
+\f2 \
+\
+
+\f1 9-
+\f2  
+\f1 \'93he
+\f2  
+\f1 view
+\f2  
+\f1 type
+\f2  
+\f1 specified
+\f2  
+\f1 in
+\f2  
+\f1 code
+\f2  
+\f1 has
+\f2  
+\f1 to
+\f2  
+\f1 match
+\f2  
+\f1 the
+\f2  
+\f1 scene's
+\f2  
+\f1 type
+\f2 .
+\f1 \'94
+\f2 \
+\
+
+\f0 Chapter 10 \
+1- \'93MVC is one of the three fundamental design patterns of iOS. You\'92ve already seen the other two: delegation, making one object do something on behalf of another; and target-action, connecting events such as button taps to action method\'94\
+\
+2- \'93A view in MVC can draw itself and responds to user input, but it typically does not handle any application logic\'94\
+\
+3- \'93 The controller in MVC is the object that connects your data model objects to the views. \
+       It\'92s job is \'93\'93 It listens to taps on the views, makes the data model objects do some calculations in response, and updates the views to reflect the new state of your model\'94\
+\
+\
+4- \'93An array is an ordered list of objects. If you think of a variable as a container of one value (or one object) then an array is a container for multiple objects.\'94\
+   \'97\'93An array is a collection object. There are several other collection objects and they all organize their objects in a different fashion. Dictionary, for example, contains key-value pairs, just like a real dictionary contains a list of words and a description for each of those words. You\'92ll use some of these other collection types in later chapters.\'94\
+\
+5-\'93The class keyword names the object\'94 and their VAR and Constant names property or instance variables\
+\
+6-\'93The process for cleaning up code is called refactoring and it\'92s a cycle that never ends.\
+There are a lot of programmers who never refactor their code. The result is what we call \'93spaghetti code\'94 and it\'92s a horrible mess to maintain.\'94\
+\
+\
+
+\fs36 Chapter 11 \
+
+\fs24 1- \'93Apple does not recommend using large titles for all of your screens. Rather, their recommendation is to use large titles on your main screen and any other subsequent screens where it might make sense to have a prominent title.\'94\
+\
+\
+2- \'93This is important! If you forget to tell the table view about your new items or if you tell the table view there are new items, but you don\'92t actually add them to your data model, then your app will crash. The data model and the table view always have to be in sync\'94\
+\
+\
+3- \'93What does it mean for an object to be destroyed? Each object occupies a small section of the computer\'92s memory. When you create an object instance, a chunk of memory is reserved to hold the object\'92s data\'94\
+\'93If the object is deallocated, that memory becomes available again\'94\
+\
+4- when you open a VC \'93the app makes a new instance of it. This means a view controller object is only alive for the duration that the user is interacting with it;\'94\
+Once you dismiss it the object is destroyed \'93and the memory it was using is reclaimed by the system.\
+\'94\
+
+\f2 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1\fs28 \cf0 Chapter
+\f2  
+\f1 12 Add Item Screen
+\f0\fs24 \
+1- \'93Any time you make a text field active, the keyboard automatically appears.\'94\
+\
+2- \'93we use return: to send a value from a method back to the method that called it.\'94\
+\
+3-\'93The special value nil represents \'93no value\'94 but it\'92s used to mean different things throughout the iOS SDK. Sometimes it means \'93nothing found\'94 or \'93don\'92t do anything\'94\
+\
+4-\'93the @IBAction methods never return a value - this is a rule.\'94\
+     - all methods which have not return keyword , it also return a value in empty tuple\
+\
+5- may be one view controller is the delegate for more than one object for instance \
+AddItemViewController is already a delegate for the UITableView (because it is a UITableViewController), it will be a delegate for the textField after you added\
+\
+6- often delegate methods are optional so you don\'92t need to implement a
+\f1 ll
+\f0  of them \'93For example, UITextFieldDelegate actually declares seven different methods but you only care about textField(_:shoul\'94\
+\
+7-\'93The view controller receives the viewWillAppear() message just before it becomes visible. That is a perfect time to make the text field active. You do this by sending it the becomeFirstResponder() message\'94\
+\
+
+\fs28 \
+Chapter 13 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\fs24 \cf0 1- \'93 The class keyword that come after protocol  identifies for example that we want the AddItemViewControllerDelegate protocol to be limited to class types.\'94\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\fs28 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\fs24 \cf0 2-\'93The prepare(for:sender:) method is invoked by UIKit when a segue from one screen to another is about to be performed.\'94\
+Sender parameter contains a refrence to the control that triggered the segue\
+\
+3-\'93Using prepare-for-segue allows you to pass data to the new view controller before it is displayed\'94\
+\
+
+\f1 4- Almost all objects in Objective-C programs are based on NSObject. It\'92s the most basic building block provided by iOS, and it offers a bunch of useful functionality that standard Swift objects don\'92t have\
+
+\f0 \
+5-\'93Most IDEs (or Integrated Development Environments) such as Xcode have a feature named refactoring, which allows you to change the name of a class, method, or variable throughout the entire project, safely. \'94\
+\
+
+\fs36 14- saving data\
+
+\fs24 1-\'93iOS apps live in a sheltered environment known as the sandbox. Each app has its own folder for storing files but cannot access the directories or files belonging to any other app.\
+This is a security measure, designed to prevent malicious software such as viruses from doing any damage\'94\
+\
+2-Info.plist contains several configuration options that give iOS additional information about the app, such as what name to display under the app\'92s icon on the home screen.\
+\'93plist\'94 stands for Property List and it is an XML file format that stores structured data\
+\
+3-\'93The do keyword indicates the start of such a block\'94\
+The try keyword indicates that the call to (encode for example) can fail and if that happens, that it will throw an error.\'94\
+If the call to encode fails, execution will immediately jump to the catch block instead of proceeding on to the next line.\'94\
+\
+
+\f1 4-\'93Objects
+\f2  
+\f1 whose
+\f2  
+\f1 name
+\f2  
+\f1 start
+\f2  
+\f1 with
+\f2  
+\f1 the
+\f2  
+\f1 \'93NS\'94
+\f2  
+\f1 prefix,
+\f2  
+\f1 like
+\f2  
+\f1 NSObject,
+\f2  
+\f1 NSString,
+\f2  
+\f1 or
+\f2  
+\f1 NSCoder,
+\f2  
+\f1 are
+\f2  
+\f1 provided
+\f2  
+\f1 by
+\f2  
+\f1 the
+\f2  
+\f1 Foundation
+\f2  
+\f1 framework
+\f2 .
+\f1 \'94\
+NSObject: 
+\f3 \expnd0\expndtw0\kerning0
+The root class of most Objective-C class hierarchies, with also forms the basis of iOS
+\f2 \kerning1\expnd0\expndtw0 \
+
+\f1 -also
+\f2  
+\f1 we
+\f2  
+\f1 use
+\f2  
+\f1 it
+\f2  
+\f1 to
+\f2  
+\f1 compare
+\f2  
+\f1 objects
+\f2  
+\f1 (in
+\f2  
+\f1 order
+\f2  
+\f1 to
+\f2  
+\f1 find
+\f2  
+\f1 a
+\f2  
+\f1 list
+\f2  
+\f1 item
+\f2  
+\f1 in
+\f2  
+\f1 an
+\f2  
+\f1 array
+\f2  
+\f1 of
+\f2  
+\f1 lists)
+\f2 .
+\f1 \'94686
+\f2 \
+\
+
+\f1 5-The question mark is for when init? can potentially fail and return a nil value instead of a real object. You can imagine that decoding an object can fail if not enough information is present in the plist file.\
+
+\f2 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1\fs36 \cf0 Chapter
+\f2  
+\f1 15
+\f2 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1\fs24 \cf0 1-
+\f2  
+\f1 root view controller connection : this will break the existing connection between the navigation controller and it\'92s main VC , and
+\f2  
+\f1 therefor it is no longer the a[[\'92s main screen  683\
+\
+2- to perform segue you have to tap a button to transition from screen to another\
+It is not enough to control drag from yellow circle in main view to another if you do the segue without button or tap you have to perform the segue programmatically  682\
+\
+3- there are four ways that you can make table view cells \
+	the simplest way , static cells , using a nib file, created by hand  701\
+\
+4-
+\f2  
+\f1 \'93If
+\f2  
+\f1 the
+\f2  
+\f1 segue
+\f2  
+\f1 is
+\f2  
+\f1 performed
+\f2  
+\f1 by
+\f2  
+\f1 the
+\f2  
+\f1 storyboard
+\f2  
+\f1 (rather
+\f2  
+\f1 than
+\f2  
+\f1 manually
+\f2  
+\f1 like
+\f2  
+\f1 you
+\f2  
+\f1 do
+\f2  
+\f1 here)
+\f2  
+\f1 then
+\f2  
+\f1 sender
+\f2  
+\f1 will
+\f2  
+\f1 refer
+\f2  
+\f1 to
+\f2  
+\f1 the
+\f2  
+\f1 control
+\f2  
+\f1 that
+\f2  
+\f1 triggered
+\f2  
+\f1 it\'94 706\
+\
+5-\'93Where did you get that storyboard object? As it happens, each view controller has a storyboard property that refers to the storyboard the view controller was loaded from. You can use that property to do all kinds of things with the storyboard, such as instantiating other view controllers.\'94\
+\
+6- notice that: Initializers are only used to construct new objects\'94\
+		    it guarantees that new objects always have their class property\
+		    \
+7- \'93Static cells are limited to screens where you know in advance which cells you\'92ll have. The big advantage with static cells is that you don\'92t need to provide any of the data source methods\'94 696\
+\
+8- Notice that the viewDidLoad() method is called after prepare(for: sender:) 708\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\fs36 \cf0 Chapter 17\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\fs24 \cf0 1- UIWindow is the top level container for all your app\'92s view , there is only one UIWindow object in your iOS too \
+\
+2- window is optional why? \'93Because	 There is a brief moment between when the app is launched and the storyboard is loaded where the window property does not have a valid value yet. And if a variable can be nil \'96 no matter how briefly \'96 then Swift requires it to be an optional.\'94\
+\
+3-\'93Note that optionals always need to be var, because being an optional implies that it can change its value at some point.\'94\
+\
+4-\'93My suggestion is that you use let whenever you can and change to var when the compiler complains\'94\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\fs36 \cf0 Chapter 18\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\fs24 \cf0 \
+1- Info.plist file is read into dictionary and then iOS uses the keys (on the left hand) to obtain the values (on the right hand) keys are usually strings but values can be any type of object \
+\
+2- UserDefaults isn\'92t a true dictionary but it certainly acts like one \'97> notice\
+ You don\'92t want to store huge amount of data inside UserDefaults but it\'92s idea for small things like settings and for remembering what screen the app was on when it closed \
+\
+3- Note: the user defaults can\'92t handle optionals \
+\
+4-  \'93f you use ==, you\'92re checking whether two variables have the same value.\
+With === you\'92re checking whether two variables refer to the exact same object.\'94\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\fs36 \cf0 Chapter 19\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\fs24 \cf0 1- the table view cells in the (all lists scene) display one line of text , there are other styles that we can use , one of which is the subtitle style allows you to have two rows \
+Of text on a table view cell \
+\
+2- \'93Don\'92t confuse between viewDidAppear() and viewWillappear(). viewWillAppear() is called before viewDidAppear(), when the view is about to become visible but the animation hasn\'92t started yet. viewDidAppear() is called after the view is visible on the screen and the animation has completed. There may be half a second or so difference between them as the animation takes place.\'94\
+\
+- \'93 a \'93will\'94 method that is invoked before something happens and a \'93did\'94 method that is invoked after that something happenes.\'94\
+\
+3- \'93API (ay-pee-eye) stands for Application Programming Interface. When people say \'93the iOS API\'94 they mean all the frameworks, objects, protocols and functions that are provided by iOS that you as a programmer can use to write apps.\
+\
+-The iOS API consists of everything from UIKit, Foundation, Core Graphics, and so on. Likewise, when people talk about \'93the Facebook API\'94 or \'93the Google API\'94, they mean the services that these companies provide that allow you to write apps for those platforms.\'94\
+\
+4- \'93All iPhone, iPad, and iPod touch devices that can run iOS 12 have Retina 2x or 3x screens.\
+\
+
+\f0 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+1-\'93 If an action method has a parameter, Interface Builder adds a : to the name. You\'92ll learn more \
+      about parameters and how to use them soon.\'94\
+\
+2- type inference is one of swift advantage\
+\
+3- constant: \'93will never need to  change once you\'92ve given it a value\
+              \'93Often, you only need to hold onto a value for a very short time. If, in that time, the value \
+            never has to change, it\'92s best to make it a constant (let) and not a variable (var).\'94\
+4- \'93 you only have to specify the data type when you\'92re not giving the variable an initial value\'94\
+\
+5- \'93Locals are easy to recognize, because the first time they are used inside a method their name is \
+            preceded with let or var\'94\
+\
+6- hides status bar option: \'93This will ensure that the status bar is hidden during application launch\'94\
+\
+7- \'93A \'93system\'94 button just has a label and no border. By making it a custom button, you can style it any way you wish.\'94   232\
+\
+8- \'93Text View: which can contain multiple lines of text.\'94 while \'93Text Field: which is a single-line text component -\'94\
+\
+9- \'93A segue is a transition from one screen to another\'94\
+     - \'93 the arrow that appear between two screens. This arrow represents the segue from the main \
+             scene to the another one\'94\
+\
+\
+10- WebKitView: \'93This view can show web pages. All you have to do is give it the URL to a web site or the name of a file to load. The WebKit View object is named WKWebView\'94\
+\
+11- in AutoLayOut : red lines means there are something wrong in the view\
+                                orange lines: means that the view is not in the right place\
+\
+12-\'93A breakpoint is a debugging tool that stops your program execution at a specific line and jumps \
+      into the Xcode debugger\'94\
+\
+\
+----------------------------------------------------\
+section 2 \
+chapter 9\
+1-\'93The return statement : It allows a method to send data back to its caller. the return value is often called the result of the method\
+\
+2- \'93The statements inside a method usually perform some kind of computation using instance variables and any data received through the method\'92s parameters. \'94\
+\
+3- Delegate pattern:  where an object does some work on behalf of another object.\'94\
+    - \'93An object will often rely on another object to help it out with certain tasks\'94\
+\
+4- 
+\f4 \cf2 \cb3 \expnd0\expndtw0\kerning0
+A row is a place: e.g., section 0, row 3. It's a concept.\cb1 \
+\pard\pardeftab720\sl380\sa300\partightenfactor0
+\cf2 \cb3     A cell is what goes into a row, e.g. a UITableViewCell. It's a view (a thing the user can see and  touch)
+\fs30 . \
+5
+\fs26 - \'93The parentheses () behind the type name are like going to the object dealership to buy an object of that type. The parentheses tell Swift\'92s object factory, \'93Build me an object of the type ChecklistItem.\'94
+\fs30 \
+
+\fs24 5-\'93Using tags is a handy trick to get a reference to a UI element without having to make an @IBOutlet variable for it\'94\
+6- \'93The _ underscore is used when you don\'92t want a parameter to have an external name\'94\
+7-\'93With such methods the first parameter only has one name but the other parameters have two.\'94\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0 \cf0 \cb1 \kerning1\expnd0\expndtw0 ----------------\
+chapter 10 \
+\
+1-\'93A view can draw itself and responds to user input, but it typically does not handle any application \
+    logic\'94\
+\
+2-\'93Model objects. These objects contain your data and any operations on the data\'94\
+\
+3-\'93The operations that the data model objects perform are sometimes called the business rules or the domain logic.\'94\
+\
+4-\'93A view can draw itself and responds to user input, but it typically does not handle any application logic\'94\
+\
+5- \'93The view controller has one main view, accessible through its view property, that contains a bunch of subviews.\'94\
+\
+----------------\
+chapter 11\
+1-\'93Next to the table view, the navigation controller is probably the second most used iOS user interface component\'94\
+\
+- \'93Large titles are not enabled by default, but you can enable them quite easily via a simple checkbox in storyboard, or a single line of code. So, let's do that!\'94\
+\
+3-\'93ARC,: is manage the lifetime of the objects in your app\'94\
+\
+4- \'93Apple does not recommend using large titles for all of your screens. Rather, their \
+     recommendation is to use large titles on your main screen and any other subsequent screens \
+     	where it might make sense to have a prominent title.\'94\
+\
+5- to add item in navigation bar we use the (Bar Button Item)\
+\
+6- \'93The data model and the table view always have to be in sync.\'94\
+\
+7- \'93Apple recommends using large titles only on main screens\'94 --> i means navigation Bar\
+\
+-----------------\
+Chapter 12\
+\
+1-\'93You use static cells when you know beforehand how many sections and rows the table view will have\'94--> in \
+     tableView\
+\
+2- \'93 that @IBAction methods never return a value - this is a rule.\'94\
+\
+3- \'93A view controller is allowed to be the delegate for more than one object\'94\
+\
+4- \'93Often, delegate methods are optional, so you don\'92t need to implement all of them. For example, UITextFieldDelegate actually declares seven different methods but you only care about\'94\
+textField(_:shouldChangeCharactersIn:replacementString:)\
+\
+\
+5- \'93Note that returning nil from a method is only allowed if there is a question mark (or exclamation point) \
+     behind the return type\'94\
+\
+6- \'93Strictly speaking, even methods without a return type do return a value, an empty tuple. Think of this as a special object that embodies the concept of \'93nothing\'94. (Don\'92t confuse this with nil, which is an actual value.)\'94\
+\
+----------------\
+chapter 13\
+1- \'93The cool thing about the delegate pattern is that screen B doesn\'92t really know anything about screen A. It just knows that some object is its delegate, but doesn\'92t really care who that is\'94\
+\
+2-\'93This principle, where screen B is independent of screen A and yet can still talk to it, is called loose coupling\'94\
+\
+3- \'93The protocol-->  just lists the names of the methods.\'94\
+\
+4- the class keyword that coming after protocol definition --> it identifies that we want the protocol that we built  (AddItemViewControllerDelegate)  to be limited to class types.\'94\
+\
+5- \'93A protocol normally doesn\'92t implement any of the methods it declares. It just says: any object that conforms to this protocol must implement methods X, Y and Z\'94\
+    - but ntice: \'93(There are special cases where you might want to provide a default implementation for a \
+     protocol, but that's an advanced topic that we don't need to get into right now :])\'94\
+\
+6- \'93Using prepare-for-segue allows you to pass data to the new view controller before it is displayed. Usually you\'92ll do this by setting one or more of the new view controller's properties.  521\
+\'94\
+------------\
+chapter 4 \
+\
+1-\'93Almost all objects in Objective-C programs are based on NSObject. It\'92s the most basic building block provided by iOS, and it offers a bunch of useful functionality that standard Swift objects don\'92t have\'94\
+\
+2-\'93Most IDEs (or Integrated Development Environments) such as Xcode have a feature named refactoring, which allows you to change the name of a class, method, or variable throughout the entire project\'94\
+-------------\
+Chapter 15\
+\
+1-\'93Info.plist contains several configuration options that give iOS additional information about the app, such as what name to display under the app\'92s icon on the home screen.\'94\
+\
+2- note : when you add a view controller to a Storyboard , Xcode uses the NSCoder system to write this object to a file(encoding), then when your application starts up , it uses NSCoder again t read the object from the storyboard file(decoding). the Codable protocol works similarly\
+ \
+- \'93The process of converting objects to files and back again is also known as serialization\'94\
+\
+3- \'93NS" objects\
+Objects whose name start with the \'93NS\'94 prefix, like NSObject, NSString, or NSCoder, are provided by the Foundation framework. NS stands for NextStep, the operating system from the 1990\'92s that later became Mac OS X and which also forms the basis of iOS.\'94\
+\
+--------------------------------------------------------------------------------------------------------------------------------------------------\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\fs36 \cf4 Shortcuts\
+
+\f1\fs24 \cf5 - Cmd
+\f2  
+\f1 + =
+\f0\fs36 \cf4 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\fs24 \cf0 -----------------------------------------------------------------------------------------------------------------------------------------------\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\fs36 \cf4 functions
+\fs24 \cf0 \
+\
+1- roundf(): used to round the decimal number to the nearest whole number\'94\
+2-to generate the random value   \'93Int.random(in: 1...100)\'94\
+3-abs(targetValue - currentValue):  it makes every number are positive\
+4- function to dismiss \
+    \'93    dismiss(animated: true, completion: nil)\
+-------------------------------------------\
+Section 2\
+\
+1-\'93tableView.dequeueReusableCell(withIdentifier:for:). \
+    This makes a new copy of the prototype cell if necessary, or, recycles an existing cell that is no \
+    longer in use.\'94\
+\
+----------------\
+Chapter 11\
+\
+1-To display large titles in navigation Bar\
+   navigationController?.navigationBar.prefersLargeTitles = true\
+also we can display it within storyboard \
+\
+\
+2- to turn of large title \
+  navigationItem.largeTitleDisplayMode = .never\
+\
+3- to delet rows\
+\'93override func tableView(_ tableView: UITableView,  commit editingStyle: UITableViewCell.EditingStyle,forRowAt indexPath: IndexPath) \{\'94\
+\
+\
+-------------\
+Chapter 12 \
+\
+1-Disable cell selection\
+  \'93override func tableView(_ tableView: UITableView, \
+          willSelectRowAt indexPath: IndexPath) \
+          -> IndexPath? \{\
+  return nil\
+\}   480\
+\
+2- the keyboard automatically showed up when the screen opened , and then write directly in the textField without needing to touch the cell \
+\
+\'93override func viewWillAppear(_ animated: Bool) \{\
+  super.viewWillAppear(animated)\
+  textField.becomeFirstResponder()\
+\}\'94 495\
+\
+3- \'93 if you want to handle the Clear Button correctly and disable the Done button again after user clear text"\
+\
+\'93func textFieldShouldClear(_ textField: UITextField) -> Bool \{\
+  doneBarButton.isEnabled = false\
+  return true\
+\}\'94 497\
+\
+4-  \'93if newText.isEmpty \{\
+  doneBarButton.isEnabled = false\
+\} else \{\
+  doneBarButton.isEnabled = true\
+\}\'94\
+we can simplify the above code even further:\
+\
+doneBarButton.isEnabled = ! newText.isEmpty\
+\
+\
+------------------------------\
+chapter 15 saving and loading\
+\
+1-\'93func documentsDirectory() -> URL \{\
+  let paths = FileManager.default.urls(for: .documentDirectory, \
+                                        in: .userDomainMask)\
+  return paths[0]\
+\}\'94\
+\
+\'93func dataFilePath() -> URL \{\
+  return documentsDirectory().appendingPathComponent(\
+                                  "Checklists.plist")\
+\}\'94  577\
+ \
+\'93The dataFilePath() method uses documentsDirectory() to construct the full path to the file that will store the checklist items. This file is named Checklists.plist and it lives inside the Documents folder.\
+\'94\
+\
+}

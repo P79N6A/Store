@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>UDID</key>
+	<string>9D5AD172-F290-4152-A212-0E06B45AA3B2</string>
+	<key>deviceType</key>
+	<string>com.apple.CoreSimulator.SimDeviceType.iPhone-X</string>
+	<key>isDeleted</key>
+	<false/>
+	<key>name</key>
+	<string>iPhone X</string>
+	<key>runtime</key>
+	<string>com.apple.CoreSimulator.SimRuntime.iOS-12-0</string>
+	<key>state</key>
+	<integer>1</integer>
+</dict>
+</plist>

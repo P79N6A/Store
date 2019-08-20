@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 18: User Defaults</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 18: User Defaults</h1>
+
+<p>You now have an app that lets you create lists and add to-do items to those lists. All of this data is saved to long-term storage so that even if the app gets terminated, nothing is lost.
+</p>
+<p>There are some improvements — both to the user interface and to the code — that you can make though.
+</p>
+<p>This chapter covers the following:
+</p>
+<ul>
+<li>
+<p><em>Remember the last open list:</em> Improve the user-experience by remembering the last open list on app re-launch.
+</p></li>
+
+<li>
+<p><em>Defensive programming:</em> Adding in checks to guard against possible crashes - coding defensively instead of reacting to crashes later.
+</p></li>
+
+<li>
+<p><em>The first-run experience:</em> Improving the first-run experience for the user so that the app looks more polished and user-friendly.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Remember the last open list</h2>
+
+<p>Imagine the user is on the Birthdays checklist and switches to another app. The <i>Checklists</i> app is now suspended. It is possible that at some point the app gets terminated and is removed from memory. When the user reopens the app some time later, it no longer is on Birthdays but on the main screen. Because it was terminated, the app didn’t simply resume where it left off, but got launched anew.
+</p>
+<p>You might be able to get away with this, as apps don’t get terminated often (unless your users play a lot of games that eat up memory), but little things like this matter in iOS apps.
+</p>
+<p>Fortunately, it’s fairly easy to remember whether the user had opened a checklist and to switch to it when the app starts up.
+</p>
+<h3 class="segment-chapter">Use UserDefaults</h3>
+
+<p>You could store this information in the Checklists.plist file, but for simple settings such as this, there is another option — the <code>UserDefaults</code> object.
+</p>
+<p><code>UserDefaults</code> works like a <i>dictionary</i>, which is a collection object for storing key-value pairs. You’ve already seen the array collection, which stores an ordered list of objects. The dictionary is another very common collection that looks like this:
+</p><div class="image-40"><img src="graphics/img319.png"  alt="" title="A dictionary is a collection of key-value pairs" /></div>
+<p>Dictionaries in Swift are handled by the <code>Dictionary</code> object (who would’ve guessed?).
+</p>
+<p>You can put objects into the dictionary under a reference key and then retrieve it later using that key. This is, in fact, how Info.plist works.
+</p>
+<p>The Info.plist file is read into a dictionary and then iOS uses the various keys (on the left hand) to obtain the values (on the right hand). Keys are usually strings but values can be any type of object.
+</p>
+<p>To be accurate, <code>UserDefaults</code> isn’t a true dictionary, but it certainly acts like one.
+</p>
+<p>When you insert new values into <code>UserDefaults</code>, they are saved somewhere in your app’s sandbox. So, these values persist even after the app terminates.
+</p>
+<p>You don’t want to store huge amounts of data inside <code>UserDefaults</code>, but it’s ideal for small things like settings — and for remembering what screen the app was on when it closed.
+</p>
+<p>This is what you are going to do:
+</p>
+<ol>
+<li>
+<p>On the segue from the main screen, <code>AllListsViewController</code>, to the checklist screen, <code>ChecklistViewController</code>, you write the row index of the selected list into <code>UserDefaults</code>. This is how you’ll remember which checklist was active.
+</p>
+<p>You could have saved the name of the checklist instead of the row index, but what would happen if two checklists have the same name? Unlikely, but not impossible. Using the row index guarantees that you’ll always select the proper one.
+</p></li>
+</ol>
+
+<ol>
+<li>
+<p>When the user presses the back button to return to the main screen, you have to remove this value from <code>UserDefaults</code> again. It is common to set a value such as this to -1 to mean “no value”.
+</p>
+<p>Why -1? You start counting rows at 0, so you can’t use 0. Positive numbers are also out of the question, unless you use a huge number such as 1000000 as it’s very unlikely the user will make that many checklists. -1 is not a valid row index — and because it’s a negative value it looks weird, making it easy to spot during debugging.
+</p>
+<p>(If you’re wondering why you’re not using an optional for this — good question! — the answer is that <code>UserDefaults</code> cannot handle optionals. Sad face.)
+</p></li>
+</ol>
+
+<ol>
+<li>
+<p>If the app starts up and the value from <code>UserDefaults</code> isn’t -1, the user was previously viewing the contents of a checklist and you have to manually perform a segue to the <code>ChecklistViewController</code> for the corresponding row.
+</p></li>
+</ol>
+
+<p>Phew, it’s more work to explain this in English than writing the actual code. ;-]
+</p>
+<p>Let’s start with the segue from the main screen. Recall that this segue is triggered from code rather than from the storyboard.
+</p>
+<p>➤ In <em>AllListsViewController.swift</em>, change <code>tableView(_:didSelectRowAt:)</code> to the following:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(_tableView: UITableView, 
+          didSelectRowAt indexPath: IndexPath)</span></span> {
+  <span class="hljs-comment">// add this line:</span>
+  <span class="hljs-type">UserDefaults</span>.standard.<span class="hljs-keyword">set</span>(indexPath.row, 
+                            forKey: <span class="hljs-string">"ChecklistIndex"</span>)
+  . . .
+}</pre>
+<p>In addition to what this method did before, you now store the index of the selected row into <code>UserDefaults</code> under the key “ChecklistIndex”.
+</p>
+<h3 class="segment-chapter">Navigation controller delegate</h3>
+
+<p>To be notified when the user presses the back button on the navigation bar, you have to become a delegate of the navigation controller. Being the delegate means that the navigation controller tells you when it pushes or pops view controllers on the navigation stack.
+</p>
+<p>The logical place for this delegate is the <code>AllListsViewController</code>.
+</p>
+<p>➤ Add the delegate protocol to the <code>class</code> line in <em>AllListsViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AllListsViewController</span>: <span class="hljs-title">UITableViewController</span>, 
+                              <span class="hljs-title">ListDetailViewControllerDelegate</span>, 
+                              <span class="hljs-title">UINavigationControllerDelegate</span> </span>{</pre>
+<p>As you can see, a view controller can be a delegate for many objects at once.
+</p>
+<p><code>AllListsViewController</code> is now the delegate for both the <code>ListDetailViewController</code> and the <code>UINavigationController</code>, but also implicitly for the <code>UITableView</code> (because it is a table view controller).
+</p>
+<p>➤ Add the following delegate method to <em>AllListsViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Navigation Controller Delegates</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">navigationController</span><span class="hljs-params">(
+                <span class="hljs-number">_</span> navigationController: UINavigationController, 
+               willShow viewController: UIViewController, 
+                              animated: Bool)</span></span> {
+
+  <span class="hljs-comment">// Was the back button tapped?</span>
+  <span class="hljs-keyword">if</span> viewController === <span class="hljs-keyword">self</span> {
+    <span class="hljs-type">UserDefaults</span>.standard.<span class="hljs-keyword">set</span>(-<span class="hljs-number">1</span>, forKey: <span class="hljs-string">"ChecklistIndex"</span>)
+  }
+}</pre>
+<p>This method is called whenever the navigation controller shows a new screen.
+</p>
+<p>If the back button was pressed, the new view controller is <code>AllListsViewController</code> itself and you set the “ChecklistIndex” value in <code>UserDefaults</code> to -1, meaning that no checklist is currently selected.
+</p>
+<h4 class="segment-chapter">Equal or identical</h4>
+
+<p>To determine whether the <code>AllListsViewController</code> is the newly activated view controller, you wrote:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> viewController === <span class="hljs-keyword">self</span> {</pre>
+<p>Yep, it’s not a typo, that’s three equals signs in a row.
+</p>
+<p>Previously, to compare objects you used only two equals signs:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> segue.identifier == <span class="hljs-string">"AddItem"</span> {</pre>
+<p>You may be wondering what the difference between these two operators is. It’s a subtle but important question about identity. (Who said programmers couldn’t be philosophical?)
+</p>
+<p>If you use <code>==</code>, you’re checking whether two variables have the same value.
+</p>
+<p>With <code>===</code> you’re checking whether two variables refer to the exact same object.
+</p>
+<p>Imagine two people who are both called Joe. They’re different people who just happen to have the same name.
+</p>
+<p>If we’d compare them using <code>joe1 === joe2</code> then the result would be false, as they’re not the same person.
+</p>
+<p>But <code>joe1.name == joe2.name</code> would be true.
+</p>
+<p>On the other hand, if I’m telling you an amusing (or embarrassing!) story about Joe and this story seems awfully familiar to you, then maybe we happen to know the same Joe.
+</p>
+<p>In that case, <code>joe1 === joe2</code> would be true as well.
+</p>
+<p>By the way, the above code would have worked just fine if you had written,
+</p><pre class="code-block"><span class="hljs-keyword">if</span> viewController == <span class="hljs-keyword">self</span></pre>
+<p>with just two equals signs. For objects such as view controllers, equality is tested by comparing the references, just like <code>===</code> would do. But technically speaking, <code>===</code> is more correct here than <code>==</code>.
+</p>
+<h3 class="segment-chapter">Show the last open list</h3>
+
+<p>The only thing that remains is to check at startup which checklist you need to show and then perform the segue to the to-do item list manually. You’ll do that in <code>viewDidAppear()</code>.
+</p>
+<p>➤ Add the <code>viewDidAppear()</code> method to <em>AllListsViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidAppear</span><span class="hljs-params">(<span class="hljs-number">_</span> animated: Bool)</span></span> {
+  <span class="hljs-keyword">super</span>.viewDidAppear(animated)
+
+  navigationController?.delegate = <span class="hljs-keyword">self</span>
+
+  <span class="hljs-keyword">let</span> index = <span class="hljs-type">UserDefaults</span>.standard.integer(
+                                     forKey: <span class="hljs-string">"ChecklistIndex"</span>)
+  <span class="hljs-keyword">if</span> index != -<span class="hljs-number">1</span> {
+    <span class="hljs-keyword">let</span> checklist = dataModel.lists[index]
+    performSegue(withIdentifier: <span class="hljs-string">"ShowChecklist"</span>, 
+                         sender: checklist)
+  }
+}</pre>
+<p>UIKit automatically calls this method after the view controller becomes visible.
+</p>
+<p>First, the view controller makes itself the delegate for the navigation controller.
+</p>
+<p>Every view controller has a built-in <code>navigationController</code> property. To access its <code>delegate</code> property you use the notation <code>navigationController?.delegate</code> because the navigation controller is optional.
+</p>
+<p>(You could also have written <code>navigationController!</code> instead of <code>?</code>. The difference between the two is that <code>!</code> will crash the app if this view controller was ever to be shown outside of a <code>UINavigationController</code>, while <code>?</code> won’t crash but simply ignore the rest of that line. For our app, this does not matter.)
+</p>
+<p>Then it checks <code>UserDefaults</code> to see whether it has to perform the segue.
+</p>
+<p>If the value of the “ChecklistIndex” setting is -1, then the user was on the app’s main screen before the app was terminated, and we don’t have to do anything.
+</p>
+<p>However, if the value of the “ChecklistIndex” setting is <i>not</i> -1, then the user was previously viewing a checklist and the app should segue to that screen. As before, you place the relevant <code>Checklist</code> object into the <code>sender</code> parameter of <code>performSegue(withIdentifier:sender:)</code>.
+</p>
+<p>The <code>!=</code> operator means: not equal. It is the opposite of the <code>==</code> operator. If you’re mathematically-inclined, with some imagination <code>!=</code> looks like ≠. (Some languages use <code>&lt;&gt;</code> for not equal but that won’t work in Swift.)
+</p>
+<div class="note">
+<p><em>Note:</em> It may not be immediately obvious what’s going on here.
+</p>
+<p><code>viewDidAppear()</code> isn’t just called when the app starts up but also every time the navigation controller slides the main screen back into view.
+</p>
+<p>Checking whether to restore the checklist screen needs to happen only once when the app starts, so why did you put this logic in <code>viewDidAppear()</code> if it gets called more than once?
+</p>
+<p>Here’s the reason:
+</p>
+<p>The very first time <code>AllListsViewController</code>’s screen becomes visible, you don’t want the <code>navigationController(_:willShow:animated:)</code> delegate method to be called yet, as that would always overwrite the old value of “ChecklistIndex” with -1, before you’ve had a chance to restore the old screen.
+</p>
+<p>By waiting to register <code>AllListsViewController</code> as the navigation controller delegate until it is visible, you avoid this problem. <code>viewDidAppear()</code> is the ideal place for that, so it makes sense to do it from that method.
+</p></div>
+
+<div class="note">
+<p>However, as mentioned, <code>viewDidAppear()</code> also gets called after the user presses the back button to return to the All Lists screen. That shouldn’t have any unwanted side effects, such as triggering the segue again.
+</p>
+<p>Naturally, the navigation controller calls <code>navigationController(_:willShow:animated:)</code> when the back button is pressed, but this happens before <code>viewDidAppear()</code>. The delegate method always sets the value of “ChecklistIndex” back to -1, and as a result, <code>viewDidAppear()</code> does not trigger a segue again.
+</p>
+<p>And so it all works out… The logic that you added to <code>viewDidAppear()</code> only does its job once during app startup. There are other ways to solve this particular issue but this approach is simple, so I like it.
+</p>
+<p>Is all of this going way over your head? Don’t fret about it. To get a better idea of what&apos;s going on, sprinkle <code>print()</code> statements around the various methods to see in which order they get called. Change things around to see what the effect is. Jumping into the code and playing with it is the quickest way to learn!
+</p></div>
+
+<p>Double-check that all the lines with <code>UserDefaults</code> use the same key name, “ChecklistIndex”. If one of them is misspelled, <code>UserDefaults</code> is reading from or writing to different items.
+</p>
+<p>➤ Run the app and go to a checklist screen. Exit to the home screen via the Home button, followed by Stop to quit the app.
+</p>
+<p>Tip: You need to exit to the home screen first because <code>UserDefaults</code> may not immediately save its settings to disk, and therefore, you may lose your changes if you kill the app from within Xcode.
+</p>
+<div class="note">
+<p><em>Note:</em> Does the app crash for you at this point? That happens if you didn’t add any lists or to-do items yet. That’s the exact problem we’ll solve in the next section. You can either comment out the code in <code>viewDidAppear()</code>, add some to-do items, and enable the code again to try it. Or, simply move on to the next section.
+</p></div>
+
+<p>➤ Run the app again and you’ll notice that Xcode immediately switches to the screen where you were last at. Cool, huh?
+</p>
+<h2 class="segment-chapter">Defensive programming</h2>
+
+<p>➤ Now do the following: stop the app and delete it from the Simulator by holding down on the app icon until it starts to wiggle and then deleting it.
+</p>
+<p>Then, run the app again from within Xcode and watch it crash:
+</p><pre class="code-block">fatal error: Index out of range</pre>
+<p>The app crashes in <code>viewDidAppear()</code> on the line:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> checklist = dataModel.lists[index]</pre>
+<p>What’s going on here? Apparently, the value of <code>index</code> is not -1, because the code entered the <code>if</code> statement.
+</p>
+<p>As it turns out <code>index</code> is 0, even though there should be nothing in <code>UserDefaults</code> yet because this is a fresh install of the app. The app didn’t write anything in the “ChecklistIndex” key yet.
+</p>
+<p>Here’s the thing: <code>UserDefaults</code>’s <code>integer(forKey:)</code> method returns 0 if it cannot find the value for the key you specified. But in this app, 0 is a valid row index.
+</p>
+<p>At this point, the app doesn’t have any checklists yet. So, index 0 does not exist in the <code>lists</code> array. That is why the app crashes.
+</p>
+<p>What should happen instead, is that <code>UserDefaults</code> returns -1 if nothing is set yet for “ChecklistIndex”, because to your app -1 means: show the main screen instead of a specific checklist.
+</p>
+<h3 class="segment-chapter">Set a default value for a UserDefaults key</h3>
+
+<p>Fortunately, <code>UserDefaults</code> will let you set default values for the default values. Yep, you read that correctly. Let’s do that in the <code>DataModel</code> object.
+</p>
+<p>➤ Add the following method to <em>DataModel.swift</em>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">registerDefaults</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> dictionary = [ <span class="hljs-string">"ChecklistIndex"</span>: -<span class="hljs-number">1</span> ]
+  <span class="hljs-type">UserDefaults</span>.standard.register(defaults: dictionary)
+}</pre>
+<p>This creates a new <code>Dictionary</code> instance and adds the value -1 for the key “ChecklistIndex”.
+</p>
+<p>The square bracket notation is not only used to make arrays, but also dictionaries. The difference is that for a dictionary it always looks like,
+</p><pre class="code-block">[ key1: value1, key2: value2, . . . ]</pre>
+<p>while an array is just:
+</p><pre class="code-block">[ value1, value2, value3, . . . ]</pre>
+<p><code>UserDefaults</code> will use the values from this dictionary if you ask it for a key and it cannot find a value for that key.
+</p>
+<p>➤ Change <em>DataModel.swift</em>’s <code>init()</code> to call this new method:
+</p><pre class="code-block"><span class="hljs-keyword">init</span>() {
+  loadChecklists()
+  registerDefaults()
+}</pre>
+<p>➤ Run the app again. Now, it should no longer crash.
+</p>
+<p>Why did you do this in <code>DataModel</code>? Well, mostly because I don’t really like to sprinkle all of these calls to <code>UserDefaults</code> throughout the code — it&apos;s better to centralize functionality where possible.
+</p>
+<h3 class="segment-chapter">Clean up the code</h3>
+
+<p>In fact, let’s move all of the <code>UserDefaults</code> stuff into <code>DataModel</code>.
+</p>
+<p>➤ Add the following to <em>DataModel.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> indexOfSelectedChecklist: <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">get</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-type">UserDefaults</span>.standard.integer(
+                              forKey: <span class="hljs-string">"ChecklistIndex"</span>)
+  }
+  <span class="hljs-keyword">set</span> {
+    <span class="hljs-type">UserDefaults</span>.standard.<span class="hljs-keyword">set</span>(newValue, 
+                              forKey: <span class="hljs-string">"ChecklistIndex"</span>)
+  }
+}</pre>
+<p>This does something you haven’t seen before. It appears to declare a new instance variable <code>indexOfSelectedChecklist</code> of type <code>Int</code>, but what are these <code>get { }</code> and <code>set { }</code> blocks?
+</p>
+<p>This is an example of a <i>computed property</i>.
+</p>
+<p>There isn’t any storage allocated for this property — so it’s not really a variable. Instead, when the app tries to read the value of <code>indexOfSelectedChecklist</code>, the code in the <code>get</code> block is performed. And when the app tries to put a new value into <code>indexOfSelectedChecklist</code>, the <code>set</code> block is performed.
+</p>
+<p>From now on, you can simply use <code>indexOfSelectedChecklist</code> and it will automatically update <code>UserDefaults</code>. How cool is that?
+</p>
+<p>You’re doing this so the rest of the code won’t have to worry about <code>UserDefaults</code> anymore. The other objects just have to use the <code>indexOfSelectedChecklist</code> property on <code>DataModel</code>.
+</p>
+<p>Hiding implementation details is an important object-oriented programming principle, and this is one way to do it.
+</p>
+<p>If you decide later that you want to store these settings somewhere else, for example, in a database, or in iCloud, then you only have to change this in one place — in <code>DataModel</code>. The rest of the code will be oblivious to these changes. That’s a good thing.
+</p>
+<p>➤ Update the code in <em>AllListsViewController.swift</em> to use this new computed property:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidAppear</span><span class="hljs-params">(_animated: Bool)</span></span> {
+  ...
+  <span class="hljs-keyword">let</span> index = dataModel.indexOfSelectedChecklist <span class="hljs-comment">// change this</span>
+  <span class="hljs-keyword">if</span> index != -<span class="hljs-number">1</span> {
+  ...
+  }
+}</pre><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+           didSelectRowAt indexPath: IndexPath)</span></span> {
+  <span class="hljs-comment">// change this line</span>
+  dataModel.indexOfSelectedChecklist = indexPath.row  
+  ...
+}</pre><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">navigationController</span><span class="hljs-params">(
+             <span class="hljs-number">_</span> navigationController: UINavigationController, 
+            willShow viewController: UIViewController, 
+                           animated: Bool)</span></span> {
+  <span class="hljs-keyword">if</span> viewController === <span class="hljs-keyword">self</span> {
+    dataModel.indexOfSelectedChecklist = -<span class="hljs-number">1</span>   <span class="hljs-comment">// change this</span>
+  }
+}</pre>
+<p>The intent of the code is now much clearer. <code>AllListsViewController</code> no longer has to worry about the “how” — storing values in <code>UserDefaults</code> — and can simply focus on the “what” — changing the index of the selected checklist.
+</p>
+<p>➤ Run the app again and make sure everything still works.
+</p>
+<h3 class="segment-chapter">A subtle bug</h3>
+
+<p>It’s pretty nice that the app now remembers what screen you were on, but this new feature has also introduced a subtle bug in the app. Here’s how to reproduce it:
+</p>
+<p>➤ Start the app and add a new checklist. Also, add a new to-do item to this list. Now kill the app from within Xcode.
+</p>
+<p>Because you did not exit to the home screen first, the new checklist and its item were not saved to Checklists.plist.
+</p>
+<p>However, there is a (small) chance that <code>UserDefaults</code> did save its changes to disk and now thinks this new list is selected. That’s a problem because that list doesn’t exist anymore (it never made it into Checklists.plist).
+</p>
+<p><code>UserDefaults</code> will save its changes at indeterminate times. So, it could have saved before you terminated the app.
+</p>
+<p>➤ Run the app again and — if you’re (un)lucky? — it will crash with:
+</p><pre class="code-block">fatal error: <span class="hljs-type">Index</span> out of range</pre>
+<p>If you can’t get this error to appear, make the following change to the <code>set</code> block of <code>indexOfSelectedChecklist</code> and try again. This forces <code>UserDefaults</code> to save its changes every time <code>indexOfSelectedChecklist</code> changes:
+</p><pre class="code-block">  <span class="hljs-keyword">set</span> {
+    <span class="hljs-type">UserDefaults</span>.standard.<span class="hljs-keyword">set</span>(newValue, 
+                      forKey: <span class="hljs-string">"ChecklistIndex"</span>)
+    <span class="hljs-type">UserDefaults</span>.standard.synchronize()   <span class="hljs-comment">// Add this</span>
+  }</pre>
+<p>The reason for the crash is that <code>UserDefaults</code> and the contents of Checklists.plist are out-of-sync. <code>UserDefaults</code> thinks the app needs to select a checklist that doesn’t actually exist. Every time you run the app it will now crash. Yikes!
+</p>
+<p>This situation shouldn’t really happen during regular usage. It happened because you used the Xcode Stop button to kill the app before it had a chance to save the plist file.
+</p>
+<p>Under normal circumstances, the user would press the home button. As the app goes into the background, it properly saves both Checklists.plist and <code>UserDefaults</code> and everything is in sync again.
+</p>
+<p>However, the OS can always decide to terminate the app and then this same situation could occur.
+</p>
+<p>Even though there’s only a small chance that this can go wrong in practice, you should really protect the app against this. These are the kinds of bug reports you don’t want to receive because often, you have no idea what the user did to make it happen.
+</p>
+<p>This is where the practice of <i>defensive programming</i> becomes important. Your code should always check for such boundary cases and be able to gracefully handle them even if they are unlikely to occur.
+</p>
+<p>In our case, you can easily fix <code>AllListsViewController</code>’s <code>viewDidAppear()</code> method to deal with this situation.
+</p>
+<p>➤ Change the <code>if</code> statement in <code>viewDidAppear()</code> to:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> index &gt;= <span class="hljs-number">0</span> &amp;&amp; index &lt; dataModel.lists.<span class="hljs-built_in">count</span> {</pre>
+<p>Instead of just checking for <code>index != -1</code>, you now do a more precise check to determine whether <code>index</code> is valid. It should be between 0 and the number of checklists in the data model. If not, then you simply don’t segue.
+</p>
+<p>This prevents <code>dataModel.lists[index]</code> from asking for an object at an <code>index</code> that doesn’t exist.
+</p>
+<p>You haven’t seen the <code>&amp;&amp;</code> operator before. This symbol means “logical and”. It is used as follows:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> something &amp;&amp; somethingElse {
+  <span class="hljs-comment">// do stuff</span>
+}</pre>
+<p>This reads: if something is true <em>and</em> something else is also true, then do stuff.
+</p>
+<p>In <code>viewDidAppear()</code> you only perform the segue when <code>index</code> is 0 or greater and also less than the number of checklists, which means it’s only valid if it lies in between those two values.
+</p>
+<p>With this defensive check in place, you’re guaranteed that the app will not try to segue to a checklist that doesn’t exist, even if the data is out-of-sync.
+</p>
+<div class="note">
+<p><em>Note:</em> Even though the app remembers what checklist the user was on, it won’t bother to remember whether the user had the Add/Edit Checklist or Add/Edit Item screen open.
+</p>
+<p>These kinds of data input screens are supposed to be temporary. You open them to make a few changes and then close them again. If the app goes to the background and is terminated, then it’s no big deal if the data input screen disappears.
+</p>
+<p>At least, that is true for this app. If you have an app that allows the user to make many complicated edits in an input screen, you may want to persist those changes when the app closes so the user won’t lose all their work in case the app is killed.
+</p>
+<p>In this chapter you used <code>UserDefaults</code> to remember which screen was open, but iOS actually has a dedicated API for this kind of thing, State Preservation and Restoration. You can read more about this on <a href="https://www.raywenderlich.com/117471/state-restoration-tutorial">raywenderlich.com/117471/state-restoration-tutorial</a>.
+</p></div>
+
+<h2 class="segment-chapter">The first-run experience</h2>
+
+<p>Let’s use <code>UserDefaults</code> for something else. It would be nice if the first time you ran the app it created a default checklist for you, simply named “List”, and switched over to that list. This enables you to start adding to-do items right away.
+</p>
+<p>That’s how the standard Notes app works too: you can start typing a note right after launching the app for the very first time, but you can also go one level back in the navigation hierarchy to see a list of all notes.
+</p>
+<h3 class="segment-chapter">Check for first run</h3>
+
+<p>To implement the above feature, you need to keep track in <code>UserDefaults</code> whether this is the first time the user runs the app. If it is, you create a new <code>Checklist</code> object.
+</p>
+<p>You can perform all of this logic inside <code>DataModel</code>.
+</p>
+<p>It’s a good idea to add a new default setting to the <code>registerDefaults()</code> method. The key for this value is “FirstTime”.
+</p>
+<p>➤ Change the <code>registerDefaults()</code> method in <em>DataModel.swift</em> (don’t miss the comma after the first line of the dictionary):
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">registerDefaults</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> dictionary = [ <span class="hljs-string">"ChecklistIndex"</span>: -<span class="hljs-number">1</span>, <span class="hljs-string">"FirstTime"</span>: <span class="hljs-literal">true</span> ] 
+                   <span class="hljs-keyword">as</span> [<span class="hljs-type">String</span> : <span class="hljs-type">Any</span>]
+  <span class="hljs-type">UserDefaults</span>.standard.register(defaults: dictionary)
+}</pre>
+<p>The “FirstTime” setting can be a boolean value because it’s either true (this is the first time) or false (this is any other than the first time).
+</p>
+<p>The value of “FirstTime” needs to be true if this is the first launch of the app after a fresh install.
+</p>
+<p>Also, note that there&apos;s now a type cast for <code>dictionary</code>. Why was that added? Try removing the type cast, the <code>as [String: Any]</code> bit, and see what happens. Xcode will throw up an error.
+</p>
+<p>This is because originally, there was one value in the dictionary and it was an <code>Int</code>. But when you introduced the <code>FirstTime</code> key, its corresponding value is a <code>Bool</code>. Now your dictionary has a mixed set of values — an <code>Int</code> and a <code>Bool</code>. So, at this point, the compiler is unsure whether you meant to have a mixed bag of values, or if it was a mistake on your part. So it wants you to explicitly indicate what the dictionary type is, and that&apos;s why you declare it as <code>[String: Any]</code>, to indicate that the value could indeed be of any type.
+</p>
+<p>➤ Still in <em>DataModel.swift</em>, add a new <code>handleFirstTime()</code> method:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">handleFirstTime</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> userDefaults = <span class="hljs-type">UserDefaults</span>.standard
+  <span class="hljs-keyword">let</span> firstTime = userDefaults.bool(forKey: <span class="hljs-string">"FirstTime"</span>)
+  
+  <span class="hljs-keyword">if</span> firstTime {
+    <span class="hljs-keyword">let</span> checklist = <span class="hljs-type">Checklist</span>(name: <span class="hljs-string">"List"</span>)
+    lists.append(checklist)
+    
+    indexOfSelectedChecklist = <span class="hljs-number">0</span>
+    userDefaults.<span class="hljs-keyword">set</span>(<span class="hljs-literal">false</span>, forKey: <span class="hljs-string">"FirstTime"</span>)
+    userDefaults.synchronize()
+  }
+}</pre>
+<p>Here you check <code>UserDefaults</code> for the value of the “FirstTime” key. If the value for “FirstTime” is true, then this is the first time the app is being run. In that case, you create a new <code>Checklist</code> object and add it to the array.
+</p>
+<p>You also set <code>indexOfSelectedChecklist</code> to 0, which is the index of this newly added <code>Checklist</code> object, to make sure the app will automatically segue to the new list in <code>AllListsViewController</code>’s <code>viewDidAppear()</code> method.
+</p>
+<p>Finally, you set the value of “FirstTime” to false, so this code won’t be executed again the next time the app starts up.
+</p>
+<p>➤ Call this new method from <code>DataModel</code>’s <code>init()</code>:
+</p><pre class="code-block"><span class="hljs-keyword">init</span>() {
+  loadChecklists()
+  registerDefaults()
+  handleFirstTime()    <span class="hljs-comment">// Add this</span>
+}</pre>
+<p>➤ Remove the app from the Simulator and run it again from Xcode.
+</p>
+<p>Because it’s the first time you run the app — at least from the app’s perspective — after a fresh install, it will automatically create a new checklist named List and switch to it.
+</p>
+<h4 class="segment-chapter">Organizing Source Files</h4>
+
+<p>At this point, your Project navigator probably lists your files like this (or something similar):
+</p><div class="image-30"><img src="graphics/img320.png"  alt="" title="Project navigator file listing" /></div>
+<p>It&apos;s a bit messy since it&apos;s hard to find where a given file is. Sure, you know exactly where each file is now, but what happens when you have 20 or 30 files in there? Or a hundred?
+</p>
+<p>Xcode does provide a few different ways to organize your files.
+</p>
+<p>The first thing you can do is a simple alphabetical sorting of files so that you can find a given file quickly - since it will be in alphabetical order. That is simple enough to accomplish.
+</p>
+<p>➤ Right-click (or Control-click) on the yellow <em>Checklists</em> folder. A context menu should pop up.
+</p><div class="image-30"><img src="graphics/img321.png"  alt="" title="Context menu for folder" /></div>
+<p>➤ Select <em>Sort by Name</em>.
+</p>
+<p>Voila! All the files inside the Checklists folder are now in alphabetical order.
+</p><div class="image-30"><img src="graphics/img322.png"  alt="" title="Sorted file listing" /></div>
+<p>That certainly makes finding files a lot easier, but what if you had 20 or 30 files? Or even a hundred? You would still have to do a lot of scrolling around to find the exact file you wanted.
+</p>
+<p>Xcode does provide a filter field at the bottom of the Navigator pane that you can use to filter files in the current list by name. You can type in, for example, &quot;Controller&quot; and it will display only the files with &quot;Controller&quot; in the file name. (You can click the little circle icon with an &quot;x&quot; in the filter field to clear the filter.)
+</p><div class="image-30"><img src="graphics/img323.png"  alt="" title="Filter file list by name" /></div>
+<p>But you can do better :] You can also organize your files into folders, called <i>groups</i>, so that you can organize the files by functionality. For example, you can put all your view controllers together into a folder called View Controllers, the data models into a Data Models folder and so on ...
+</p>
+<p>You probably noticed the New Group menu option on the folder context menu when you right-clicked on the Checklists folder earlier. That&apos;s what you need to use in order to create a new group. Simply create a new group (or three), drag files into the group and you should be set.
+</p>
+<p>You could quite easily organize the file listing from above to look something like this:
+</p><div class="image-25"><img src="graphics/img324.png"  alt="" title="Organized file listing" /></div>
+<p>You can find the project for the app up to this point under <em>18 - UserDefaults</em> in the Source Code folder.
+</p></body></html>

@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 37: The Detail Pop-up</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 37: The Detail Pop-up</h1>
+
+<p>The iTunes web service sends back a lot more information about the products than you’re currently displaying. Let’s add a “details” screen to the app that pops up when the user taps a row in the table:
+</p><div class="image-30"><img src="graphics/img619.png"  alt="" title="The app shows a pop-up when you tap a search result" /></div>
+<p>The table and search bar are still visible in the background, but they have been darkened.
+</p>
+<p>You will place this Detail pop-up on top of the existing screen using a <i>presentation controller</i>, use <i>Dynamic Type</i> to change the fonts based on the user’s preferences, draw your own gradients with Core Graphics, and learn to make cool <i>keyframe</i> animations. Fun times ahead!
+</p>
+<p>This chapter will cover the following:
+</p>
+<ul>
+<li>
+<p><em>The new view controller:</em> Create the bare minimum necessary for the new Detail pop-up and add the code to show/hide the pop-up.
+</p></li>
+
+<li>
+<p><em>Add the rest of the controls:</em> Complete the design for the Detail pop-up.
+</p></li>
+
+<li>
+<p><em>Show data in the popup:</em> Display selected item information in the Detail pop-up.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">The new view controller</h2>
+
+<p>A new screen means a new view controller, so let’s start with that.
+</p>
+<p>First, you’re going to do the absolute minimum to show this new screen and to dismiss it. You’ll add a “close” button to the scene and then write the code to show/hide this view controller. Once that works, you will put in the rest of the controls.
+</p>
+<h3 class="segment-chapter">The basic view controller</h3>
+
+<p>➤ Add a new <em>Cocoa Touch Class</em> file to the project. Call it <em>DetailViewController</em> and make it a subclass of <em>UIViewController</em>.
+</p>
+<p>➤ Open the storyboard and drag a new <em>View Controller</em> on to the canvas. Change its <em>Class</em> to <em>DetailViewController</em> — via the <em>Identiy inspector</em> tab.
+</p>
+<p>➤ For ease of reference, change the new scene&apos;s name from <em>Detail View Controller</em> to <em>Detail</em> by clicking on the yellow circle for the view controller on the Document Outline and clicking again to be able to edit the name.
+</p><div class="image-30"><img src="graphics/img620.png"  alt="" title="Editing the scene name to give it a simpler name" /></div>
+<p>➤ Similarly, rename the previously added <em>Search View Controller</em> scene to <em>Search</em>.
+</p>
+<p>➤ Set the <em>Background</em> color of the Detail scene&apos;s view to <em>black, 50% opaque</em>. That makes it easier to see what is going on in the next steps.
+</p>
+<p>➤ Drag a new <em>View</em> into the scene. Using the <em>Size inspector</em>, make it <em>240</em> points wide and <em>240</em> high. Add Auto Layout constraints for width and height to ensure that the view statys at this size.
+</p>
+<p>➤ Center the view in the scene by setting up horizontal and vertical centering Auto Layout constraints.
+</p>
+<p>➤ In the <em>Attributes inspector</em>, change the <em>Background</em> color of this new view to <em>white, 95% opaque</em>. This makes it appear slightly translucent, just like navigation bars.
+</p>
+<p>➤ With this new view still selected, go to the <em>Identity inspector</em>. For <em>Document - Label</em> — the field with the hint text of “Xcode Specific Label” — type <em>Pop-up View</em>. You can use this field to give your views names, so they are easier to distinguish in the Document Outline in Interface Builder. Now, instead of having multiple items called &quot;View&quot;, this particular view will display as &quot;Pop-up View&quot;.
+</p><div class="image-30"><img src="graphics/img621.png"  alt="" title="Giving the view a description for use in Xcode" /></div>
+<p>➤ Drag a <em>Button</em> into the scene and place it somewhere on the Pop-up View. In the <em>Attributes</em> inspector, change <em>Image</em> to <em>CloseButton</em> — you already added this image to the asset catalog earlier.
+</p>
+<p>➤ Remove the button’s text. Choose <em>Editor → Size to Fit Content</em> to resize the button and place it in the top-left corner of the Pop-up View, at X = 4 and Y = 2.
+</p>
+<p>➤ If the button’s <em>Type</em> now says <em>Custom</em>, change it back to <em>System</em>. That will make the image turn blue, because the default tint color is blue.
+</p>
+<p>➤ Set the Xcode Specific Label for the Button to <em>Close Button</em>. Remember that this only changes the title displayed in the Interface Builder; the user will never see that text.
+</p>
+<p>The design should look something like this:
+</p><div class="image-45"><img src="graphics/img622.png"  alt="" title="The Detail scene has a white square and a close button on a dark background" /></div>
+<div class="note">
+<p><em>Note:</em> Xcode currently gives a warning that this new scene is unreachable. This warning will disappear after you make a segue to it, which you’ll do in a second.
+</p></div>
+
+<h3 class="segment-chapter">Show and hide the scene</h3>
+
+<p>Let’s write the code to show and hide this new screen.
+</p>
+<p>➤ In <em>DetailViewController.swift</em>, add the following action method:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Actions</span>
+<span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">close</span><span class="hljs-params">()</span></span> {
+  dismiss(animated: <span class="hljs-literal">true</span>, completion: <span class="hljs-literal">nil</span>)
+}</pre>
+<p>➤ Connect this action method to the <em>X</em> button’s Touch Up Inside event in Interface Builder — as before, Control-drag from the button to the view controller and pick from Sent Events.
+</p>
+<p>➤ Control-drag from the yellow circle at the top of the Search scene to the Detail scene to make a <em>Present Modally</em> segue. Give it the identifier <em>ShowDetail</em>.
+</p>
+<p>Because the table view doesn’t use prototype cells, you have to put the segue on the view controller itself. That means you need to trigger the segue manually when the user taps a row.
+</p>
+<p>➤ Open <em>SearchViewController.swift</em> and change <code>didSelectRowAt</code> to the following:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+  didSelectRowAt indexPath: IndexPath)</span></span> {
+  tableView.deselectRow(at: indexPath, animated: <span class="hljs-literal">true</span>)
+  <span class="hljs-comment">// Add the following line</span>
+  performSegue(withIdentifier: <span class="hljs-string">"ShowDetail"</span>, sender: indexPath)  
+}</pre>
+<p>You’re sending along the index-path of the selected row as the <code>sender</code> parameter. This will come in useful later when you’re putting the <code>SearchResult</code> object into the Detail pop-up.
+</p>
+<p>Let’s see how well this works.
+</p>
+<p>➤ Run the app, do a search, and tap on a search result. Hmm, that doesn’t look too good.
+</p>
+<p>Even though you set the main view to be half transparent, the Detail screen still has a solid black background. Only during the animation is it see-through.
+</p><div class="image-40"><img src="graphics/img623.png"  alt="" title="What happens when you present the Detail screen modally" /></div>
+<p>Hmm, presenting this new screen with a regular modal segue isn’t going to achieve the effect we’re after.
+</p>
+<p>There are three possible solutions:
+</p>
+<ol>
+<li>
+<p>Don’t have a <code>DetailViewController</code>. You can load the view for the detail pop-up from a nib and add it as a subview of <code>SearchViewController</code>, and put all the logic for this screen in <code>SearchViewController</code>. This is not a very good solution because it makes <code>SearchViewController</code> more complex — the logic for a new screen should really go into its own view controller.
+</p></li>
+
+<li>
+<p>Use the <i>view controller containment</i> APIs to embed the <code>DetailViewController</code> “inside” the <code>SearchViewController</code>. This is a better solution but it&apos;s still more work than necessary — you’ll see an example of view controller containment in an upcoming chapter where you’ll be adding a special landscape mode to the app.
+</p></li>
+
+<li>
+<p>Use a <i>presentation controller</i>. This lets you customize how modal segues present their view controllers on the screen. You can even have custom animations to show and hide the view controllers.
+</p></li>
+</ol>
+
+<p>Let’s go for #3. Transitioning from one screen to another in an iOS app involves a complex web of objects that take care of all the details concerning presentations, transitions, and animations. Normally, that all happens behind the scenes and you can safely ignore it.
+</p>
+<p>But if you want to customize how some of this works, you’ll have to dive into the excitingly strange world of presentation controllers and transitioning delegates.
+</p>
+<h3 class="segment-chapter">Custom presentation controller</h3>
+
+<p>➤ Add a new Swift File to the project, named <em>DimmingPresentationController</em>.
+</p>
+<p>➤ Replace the contents of this new file with the following:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> UIKit
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DimmingPresentationController</span>: <span class="hljs-title">UIPresentationController</span> </span>{
+  <span class="hljs-keyword">override</span> <span class="hljs-keyword">var</span> shouldRemovePresentersView: <span class="hljs-type">Bool</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+  }
+}</pre>
+<p>The standard <code>UIPresentationController</code> class contains all the logic for presenting new view controllers. You’re providing your own version that overrides some of this behavior — in particular, telling UIKit to leave the <code>SearchViewController</code> visible. That’s necessary to get the see-through effect.
+</p>
+<p>Later you’ll also add a light-to-dark gradient background view to this presentation controller; that’s where the “dimming” in its name comes from.
+</p>
+<div class="note">
+<p><em>Note:</em> It’s called a presentation controller, but it is not a <i>view</i> controller. The use of the word controller may be a bit confusing here but not all controllers are for managing screens in your app — generally, only those with “view” in their name do that.
+</p>
+<p>A presentation controller is an object that “controls” the presentation of something, just like a view controller is an object that controls a view and everything in it. Soon you’ll also see an animation controller, which controls — you guessed it — an animation.
+</p>
+<p>There are quite a few different kinds of controller objects in the various iOS frameworks. Just remember that there’s a difference between a view controller and other types of controllers.
+</p></div>
+
+<p>Now you need to tell the app that you want to use your own presentation controller to show the Detail pop-up.
+</p>
+<p>➤ In <em>DetailViewController.swift</em>, add the following extension to the end of the file:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">DetailViewController</span>: 
+          <span class="hljs-title">UIViewControllerTransitioningDelegate</span> </span>{
+
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">presentationController</span><span class="hljs-params">(
+     forPresented presented: UIViewController, 
+     presenting: UIViewController?, source: UIViewController)</span></span> -&gt;
+     <span class="hljs-type">UIPresentationController</span>? {
+    <span class="hljs-keyword">return</span> <span class="hljs-type">DimmingPresentationController</span>(
+             presentedViewController: presented, 
+                          presenting: presenting)
+  }
+}</pre>
+<p>The methods from this delegate protocol tell UIKit what objects it should use to perform the transition to the Detail View Controller. It will now use your new <code>DimmingPresentationController</code> class instead of the standard presentation controller.
+</p>
+<p>➤ Also add the following init method to <code>DetailViewController</code>:
+</p><pre class="code-block"><span class="hljs-keyword">required</span> <span class="hljs-keyword">init</span>?(coder aDecoder: <span class="hljs-type">NSCoder</span>) {
+  <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>(coder: aDecoder)
+  modalPresentationStyle = .custom
+  transitioningDelegate = <span class="hljs-keyword">self</span>
+}</pre>
+<p>Recall that <code>init?(coder)</code> is invoked to load the view controller from the storyboard. Here you tell UIKit that this view controller uses a custom presentation and you set the delegate that will call the method you just implemented.
+</p>
+<p>➤ Run the app again and tap a row to bring up the detail pop-up. That looks much better! Now the list of search results remains visible:
+</p><div class="image-25"><img src="graphics/img624.png"  alt="" title="The Detail pop-up background is now see-through" /></div>
+<p>The standard presentation controller removed the underlying view from the screen, making it appear as if the Detail pop-up had a solid black background. Removing the view makes sense most of the time when you present a modal screen, as the user won’t be able to see the previous screen anyway. Plus, not having to redraw this view saves battery life too.
+</p>
+<p>However, in your case, the modal segue leads to a view controller that only partially covers the previous screen. You want to keep the underlying view to get the see-through effect. That’s why you needed to supply your own presentation controller object.
+</p>
+<p>➤ Also verify that the close button works to dismiss the pop-up.
+</p>
+<h2 class="segment-chapter">Add the rest of the controls</h2>
+
+<p>Let’s finish the design of the Detail screen. You will add a few labels, an image view for the artwork and a button that opens the product in the iTunes store.
+</p>
+<p>The finished design will look like this:
+</p><div class="image-60"><img src="graphics/img625.png"  alt="" title="The Detail screen with the rest of the controls" /></div>
+<h3 class="segment-chapter">Add the controls</h3>
+
+<p>➤ Drag a new <em>Image View</em>, six <em>Labels</em>, and a <em>Button</em> on to the pop-up view and build a layout like the one from the picture.
+</p>
+<p>Some suggestions for the dimensions and positions:
+</p><div class="image-90"><img src="graphics/img626.png"  alt="" title="" /></div>
+<p>➤ The <em>Name</em> label’s font is <em>System Bold 20</em>. Set <em>Autoshrink</em> to <em>Minimum Font Scale</em> so the font can become smaller if necessary to fit as much text as possible.
+</p>
+<p>➤ The font for the <em>$</em><em>9.99</em> button is also <em>System Bold 20</em>. You will add a background image for this button in a bit.
+</p>
+<p>➤ You shouldn’t have to change the font for the other labels; they use the default value of System 17.
+</p>
+<p>➤ Set the <em>Color</em> for the <em>Type:</em> and <em>Genre:</em> labels to 50% opaque black.
+</p>
+<p>These new controls are pretty useless without outlet properties, so add the following lines to <em>DetailViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> popupView: <span class="hljs-type">UIView</span>!
+<span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> artworkImageView: <span class="hljs-type">UIImageView</span>!
+<span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> nameLabel: <span class="hljs-type">UILabel</span>!
+<span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> artistNameLabel: <span class="hljs-type">UILabel</span>!
+<span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> kindLabel: <span class="hljs-type">UILabel</span>!
+<span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> genreLabel: <span class="hljs-type">UILabel</span>!
+<span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> priceButton: <span class="hljs-type">UIButton</span>!</pre>
+<p>➤ Connect the outlets to the views in the storyboard. Control-drag from Detail View Controller to each of the views and pick the corresponding outlet. The Type: and Genre: labels and the X button do not get an outlet.
+</p>
+<p>➤ Run the app to see if everything still works.
+</p><div class="image-25"><img src="graphics/img627.png"  alt="" title="The new controls in the Detail pop-up" /></div>
+<p>Did you notice something interesting here? You didn&apos;t add any Auto Layout constraints to the contents of the Pop-up View and yet, the controls you added stay in place fine no matter which size screen you run the app on. Try it by running the app on several different simulators.
+</p>
+<p>Can you guess why?
+</p>
+<p>The reason is that the Pop-up View itself is constrained to 240 x 240 points in size. So the contents of the view do not shift around — or change size — when the screen size changes. Because of this, you can rely on your original positioning of your controls to serve you here without any issues.
+</p>
+<p>However, if the parent view — Pop-up View, in this case — were to change size, then you would need to set up Auto Layout constraints for the child controls if you wanted them to size correctly as the parent&apos;s size changed.
+</p>
+<p>In the meantime, you will get Xcode warnings about the controls inside the pop-up view not having Auto Layout constraints. Generally, whether you add Auto Layout constraints in such situations, or disregard these warnings, is totally up to you. Personally, I&apos;d add the Auto Layout constraints — any unattended warnings can always hide other warnings which could later cause you headaches.
+</p>
+<div class="note">
+<p><em>Note</em>: For this particular app, let the Xcode warnings stay around for the moment. We will be adding Auto Layout constraints in the next chapter — there&apos;s a reason for the delay.
+</p></div>
+
+<h3 class="segment-chapter">Stretchable images</h3>
+
+<p>The reason you did not put a background image on the price button yet is because I want to tell you about <i>stretchable images</i>. When you put a background image on a button in Interface Builder, it always has to fit the button exactly. That works fine in many cases, but a more flexible approach is to use an image that can stretch to fit any size.
+</p>
+<p>When an image view is wider than the image, it will automatically stretch the image to fit. In the case of a button, however, you don’t want to stretch the ends (or “caps”) of the button, only the middle part. That’s what a stretchable image lets you do.
+</p><div class="image-30"><img src="graphics/img628.png"  alt="" title="The caps are not stretched but the inner part of the image is" /></div>
+<p>For <i>Bull’s Eye</i> you used <code>resizableImage(withCapInsets:)</code> to cut the images for the slider track into stretchable parts. You can also do this in the asset catalog without having to write any code.
+</p>
+<p>➤ Open <em>Assets.xcassets</em> and select the <em>PriceButton</em> image set.
+</p><div class="image-5"><img src="graphics/img629.png"  alt="" title="The PriceButton image" /></div>
+<p>If you take a look at the image info, you will see that it is only 11 points wide. That means it has a 5-point cap on the left, a 5-point cap on the right, and a 1- point body that will be stretched out.
+</p>
+<p>Click the <em>Show Slicing</em> button at the bottom of the central panel.
+</p><div class="image-10"><img src="graphics/img630.png"  alt="" title="The Start Slicing button" /></div>
+<p>Now all you have to do is click <em>Start Slicing</em> on each of the two images, followed by the <em>Slice Horizontally</em> button:
+</p><div class="image-25"><img src="graphics/img631.png"  alt="" title="The Slice Horizontally button" /></div>
+<p>You should end up with something like this for each of the button sizes:
+</p><div class="image-10"><img src="graphics/img632.png"  alt="" title="After slicing" /></div>
+<p>Each image is cut into three parts: the caps on the end and a one-pixel area in the middle that is the stretchable part. Now when you use this image with a button or a <code>UIImageView</code>, it will automatically stretch itself to whatever size it needs to be.
+</p>
+<p><em>Important:</em> Do the above for <i>both</i> the 2x image and the 3x image.
+</p>
+<p>➤ Go back to the storyboard. For the $9.99 button, change <em>Background</em> to <em>PriceButton</em>.
+</p>
+<p>If you see the image repeating, make sure that the button is only 24 points high, the same as the image height.
+</p>
+<p>➤ Run the app and check out that button. Here’s a close-up of what it looks like:
+</p><div class="image-40"><img src="graphics/img633.png"  alt="" title="The price button with the stretchable background image" /></div>
+<p>The main reason you’re using a stretchable image here is that the text on the button may vary in size depending on the price of the item. So, you don’t know in advance how big the button needs to be. If your app has a lot of custom buttons, it’s worth making their images stretchable. That way you won’t have to re-do the images whenever you’re tweaking the sizes of the buttons.
+</p>
+<p>The button could still look a little better, though — a black frame around dark green text doesn’t particularly please the eye. You could go into Photoshop and change the color of the image to match the text color, but there’s an easier method.
+</p>
+<h3 class="segment-chapter">The tint color</h3>
+
+<p>The color of the button text comes from the global tint color. <code>UIImage</code> makes it very easy to make images appear in the same tint color.
+</p>
+<p>➤ In the asset catalog, select the <em>PriceButton</em> set again and go to the <em>Attribute inspector</em>. Change <em>Render As</em> to <em>Template Image</em>.
+</p>
+<p>When you set the “template” rendering mode on an image, UIKit removes the original colors from the image and paints the whole thing in the tint color.
+</p>
+<p>I like the dark green tint color in the rest of the app, but for this pop-up it’s a bit too dark. You can change the tint color on a per-view basis; if that view has subviews the new tint color also applies to these subviews.
+</p>
+<p>➤ In <em>DetailViewController.swift</em>, add the following line to <code>viewDidLoad()</code>:
+</p><pre class="code-block">view.tintColor = <span class="hljs-type">UIColor</span>(red: <span class="hljs-number">20</span>/<span class="hljs-number">255</span>, green: <span class="hljs-number">160</span>/<span class="hljs-number">255</span>, 
+                        blue: <span class="hljs-number">160</span>/<span class="hljs-number">255</span>, alpha: <span class="hljs-number">1</span>)</pre>
+<p>Note that you’re setting the new <code>tintColor</code> on <code>view</code>, not just on <code>priceButton</code>. That will apply the lighter tint color to the close button as well:
+</p><div class="image-25"><img src="graphics/img634.png"  alt="" title="The buttons appear in the new tint color" /></div>
+<p>Much better, but there is still more to tweak. In the screenshot I showed you at the start of this section, the pop-up view had rounded corners. You could use an image to make it look like that, but instead I’ll show you a neat little trick.
+</p>
+<h3 class="segment-chapter">Rounded corner views</h3>
+
+<p><code>UIView</code>s do their drawing using what&apos;s known as a <code>CALayer</code> object. The CA prefix stands for Core Animation, which is the awesome framework that makes animations so easy on the iPhone. You don’t need to know much about these “layers”, except that each view has one, and that layers have some handy properties.
+</p>
+<p>➤ Add the following line to <code>viewDidLoad()</code>:
+</p><pre class="code-block">popupView.layer.cornerRadius = <span class="hljs-number">10</span></pre>
+<p>You ask the Pop-up View for its layer and then set the corner radius of that layer to 10 points. And that’s all you need to do!
+</p>
+<p>➤ Run the app. You have your rounded corners:
+</p><div class="image-25"><img src="graphics/img635.png"  alt="" title="The pop-up now has rounded corners" /></div>
+<h3 class="segment-chapter">Tap gesture recognizer</h3>
+
+<p>The close button is pretty small, about 15 by 15 points. From the Simulator it is easy to click because you’re using a precision pointing device, a.k.a. the mouse. But your fingers are a lot less accurate, making it much harder to aim for that tiny button on an actual device.
+</p>
+<p>That’s one reason why you should always test your apps on real devices and not just on the Simulator. Apple recommends that buttons always have a tap area of at least 44×44 points.
+</p>
+<p>To make the app more user-friendly, you’ll also allow users to dismiss the pop-up by tapping anywhere outside it. The ideal tool for this job is a <em>gesture recognizer</em>.
+</p>
+<p>➤ Add a new extension to <em>DetailViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">DetailViewController</span>: <span class="hljs-title">UIGestureRecognizerDelegate</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">gestureRecognizer</span><span class="hljs-params">(
+       <span class="hljs-number">_</span> gestureRecognizer: UIGestureRecognizer, 
+       shouldReceive touch: UITouch)</span></span> -&gt; <span class="hljs-type">Bool</span> {
+    <span class="hljs-keyword">return</span> (touch.view === <span class="hljs-keyword">self</span>.view)
+  }
+}</pre>
+<p>You only want to close the Detail screen when the user taps outside the pop-up, i.e. on the background. Any other taps should be ignored. That’s what this delegate method is for. It only returns <code>true</code> when the touch was on the background view — it will return <code>false</code> if the touch was inside the Pop-up View.
+</p>
+<p>Note that you’re using the identity operator <code>===</code> to compare <code>touch.view</code> with <code>self.view</code>. You want to know whether both variables refer to the same object. This is different from using the <code>==</code> equality operator. That would check whether both variables refer to objects that are considered equal, even if they aren’t the same object.
+</p>
+<p>Using <code>==</code> here would have worked too, but only because <code>UIView</code> treats <code>==</code> and <code>===</code> the same. But not all objects do, so be careful!
+</p>
+<p>➤ Add the following lines to <code>viewDidLoad()</code>:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> gestureRecognizer = <span class="hljs-type">UITapGestureRecognizer</span>(target: <span class="hljs-keyword">self</span>, 
+                                   action: #selector(close))
+gestureRecognizer.cancelsTouchesInView = <span class="hljs-literal">false</span>
+gestureRecognizer.delegate = <span class="hljs-keyword">self</span>
+view.addGestureRecognizer(gestureRecognizer)</pre>
+<p>This creates a new gesture recognizer that listens to taps anywhere in this view controller and calls the <code>close()</code> method in response.
+</p>
+<p>➤ Try it out. You can now dismiss the pop-up by tapping anywhere outside the white pop-up area. That’s a common thing that users expect to be able to do, and it was easy enough to add to the app!
+</p>
+<h2 class="segment-chapter">Show data in the pop-up</h2>
+
+<p>Now that the app can show this pop-up after a tap on a search result, you should put the name, genre and price from the selected product in the pop-up.
+</p>
+<div class="note">
+<p><em>Exercise.</em> Try to do this by yourself. It’s not very different from what you’ve done in the previous apps!
+</p></div>
+
+<p>There is more than one way to pull this off, but I like to do it by passing the <code>SearchResult</code> object to the <code>DetailViewController</code>.
+</p>
+<h3 class="segment-chapter">Display selected item information in pop-up</h3>
+
+<p>➤ Add a property to <em>DetailViewController.swift</em> to store the passed in object reference:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> searchResult: <span class="hljs-type">SearchResult</span>!</pre>
+<p>As usual, this is an implicitly-unwrapped optional because you won’t know what its value will be until the segue is performed. It is <code>nil</code> in the mean time.
+</p>
+<p>➤ Also add a new method, <code>updateUI()</code>:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Helper Methods</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">updateUI</span><span class="hljs-params">()</span></span> {
+  nameLabel.text = searchResult.name
+  
+  <span class="hljs-keyword">if</span> searchResult.artist.isEmpty {
+    artistNameLabel.text = <span class="hljs-string">"Unknown"</span>
+  } <span class="hljs-keyword">else</span> {
+    artistNameLabel.text = searchResult.artist
+  }
+  
+  kindLabel.text = searchResult.type
+  genreLabel.text = searchResult.genre
+}</pre>
+<p>That looks very similar to what you did in <code>SearchResultCell</code>. The logic for setting the text on the labels has its own method, <code>updateUI()</code>, because that is cleaner than stuffing everything into <code>viewDidLoad()</code>.
+</p>
+<p>➤ Add a call to the new method to the end of <code>viewDidLoad()</code>:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  . . .
+  <span class="hljs-keyword">if</span> searchResult != <span class="hljs-literal">nil</span> {
+    updateUI()
+  }
+}</pre>
+<p>The <code>if != nil</code> check is a defensive measure, just in case the developer forgets to fill in <code>searchResult</code> on the segue.
+</p>
+<div class="note">
+<p><em>Note</em>: You can also write the above check as <code>if let _ = searchResult</code> to unwrap the optional. Because you’re not actually using the unwrapped value for anything, you use the <code>_</code> wildcard symbol.
+</p></div>
+
+<p>The Detail pop-up is launched with a segue triggered from <code>SearchViewController</code>’s <code>tableView(_:didSelectRowAt:)</code>. You’ll have to add a <code>prepare(for:sender:)</code> method to configure the <code>DetailViewController</code> when the segue happens.
+</p>
+<p>➤ Add this method to <em>SearchViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Navigation</span>
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">prepare</span><span class="hljs-params">(<span class="hljs-keyword">for</span> segue: UIStoryboardSegue, 
+                         sender: Any?)</span></span> {
+ <span class="hljs-keyword">if</span> segue.identifier == <span class="hljs-string">"ShowDetail"</span> {
+   <span class="hljs-keyword">let</span> detailViewController = segue.destination 
+                              <span class="hljs-keyword">as</span>! <span class="hljs-type">DetailViewController</span>
+   <span class="hljs-keyword">let</span> indexPath = sender <span class="hljs-keyword">as</span>! <span class="hljs-type">IndexPath</span>
+   <span class="hljs-keyword">let</span> searchResult = searchResults[indexPath.row]
+   detailViewController.searchResult = searchResult
+ }
+}</pre>
+<p>This should hold no big surprises for you. When <code>didSelectRowAt</code> starts the segue, it sends along the index-path of the selected row. That lets you find the <code>SearchResult</code> object and pass it on to <code>DetailViewController</code>.
+</p>
+<p>➤ Try it out. All right, now you&apos;re getting somewhere!
+</p><div class="image-30"><img src="graphics/img636.png"  alt="" title="The pop-up with filled-in data" /></div>
+<h3 class="segment-chapter">Show the price</h3>
+
+<p>You still need to show the price for the item and the correct currency.
+</p>
+<p>➤ Add the following code to the end of <code>updateUI()</code> in <em>DetailViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-comment">// Show price</span>
+<span class="hljs-keyword">let</span> formatter = <span class="hljs-type">NumberFormatter</span>()
+formatter.numberStyle = .currency
+formatter.currencyCode = searchResult.currency
+
+<span class="hljs-keyword">let</span> priceText: <span class="hljs-type">String</span>
+<span class="hljs-keyword">if</span> searchResult.price == <span class="hljs-number">0</span> {
+  priceText = <span class="hljs-string">"Free"</span>
+} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> text = formatter.string(
+          from: searchResult.price <span class="hljs-keyword">as</span> <span class="hljs-type">NSNumber</span>) {
+  priceText = text
+} <span class="hljs-keyword">else</span> {
+  priceText = <span class="hljs-string">""</span>
+}
+
+priceButton.setTitle(priceText, <span class="hljs-keyword">for</span>: .normal)</pre>
+<p>You’ve used <code>DateFormatter</code> previously to turn a <code>Date</code> object into human-readable text. Here you use <code>NumberFormatter</code> to do the same thing for numbers.
+</p>
+<p>Previously, you’ve turned numbers into text using string interpolation <code>\(…)</code> and <code>String(format:)</code> with the <code>%f</code> or <code>%d</code> format specifier. However, in this case you’re not dealing with regular numbers but with money in a certain currency.
+</p>
+<p>There are different rules for displaying various currencies, especially if you take the user’s language and country settings into consideration. You could program all of these rules yourself — which is a lot of effort — or, choose to ignore them. Fortunately, you don’t have to make that tradeoff because you have <code>NumberFormatter</code> to do all the heavy lifting for you.
+</p>
+<p>You simply tell the <code>NumberFormatter</code> that you want to display a currency value and what the currency code is. That currency code comes from the web service and is something like “USD” or “EUR”. <code>NumberFormatter</code> will insert the proper symbol, such as $ or € or ¥, and format the monetary amount according to the user’s regional settings.
+</p>
+<p>There’s one caveat: if you’re not feeding <code>NumberFormatter</code> an actual number, it cannot do the conversion. That’s why <code>string(from:)</code> returns an optional that you need to unwrap.
+</p>
+<p>➤ Run the app and see if you can find some good deals :].
+</p>
+<p>Sometimes, you might see this, or something similar:
+</p><div class="image-25"><img src="graphics/img637.png"  alt="" title="The price doesn’t fit into the button" /></div>
+<p>When you designed the storyboard, you made this button 68 points wide. You didn’t put any constraints on it, so Xcode gave it an automatic constraint that always forces the button to be 68 points wide, no more, no less.
+</p>
+<p>But buttons, like labels, are perfectly able to determine what their ideal size is based on the amount of text they contain. That’s called their <i>intrinsic content size</i>.
+</p>
+<p>➤ Open the storyboard and with the price button selected, click the <em>Add New Constraints</em> button. Add spacing constraints for the <em>right</em> and the <em>bottom</em>, both 8 points in size. Also add a <em>24</em> point <em>Height</em> constraint.
+</p>
+<p>To recap, you have set the following constraints on the button:
+</p>
+<ul>
+<li>
+<p>Fixed height of 24 points. That is necessary because the background image is 24 points tall.
+</p></li>
+
+<li>
+<p>Pinned to the right edge of the pop-up with a distance of 8 points. When the button needs to grow to accommodate larger prices, it will extend towards the left.
+</p></li>
+
+<li>
+<p>Pinned to the bottom of the pop-up, also with a distance of 8 points.
+</p></li>
+
+<li>
+<p>There is no constraint for the width. That means the button will use its intrinsic width — the larger the text, the wider the button. And that’s exactly what you want to happen here.
+</p></li>
+</ul>
+
+<p>➤ Run the app again and pick an expensive product — something with a price over $9.99; e-books are a good category for this.
+</p><div class="image-35"><img src="graphics/img638.png"  alt="" title="The button is a little cramped" /></div>
+<p>That’s better, but the text is now right up against the button border. You can fix this by setting “content edge insets” for the button.
+</p>
+<p>➤ Go to the <em>Size inspector</em> and find where it says <em>Content Insets</em>. Change <em>Left</em> and <em>Right</em> to 6.
+</p><div class="image-40"><img src="graphics/img639.png"  alt="" title="Changing the content edge insets of the button" /></div>
+<p>This adds 6 points of padding on the left and right sides of the button.
+</p>
+<p>➤ Run the app; now the price button should finally look good:
+</p><div class="image-35"><img src="graphics/img640.png"  alt="" title="That price button looks so good you almost want to tap it!" /></div>
+<div class="note">
+<p><em>Note:</em> After you added spacing constraints for the price button, you might have noticed that you started getting an additional Xcode warning saying &quot;Leading constraint is missing, which may cause overlapping with other views.&quot;
+</p>
+<p>If you think about it, this makes sense since there is no leading constraint for the price button and if you were to add a new button to the left of the price button, you do run the risk of the price button accidentally expanding enough to overlap that hypothetical button. In this particular instance, it is not strictly necessary to do anything since there won&apos;t be any other buttons for the price button to overlap. But if you wanted to remove the compiler warning, all you need to do is to add a leading constraint for the price button.
+</p></div>
+
+<h3 class="segment-chapter">Navigate to the product page on iTunes</h3>
+
+<p>Tapping the price button should take the user to the selected product’s page on the iTunes Store.
+</p>
+<p>➤ Add the following method to <em>DetailViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">openInStore</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> url = <span class="hljs-type">URL</span>(string: searchResult.storeURL) {
+    <span class="hljs-type">UIApplication</span>.shared.<span class="hljs-keyword">open</span>(url, options: [:], 
+                          completionHandler: <span class="hljs-literal">nil</span>)
+  }
+}</pre>
+<p>➤ Connect the <code>openInStore</code> action to the button’s Touch Up Inside event in the storyboard.
+</p>
+<p>That’s all you have to do. The web service returns a URL for the product page. You simply tell the <code>UIApplication</code> object to open this URL. iOS will now figure out what sort of URL it is and launch the proper app in response — iTunes Store, App Store, or Mobile Safari. On the Simulator you’ll probably receive an error message that the URL could not be opened — try it on a device instead.
+</p>
+<div class="note">
+<p><em>Note:</em> You haven’t used <code>UIApplication</code> before, but every app has a <code>UIApplication</code> object and it handles application-wide functionality. You won’t directly use <code>UIApplication</code> a lot, except for special features such as opening URLs. Instead, most of the time you deal with <code>UIApplication</code> through your <code>AppDelegate</code> class, which — as you can guess from its name — is the delegate for <code>UIApplication</code>.
+</p></div>
+
+<h3 class="segment-chapter">Load artwork</h3>
+
+<p>For the Detail pop-up, you need to display a slightly larger, more detailed image than the one from the table view cell. For this, you’ll use your old friend, the handy <code>UIImageView</code> extension, again.
+</p>
+<p>➤ First add a new instance variable to <em>DetailViewController.swift</em>. This is necessary to cancel the download task:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> downloadTask: <span class="hljs-type">URLSessionDownloadTask</span>?</pre>
+<p>➤ Then add the following line to <code>updateUI()</code>:
+</p><pre class="code-block"><span class="hljs-comment">// Get image</span>
+<span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> largeURL = <span class="hljs-type">URL</span>(string: searchResult.imageLarge) {
+  downloadTask = artworkImageView.loadImage(url: largeURL)
+}</pre>
+<p>This is the same thing you did in <code>SearchResultCell</code>, except that you use the other artwork URL — 100×100 pixels — and no placeholder image.
+</p>
+<p>It’s a good idea to cancel the image download if the user closes the pop-up before the image has been downloaded completely.
+</p>
+<p>➤ To do that, add a <code>deinit</code> method:
+</p><pre class="code-block"><span class="hljs-keyword">deinit</span> {
+  <span class="hljs-built_in">print</span>(<span class="hljs-string">"deinit <span class="hljs-subst">\(<span class="hljs-keyword">self</span>)</span>"</span>)
+  downloadTask?.cancel()
+}</pre>
+<p>Remember that <code>deinit</code> is called whenever the object instance is deallocated and its memory is reclaimed. That happens after the user closes the <code>DetailViewController</code> and the animation to remove it from the screen has completed. If the download task is not done by then, you cancel it.
+</p>
+<p>➤ Try it out!
+</p><div class="image-25"><img src="graphics/img641.png"  alt="" title="The pop-up now shows the artwork image" /></div>
+<p>Did you see the <code>print()</code> from <code>deinit</code> after closing the pop-up? It’s always a good idea to log a message when you’re first trying out a new <code>deinit</code> method, to see if it really works.
+</p>
+<p>If you don’t see that <code>print()</code>, it means <code>deinit</code> is never called, and you may have an ownership cycle somewhere keeping your object alive longer than intended. This is why you used <code>[weak self]</code> in the closure from the <code>UIImageView</code> extension, to break any such ownership cycles.
+</p>
+<p>➤ This is a good time to commit the changes.
+</p>
+<p>You can find the project files for this chaper under <em>37 – The Detail Pop-up</em> in the Source Code folder.
+</p></body></html>

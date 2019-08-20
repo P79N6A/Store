@@ -1,0 +1,1070 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta property="fb:admins" content="724580831" />
+
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta name="description" content="  News, tips, software, reviews, and more for Mac OS X, iPhone, iPad   "   />
+<meta name="keywords" content="OS X Daily, OSXDaily, Apple, Mac, iPhone, iPad, Mac OS X, iOS, Mac, tips, tricks, tutorials, news" />
+
+<link rel="shortcut icon" href="/images/favicon.ico" />
+<link rel="stylesheet" type="text/css" href="http://cdn.osxdaily.com/wp-content/themes/osxdaily-left2/style.css" />
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://osxdaily.com/feed/" />
+<link rel="alternate" type="text/xml" title="RSS .92" href="http://osxdaily.com/feed/rss/" />
+<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="http://osxdaily.com/feed/atom/" />
+<link rel="pingback" href="http://osxdaily.com/xmlrpc.php" />
+
+
+
+<title>OS X Daily - News and Tips for Mac, iPhone, iPad, and Everything Apple
+  </title>
+
+
+
+
+<link rel='dns-prefetch' href='//s0.wp.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/cdn.osxdaily.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.2.2"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55357,56424,55356,57342,8205,55358,56605,8205,55357,56424,55356,57340],[55357,56424,55356,57342,8203,55358,56605,8203,55357,56424,55356,57340]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel='stylesheet' id='wp-block-library-css'  href='http://cdn.osxdaily.com/wp-includes/css/dist/block-library/style.min.css?ver=5.2.2' type='text/css' media='all' />
+<link rel='stylesheet' id='cookie-notice-front-css'  href='http://cdn.osxdaily.com/wp-content/plugins/cookie-notice/css/front.min.css?ver=5.2.2' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-syntax-css-css'  href='http://cdn.osxdaily.com/wp-content/plugins/wp-syntax/css/wp-syntax.css?ver=1.1' type='text/css' media='all' />
+<link rel='stylesheet' id='jetpack_css-css'  href='http://cdn.osxdaily.com/wp-content/plugins/jetpack/css/jetpack.css?ver=6.2.1' type='text/css' media='all' />
+<script type='text/javascript' src='http://cdn.osxdaily.com/wp-includes/js/jquery/jquery.js?ver=1.12.4-wp'></script>
+<script type='text/javascript' src='http://cdn.osxdaily.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var cnArgs = {"ajaxurl":"https:\/\/osxdaily.com\/wp-admin\/admin-ajax.php","hideEffect":"fade","onScroll":"yes","onScrollOffset":"100","cookieName":"cookie_notice_accepted","cookieValue":"true","cookieTime":"31536000","cookiePath":"\/","cookieDomain":"","redirection":"","cache":"1","refuse":"no","revoke_cookies":"0","revoke_cookies_opt":"automatic","secure":"0"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://cdn.osxdaily.com/wp-content/plugins/cookie-notice/js/front.min.js?ver=1.2.43'></script>
+<link rel='https://api.w.org/' href='http://osxdaily.com/wp-json/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://osxdaily.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://cdn.osxdaily.com/wp-includes/wlwmanifest.xml" /> 
+<script type='text/javascript'>
+	(function () {
+		var pl_beacon = document.createElement('script');
+		pl_beacon.type = 'text/javascript';
+		pl_beacon.async = true;
+		var host = 'http://osxdaily.com';
+		if ('https:' == document.location.protocol) {
+			host = host.replace('http://', 'https://');
+		}
+		pl_beacon.src = host + '/un6up8Rl5Bi9.js?ts=' + Math.floor((Math.random() * 100000) + 1);
+		var first_script_tag = document.getElementsByTagName('script')[0];
+		first_script_tag.parentNode.insertBefore(pl_beacon, first_script_tag);
+	})();
+</script><style type='text/css'>img#wpstats{display:none}</style>
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="OS X Daily" />
+<meta property="og:description" content="News, tips, software, reviews, and more for Mac OS X, iPhone, iPad" />
+<meta property="og:url" content="http://osxdaily.com/" />
+<meta property="og:site_name" content="OS X Daily" />
+<meta property="og:image" content="https://s0.wp.com/i/blank.jpg" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:site" content="@osxdaily" />
+
+<!-- End Jetpack Open Graph Tags -->
+
+
+</head>
+
+<body>
+
+
+<div id="wrap">
+
+<div id="header">
+
+<div id="topline">
+
+
+<div id="space">
+
+
+<div id="logobox">
+<a href="http://osxdaily.com"><img src="http://cdn.osxdaily.com/wp-content/themes/osxdaily-left2/img/osxdaily-logo-l.png" alt="OS X Daily"  border="0" width="250" height="75" /></a>
+</div>
+
+<div id="top_block">
+
+<script type="text/javascript"><!--
+	e9 = new Object();
+    e9.size = "728x90,468x60";
+	e9.noAd = 1;
+//--></script>
+<script type="text/javascript" src="http://tags.expo9.exponential.com/tags/OSXDailycom/ROS/tags.js"></script>
+
+</div>
+
+
+<div id="top_wide_block">
+
+<div class="underlinemenu">
+<ul>
+
+<li style="margin-left:none !important;"><a href="/">Home</a></li>
+<li><a href="/category/mac-os-x/">Mac OS</a></li>
+<li><a href="/category/iphone/">iPhone</a></li>
+<li><a href="/category/ipad/">iPad</a></li>
+<li><a href="/category/tips-tricks/">Tips & Tricks</a></li>
+<li><a href="/tag/news/">News</a></li>
+<li><a href="/tag/ios/">iOS</a></li>
+<li><a href="/category/troubleshooting/">Troubleshooting</a></li>
+<li></li>
+<li style="border-right:none!important;"><div id="gsearch_box" style="width:220px;">
+
+<script>
+  (function() {
+    var cx = '000140732189139953166:WMX-1131898171';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<gcse:searchbox-only resultsUrl="//osxdaily.com/gsearch/"></gcse:searchbox-only>
+
+</div></li>
+</ul>
+</div>
+
+
+
+
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+</div>
+<div id="content">
+
+
+
+
+
+
+
+
+<div class="post">
+<div class="konafilter">
+<h2><a href="http://osxdaily.com/2019/08/18/how-disable-passcode-iphone-ipad/" rel="bookmark" title="How to Disable Passcode on iPhone or iPad">How to Disable Passcode on iPhone or iPad</a></h2>
+<div id="subhead_block">
+<span class="subhead_lefty">Aug 18, 2019 - <a href="http://osxdaily.com/2019/08/18/how-disable-passcode-iphone-ipad/#respond">Leave a Comment</a></span>
+<span class="subhead_righty"></span>
+</div>
+
+<div class="contenttext">
+
+<p><img src="http://cdn.osxdaily.com/wp-content/uploads/2019/08/disable-passcode-iphone-ipad-610x495.jpg" alt="How to disable passcode on iPhone or iPad" width="610" height="495" class="aligncenter size-large wp-image-88451" srcset="http://cdn.osxdaily.com/wp-content/uploads/2019/08/disable-passcode-iphone-ipad-610x495.jpg 610w, http://cdn.osxdaily.com/wp-content/uploads/2019/08/disable-passcode-iphone-ipad-300x243.jpg 300w, http://cdn.osxdaily.com/wp-content/uploads/2019/08/disable-passcode-iphone-ipad-768x623.jpg 768w, http://cdn.osxdaily.com/wp-content/uploads/2019/08/disable-passcode-iphone-ipad-900x730.jpg 900w, http://cdn.osxdaily.com/wp-content/uploads/2019/08/disable-passcode-iphone-ipad.jpg 1200w" sizes="(max-width: 610px) 100vw, 610px" /></p>
+<p>Occasionally, some users may wish to turn off the passcode on iPhone or iPad. Disabling the passcode on iPhone or iPad is easy, but it&#8217;s not necessarily recommended due to privacy and security reasons, so therefore it&#8217;s only wise to turn off the passcode on an iPad or iPhone for very specific reasons. By disabling the iPhone, iPad, or iPod touch passcode, you essentially are turning off the devices security mechanism, and any data on the device will be become accessible by anyone immediately without any authentication. </p>
+<p>This article will show you how to completely disable and turn off the passcode on iPhone or iPad, including the passcode encountered on the locked screens and for authentication in other Settings sections. </p>
+<p> <a href="http://osxdaily.com/2019/08/18/how-disable-passcode-iphone-ipad/" class="more-link">Read more &raquo;</a></p>
+
+
+
+</div>
+
+
+
+<div id="commenttext"><strong>By Paul Horowitz</strong> - <span class="nostylefoot_a"><a href="http://osxdaily.com/category/ipad/" rel="category tag">iPad</a>, <a href="http://osxdaily.com/category/iphone/" rel="category tag">iPhone</a>, <a href="http://osxdaily.com/category/security/" rel="category tag">Security</a>, <a href="http://osxdaily.com/category/tips-tricks/" rel="category tag">Tips &amp; Tricks</a></span> - <a href="http://osxdaily.com/2019/08/18/how-disable-passcode-iphone-ipad/#respond">Leave a Comment</a>
+
+</div></p>
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+<div class="post">
+<div class="konafilter">
+<h2><a href="http://osxdaily.com/2019/08/17/mac-stuck-screensaver-fix/" rel="bookmark" title="Screen Saver Stuck on Mac? How to Fix It">Screen Saver Stuck on Mac? How to Fix It</a></h2>
+<div id="subhead_block">
+<span class="subhead_lefty">Aug 17, 2019 - <a href="http://osxdaily.com/2019/08/17/mac-stuck-screensaver-fix/#respond">Leave a Comment</a></span>
+<span class="subhead_righty"></span>
+</div>
+
+<div class="contenttext">
+
+<p><img src="http://cdn.osxdaily.com/wp-content/uploads/2019/07/mac-stuck-screensaver-610x353.jpg" alt="Mac stuck on screen saver" width="610" height="353" class="aligncenter size-large wp-image-87351" srcset="http://cdn.osxdaily.com/wp-content/uploads/2019/07/mac-stuck-screensaver-610x353.jpg 610w, http://cdn.osxdaily.com/wp-content/uploads/2019/07/mac-stuck-screensaver-300x174.jpg 300w, http://cdn.osxdaily.com/wp-content/uploads/2019/07/mac-stuck-screensaver-768x445.jpg 768w, http://cdn.osxdaily.com/wp-content/uploads/2019/07/mac-stuck-screensaver.jpg 900w" sizes="(max-width: 610px) 100vw, 610px" /></p>
+<p>Ever had your Mac get stuck on the screen saver? This can happen sometimes and when it does the Mac is unusable since the screen saver is quite literally stuck activated. </p>
+<p>The most obvious symptom of this problem is just as it sounds; the screen saver is enabled and active, but the Mac won&#8217;t respond to anything and you can&#8217;t get the Mac to prompt the screen saver unlock or wake. Sometimes the screen saver can get stuck but it&#8217;s not active or moving at all too. In either case, the troubleshooting steps below should help to fix the stuck screensaver problem on a Mac.</p>
+<p> <a href="http://osxdaily.com/2019/08/17/mac-stuck-screensaver-fix/" class="more-link">Read more &raquo;</a></p>
+
+
+
+</div>
+
+
+
+<div id="commenttext"><strong>By Paul Horowitz</strong> - <span class="nostylefoot_a"><a href="http://osxdaily.com/category/mac-os-x/" rel="category tag">Mac OS X</a>, <a href="http://osxdaily.com/category/tips-tricks/" rel="category tag">Tips &amp; Tricks</a>, <a href="http://osxdaily.com/category/troubleshooting/" rel="category tag">Troubleshooting</a></span> - <a href="http://osxdaily.com/2019/08/17/mac-stuck-screensaver-fix/#respond">Leave a Comment</a>
+
+</div></p>
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+<div class="post">
+<div class="konafilter">
+<h2><a href="http://osxdaily.com/2019/08/16/show-all-devices-disk-utility-mac/" rel="bookmark" title="How to Show All Drive Devices in Disk Utility for MacOS">How to Show All Drive Devices in Disk Utility for MacOS</a></h2>
+<div id="subhead_block">
+<span class="subhead_lefty">Aug 16, 2019 - <a href="http://osxdaily.com/2019/08/16/show-all-devices-disk-utility-mac/#comments">1 Comment</a></span>
+<span class="subhead_righty"></span>
+</div>
+
+<div class="contenttext">
+
+<p><img src="http://cdn.osxdaily.com/wp-content/uploads/2019/07/show-all-disk-devices-mac-disk-utility-610x377.jpg" alt="How to show all disk devices in Mac Disk Utility" width="610" height="377" class="aligncenter size-large wp-image-87543" srcset="http://cdn.osxdaily.com/wp-content/uploads/2019/07/show-all-disk-devices-mac-disk-utility-610x377.jpg 610w, http://cdn.osxdaily.com/wp-content/uploads/2019/07/show-all-disk-devices-mac-disk-utility-300x185.jpg 300w, http://cdn.osxdaily.com/wp-content/uploads/2019/07/show-all-disk-devices-mac-disk-utility-768x475.jpg 768w, http://cdn.osxdaily.com/wp-content/uploads/2019/07/show-all-disk-devices-mac-disk-utility-900x556.jpg 900w" sizes="(max-width: 610px) 100vw, 610px" /></p>
+<p>You can adjust a setting in Disk Utility for Mac to see all device disks and drives connected to a Mac. This will make it so  that you can view the containing drive (like &#8220;Apple SSD&#8221;) rather than simply the partition or volume that is accessible by the user facing part of the file system (like &#8220;Macintosh HD&#8221;). </p>
+<p> <a href="http://osxdaily.com/2019/08/16/show-all-devices-disk-utility-mac/" class="more-link">Read more &raquo;</a></p>
+
+
+
+</div>
+
+
+
+<div id="commenttext"><strong>By Paul Horowitz</strong> - <span class="nostylefoot_a"><a href="http://osxdaily.com/category/mac-os-x/" rel="category tag">Mac OS X</a>, <a href="http://osxdaily.com/category/tips-tricks/" rel="category tag">Tips &amp; Tricks</a></span> - <a href="http://osxdaily.com/2019/08/16/show-all-devices-disk-utility-mac/#comments">1 Comment</a>
+
+</div></p>
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+<div class="post">
+<div class="konafilter">
+<h2><a href="http://osxdaily.com/2019/08/16/you-can-download-ios-13-ipados-13-public-beta-6-now/" rel="bookmark" title="You Can Download iOS 13 &#038; iPadOS 13 Public Beta 6 Now">You Can Download iOS 13 &#038; iPadOS 13 Public Beta 6 Now</a></h2>
+<div id="subhead_block">
+<span class="subhead_lefty">Aug 16, 2019 - <a href="http://osxdaily.com/2019/08/16/you-can-download-ios-13-ipados-13-public-beta-6-now/#respond">Leave a Comment</a></span>
+<span class="subhead_righty"></span>
+</div>
+
+<div class="contenttext">
+
+<p><img src="http://cdn.osxdaily.com/wp-content/uploads/2019/06/ios13-beta-ipados-beta-610x465.jpg" alt="iOS 13 Beta and iPadOS Beta" width="610" height="465" class="aligncenter size-large wp-image-86001" srcset="http://cdn.osxdaily.com/wp-content/uploads/2019/06/ios13-beta-ipados-beta-610x465.jpg 610w, http://cdn.osxdaily.com/wp-content/uploads/2019/06/ios13-beta-ipados-beta-300x229.jpg 300w, http://cdn.osxdaily.com/wp-content/uploads/2019/06/ios13-beta-ipados-beta-768x585.jpg 768w, http://cdn.osxdaily.com/wp-content/uploads/2019/06/ios13-beta-ipados-beta-900x686.jpg 900w" sizes="(max-width: 610px) 100vw, 610px" /></p>
+<p>Apple has released iOS 13 Public Beta 6 and iPadOS 13 Public Beta 6 to users who are enrolled in the public beta testing programs for Apple mobile operating systems. These new public beta builds match the <a href="http://osxdaily.com/2019/08/15/ios-13-beta-7-ipados-13-beta-7-available-to-download-for-developers/">iOS 13 beta 7 developer release</a>.</p>
+<p> <a href="http://osxdaily.com/2019/08/16/you-can-download-ios-13-ipados-13-public-beta-6-now/" class="more-link">Read more &raquo;</a></p>
+
+
+
+</div>
+
+
+
+<div id="commenttext"><strong>By Paul Horowitz</strong> - <span class="nostylefoot_a"><a href="http://osxdaily.com/category/news/" rel="category tag">News</a></span> - <a href="http://osxdaily.com/2019/08/16/you-can-download-ios-13-ipados-13-public-beta-6-now/#respond">Leave a Comment</a>
+
+</div></p>
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+<div class="post">
+<div class="konafilter">
+<h2><a href="http://osxdaily.com/2019/08/15/ios-13-beta-7-ipados-13-beta-7-available-to-download-for-developers/" rel="bookmark" title="iOS 13 Beta 7 &#038; iPadOS 13 Beta 7 Available to Download for Developers">iOS 13 Beta 7 &#038; iPadOS 13 Beta 7 Available to Download for Developers</a></h2>
+<div id="subhead_block">
+<span class="subhead_lefty">Aug 15, 2019 - <a href="http://osxdaily.com/2019/08/15/ios-13-beta-7-ipados-13-beta-7-available-to-download-for-developers/#comments">1 Comment</a></span>
+<span class="subhead_righty"></span>
+</div>
+
+<div class="contenttext">
+
+<p><img src="http://cdn.osxdaily.com/wp-content/uploads/2019/06/public-beta-ios-13-ipados-13-610x379.jpg" alt="Public beta of iOS 13 and iPadOS 13" width="610" height="379" class="aligncenter size-large wp-image-86683" srcset="http://cdn.osxdaily.com/wp-content/uploads/2019/06/public-beta-ios-13-ipados-13-610x379.jpg 610w, http://cdn.osxdaily.com/wp-content/uploads/2019/06/public-beta-ios-13-ipados-13-300x186.jpg 300w, http://cdn.osxdaily.com/wp-content/uploads/2019/06/public-beta-ios-13-ipados-13-768x477.jpg 768w, http://cdn.osxdaily.com/wp-content/uploads/2019/06/public-beta-ios-13-ipados-13-900x559.jpg 900w, http://cdn.osxdaily.com/wp-content/uploads/2019/06/public-beta-ios-13-ipados-13.jpg 1200w" sizes="(max-width: 610px) 100vw, 610px" /></p>
+<p>Apple has released the seventh beta versions of iOS 13 beta and iPadOS 13 beta for users enrolled in the developers beta system software testing programs.</p>
+<p> <a href="http://osxdaily.com/2019/08/15/ios-13-beta-7-ipados-13-beta-7-available-to-download-for-developers/" class="more-link">Read more &raquo;</a></p>
+
+
+
+</div>
+
+
+
+<div id="commenttext"><strong>By Paul Horowitz</strong> - <span class="nostylefoot_a"><a href="http://osxdaily.com/category/ipad/" rel="category tag">iPad</a>, <a href="http://osxdaily.com/category/iphone/" rel="category tag">iPhone</a>, <a href="http://osxdaily.com/category/news/" rel="category tag">News</a></span> - <a href="http://osxdaily.com/2019/08/15/ios-13-beta-7-ipados-13-beta-7-available-to-download-for-developers/#comments">1 Comment</a>
+
+</div></p>
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+<div class="post">
+<div class="konafilter">
+<h2><a href="http://osxdaily.com/2019/08/14/change-screen-brightness-mac-terminal/" rel="bookmark" title="How to Adjust Screen Brightness on Mac from Command Line">How to Adjust Screen Brightness on Mac from Command Line</a></h2>
+<div id="subhead_block">
+<span class="subhead_lefty">Aug 14, 2019 - <a href="http://osxdaily.com/2019/08/14/change-screen-brightness-mac-terminal/#respond">Leave a Comment</a></span>
+<span class="subhead_righty"></span>
+</div>
+
+<div class="contenttext">
+
+<p><img src="http://cdn.osxdaily.com/wp-content/uploads/2014/08/terminal-icon-osx.png" alt="Terminal in MacOS X" width="454" height="398" class="aligncenter size-full wp-image-47164" srcset="http://cdn.osxdaily.com/wp-content/uploads/2014/08/terminal-icon-osx.png 454w, http://cdn.osxdaily.com/wp-content/uploads/2014/08/terminal-icon-osx-300x262.png 300w" sizes="(max-width: 454px) 100vw, 454px" /></p>
+<p>Want to change the screen brightness on Mac from the command line? You can use the Terminal to adjust screen brightness to be brighter or dimmer with a few different methods, as we&#8217;ll demonstrate here.</p>
+<p>First we&#8217;ll show you a handy way to increase or decrease Mac screen brightness using osascript at the command line, and we&#8217;ll also show you a handy third party command line tool to change display brightness from the Mac Terminal as well.</p>
+<p> <a href="http://osxdaily.com/2019/08/14/change-screen-brightness-mac-terminal/" class="more-link">Read more &raquo;</a></p>
+
+
+
+</div>
+
+
+
+<div id="commenttext"><strong>By Paul Horowitz</strong> - <span class="nostylefoot_a"><a href="http://osxdaily.com/category/command-line/" rel="category tag">Command Line</a>, <a href="http://osxdaily.com/category/mac-os-x/" rel="category tag">Mac OS X</a>, <a href="http://osxdaily.com/category/tips-tricks/" rel="category tag">Tips &amp; Tricks</a></span> - <a href="http://osxdaily.com/2019/08/14/change-screen-brightness-mac-terminal/#respond">Leave a Comment</a>
+
+</div></p>
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+<div class="post">
+<div class="konafilter">
+<h2><a href="http://osxdaily.com/2019/08/13/how-opt-out-beta-macos-system-software-updates/" rel="bookmark" title="How to Opt Out of MacOS Catalina Beta Updates">How to Opt Out of MacOS Catalina Beta Updates</a></h2>
+<div id="subhead_block">
+<span class="subhead_lefty">Aug 13, 2019 - <a href="http://osxdaily.com/2019/08/13/how-opt-out-beta-macos-system-software-updates/#respond">Leave a Comment</a></span>
+<span class="subhead_righty"></span>
+</div>
+
+<div class="contenttext">
+
+<p><img src="http://cdn.osxdaily.com/wp-content/uploads/2019/07/opt-out-of-beta-macos-system-software-updates-610x310.png" alt="How to opt out of beta MacOS system software updates" width="610" height="310" class="aligncenter size-large wp-image-87383" srcset="http://cdn.osxdaily.com/wp-content/uploads/2019/07/opt-out-of-beta-macos-system-software-updates-610x310.png 610w, http://cdn.osxdaily.com/wp-content/uploads/2019/07/opt-out-of-beta-macos-system-software-updates-300x153.png 300w, http://cdn.osxdaily.com/wp-content/uploads/2019/07/opt-out-of-beta-macos-system-software-updates-768x391.png 768w, http://cdn.osxdaily.com/wp-content/uploads/2019/07/opt-out-of-beta-macos-system-software-updates-900x458.png 900w, http://cdn.osxdaily.com/wp-content/uploads/2019/07/opt-out-of-beta-macos-system-software-updates.png 1560w" sizes="(max-width: 610px) 100vw, 610px" /></p>
+<p>Want to stop getting beta updates to MacOS Catalina or Mojave? You can opt-out of receiving beta system software updates by removing the beta profile from a Mac.  This works the same with both the public beta and developer beta profiles of MacOS system software.</p>
+<p> <a href="http://osxdaily.com/2019/08/13/how-opt-out-beta-macos-system-software-updates/" class="more-link">Read more &raquo;</a></p>
+
+
+
+</div>
+
+
+
+<div id="commenttext"><strong>By Paul Horowitz</strong> - <span class="nostylefoot_a"><a href="http://osxdaily.com/category/mac-os-x/" rel="category tag">Mac OS X</a>, <a href="http://osxdaily.com/category/tips-tricks/" rel="category tag">Tips &amp; Tricks</a>, <a href="http://osxdaily.com/category/troubleshooting/" rel="category tag">Troubleshooting</a></span> - <a href="http://osxdaily.com/2019/08/13/how-opt-out-beta-macos-system-software-updates/#respond">Leave a Comment</a>
+
+</div></p>
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+<div class="post">
+<div class="konafilter">
+<h2><a href="http://osxdaily.com/2019/08/12/open-vmdk-virtualbox/" rel="bookmark" title="How to Open a VMDK File in VirtualBox">How to Open a VMDK File in VirtualBox</a></h2>
+<div id="subhead_block">
+<span class="subhead_lefty">Aug 12, 2019 - <a href="http://osxdaily.com/2019/08/12/open-vmdk-virtualbox/#respond">Leave a Comment</a></span>
+<span class="subhead_righty"></span>
+</div>
+
+<div class="contenttext">
+
+<p><img src="http://cdn.osxdaily.com/wp-content/uploads/2019/08/open-vmdk-virtualbox-610x378.jpg" alt="How to open VMDK in VirtualBox" width="610" height="378" class="aligncenter size-large wp-image-88401" srcset="http://cdn.osxdaily.com/wp-content/uploads/2019/08/open-vmdk-virtualbox-610x378.jpg 610w, http://cdn.osxdaily.com/wp-content/uploads/2019/08/open-vmdk-virtualbox-300x186.jpg 300w, http://cdn.osxdaily.com/wp-content/uploads/2019/08/open-vmdk-virtualbox-768x476.jpg 768w, http://cdn.osxdaily.com/wp-content/uploads/2019/08/open-vmdk-virtualbox-900x558.jpg 900w, http://cdn.osxdaily.com/wp-content/uploads/2019/08/open-vmdk-virtualbox.jpg 1206w" sizes="(max-width: 610px) 100vw, 610px" /></p>
+<p>Need to open a VMDK file in VirtualBox? This article will show you how to setup and use a VMDK virtual machine file with VirtualBox. This particular tutorial is demonstrated on a Mac, but using a VMDK with VirtualBox this way should work the same on Windows and Linux too. </p>
+<p> <a href="http://osxdaily.com/2019/08/12/open-vmdk-virtualbox/" class="more-link">Read more &raquo;</a></p>
+
+
+
+</div>
+
+
+
+<div id="commenttext"><strong>By Paul Horowitz</strong> - <span class="nostylefoot_a"><a href="http://osxdaily.com/category/mac-os-x/" rel="category tag">Mac OS X</a>, <a href="http://osxdaily.com/category/tips-tricks/" rel="category tag">Tips &amp; Tricks</a></span> - <a href="http://osxdaily.com/2019/08/12/open-vmdk-virtualbox/#respond">Leave a Comment</a>
+
+</div></p>
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+<div class="post">
+<div class="konafilter">
+<h2><a href="http://osxdaily.com/2019/08/11/how-make-facetime-video-call-mac/" rel="bookmark" title="How to Make FaceTime Video Calls on Mac">How to Make FaceTime Video Calls on Mac</a></h2>
+<div id="subhead_block">
+<span class="subhead_lefty">Aug 11, 2019 - <a href="http://osxdaily.com/2019/08/11/how-make-facetime-video-call-mac/#respond">Leave a Comment</a></span>
+<span class="subhead_righty"></span>
+</div>
+
+<div class="contenttext">
+
+<p><img src="http://cdn.osxdaily.com/wp-content/uploads/2019/05/facetime-icon-mac-610x500.jpg" alt="FaceTime on Mac" width="410" height="300" class="aligncenter size-large wp-image-85049" /></p>
+<p>If you have a Mac you can easily make FaceTime Video calls to any other user with an iPhone, iPad, Mac, or iPod touch. FaceTime video chat offers a fun way to have conversations with people, and it can also be useful for business and other purposes too. </p>
+<p>This article will show you how to make a FaceTime video call from a Mac.</p>
+<p> <a href="http://osxdaily.com/2019/08/11/how-make-facetime-video-call-mac/" class="more-link">Read more &raquo;</a></p>
+
+
+
+</div>
+
+
+
+<div id="commenttext"><strong>By Paul Horowitz</strong> - <span class="nostylefoot_a"><a href="http://osxdaily.com/category/mac-os-x/" rel="category tag">Mac OS X</a>, <a href="http://osxdaily.com/category/tips-tricks/" rel="category tag">Tips &amp; Tricks</a></span> - <a href="http://osxdaily.com/2019/08/11/how-make-facetime-video-call-mac/#respond">Leave a Comment</a>
+
+</div></p>
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+<div class="post">
+<div class="konafilter">
+<h2><a href="http://osxdaily.com/2019/08/10/how-make-facetime-call-iphone-ipad/" rel="bookmark" title="How to Make a FaceTime Call from iPhone &#038; iPad">How to Make a FaceTime Call from iPhone &#038; iPad</a></h2>
+<div id="subhead_block">
+<span class="subhead_lefty">Aug 10, 2019 - <a href="http://osxdaily.com/2019/08/10/how-make-facetime-call-iphone-ipad/#comments">1 Comment</a></span>
+<span class="subhead_righty"></span>
+</div>
+
+<div class="contenttext">
+
+<p><img src="http://cdn.osxdaily.com/wp-content/uploads/2019/01/facetime-icon-610x477.jpg" alt="FaceTime" width="410" height="277" class="aligncenter size-large wp-image-81695" /></p>
+<p>Making a FaceTime video chat call can be a fun way to have a conversation with someone remotely, and the iPhone and iPad make it very easy to place FaceTime video calls as this article will demonstrate.</p>
+<p> <a href="http://osxdaily.com/2019/08/10/how-make-facetime-call-iphone-ipad/" class="more-link">Read more &raquo;</a></p>
+
+
+
+</div>
+
+
+
+<div id="commenttext"><strong>By Paul Horowitz</strong> - <span class="nostylefoot_a"><a href="http://osxdaily.com/category/ipad/" rel="category tag">iPad</a>, <a href="http://osxdaily.com/category/iphone/" rel="category tag">iPhone</a>, <a href="http://osxdaily.com/category/tips-tricks/" rel="category tag">Tips &amp; Tricks</a></span> - <a href="http://osxdaily.com/2019/08/10/how-make-facetime-call-iphone-ipad/#comments">1 Comment</a>
+
+</div></p>
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+<div class="post">
+<div class="konafilter">
+<h2><a href="http://osxdaily.com/2019/08/09/how-uninstall-malwarebytes-mac/" rel="bookmark" title="How to Uninstall Malwarebytes on Mac">How to Uninstall Malwarebytes on Mac</a></h2>
+<div id="subhead_block">
+<span class="subhead_lefty">Aug 9, 2019 - <a href="http://osxdaily.com/2019/08/09/how-uninstall-malwarebytes-mac/#comments">9 Comments</a></span>
+<span class="subhead_righty"></span>
+</div>
+
+<div class="contenttext">
+
+<p><img src="http://cdn.osxdaily.com/wp-content/uploads/2019/07/how-uninstall-malwarebytes-mac-610x274.jpg" alt="How to uninstall Malwarebytes from Mac" width="610" height="274" class="aligncenter size-large wp-image-87931" srcset="http://cdn.osxdaily.com/wp-content/uploads/2019/07/how-uninstall-malwarebytes-mac-610x274.jpg 610w, http://cdn.osxdaily.com/wp-content/uploads/2019/07/how-uninstall-malwarebytes-mac-300x135.jpg 300w, http://cdn.osxdaily.com/wp-content/uploads/2019/07/how-uninstall-malwarebytes-mac-768x345.jpg 768w, http://cdn.osxdaily.com/wp-content/uploads/2019/07/how-uninstall-malwarebytes-mac-900x404.jpg 900w, http://cdn.osxdaily.com/wp-content/uploads/2019/07/how-uninstall-malwarebytes-mac.jpg 1560w" sizes="(max-width: 610px) 100vw, 610px" /></p>
+<p>At some point in time you may have <a href="http://osxdaily.com/2019/08/05/how-install-malwarebytes-mac-scan-malware/">installed the popular Malwarebytes tool on a Mac to scan for malware, spyware, ransomware</a>, junkware, and other <a href="http://osxdaily.com/2018/07/27/top-mac-malware-threats-presentation-video/">garbage threats</a> on a Mac, but at some point you may decide you want to uninstall Malwarebytes from the Mac and remove the utility from a computer. </p>
+<p>Whether you&#8217;re using the free or paid version of Malwarebytes you&#8217;ll find that uninstalling it is fairly easy. We&#8217;ll cover two methods to remove Malwarebytes from a Mac.</p>
+<p> <a href="http://osxdaily.com/2019/08/09/how-uninstall-malwarebytes-mac/" class="more-link">Read more &raquo;</a></p>
+
+
+
+</div>
+
+
+
+<div id="commenttext"><strong>By Paul Horowitz</strong> - <span class="nostylefoot_a"><a href="http://osxdaily.com/category/mac-os-x/" rel="category tag">Mac OS X</a>, <a href="http://osxdaily.com/category/tips-tricks/" rel="category tag">Tips &amp; Tricks</a>, <a href="http://osxdaily.com/category/troubleshooting/" rel="category tag">Troubleshooting</a></span> - <a href="http://osxdaily.com/2019/08/09/how-uninstall-malwarebytes-mac/#comments">9 Comments</a>
+
+</div></p>
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+<div class="post">
+<div class="konafilter">
+<h2><a href="http://osxdaily.com/2019/08/08/enjoy-four-asmr-videos-from-apple-crunching-whispering-woodworking-rain/" rel="bookmark" title="Enjoy Four ASMR Videos from Apple &#8211; Crunching, Whispering, Woodworking, Rain">Enjoy Four ASMR Videos from Apple &#8211; Crunching, Whispering, Woodworking, Rain</a></h2>
+<div id="subhead_block">
+<span class="subhead_lefty">Aug 8, 2019 - <a href="http://osxdaily.com/2019/08/08/enjoy-four-asmr-videos-from-apple-crunching-whispering-woodworking-rain/#comments">6 Comments</a></span>
+<span class="subhead_righty"></span>
+</div>
+
+<div class="contenttext">
+
+<p><img src="http://cdn.osxdaily.com/wp-content/uploads/2019/08/apple-asmr-2-610x311.jpg" alt="Apple ASMR videos" width="610" height="311" class="aligncenter size-large wp-image-88343" srcset="http://cdn.osxdaily.com/wp-content/uploads/2019/08/apple-asmr-2-610x311.jpg 610w, http://cdn.osxdaily.com/wp-content/uploads/2019/08/apple-asmr-2-300x153.jpg 300w, http://cdn.osxdaily.com/wp-content/uploads/2019/08/apple-asmr-2-768x391.jpg 768w, http://cdn.osxdaily.com/wp-content/uploads/2019/08/apple-asmr-2-900x458.jpg 900w" sizes="(max-width: 610px) 100vw, 610px" /></p>
+<p>Apple has released a series of interesting ASMR videos to listen to and enjoy with headphones on. The videos emphasize different sounds, like falling rain, the sounds of boots on a trail, the sounds of workworking, and the sound of someone whispering. Apple recommends wearing headphones for the best experience. </p>
+<p>ASMR, which stands for Autonomous Sensory Meridian Response, is apparently supposed to trigger positive feelings or tingling in the listener in a similar way to using <a href="https://amzn.to/31sVKxi" target="_blank" rel="nofollow noopener noreferrer">a scalp massager</a>. </p>
+<p>The Apple ASMR videos have been embedded below for trying out yourself, Apple says they are best enjoyed wearing a set of <a href="https://amzn.to/31uY8Ui" target="_blank" rel="nofollow noopener noreferrer">headphones</a>.</p>
+<p> <a href="http://osxdaily.com/2019/08/08/enjoy-four-asmr-videos-from-apple-crunching-whispering-woodworking-rain/" class="more-link">Read more &raquo;</a></p>
+
+
+
+</div>
+
+
+
+<div id="commenttext"><strong>By Paul Horowitz</strong> - <span class="nostylefoot_a"><a href="http://osxdaily.com/category/fun/" rel="category tag">Fun</a>, <a href="http://osxdaily.com/category/news/" rel="category tag">News</a></span> - <a href="http://osxdaily.com/2019/08/08/enjoy-four-asmr-videos-from-apple-crunching-whispering-woodworking-rain/#comments">6 Comments</a>
+
+</div></p>
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+<div class="post">
+<div class="konafilter">
+<h2><a href="http://osxdaily.com/2019/08/08/public-beta-5-of-ios-13-ipados-13-download-available/" rel="bookmark" title="Public Beta 5 of iOS 13 &#038; iPadOS 13 Available to Download Now">Public Beta 5 of iOS 13 &#038; iPadOS 13 Available to Download Now</a></h2>
+<div id="subhead_block">
+<span class="subhead_lefty">Aug 8, 2019 - <a href="http://osxdaily.com/2019/08/08/public-beta-5-of-ios-13-ipados-13-download-available/#comments">3 Comments</a></span>
+<span class="subhead_righty"></span>
+</div>
+
+<div class="contenttext">
+
+<p><img src="http://cdn.osxdaily.com/wp-content/uploads/2019/08/ipados-13-public-beta-5-610x458.jpg" alt="iPadOS 13 public beta 5 and iOS 13 public beta 5 are available to download now" width="610" height="458" class="aligncenter size-large wp-image-88311" srcset="http://cdn.osxdaily.com/wp-content/uploads/2019/08/ipados-13-public-beta-5-610x458.jpg 610w, http://cdn.osxdaily.com/wp-content/uploads/2019/08/ipados-13-public-beta-5-300x225.jpg 300w, http://cdn.osxdaily.com/wp-content/uploads/2019/08/ipados-13-public-beta-5-768x576.jpg 768w, http://cdn.osxdaily.com/wp-content/uploads/2019/08/ipados-13-public-beta-5-900x675.jpg 900w" sizes="(max-width: 610px) 100vw, 610px" /></p>
+<p>The fifth public beta version of iOS 13 and iPadOS 13 are now available to users enrolled in the iOS and iPadOS public beta testing programs. The new public beta builds match the <a href="http://osxdaily.com/2019/08/07/download-ios-13-beta-6-ipados-13-beta-6-now-available/">iOS 13 beta 6 developer</a> build from the day prior.</p>
+<p> <a href="http://osxdaily.com/2019/08/08/public-beta-5-of-ios-13-ipados-13-download-available/" class="more-link">Read more &raquo;</a></p>
+
+
+
+</div>
+
+
+
+<div id="commenttext"><strong>By Paul Horowitz</strong> - <span class="nostylefoot_a"><a href="http://osxdaily.com/category/news/" rel="category tag">News</a></span> - <a href="http://osxdaily.com/2019/08/08/public-beta-5-of-ios-13-ipados-13-download-available/#comments">3 Comments</a>
+
+</div></p>
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+<div class="post">
+<div class="konafilter">
+<h2><a href="http://osxdaily.com/2019/08/07/download-ios-13-beta-6-ipados-13-beta-6-now-available/" rel="bookmark" title="Download iOS 13 Beta 6 &#038; iPadOS 13 Beta 6 Now Available">Download iOS 13 Beta 6 &#038; iPadOS 13 Beta 6 Now Available</a></h2>
+<div id="subhead_block">
+<span class="subhead_lefty">Aug 7, 2019 - <a href="http://osxdaily.com/2019/08/07/download-ios-13-beta-6-ipados-13-beta-6-now-available/#comments">1 Comment</a></span>
+<span class="subhead_righty"></span>
+</div>
+
+<div class="contenttext">
+
+<p><img src="http://cdn.osxdaily.com/wp-content/uploads/2019/06/public-beta-ios-13-ipados-13-610x379.jpg" alt="Public beta of iOS 13 and iPadOS 13" width="610" height="379" class="aligncenter size-large wp-image-86683" srcset="http://cdn.osxdaily.com/wp-content/uploads/2019/06/public-beta-ios-13-ipados-13-610x379.jpg 610w, http://cdn.osxdaily.com/wp-content/uploads/2019/06/public-beta-ios-13-ipados-13-300x186.jpg 300w, http://cdn.osxdaily.com/wp-content/uploads/2019/06/public-beta-ios-13-ipados-13-768x477.jpg 768w, http://cdn.osxdaily.com/wp-content/uploads/2019/06/public-beta-ios-13-ipados-13-900x559.jpg 900w, http://cdn.osxdaily.com/wp-content/uploads/2019/06/public-beta-ios-13-ipados-13.jpg 1200w" sizes="(max-width: 610px) 100vw, 610px" /></p>
+<p>iOS 13 beta 6 and iPadOS 13 beta 6 have been released by Apple. The new beta builds are currently available to users who are enrolled in the developer beta testing program for iOS and iPadOS. </p>
+<p>Typically a developer beta version of iOS 13 and iPadOS 13 is released first, and is soon followed by a public beta build that is labeled as a version number behind. For example iOS 13 dev beta 6 is typically iOS 13 public beta 5, even if they carry the same build number.</p>
+<p> <a href="http://osxdaily.com/2019/08/07/download-ios-13-beta-6-ipados-13-beta-6-now-available/" class="more-link">Read more &raquo;</a></p>
+
+
+
+</div>
+
+
+
+<div id="commenttext"><strong>By Paul Horowitz</strong> - <span class="nostylefoot_a"><a href="http://osxdaily.com/category/ipad/" rel="category tag">iPad</a>, <a href="http://osxdaily.com/category/iphone/" rel="category tag">iPhone</a>, <a href="http://osxdaily.com/category/news/" rel="category tag">News</a></span> - <a href="http://osxdaily.com/2019/08/07/download-ios-13-beta-6-ipados-13-beta-6-now-available/#comments">1 Comment</a>
+
+</div></p>
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+<div class="post">
+<div class="konafilter">
+<h2><a href="http://osxdaily.com/2019/08/06/convert-numbers-file-to-excel-ipad-iphone/" rel="bookmark" title="How to Convert Numbers File to Excel on iPad or iPhone">How to Convert Numbers File to Excel on iPad or iPhone</a></h2>
+<div id="subhead_block">
+<span class="subhead_lefty">Aug 6, 2019 - <a href="http://osxdaily.com/2019/08/06/convert-numbers-file-to-excel-ipad-iphone/#respond">Leave a Comment</a></span>
+<span class="subhead_righty"></span>
+</div>
+
+<div class="contenttext">
+
+<p><img src="http://cdn.osxdaily.com/wp-content/uploads/2019/08/numbers-icon-ipad-iphone.jpg" alt="How to convert Numbers file to Excel file on iPad or iPhone" width="264" height="262" class="aligncenter size-full wp-image-88239" srcset="http://cdn.osxdaily.com/wp-content/uploads/2019/08/numbers-icon-ipad-iphone.jpg 364w, http://cdn.osxdaily.com/wp-content/uploads/2019/08/numbers-icon-ipad-iphone-150x150.jpg 150w, http://cdn.osxdaily.com/wp-content/uploads/2019/08/numbers-icon-ipad-iphone-300x298.jpg 300w, http://cdn.osxdaily.com/wp-content/uploads/2019/08/numbers-icon-ipad-iphone-144x144.jpg 144w" sizes="(max-width: 264px) 100vw, 264px" /></p>
+<p>Need to convert a Numbers file to an Excel spreadsheet file from iPad or iPhone? This is a common task for many work and educational environments where Excel is commonly used, and fortunately this process is easy to accomplish thanks to the Numbers app Export features. </p>
+<p>This article will show you how to convert a Numbers document to an Excel spreadsheet file using an iPad or iPhone, the end result will be an Excel file in XLS / XLSX file format.</p>
+<p> <a href="http://osxdaily.com/2019/08/06/convert-numbers-file-to-excel-ipad-iphone/" class="more-link">Read more &raquo;</a></p>
+
+
+
+</div>
+
+
+
+<div id="commenttext"><strong>By Paul Horowitz</strong> - <span class="nostylefoot_a"><a href="http://osxdaily.com/category/ipad/" rel="category tag">iPad</a>, <a href="http://osxdaily.com/category/iphone/" rel="category tag">iPhone</a>, <a href="http://osxdaily.com/category/tips-tricks/" rel="category tag">Tips &amp; Tricks</a></span> - <a href="http://osxdaily.com/2019/08/06/convert-numbers-file-to-excel-ipad-iphone/#respond">Leave a Comment</a>
+
+</div></p>
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+<div class="post">
+<div class="konafilter">
+<h2><a href="http://osxdaily.com/2019/08/05/how-install-malwarebytes-mac-scan-malware/" rel="bookmark" title="How to Install Malwarebytes on Mac to Scan for Malware &#038; Adware">How to Install Malwarebytes on Mac to Scan for Malware &#038; Adware</a></h2>
+<div id="subhead_block">
+<span class="subhead_lefty">Aug 5, 2019 - <a href="http://osxdaily.com/2019/08/05/how-install-malwarebytes-mac-scan-malware/#comments">14 Comments</a></span>
+<span class="subhead_righty"></span>
+</div>
+
+<div class="contenttext">
+
+<p><img src="http://cdn.osxdaily.com/wp-content/uploads/2019/08/howto-install-malwarebytes-scan-remove-mac-malware-virus-trojans-etc-610x372.jpg" alt="How to install Malwarebytes and scan and clean Mac malware adware virus etc" width="610" height="372" class="aligncenter size-large wp-image-88209" srcset="http://cdn.osxdaily.com/wp-content/uploads/2019/08/howto-install-malwarebytes-scan-remove-mac-malware-virus-trojans-etc-610x372.jpg 610w, http://cdn.osxdaily.com/wp-content/uploads/2019/08/howto-install-malwarebytes-scan-remove-mac-malware-virus-trojans-etc-300x183.jpg 300w, http://cdn.osxdaily.com/wp-content/uploads/2019/08/howto-install-malwarebytes-scan-remove-mac-malware-virus-trojans-etc-768x469.jpg 768w, http://cdn.osxdaily.com/wp-content/uploads/2019/08/howto-install-malwarebytes-scan-remove-mac-malware-virus-trojans-etc-900x549.jpg 900w" sizes="(max-width: 610px) 100vw, 610px" /></p>
+<p>Malwarebytes for Mac is a popular and respected anti-malware tool for Mac that can help to clear a Mac of malware, ransomware, and viruses. While users can <a href="http://osxdaily.com/2012/04/07/tips-secure-mac-from-virus-trojan/">follow some simple tips to protect a Mac from viruses and trojans</a>, and MacOS is fairly secure as-is from malware, junk ware, and adware, many Mac users often ask how they can scan their Mac for adware or for viruses. For those who have some concerns about malware on a Mac, using the Malwarebytes app to scan and clear a Mac can offer some additional peace of mind. </p>
+<p>This article will show you how to install Malwarebytes on a Mac, and how to use the free version to scan and clean a Mac of any threats. </p>
+<p> <a href="http://osxdaily.com/2019/08/05/how-install-malwarebytes-mac-scan-malware/" class="more-link">Read more &raquo;</a></p>
+
+
+
+</div>
+
+
+
+<div id="commenttext"><strong>By Paul Horowitz</strong> - <span class="nostylefoot_a"><a href="http://osxdaily.com/category/mac-os-x/" rel="category tag">Mac OS X</a>, <a href="http://osxdaily.com/category/security/" rel="category tag">Security</a>, <a href="http://osxdaily.com/category/tips-tricks/" rel="category tag">Tips &amp; Tricks</a>, <a href="http://osxdaily.com/category/troubleshooting/" rel="category tag">Troubleshooting</a></span> - <a href="http://osxdaily.com/2019/08/05/how-install-malwarebytes-mac-scan-malware/#comments">14 Comments</a>
+
+</div></p>
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+<div class="post">
+<div class="konafilter">
+<h2><a href="http://osxdaily.com/2019/08/04/how-update-email-password-iphone-ipad/" rel="bookmark" title="How to Update an Email Password on iPhone &#038; iPad">How to Update an Email Password on iPhone &#038; iPad</a></h2>
+<div id="subhead_block">
+<span class="subhead_lefty">Aug 4, 2019 - <a href="http://osxdaily.com/2019/08/04/how-update-email-password-iphone-ipad/#comments">6 Comments</a></span>
+<span class="subhead_righty"></span>
+</div>
+
+<div class="contenttext">
+
+<p><img src="http://cdn.osxdaily.com/wp-content/uploads/2019/08/howto-update-email-password-iphone-ipad-610x563.jpg" alt="How to update email password on iPhone or iPad" width="610" height="563" class="aligncenter size-large wp-image-88171" srcset="http://cdn.osxdaily.com/wp-content/uploads/2019/08/howto-update-email-password-iphone-ipad-610x563.jpg 610w, http://cdn.osxdaily.com/wp-content/uploads/2019/08/howto-update-email-password-iphone-ipad-300x277.jpg 300w, http://cdn.osxdaily.com/wp-content/uploads/2019/08/howto-update-email-password-iphone-ipad-768x709.jpg 768w, http://cdn.osxdaily.com/wp-content/uploads/2019/08/howto-update-email-password-iphone-ipad-900x831.jpg 900w, http://cdn.osxdaily.com/wp-content/uploads/2019/08/howto-update-email-password-iphone-ipad.jpg 1125w" sizes="(max-width: 610px) 100vw, 610px" /></p>
+<p>Wondering how you can update an email password on iPhone or iPad for the Mail app? If you changed the password to an email account that is used on iPhone or iPad, you likely want to update that email password so the email address account continues to work on that device. </p>
+<p>This article will show you how to update an email account password for the Mail app on iPhone and iPad. This is usually only necessary if the email password has been changed, reset, or cleared.</p>
+<p> <a href="http://osxdaily.com/2019/08/04/how-update-email-password-iphone-ipad/" class="more-link">Read more &raquo;</a></p>
+
+
+
+</div>
+
+
+
+<div id="commenttext"><strong>By Paul Horowitz</strong> - <span class="nostylefoot_a"><a href="http://osxdaily.com/category/ipad/" rel="category tag">iPad</a>, <a href="http://osxdaily.com/category/iphone/" rel="category tag">iPhone</a>, <a href="http://osxdaily.com/category/tips-tricks/" rel="category tag">Tips &amp; Tricks</a>, <a href="http://osxdaily.com/category/troubleshooting/" rel="category tag">Troubleshooting</a></span> - <a href="http://osxdaily.com/2019/08/04/how-update-email-password-iphone-ipad/#comments">6 Comments</a>
+
+</div></p>
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+<div class="post">
+<div class="konafilter">
+<h2><a href="http://osxdaily.com/2019/08/03/how-disable-enable-facetime-mac/" rel="bookmark" title="How to Disable FaceTime on Mac">How to Disable FaceTime on Mac</a></h2>
+<div id="subhead_block">
+<span class="subhead_lefty">Aug 3, 2019 - <a href="http://osxdaily.com/2019/08/03/how-disable-enable-facetime-mac/#comments">3 Comments</a></span>
+<span class="subhead_righty"></span>
+</div>
+
+<div class="contenttext">
+
+<p><img src="http://cdn.osxdaily.com/wp-content/uploads/2019/05/facetime-on-mac-610x557.jpg" alt="How to Turn Off FaceTime on Mac or turn it back on again" width="610" height="557" class="aligncenter size-large wp-image-85043" srcset="http://cdn.osxdaily.com/wp-content/uploads/2019/05/facetime-on-mac-610x557.jpg 610w, http://cdn.osxdaily.com/wp-content/uploads/2019/05/facetime-on-mac-300x274.jpg 300w, http://cdn.osxdaily.com/wp-content/uploads/2019/05/facetime-on-mac-768x701.jpg 768w, http://cdn.osxdaily.com/wp-content/uploads/2019/05/facetime-on-mac-900x821.jpg 900w, http://cdn.osxdaily.com/wp-content/uploads/2019/05/facetime-on-mac.jpg 1528w" sizes="(max-width: 610px) 100vw, 610px" /></p>
+<p>Some Mac users may wish to turn off FaceTime on their computer, thereby preventing FaceTime calls from ringing on the Mac, and also turning off the ability to make outbound calls too. </p>
+<p>By disabling FaceTime on the Mac, the Mac will not be able to accept, receive, or make any FaceTime calls, whether they are <a href="http://osxdaily.com/2014/03/11/make-facetime-audio-calls-mac/">audio</a> or video calls. This is an easy feature to turn off and on at any time, so you can also quickly re-enable FaceTime if you do want to use the feature on the Mac.</p>
+<p> <a href="http://osxdaily.com/2019/08/03/how-disable-enable-facetime-mac/" class="more-link">Read more &raquo;</a></p>
+
+
+
+</div>
+
+
+
+<div id="commenttext"><strong>By Paul Horowitz</strong> - <span class="nostylefoot_a"><a href="http://osxdaily.com/category/mac-os-x/" rel="category tag">Mac OS X</a>, <a href="http://osxdaily.com/category/tips-tricks/" rel="category tag">Tips &amp; Tricks</a></span> - <a href="http://osxdaily.com/2019/08/03/how-disable-enable-facetime-mac/#comments">3 Comments</a>
+
+</div></p>
+
+
+</div>
+</div>
+
+
+
+
+
+<div class="navigation">
+<p><span class="prevlink"><a href="http://osxdaily.com/page/2/" >Next Page &raquo;</a></span>
+<span class="nextlink"></span></p>
+</div>
+		
+
+</div>
+<div id="right_column">
+
+<div id="subscribe_box">
+<h3 class="sidebarstyle" id="subscribe_box_head">Subscribe to OSXDaily</h3>
+<a rel="nofollow" target="_blank" target="_blank" href="http://feeds.feedburner.com/osxdaily"><img src="http://cdn.osxdaily.com/wp-content/themes/osxdaily-left2/img/socialicons/rss-icon.png" border="0" height="48" width="48" alt="Subscribe to RSS" /></a>
+
+<a rel="nofollow" target="_blank" href="http://twitter.com/osxdaily"><img src="http://cdn.osxdaily.com/wp-content/themes/osxdaily-left2/img/socialicons/twitter-icon.png" border="0" height="48" width="48" alt="Subscribe to Twitter Feed" /></a>
+
+<a rel="nofollow" target="_blank" href="http://www.facebook.com/osxdaily"><img src="http://cdn.osxdaily.com/wp-content/themes/osxdaily-left2/img/socialicons/facebook-icon.png" border="0" height="48" width="48" alt="Follow on Facebook" /></a>
+
+<a rel="nofollow" target="_blank" href="http://feedburner.google.com/fb/a/mailverify?uri=osxdaily&amp;loc=en_US"><img src="http://cdn.osxdaily.com/wp-content/themes/osxdaily-left2/img/socialicons/mail-icon.png" border="0" height="48" width="48" alt="Subscribe to eMail Updates" /></a>
+
+<div style="padding:10px 0 20px 25px;">
+
+<div style="width:125px;float:left;">
+<iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Ffacebook.com%2Fosxdaily&amp;send=false&amp;layout=button_count&amp;width=90&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:90px; height:21px;" allowTransparency="true"></iframe>
+</div>
+
+<div style="width:100px;float:left;">
+<a href="https://twitter.com/OSXDaily" class="twitter-follow-button" data-show-count="false">Follow @OSXDaily</a>
+<script defer async src="//platform.twitter.com/widgets.js" type="text/javascript"></script>
+</div>
+
+</div>
+
+</div>
+
+
+
+
+<div style="margin:20px 0;">
+
+<!-- BuySellAds Zone Code -->
+<div id="bsap_1278263" class="bsarocks bsap_95cb8853ab792f424634d57b5de28eed"></div>
+<!-- End BuySellAds Zone Code -->
+</div>
+
+<div style="margin:20px 0;">
+
+<!-- tf -->
+<script type="text/javascript"><!--
+	e9 = new Object();
+    e9.size = "300x250,160x600,300x600";
+	e9.noAd = 1;
+//--></script>
+<script type="text/javascript" src="http://tags.expo9.exponential.com/tags/OSXDailycom/ROS/tags.js"></script>
+</div>
+
+
+
+
+<!--posts-->
+<div style="margin:20px 0; border:1px solid #ccc; border-radius:4px;background-color:#f3f3f3;padding:15px;">
+<h3 class="sidebarstyle">Tips & Tricks</h3>
+<ul>
+ 
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/18/how-disable-passcode-iphone-ipad/" rel="bookmark">How to Disable Passcode on iPhone or iPad</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/17/mac-stuck-screensaver-fix/" rel="bookmark">Screen Saver Stuck on Mac? How to Fix It</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/16/show-all-devices-disk-utility-mac/" rel="bookmark">How to Show All Drive Devices in Disk Utility for MacOS</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/14/change-screen-brightness-mac-terminal/" rel="bookmark">How to Adjust Screen Brightness on Mac from Command Line</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/13/how-opt-out-beta-macos-system-software-updates/" rel="bookmark">How to Opt Out of MacOS Catalina Beta Updates</a></li>
+</ul>
+</div>
+<!--endposts-->
+
+
+<div style="margin:20px 0;">
+<!-- tf -->
+<script type="text/javascript"><!--
+	e9 = new Object();
+    e9.size = "300x250,160x600,300x600";
+	e9.noAd = 1;
+//--></script>
+<script type="text/javascript" src="http://tags.expo9.exponential.com/tags/OSXDailycom/ROS/tags.js"></script>
+
+</div>
+
+<!--posts-->
+<div style="margin:20px 0; border:1px solid #ccc; border-radius:4px;background-color:#f3f3f3;padding:15px;">
+<h3 class="sidebarstyle">News</h3>
+<ul>
+ 
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/16/you-can-download-ios-13-ipados-13-public-beta-6-now/" rel="bookmark">You Can Download iOS 13 &#038; iPadOS 13 Public Beta 6 Now</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/15/ios-13-beta-7-ipados-13-beta-7-available-to-download-for-developers/" rel="bookmark">iOS 13 Beta 7 &#038; iPadOS 13 Beta 7 Available to Download for Developers</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/08/enjoy-four-asmr-videos-from-apple-crunching-whispering-woodworking-rain/" rel="bookmark">Enjoy Four ASMR Videos from Apple &#8211; Crunching, Whispering, Woodworking, Rain</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/08/public-beta-5-of-ios-13-ipados-13-download-available/" rel="bookmark">Public Beta 5 of iOS 13 &#038; iPadOS 13 Available to Download Now</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/07/download-ios-13-beta-6-ipados-13-beta-6-now-available/" rel="bookmark">Download iOS 13 Beta 6 &#038; iPadOS 13 Beta 6 Now Available</a></li>
+</ul>
+</div>
+<!--endposts-->
+
+<!-- matchedcontent -->
+<div style="margin:20px 0;">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:600px"
+     data-ad-client="ca-pub-7321635426958037"
+     data-ad-slot="5553666864"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+
+<!--posts-->
+<div style="margin:20px 0; border:1px solid #ccc; border-radius:4px;background-color:#f3f3f3;padding:15px;">
+<h3 class="sidebarstyle">iPhone / iPad</h3>
+<ul>
+ 
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/18/how-disable-passcode-iphone-ipad/" rel="bookmark">How to Disable Passcode on iPhone or iPad</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/15/ios-13-beta-7-ipados-13-beta-7-available-to-download-for-developers/" rel="bookmark">iOS 13 Beta 7 &#038; iPadOS 13 Beta 7 Available to Download for Developers</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/10/how-make-facetime-call-iphone-ipad/" rel="bookmark">How to Make a FaceTime Call from iPhone &#038; iPad</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/07/download-ios-13-beta-6-ipados-13-beta-6-now-available/" rel="bookmark">Download iOS 13 Beta 6 &#038; iPadOS 13 Beta 6 Now Available</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/06/convert-numbers-file-to-excel-ipad-iphone/" rel="bookmark">How to Convert Numbers File to Excel on iPad or iPhone</a></li>
+</ul>
+</div>
+<!--endposts-->
+
+<div style="margin:20px 0;">
+
+<!-- tf -->
+<script type="text/javascript"><!--
+	e9 = new Object();
+    e9.size = "300x250";
+    e9.noAd = 1;
+//--></script>
+<script type="text/javascript" src="http://tags.expo9.exponential.com/tags/OSXDailycom/ROS/tags.js"></script>
+
+</div>
+
+
+<!--posts-->
+<div style="margin:20px 0; border:1px solid #ccc; border-radius:4px;background-color:#f3f3f3;padding:15px;">
+<h3 class="sidebarstyle">Mac</h3>
+<ul>
+ 
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/17/mac-stuck-screensaver-fix/" rel="bookmark">Screen Saver Stuck on Mac? How to Fix It</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/16/show-all-devices-disk-utility-mac/" rel="bookmark">How to Show All Drive Devices in Disk Utility for MacOS</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/14/change-screen-brightness-mac-terminal/" rel="bookmark">How to Adjust Screen Brightness on Mac from Command Line</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/13/how-opt-out-beta-macos-system-software-updates/" rel="bookmark">How to Opt Out of MacOS Catalina Beta Updates</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/12/open-vmdk-virtualbox/" rel="bookmark">How to Open a VMDK File in VirtualBox</a></li>
+</ul>
+</div>
+<!--endposts-->
+
+
+
+
+<div style="margin:20px auto;text-align:center;">
+<!-- tf sidebar-->
+<script type="text/javascript"><!--
+	e9 = new Object();
+    e9.size = "300x250";
+	e9.noAd = 1;
+//--></script>
+<script type="text/javascript" src="//tags.expo9.exponential.com/tags/OSXDailycom/ROS/tags.js"></script>
+</div>
+
+	<!--posts-->
+<div style="margin:20px 0; border:1px solid #ccc; border-radius:4px;background-color:#f3f3f3;padding:15px;">
+<h3 class="sidebarstyle">Troubleshooting</h3>
+<ul>
+ 
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/17/mac-stuck-screensaver-fix/" rel="bookmark">Screen Saver Stuck on Mac? How to Fix It</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/13/how-opt-out-beta-macos-system-software-updates/" rel="bookmark">How to Opt Out of MacOS Catalina Beta Updates</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/09/how-uninstall-malwarebytes-mac/" rel="bookmark">How to Uninstall Malwarebytes on Mac</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/05/how-install-malwarebytes-mac-scan-malware/" rel="bookmark">How to Install Malwarebytes on Mac to Scan for Malware &#038; Adware</a></li>
+ 
+<li style="margin:16px 0; font-size:15px;">- <a style="font-weight:normal;color:#333;text-decoration:none;" href="http://osxdaily.com/2019/08/04/how-update-email-password-iphone-ipad/" rel="bookmark">How to Update an Email Password on iPhone &#038; iPad</a></li>
+</ul>
+</div>
+<!--endposts-->
+
+
+
+<div style="margin:20px auto;text-align:center;">
+	<a target="_blank" rel="nofollow" href="https://www.amazon.com/ref=as_li_ss_tl?ie=UTF8&linkCode=ll2&tag=oxd-20&linkId=64d3941a2a40f30b13accdf967a25940&language=en_US"><img src="http://cdn.osxdaily.com/wp-content/uploads/2019/06/support-shop-amazon.jpeg" height="250" width="300" alt="Shop on Amazon to help support this site" border="0"/></a>
+	</div>
+
+
+</div>
+<div id="footer">
+
+
+
+<div id="footer_item_container">
+
+
+
+<h4>OSXDaily</h4>
+<p><a href="http://osxdaily.com/about/">About OSXDaily</a> | <a href="http://www.osxdaily.com/contact-os-x-daily/">Contact Us</a> | <a href="http://osxdaily.com/osxdailycom-privacy-policy/">Privacy Policy</a> | <a href="http://osxdaily.com/sitemap-all/">Sitemap</a> </p>
+<p>This website is unrelated to Apple Inc</p>
+<p>All trademarks and copyrights on this website are property of their respective owners.</p>
+
+
+</div>
+
+<div id="footer_text">
+<p>&copy; 2019 OS X Daily. All Rights Reserved. Reproduction without explicit permission is prohibited.</p>
+</div>
+
+
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-428992-6";
+urchinTracker();
+</script>
+
+
+
+<!-- Powered by WPtouch Pro: 3.8.3 --><script type='text/javascript' src='https://s0.wp.com/wp-content/js/devicepx-jetpack.js?ver=201934'></script>
+<script type='text/javascript' src='http://cdn.osxdaily.com/wp-content/plugins/wp-syntax/js/wp-syntax.js?ver=1.1'></script>
+<script type='text/javascript' src='http://cdn.osxdaily.com/wp-includes/js/wp-embed.min.js?ver=5.2.2'></script>
+<script type='text/javascript' src='https://stats.wp.com/e-201934.js' async='async' defer='defer'></script>
+<script type='text/javascript'>
+	_stq = window._stq || [];
+	_stq.push([ 'view', {v:'ext',j:'1:6.2.1',blog:'6690815',post:'0',tz:'-7',srv:'osxdaily.com'} ]);
+	_stq.push([ 'clickTrackerInit', '6690815', '0' ]);
+</script>
+
+			<div id="cookie-notice" role="banner" class="cn-bottom wp-default" style="color: #fff; background-color: #000;"><div class="cookie-notice-container"><span id="cn-notice-text">This website and third-party tools use cookies for functional, analytical, and advertising purposes. By continuing to browse the site, closing this banner, scrolling this webpage, or clicking a link, you agree to these cookies. You can review our privacy policy for additional information.</span><a href="#" id="cn-accept-cookie" data-cookie-set="accept" class="cn-set-cookie cn-button wp-default button">I Accept</a><a href="http://osxdaily.com/osxdailycom-privacy-policy/" target="_blank" id="cn-more-info" class="cn-more-info cn-button wp-default button">Privacy Policy</a>
+				</div>
+				
+			</div></div>
+
+</div>
+
+<!-- BuySellAds Ad Code -->
+<script type="text/javascript">
+(function(){
+  var bsa = document.createElement('script');
+     bsa.type = 'text/javascript';
+     bsa.async = true;
+     bsa.src = 'http://s3.buysellads.com/ac/bsa.js';
+  (document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(bsa);
+})();
+</script>
+<!-- End BuySellAds Ad Code -->
+
+</body>
+</html>

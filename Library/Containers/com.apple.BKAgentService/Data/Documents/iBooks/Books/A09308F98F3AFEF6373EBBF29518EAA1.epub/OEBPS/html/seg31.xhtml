@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 24: Objects vs. Classes</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 24: Objects vs. Classes</h1>
+
+<p>Time for something new. Up until now I’ve been calling almost everything an “object”.  That&apos;s not quite correct though. So, it&apos;s time for you to brush up on your programming theory a bit more.
+</p>
+<p>In this chapter, you will learn the following:
+</p>
+<ul>
+<li>
+<p><em>Classes:</em> The difference between classes and objects.
+</p></li>
+
+<li>
+<p><em>Inheritance:</em> What class inheritance is and how it works.
+</p></li>
+
+<li>
+<p><em>Overriding methods:</em> Overriding methods in sub-classes to provide different functionality.
+</p></li>
+
+<li>
+<p><em>Casts:</em> Casting an object from a subclass to its superclass - how (and why) you do it.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Classes</h2>
+
+<p>If you want to use the proper object-oriented programming vernacular, you have to make a distinction between an object and its <em>class</em>.
+</p>
+<p>When you do this,
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ChecklistItem</span>: <span class="hljs-title">NSObject</span> </span>{
+  . . .
+}</pre>
+<p>You’re really defining a class named <code>ChecklistItem</code>, not an object. An object is what you get when you <em>instantiate</em> a class:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> item = <span class="hljs-type">ChecklistItem</span>()</pre>
+<p>The <code>item</code> variable now contains an object of the class <code>ChecklistItem</code>. You can also say: the <code>item</code> variable contains an <em>instance</em> of the class <code>ChecklistItem</code>. The terms object and instance mean the same thing.
+</p>
+<p>In other words, “instance of class <code>ChecklistItem</code>” is the <em>type</em> of this <code>item</code> variable.
+</p>
+<p>The Swift language and the iOS frameworks already come with a lot of types built-in, but you can also add types of your own by making new classes.
+</p>
+<p>Let’s use an example to illustrate the difference between a class and an instance / object.
+</p>
+<p>You and I are both hungry, so we decide to eat some ice cream (my favorite subject next to programming!). Ice cream is the class of food that we’re going to eat.
+</p>
+<p>The ice cream class looks like this:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">IceCream</span>: <span class="hljs-title">NSObject</span> </span>{
+  <span class="hljs-keyword">var</span> flavor: <span class="hljs-type">String</span>
+  <span class="hljs-keyword">var</span> scoops: <span class="hljs-type">Int</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">eatIt</span><span class="hljs-params">()</span></span> {
+    <span class="hljs-comment">// code goes in here</span>
+  }
+}</pre>
+<p>You and I go on over to the ice cream stand and ask for two cones:
+</p><pre class="code-block"><span class="hljs-comment">// one for you</span>
+<span class="hljs-keyword">let</span> iceCreamForYou = <span class="hljs-type">IceCream</span>()
+iceCreamForYou.flavor = <span class="hljs-string">"Strawberry"</span>
+iceCreamForYou.scoops = <span class="hljs-number">2</span>
+
+<span class="hljs-comment">// and one for me</span>
+<span class="hljs-keyword">let</span> iceCreamForMe = <span class="hljs-type">IceCream</span>()
+iceCreamForMe.flavor = <span class="hljs-string">"Pistachio"</span>
+iceCreamForMe.scoops = <span class="hljs-number">3</span></pre>
+<p>Yep, I get more scoops, but that’s because I’m hungry from all this explaining. ;-]
+</p>
+<p>Now the app has two instances of <code>IceCream</code>, one for you and one for me. There is just one class that describes what sort of food we’re eating — ice cream — but there are two distinct objects. Your object has strawberry flavor, mine pistachio.
+</p><div class="image-70"><img src="graphics/img388.png"  alt="" title="The class is a template for making new instances" /></div>
+<p>The <code>IceCream</code> class is like a template that declares: objects of this type have two properties, <code>flavor</code> and <code>scoops</code>, and a method named <code>eatIt()</code>.
+</p>
+<p>Any new instance that is made from this template will have those instance variables and methods, but it lives in its own section of computer memory and therefore has its own values.
+</p>
+<p>If you’re more into architecture than food, you can also think of a class as a blueprint for a building. It is the design of the building but not the building itself. One blueprint can make many buildings, and you could paint each one — each instance — a different color if you wanted to.
+</p>
+<h2 class="segment-chapter">Inheritance</h2>
+
+<p>Sorry, this is not where I tell you that you’ve inherited a fortune. We’re talking about <em>class inheritance</em> here, one of the main principles of object-oriented programming.
+</p>
+<p>Inheritance is a powerful feature that allows a class to be built on top of another class. The new class takes over all the data and functionality from that other class and adds its own specializations to it.
+</p>
+<p>Take the <code>IceCream</code> class from the previous example. It is built on <code>NSObject</code>, the fundamental class for iOS frameworks. You can see that in the <code>class</code> line that defines <code>IceCream</code>:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">IceCream</span>: <span class="hljs-title">NSObject</span> </span>{</pre>
+<p>This means that <code>IceCream</code> is actually the <code>NSObject</code> class with a few additions of its own, namely the <code>flavor</code> and <code>scoops</code> properties and the <code>eatIt()</code> method.
+</p>
+<p><code>NSObject</code> is the <em>base class</em> for almost all other classes in iOS frameworks. Most objects that you’ll encounter are made from a class that either directly inherits from <code>NSObject</code>, or from another class that is ultimately based on <code>NSObject</code>. You can’t escape it!
+</p>
+<p>You’ve also seen class declarations that look like this:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ChecklistViewController</span>: <span class="hljs-title">UITableViewController</span></span></pre>
+<p>The <code>ChecklistViewController</code> class is really a <code>UITableViewController</code> class with your own additions. It does everything a <code>UITableViewController</code> does, plus whatever new data and functionality you’ve given it.
+</p>
+<p>This inheritance thing is very handy because <code>UITableViewController</code> already does a lot of work for you behind the scenes. It has a table view, it knows how to deal with prototype cells and static cells, and it handles things like scrolling and a ton of other stuff. All you have to do is add your own customizations and you’re ready to go.
+</p>
+<p><code>UITableViewController</code> itself is built on top of <code>UIViewController</code>, which is built on top of something called <code>UIResponder</code>, and ultimately that class is built on <code>NSObject</code>. This is called the <i>inheritance tree</i>.
+</p><div class="image-30"><img src="graphics/img389.png"  alt="" title="All framework classes stand on the shoulders of NSObject" /></div>
+<p>The big idea here is that each object that is higher up performs a more specialized task than the one below it.
+</p>
+<p><code>NSObject</code>, the base class, only provides a few basic functions that are needed by all objects. For example, it contains an <code>alloc</code> method that is used to reserve memory space for the object’s instance variables, and a basic <code>init</code> method.
+</p>
+<p><code>UIViewController</code> is the base class for all view controllers. If you want to make your own view controller, you extend <code>UIViewController</code>. To <em>extend</em> means that you make a class that inherits from another one. Other commonly used terms are to <em>derive from</em> or <em>to base on</em> or <em>to subclass</em>. These phrases all mean the same thing.
+</p>
+<p><code>UIViewController</code> does way more than you&apos;d think — you really don’t want to write all your own screen and view handling code. If you’d had to program each screen totally from scratch, you’d still be working on lesson #1!
+</p>
+<p>Thank goodness that stuff has been taken care of by very smart people working at Apple and they’ve bundled it all into <code>UIViewController</code>. You simply make a class that inherits from <code>UIViewController</code> and you get all that functionality for free. You just add your own data and logic to that class and off you go!
+</p>
+<p>If your screen primarily deals with a table view, then you’d subclass <code>UITableViewController</code> instead. This class does everything <code>UIViewController does</code> — because it inherits from it — but is more specialized for dealing with table views.
+</p>
+<p>You could write all that code by yourself, but why would you, when it’s already available in a convenient package? Class inheritance lets you re-use existing code with minimal effort. It can save you a lot of time!
+</p>
+<h3 class="segment-chapter">Superclasses and subclasses</h3>
+
+<p>When programmers talk about inheritance, they’ll often throw around the terms <em>superclass</em> and <em>subclass</em>.
+</p>
+<p>In the example above, <code>UITableViewController</code> is the immediate superclass of <code>ChecklistViewController</code>, and conversely <code>ChecklistViewController</code> is a subclass of <code>UITableViewController</code>. The superclass is the class you derived from (or extended), while a subclass derives from your class.
+</p><div class="image-60"><img src="graphics/img390.png"  alt="" title="Superclass and subclass" /></div>
+<p>A class in Swift can have many subclasses but only one immediate superclass. Of course, that superclass can have a superclass of its own. There are many different classes that inherit from <code>UIViewController</code>, for example:
+</p><div class="image-70"><img src="graphics/img391.png"  alt="" title="A small portion of the UIKit inheritance tree" /></div>
+<p>Because nearly all classes extend from <code>NSObject</code>, they form a big hierarchy. It is important that you understand this class hierarchy so you can make your own objects inherit from the proper superclasses.
+</p>
+<p>As you’ll see later on, there are many other types of hierarchies in programming. For some reason programmers seem to like hierarchies :]
+</p>
+<p>Do note that in Objective-C, all your classes must at least inherit from the <code>NSObject</code> class. This is not the case with Swift. You could also have written the <code>IceCream</code> class as follows:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">IceCream</span> </span>{
+  . . .
+}</pre>
+<p>Now IceCream does not have a base class at all. This is fine in pure Swift code, but you might run into troubled waters if you try to use <code>IceCream</code> instances in combination with iOS frameworks (which are written in Objective-C). So, sometimes you’ll have to use the <code>NSObject</code> base class, even if you’re writing the app in Swift only.
+</p>
+<h3 class="segment-chapter">Inheriting properties (and methods)</h3>
+
+<p>Inheriting from a class means your new class gets to use the properties and methods from its superclass.
+</p>
+<p>If you create a new base class <code>Snack</code>:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Snack</span> </span>{
+  <span class="hljs-keyword">var</span> flavor: <span class="hljs-type">String</span>
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">eatIt</span><span class="hljs-params">()</span></span> {
+    <span class="hljs-comment">// code goes in here</span>
+  }
+}</pre>
+<p>And make <code>IceCream</code> inherit from that class:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">IceCream</span>: <span class="hljs-title">Snack</span> </span>{
+  <span class="hljs-keyword">var</span> scoops: <span class="hljs-type">Int</span>
+}</pre>
+<p>Then elsewhere in your code you can do:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> iceCreamForMe = <span class="hljs-type">IceCream</span>()
+iceCreamForMe.flavor = <span class="hljs-string">"Chocolate"</span>
+iceCreamForMe.scoops = <span class="hljs-number">1</span>
+iceCreamForMe.eatIt()</pre>
+<p>This works even though <code>IceCream</code> did not explicitly declare an <code>eatIt()</code> method or <code>flavor</code> instance variable. But <code>Snack</code> did! Because <code>IceCream</code> inherits from <code>Snack</code>, it automatically gets the method and instance variable for free.
+</p>
+<h2 class="segment-chapter">Overriding methods</h2>
+
+<p>In the previous example, <code>IceCream</code> could use the <code>eatIt()</code> method implementation from <code>Snack</code> for free. But that&apos;s not the full story :]
+</p>
+<p><code>IceCream</code> can also provide its own <code>eatIt()</code> method if it’s important for your app that eating ice cream is different from eating any other kind of snack (for example, you may want to eat it faster, before it melts):
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">IceCream</span>: <span class="hljs-title">Snack</span> </span>{
+  <span class="hljs-keyword">var</span> scoops: <span class="hljs-type">Int</span>
+
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">eatIt</span><span class="hljs-params">()</span></span> {
+    <span class="hljs-comment">// code goes in here</span>
+  }
+}</pre>
+<p>Now, when someone calls <code>iceCreamForMe.eatIt()</code>, this new version of the method in the <code>IceCream</code> class is invoked. Note that Swift requires you to use the <code>override</code> keyword in front of any methods that you provide that already exist in the superclass.
+</p>
+<p>A possible implementation of this overridden version of <code>eatIt()</code> could look like this:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">IceCream</span>: <span class="hljs-title">Snack</span> </span>{
+  <span class="hljs-keyword">var</span> scoops: <span class="hljs-type">Int</span>
+  <span class="hljs-keyword">var</span> isMelted: <span class="hljs-type">Bool</span>
+
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">eatIt</span><span class="hljs-params">()</span></span> {
+    <span class="hljs-keyword">if</span> isMelted {
+      throwAway()
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">super</span>.eatIt()
+    }
+  }
+}</pre>
+<p>If the ice cream has melted, you want to throw it in the trash. But if it’s still edible, you’ll call <code>Snack</code>’s version of <code>eatIt()</code> using <code>super</code>.
+</p>
+<p>Just like <code>self</code> refers to the current object, the <code>super</code> keyword refers to the object’s superclass. That is the reason you’ve been calling <code>super</code> in various places in your code, to let any superclasses do their thing.
+</p>
+<p>Something that happens often in iOS frameworks is that methods are used for communicating between a class and its subclasses, so that the subclass can  perform specific behavior in certain circumstances. That is what methods such as <code>viewDidLoad()</code> and <code>viewWillAppear(_:)</code> are for.
+</p>
+<p>These methods are defined and implemented by <code>UIViewController</code> but your own view controller subclass can override them.
+</p>
+<p>For example, when its screen is about to become visible, the <code>UIViewController</code> class will call <code>viewWillAppear(true)</code>. Normally this will invoke the <code>viewWillAppear(_:)</code> method from <code>UIViewController</code> itself, but if you’ve provided your own version of this method in your subclass, then yours will be invoked instead.
+</p>
+<p>By overriding <code>viewWillAppear(_:)</code>, you get a chance to handle this event before the superclass does:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyViewController</span>: <span class="hljs-title">UIViewController</span> </span>{
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewWillAppear</span><span class="hljs-params">(<span class="hljs-number">_</span> animated: Bool)</span></span> {
+    <span class="hljs-comment">// do your own stuff before super</span>
+
+    <span class="hljs-comment">// don't forget to call super!</span>
+    <span class="hljs-keyword">super</span>.viewWillAppear(animated)
+
+    <span class="hljs-comment">// do your own stuff after super</span>
+  }
+}</pre>
+<p>That’s how you can tap into the power of your superclass. A well-designed superclass provides such “hooks” that allow you to react to certain events.
+</p>
+<p>Don’t forget to call <code>super</code>’s version of the method, though. If you neglect this, the superclass will not get its own notification and weird things may happen.
+</p>
+<p>You’ve also seen <code>override</code> already in the table view data source methods:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+           didSelectRowAt indexPath: IndexPath)</span></span> {
+  . . .
+}</pre>
+<p><code>UITableViewController</code>, the superclass, already implements these methods. So, if you want to provide your own implementation, you need to override the existing ones.
+</p>
+<div class="note">
+<p><em>Note:</em> Inside those table view delegate and data source methods, it’s usually not necessary to call <code>super</code>. The iOS API documentation can usually tell you whether you need to call <code>super</code> or not for an overridden method.
+</p></div>
+
+<h3 class="segment-chapter">Subclass initialization</h3>
+
+<p>When making a subclass, the <code>init</code> methods require special care.
+</p>
+<p>If you don’t want to change any of the <code>init</code> methods from your superclass or add any new <code>init</code> methods, then it’s easy: you don’t have to do anything. The subclass will automatically take over the <code>init</code> methods from the superclass.
+</p>
+<p>Most of the time, however, you will want to override an <code>init</code> method or add your own. For example, to put values into the subclass’s new instance variables. In that case, you may have to override not just that one <code>init</code> method but all of them.
+</p>
+<p>In the next app you’ll create a class named <code>GradientView</code> that extends <code>UIView</code>. That app uses <code>init(frame:)</code> to create and initialize a <code>GradientView</code> object. <code>GradientView</code> overrides this method to set the background color:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">GradientView</span>: <span class="hljs-title">UIView</span> </span>{
+  <span class="hljs-keyword">override</span> <span class="hljs-keyword">init</span>(frame: <span class="hljs-type">CGRect</span>) {
+    <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>(frame: frame)
+    backgroundColor = <span class="hljs-type">UIColor</span>.black
+  }
+  <span class="hljs-keyword">required</span> <span class="hljs-keyword">init</span>?(coder aDecoder: <span class="hljs-type">NSCoder</span>) {
+    <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>(coder: aDecoder)
+  }
+  . . .
+}</pre>
+<p>But because <code>UIView</code> also has another init method, <code>init?(coder:)</code>, <code>GradientView</code> needs to implement that method too even if it doesn’t do anything but call <code>super</code>.
+</p>
+<p>Also note that <code>init(frame:)</code> is marked as <code>override</code>, but <code>init?(coder:)</code> is <code>required</code>. The <code>required</code> keyword is used to enforce that every subclass always implements this particular <code>init</code> method.
+</p>
+<p>Swift wants to make sure that subclasses don’t forget to add their own stuff to such required <code>init</code> methods, even if the app doesn’t actually use that particular <code>init</code> method, as in the case of <code>GradientView</code> — it can be a bit of an over-concerned parent, that Swift.
+</p>
+<p>The rules for inheritance of <code>init</code> methods are somewhat complicated — the official Swift Programming Guide devotes many pages to it — but at least if you make a mistake, Xcode will tell you what’s wrong and what you should do to fix it.
+</p>
+<h4 class="segment-chapter">Private parts</h4>
+
+<p>So… does a subclass get to use all the methods from its superclass? Not quite.
+</p>
+<p><code>UIViewController</code> and other UIKit classes have a lot more methods hidden away than you have access to. Often, these secret methods do cool things and it is tempting to use them. But they are not part of the official API, making them off-limits for mere mortals such as you and I.
+</p>
+<p>If you ever hear other developers speak of “private APIs” in hushed tones and down dark alleys, then this is what they are talking about.
+</p>
+<p>It is, in theory, possible to call such hidden methods if you know their names, but this is not recommended. It may even get your app rejected from the App Store, as Apple is known to scan apps for usage of these private APIs.
+</p>
+<p>You’re not supposed to use private APIs for two reasons:
+</p>
+<ol>
+<li>
+<p>These APIs may have unexpected side effects and not be as robust as their publicly available relatives.
+</p></li>
+
+<li>
+<p>There is no guarantee these methods will exist from one version of iOS to the next. Using them is very risky, as your apps may suddenly stop working.
+</p></li>
+</ol>
+
+<p>Sometimes, however, using a private API is the only way to access certain functionality on the device. If so, you’re out of luck. Fortunately, for most apps, the official public APIs are more than enough and you won’t need to resort to the private stuff.
+</p>
+<p>So how do you mark your own methods as private, I hear you ask? This could get a bit complicated and is probably best left to a more detailed treatment of the subject. But in simple terms, similar to the <code>@objc</code> attribute you used in the previous chapter,  there are other attributes that you can use to modify the access control level of Swift classes, methods, or properties.
+</p>
+<p>Two of the most common are <code>public</code> and <code>private</code>. And hopefully, their names alone give you an understanding as to their intent. Since Swift 4.0, <code>public</code> is assumed by default. Which is why you have not had to prefix any of your classes or methods with this attribute.
+</p>
+<p><code>private</code> is what you need if you wanted to hide any of your classes, methods, or properties. But a discussion as to how <code>private</code> works in terms of what is hidden if you use the attribute and the advantages of doing so, might be a bit too broad a subject for now :]
+</p>
+<h2 class="segment-chapter">Casts</h2>
+
+<p>Often, your code will refer to an instance not by its own class but by one of its superclasses. That probably sounds very weird, so let’s look at an example.
+</p>
+<p><i>MyLocations</i> has a <code>UITabBarController</code> with three tabs, each of which is represented by a view controller. The view controller for the first tab is <code>CurrentLocationViewController</code>. Later on you’ll add two others, <code>LocationsViewController</code> for the second tab, and <code>MapViewController</code> for the third.
+</p>
+<p>The designers of iOS obviously didn’t know anything about those three particular view controllers when they created <code>UITabBarController</code>. The only thing the tab bar controller can reliably depend on is that each tab has a view controller that inherits from <code>UIViewController</code>.
+</p>
+<p>So, instead of talking to the <code>CurrentLocationViewController</code> class, the tab bar controller only sees its superclass part, <code>UIViewController</code>.
+</p>
+<p>As far as the tab bar controller is concerned, it has three <code>UIViewController</code> instances and it doesn’t know or care about the additions that you’ve made to each one.
+</p><div class="image-70"><img src="graphics/img392.png"  alt="" title="The UITabBarController does not see your subclasses" /></div>
+<p>The same thing goes for <code>UINavigationController</code>. To the navigation controller, any new view controllers that get pushed on the navigation stack are all instances of <code>UIViewController</code>, nothing more, nothing less.
+</p>
+<p>Sometimes that can be a little annoying. When you ask the navigation controller for one of the view controllers on its stack, it returns a reference to a <code>UIViewController</code> instance, even though that is not the full type of that object.
+</p>
+<p>If you want to treat that object as your own view controller subclass instead, you need to <em>cast</em> it to the proper type.
+</p>
+<p>Previously you did the following in <code>prepare(for:sender:)</code>:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> controller = segue.destination <span class="hljs-keyword">as</span>! 
+                 <span class="hljs-type">ItemDetailViewController</span>
+controller.delegate = <span class="hljs-keyword">self</span></pre>
+<p>Here, you wanted to get the segue&apos;s destination view controller — which is an instance of <code>ItemDetailViewController</code> — and set its <code>delegate</code> property.
+</p>
+<p>However, the segue’s <code>destination</code> property won’t give you an object of type <code>ItemDetailViewController</code>. The value it returns is of the plain <code>UIViewController</code> type, which naturally doesn’t have your <code>delegate</code> property.
+</p>
+<p>If you were write the above code without the <code>as! ItemDetailViewController</code> bit, like so:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> controller = segue.destination </pre>
+<p>Then, Xcode would show an error for the line below it. Swift now infers the type of <code>controller</code> to be <code>UIViewController</code>, but <code>UIViewController</code> does not have a <code>delegate</code> property. That property is something you added to the subclass, <code>ItemDetailViewController</code>.
+</p>
+<p><i>You</i> know that <code>destination</code> refers to an <code>ItemDetailViewController</code>, but Swift doesn’t. Even though all <code>ItemDetailViewController</code>s are <code>UIViewController</code>s, not all <code>UIViewController</code>s are <code>ItemDetailViewController</code>s!
+</p>
+<p>Just because your friend Chuck has no hair, that doesn’t mean all bald guys are named Chuck. Or, that all guys named Chuck have no hair, either :]
+</p>
+<p>To solve this problem, you have to cast the object to the proper type. You, as the developer, know this particular object is an <code>ItemDetailViewController</code>, so you use the <code>as!</code> cast operator to tell the compiler, “I want to treat this object as an <code>ItemDetailViewController</code>.”
+</p>
+<p>With the cast, the code looks like this:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> controller = segue.destination <span class="hljs-keyword">as</span>! <span class="hljs-type">ItemDetailViewController</span></pre>
+<p>Now, you can treat the value from <code>controller</code> as an <code>ItemDetailViewController</code> object. But… the compiler can’t check whether the thing you’re casting really is that kind of object. So, if you’re wrong and it’s not, your app will most likely crash.
+</p>
+<p>Casts can fail for other reasons, too. For example, the value that you’re trying to cast may actually be <code>nil</code>. If that’s a possibility, it’s a good idea to use the <code>as?</code> operator to make it an optional cast. You must also store the result of the cast into an optional value or use <code>if let</code> to safely unwrap it.
+</p>
+<p>Note that a cast doesn’t magically convert one type to another. You can’t cast an <code>Int</code> to a <code>String</code>, for example. You only use a cast to make a type more specific, and the two types have to be compatible for this to work.
+</p>
+<p>Casting is very common in Swift programs because of the Objective-C heritage of the iOS frameworks. You’ll be doing a lot of it!
+</p>
+<p>To summarize, there are three kinds of casts you can perform:
+</p>
+<ol>
+<li>
+<p><em>as?</em> for casts that are allowed to fail. This would happen if the object is <code>nil</code> or doesn’t have a type that is compatible with the one you’re trying to cast to. It will try to cast to the new type and if it fails, then no biggie. This cast returns an optional that you can unwrap with <code>if let</code>.
+</p></li>
+
+<li>
+<p><em>as</em><em>!</em> for casts between a class and one of its subclasses. This is also known as a <i>downcast</i>. As with implicitly unwrapped optionals, this cast is potentially unsafe and you should only use <code>as!</code> when you are certain it cannot possibly go wrong. You often need to use this cast when dealing with objects coming from UIKit and other iOS frameworks. Better get used to all those exclamation marks!
+</p></li>
+
+<li>
+<p><em>as</em> for casts that can never possibly fail. Swift can sometimes guarantee that a type cast will always work, for example between <code>NSString</code> and <code>String</code>. In that case you can leave off the <code>?</code> or the <code>!</code> and just write <code>as</code>.
+</p></li>
+</ol>
+
+<p>It can sometimes be confusing to decide which of these three cast operators you need. If so, just type “as” and Xcode will suggest the correct variant. You can rely on Xcode :]
+</p></body></html>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AbortOnUnknownIPC</key>
+	<true/>
+	<key>Bootstrap</key>
+	<dict>
+		<key>BinaryOrderPreference</key>
+		<string>x86_64</string>
+		<key>Child</key>
+		<dict>
+			<key>DYLD_ROOT_PATH</key>
+			<string>/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot</string>
+			<key>IPHONE_SHARED_RESOURCES_DIRECTORY</key>
+			<string>/Users/ahmed/Library/Developer/Xcode/UserData/IB Support/Simulator Devices/419D922E-637B-438B-A624-FD06A264397F/data</string>
+			<key>IPHONE_SIMULATOR_ROOT</key>
+			<string>/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot</string>
+			<key>PATH</key>
+			<string>/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot/usr/bin:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot/bin:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot/usr/sbin:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot/sbin:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot/usr/local/bin</string>
+			<key>SIMULATOR_AUDIO_DEVICES_PLIST_PATH</key>
+			<string>/Users/ahmed/Library/Developer/Xcode/UserData/IB Support/Simulator Devices/419D922E-637B-438B-A624-FD06A264397F/data/var/run/com.apple.coresimulator.audio.plist</string>
+			<key>SIMULATOR_AUDIO_SETTINGS_PATH</key>
+			<string>/Users/ahmed/Library/Developer/Xcode/UserData/IB Support/Simulator Devices/419D922E-637B-438B-A624-FD06A264397F/data/var/run/simulatoraudio/audiosettings.plist</string>
+			<key>SIMULATOR_BOOT_TIME</key>
+			<string>1566316650</string>
+			<key>SIMULATOR_CAPABILITIES</key>
+			<string>/Applications/Xcode.app/Contents/PlugIns/IDEInterfaceBuilderiOSIntegration.ideplugin/Contents/Resources/DeviceTypes/IBSimDeviceTypeiPad2x.simdevicetype/Contents/Resources/capabilities.plist</string>
+			<key>SIMULATOR_DEVICE_NAME</key>
+			<string>IBSimDeviceTypeiPad2x</string>
+			<key>SIMULATOR_HID_SYSTEM_MANAGER</key>
+			<string>/Library/Developer/PrivateFrameworks/CoreSimulator.framework/Resources/Platforms/iphoneos/Library/Frameworks/SimulatorHID.framework</string>
+			<key>SIMULATOR_HOST_HOME</key>
+			<string>/Users/ahmed</string>
+			<key>SIMULATOR_LOG_ROOT</key>
+			<string>/Users/ahmed/Library/Logs/CoreSimulator/419D922E-637B-438B-A624-FD06A264397F</string>
+			<key>SIMULATOR_MAINSCREEN_HEIGHT</key>
+			<string>2048</string>
+			<key>SIMULATOR_MAINSCREEN_PITCH</key>
+			<string>264.000000</string>
+			<key>SIMULATOR_MAINSCREEN_SCALE</key>
+			<string>2.000000</string>
+			<key>SIMULATOR_MAINSCREEN_WIDTH</key>
+			<string>1536</string>
+			<key>SIMULATOR_MEMORY_WARNINGS</key>
+			<string>/Users/ahmed/Library/Developer/Xcode/UserData/IB Support/Simulator Devices/419D922E-637B-438B-A624-FD06A264397F/data/var/run/memory_warning_simulation</string>
+			<key>SIMULATOR_MODEL_IDENTIFIER</key>
+			<string>iPad4,2</string>
+			<key>SIMULATOR_PRODUCT_CLASS</key>
+			<string>J72</string>
+			<key>SIMULATOR_ROOT</key>
+			<string>/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot</string>
+			<key>SIMULATOR_RUNTIME_BUILD_VERSION</key>
+			<string>16A366</string>
+			<key>SIMULATOR_RUNTIME_VERSION</key>
+			<string>12.0</string>
+			<key>SIMULATOR_SHARED_RESOURCES_DIRECTORY</key>
+			<string>/Users/ahmed/Library/Developer/Xcode/UserData/IB Support/Simulator Devices/419D922E-637B-438B-A624-FD06A264397F/data</string>
+			<key>SIMULATOR_UDID</key>
+			<string>419D922E-637B-438B-A624-FD06A264397F</string>
+			<key>SIMULATOR_VERSION_INFO</key>
+			<string>CoreSimulator 572.2 - Device: IBSimDeviceTypeiPad2x - Runtime: iOS 12.0 (16A366) - DeviceType: IBSimDeviceTypeiPad2x</string>
+			<key>SIM_DISABLE_DATA_MIGRATION_FOR_DEVTOOLS</key>
+			<string>1</string>
+			<key>XPC_SIMULATOR_LAUNCHD_NAME</key>
+			<string>com.apple.CoreSimulator.SimDevice.419D922E-637B-438B-A624-FD06A264397F</string>
+		</dict>
+		<key>ChildDefaults</key>
+		<dict>
+			<key>CFFIXED_USER_HOME</key>
+			<string>/Users/ahmed/Library/Developer/Xcode/UserData/IB Support/Simulator Devices/419D922E-637B-438B-A624-FD06A264397F/data</string>
+			<key>DYLD_FALLBACK_FRAMEWORK_PATH</key>
+			<string>/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot/System/Library/Frameworks</string>
+			<key>DYLD_FALLBACK_LIBRARY_PATH</key>
+			<string>/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot/usr/lib</string>
+			<key>HOME</key>
+			<string>/Users/ahmed/Library/Developer/Xcode/UserData/IB Support/Simulator Devices/419D922E-637B-438B-A624-FD06A264397F/data</string>
+			<key>TMPDIR</key>
+			<string>/Users/ahmed/Library/Developer/Xcode/UserData/IB Support/Simulator Devices/419D922E-637B-438B-A624-FD06A264397F/data/tmp/</string>
+		</dict>
+		<key>Paths</key>
+		<array>
+			<string>/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot/System/Library/LaunchDaemons</string>
+			<string>/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot/Developer/Library/LaunchDaemons</string>
+			<string>/Users/ahmed/Library/Developer/Xcode/UserData/IB Support/Simulator Devices/419D922E-637B-438B-A624-FD06A264397F/data/Library/LaunchDaemons</string>
+		</array>
+		<key>Self</key>
+		<dict>
+			<key>DYLD_FALLBACK_FRAMEWORK_PATH</key>
+			<string>/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot/System/Library/Frameworks:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/SimulatorFrameworks:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/SimulatorFrameworks</string>
+			<key>DYLD_FALLBACK_LIBRARY_PATH</key>
+			<string>/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot/usr/lib</string>
+			<key>DYLD_ROOT_PATH</key>
+			<string>/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot</string>
+			<key>XPC_SIMULATOR_LAUNCHD_NAME</key>
+			<string>com.apple.CoreSimulator.SimDevice.419D922E-637B-438B-A624-FD06A264397F</string>
+		</dict>
+		<key>SimulatorRuntimeRoot</key>
+		<string>/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/CoreSimulator/Profiles/Runtimes/iOS.simruntime/Contents/Resources/RuntimeRoot</string>
+	</dict>
+	<key>ExtensionWatchdog</key>
+	<integer>0</integer>
+	<key>LogServiceLifecycle</key>
+	<true/>
+	<key>LogToFlatFile</key>
+	<true/>
+	<key>RequireDomainBinding</key>
+	<true/>
+	<key>SIGTERMTimeout</key>
+	<integer>5</integer>
+	<key>UseGuardMalloc</key>
+	<false/>
+</dict>
+</plist>

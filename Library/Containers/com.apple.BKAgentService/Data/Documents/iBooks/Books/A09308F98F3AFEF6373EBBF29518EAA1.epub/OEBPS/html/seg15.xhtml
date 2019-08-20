@@ -1,0 +1,740 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 9: Table Views</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 9: Table Views</h1>
+
+<p>Ready to get started on your next app? Let&apos;s go!
+</p>
+<p>To-do list apps are one of the most popular types of app on the App Store - iOS even has a bundled-in Reminders app. Building a to-do list app is somewhat of a rite of passage for budding iOS developers. So, it makes sense that you create one as well.
+</p>
+<p>Your own to-do list app, <em><i>Checklists</i></em>, will look like this when you’re finished:
+</p><div class="image-90"><img src="graphics/img171.png"  alt="" title="The finished Checklists app" /></div>
+<p>The app lets you organize to-do items into lists and then check off these items once you’ve completed them. You can also set a reminder on a to-do item that will make the iPhone pop up an alert on the due date, even when the app isn’t running.
+</p>
+<p>As far as to-do list apps go, <i>Checklists</i> is very basic, but don’t let that fool you. Even a simple app such as this already has five different screens and a lot of complexity behind the scenes.
+</p>
+<p>This chapter covers the following:
+</p>
+<ul>
+<li>
+<p><em>Table views and navigation controllers:</em> A basic introduction to navigation controllers and table views.
+</p></li>
+
+<li>
+<p><em>The </em><em><i>Checklists</i></em><em> app design:</em> An overall view of the screen design for the <i>Checklists</i> app.
+</p></li>
+
+<li>
+<p><em>Add a table view:</em> Create your first table view and add a prototype cell to display data.
+</p></li>
+
+<li>
+<p><em>The table view delegates:</em> How to provide data to a table view and respond to taps.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Table views and navigation controllers</h2>
+
+<p><i>Checklists</i> will introduce you to two of the most commonly used UI elements in iOS apps: the table view and the navigation controller.
+</p>
+<p>A <em>table view</em> shows a list of things. The three screens above all use a table view. In fact, all of this app’s screens use table views. This component is extremely versatile and the most important one to master in iOS development.
+</p>
+<p>The <em>navigation controller</em> allows you to build a hierarchy of screens that lead from one screen to another. It adds a navigation bar at the top with a title and a back button.
+</p>
+<p>In this app, tapping the name of a list – “Groceries”, for example – slides in the screen containing the to-do items from that list. The button in the upper-left corner takes you back to the previous screen with a smooth animation. Moving between those screens is the job of the navigation controller.
+</p>
+<p>Navigation controllers and table views are often used together.
+</p><div class="image-50"><img src="graphics/img172.png"  alt="" title="The grey bar at the top is the navigation bar. The list of items is the table view." /></div>
+<p>Take a look at the apps that come with your iPhone – Calendar, Messages, Notes, Contacts, Mail, Settings – and you’ll notice that even though they look slightly different, all these apps work in pretty much the same way.
+</p>
+<p>That’s because they all use table views and navigation controllers:
+</p><div class="image-90"><img src="graphics/img173.png"  alt="" title="These are all table views inside navigation controllers" /></div>
+<p>(The Music app also has a <i>tab bar</i> at the bottom, something you’ll learn about later on.)
+</p>
+<p>If you want to learn how to program iOS apps, you need to master these two components as they make an appearance in almost every app. That’s exactly what you’ll focus on in this section of the book. You’ll also learn how to pass data from one screen to another, a very important topic that often puzzles beginners.
+</p>
+<p>When you’re done with this app, the concepts <em>view controller</em>, <em>table view</em>, and <em>delegate</em> will be so familiar to you that you can program them in your sleep (although I hope you’ll dream of other things).
+</p>
+<p>This section will be a very long read with a lot of source code, so take your time to let it all sink in. I encourage you to experiment with the code that you’ll be writing. Change stuff and see what it does, even if it breaks the app.
+</p>
+<p>Making mistakes that result in bugs, tearing your hair out in frustration, the light bulb moment when you realize what’s wrong, the satisfaction of fixing the bug — they’re all essential parts of the developer learning process :]
+</p>
+<p>There’s no doubt: playing with code is the quickest way to learn!
+</p>
+<p>By the way, if something is unclear to you — for example, you may wonder why method names in Swift look so funny — don’t panic! Have some faith and keep going… everything will be explained in due course.
+</p>
+<h2 class="segment-chapter">The <i>Checklists</i> app design</h2>
+
+<p>Just so you know what you’re in for, here is an overview of how the <i>Checklists</i> app will work:
+</p><div class="image-90"><img src="graphics/img174.png"  alt="" title="All the screens of the Checklists app" /></div>
+<p>The main screen of the app shows all your “checklists” (1). You can create multiple lists to organize your to-do items.
+</p>
+<p>A checklist has a name, an icon, and zero or more to-do items. You can edit the name and icon of a checklist in the Add/Edit Checklist screens (2) and (3).
+</p>
+<p>You tap on the checklist’s name to view its to-do items (4).
+</p>
+<p>A to-do item has a description, a checkmark to indicate that the item is done, and an optional due date. You can edit the item in the Add/Edit Item screen (5).
+</p>
+<p>iOS will automatically notify the user of checklist items that have their “remind me” option set (6), even if the app isn’t running (7). That’s a pretty advanced feature, but I think you’ll be up for the task.
+</p>
+<p>You can find the full source code of this app in the Source Code folder, so have a play with it to get a feel for how it works.
+</p>
+<p>Done playing? Then let’s get started!
+</p>
+<div class="note">
+<p><em>Important:</em> The <i>iOS Apprentice</i> projects are for <em>Xcode 10.0</em> and better only. If you’re still using an older version of Xcode, please update to the latest version of Xcode from the Mac App Store.
+</p>
+<p>But don’t get carried away either – often Apple makes beta versions of upcoming Xcode releases available. Please do <i>not</i> use an Xcode beta to follow along. Often, the beta versions break things in unexpected ways and you’ll only end up confused. Stick to the official versions for now!
+</p></div>
+
+<h2 class="segment-chapter">Add a table view</h2>
+
+<p>Seeing as table views are so important, you will start out by examining how they work. Making lists has never been this much fun!
+</p>
+<p>Because smart developers split up the workload into small, simple steps, this is what you’re going to do in this chapter:
+</p>
+<ol>
+<li>
+<p>Put a table view on the app’s screen.
+</p></li>
+
+<li>
+<p>Put data into that table view.
+</p></li>
+
+<li>
+<p>Allow the user to tap a row in the table to toggle a checkmark on and off.
+</p></li>
+</ol>
+
+<p>Once you have these basics up and running, you’ll keep adding new functionality over the next few chapters until you end up with a full-blown app.
+</p>
+<h3 class="segment-chapter">Create the project</h3>
+
+<p>➤ Launch Xcode and start a new project. Choose the <em>Single View Application</em> template.
+</p><div class="image-50"><img src="graphics/img175.png"  alt="" title="Choosing the Xcode template" /></div>
+<p>Xcode will ask you to fill out a few options:
+</p><div class="image-60"><img src="graphics/img176.png"  alt="" title="Choosing the template options" /></div>
+<p>➤ Fill out these options as follows:
+</p>
+<ul>
+<li>
+<p>Product Name: <em>Checklists</em>
+</p></li>
+
+<li>
+<p>Team: Since you already set up your developer account for the previous app (you did, didn&apos;t you?) you can select your team here - or, you can just leave this at the default setting.
+</p></li>
+
+<li>
+<p>Organization Name: Your name or the name of your company
+</p></li>
+
+<li>
+<p>Organization Identifier: Use your own identifier here, using reverse domain name notation
+</p></li>
+
+<li>
+<p>Language: <em>Swift</em>
+</p></li>
+
+<li>
+<p>Use Core Data, Include Unit Tests, Include UI Tests: these should be off.
+</p></li>
+</ul>
+
+<p>➤ Press <em>Next</em> and choose a location for the project.
+</p>
+<p>You can run the app if you want, but as you might remember from the <i>Bull&apos;s Eye</i> app, at this point it&apos;s just a white screen.
+</p>
+<h3 class="segment-chapter">Set the app orientation</h3>
+
+<p><i>Checklists</i> will run in portrait orientation only. However, the default project that Xcode just generated also includes landscape support.
+</p>
+<p>➤ Click on the Checklists project item at the top of the project navigator and go to the <em>General</em> tab. Under <em>Deployment Info</em>, <em>Device Orientation</em>, make sure that only <em>Portrait</em> is selected.
+</p><div class="image-80"><img src="graphics/img177.png"  alt="" title="The Device Orientation setting" /></div>
+<p>With the landscape options disabled, rotating the device will no longer have any effect. The app always stays in portrait orientation.
+</p>
+<div class="note">
+<p><em>Upside down</em>
+</p>
+<p>There is also an Upside Down orientation, but you typically won’t use it.
+</p>
+<p>If your app supports Upside Down, users are able to rotate their iPhone so that the home button is at the top of the screen instead of at the bottom.
+</p>
+<p>That may be confusing, especially when the user receives a phone call: the microphone is at the wrong end with the phone upside down.
+</p>
+<p>iPad apps, on the other hand, are supposed to support all four orientations including upside-down.
+</p></div>
+
+<h3 class="segment-chapter">Edit the storyboard</h3>
+
+<p>Xcode created a basic app that consists of a single view controller. Recall that a view controller represents one screen of your app and consists of the source code file <em>ViewController.swift</em> and a user interface design in <em>Main.storyboard</em>.
+</p>
+<p>The storyboard contains the designs of all your app’s view controllers inside a single document, with arrows showing the flow between them. In storyboard terminology, each view controller is named a <i>scene</i>.
+</p>
+<p>You already used a storyboard in <i>Bull’s Eye</i>, but in this app you will unlock the full power of storyboarding.
+</p>
+<p>➤ Click on <em>Main.storyboard</em> to open Interface Builder.
+</p><div class="image-50"><img src="graphics/img178.png"  alt="" title="The storyboard editor with the app’s only scene" /></div>
+<p>By default, the scene will have the dimensions of a 5.5&quot; iPhone. I used the <em>View as:</em> panel at the bottom to switch to the slightly smaller <em>iPhone SE</em> because that takes up less room in the book. However, it does not matter which device size you choose to edit the storyboard: the app will automatically resize to fit all iPhone models.
+</p>
+<p>➤ Select <em>View Controller</em> in the Document Outline on the left.
+</p>
+<p>Tip: Recall that the Document Outline shows the view hierarchy of all the scenes in the storyboard. If you cannot see the Document Outline, then click the small square button at the bottom of the Interface Builder window to toggle its visibility.
+</p><div class="image-50"><img src="graphics/img179.png"  alt="" title="This button shows and hides the Document Outline" /></div>
+<p>➤ Press <em>delete</em> on your keyboard to remove the <em>View Controller Scene</em> from the storyboard. The canvas should be empty and the Document Outline say “No Scenes”.
+</p>
+<p>You do this because you don’t want a regular view controller. Instead, you&apos;ll add a <em>table view controller</em>, which is a special type of view controller that makes working with table views easier.
+</p>
+<h3 class="segment-chapter">The view controller code</h3>
+
+<p>But remember, the scene on the storyboard is just half the equation — there&apos;s also the Swift code file. And the view type specified in code has to match the scene&apos;s type. To change <code>ViewController</code>’s type to a table view controller, you first have to edit its Swift file.
+</p>
+<p>➤ Click on <em>ViewController.swift</em> to open it in the source code editor. Change the following line from this:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ViewController</span>: <span class="hljs-title">UIViewController</span> </span>{</pre>
+<p>To this:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ChecklistViewController</span>: <span class="hljs-title">UITableViewController</span> </span>{</pre>
+<p>With this change you tell the Swift compiler that your view controller is now a <code>UITableViewController</code> object instead of a regular <code>UIViewController.</code>
+</p>
+<p>Remember that everything starting with “UI” is part of UIKit. These pre-fabricated components serve as the building blocks for your own app.
+</p>
+<p>When Xcode made the project, it assumed you wanted the <code>ViewController</code> object to be built on top of a basic <code>UIViewController</code>, but here you’re changing it to use the <code>UITableViewController</code> building block instead.
+</p>
+<p>You also renamed <code>ViewController</code> to <code>ChecklistViewController</code> to give it a more descriptive name. This is <i>your</i> object – you can tell because its name <i>doesn’t</i> start with UI.
+</p>
+<p>Over the course of this section, you will add data and functionality to the <code>ChecklistViewController</code> object to make the app actually do things. You’ll also add several new view controllers to the app.
+</p>
+<p>➤ In the Project navigator on the left, click once to select <em>ViewController.swift</em>, and then click again to edit its name. (Don’t double-click too fast or you’ll open the Swift file in the source code editor.)
+</p>
+<p>Change the filename to <em>ChecklistViewController.swift</em>:
+</p><div class="image-30"><img src="graphics/img180.png"  alt="" title="Renaming the Swift file" /></div>
+<p>You might get a warning: “The document could not be saved. The file has been changed by another application.” Click <em>Save Anyway</em> to make it go away.
+</p>
+<h3 class="segment-chapter">Set the view controller class in the storyboard</h3>
+
+<p>➤ Go back to the storyboard and drag a <em>Table View Controller</em> from the Objects Library (accessible via the Xcode toolbar) on to the canvas:
+</p><div class="image-60"><img src="graphics/img181.png"  alt="" title="Dragging a Table View Controller into the storyboard" /></div>
+<p>This adds a new Table View Controller scene to the storyboard.
+</p>
+<p>➤ Go to the <em>Identity inspector</em> (the third tab in the inspectors pane on the right of the Xcode window) and under <em>Custom Class</em> type <em>ChecklistViewController</em> (or choose it using the dropdown list).
+</p>
+<p>Tip: When you do this, make sure the actual Table View Controller is selected, not the Table View inside it. There should be a thin blue border around the scene.
+</p><div class="image-100"><img src="graphics/img182.png"  alt="" title="Changing the Custom Class of the Table View Controller" /></div>
+<p>The name of the scene in the Document Outline on the left should change to “Checklist View Controller Scene”. You have successfully changed <code>ChecklistViewController</code> from a regular view controller object into a table view controller.
+</p>
+<p>As its name implies, and as you can see in the storyboard, the view controller contains a Table View object. We’ll go into the difference between controllers and views soon, but for now, remember that the controller is the whole screen while the table view is the object that actually draws the list.
+</p>
+<h3 class="segment-chapter">Set the initial view controller</h3>
+
+<p>If there is no big arrow pointing towards your new table view controller, then go to the <em>Attributes inspector</em> and check <em>Is Initial View Controller</em>.
+</p><div class="image-80"><img src="graphics/img183.png"  alt="" title="The arrow points at the initial view controller" /></div>
+<p>The initial view controller is the first screen that your users will see. Without one, iOS won’t know which view controller to load from your storyboard when the app starts up and you’ll end up staring at a black screen.
+</p>
+<p>➤ Run the app on the Simulator.
+</p>
+<p>You should see an empty list. This is the table view. You can drag the list up and down but it doesn’t contain any data yet.
+</p><div class="image-25"><img src="graphics/img184.png"  alt="" title="The app now uses a table view controller" /></div>
+<p>By the way, it doesn’t really matter which Simulator you use. Table views resize themselves to fit the dimensions of the device, and the app will work equally well on the small iPhone SE or the huge iPhone X.
+</p>
+<p>Personally, I use the iPhone SE Simulator because it&apos;s compact, but remember that you can open any of the simulators and then simply resize the simulator window by dragging on the corners, just like you resize any macOS window.
+</p>
+<div class="note">
+<p><em>Note:</em> When you build the app, Xcode gives the warning “Prototype table cells must have reuse identifiers”. Don’t worry about this for now, we’ll fix it soon.
+</p></div>
+
+<h3 class="segment-chapter">The anatomy of a table view</h3>
+
+<p>First, let’s talk a bit more about table views. A <code>UITableView</code> object displays a list of items.
+</p>
+<div class="note">
+<p><em>Note:</em> I’m not sure why it’s named a <i>table</i>, because a table is commonly thought of as a spreadsheet-type object that has multiple rows and multiple columns, whereas the <code>UITableView</code> only has rows. It’s more of a list than a table, but I guess we’re stuck with the name now. UIKit also provides a <code>UICollectionView</code> object that works similar to a <code>UITableView</code> but allows for multiple columns.
+</p></div>
+
+<p>There are two styles of tables: “plain” and “grouped”. They work mostly the same, but there are a few small differences. The most visible difference is that rows in the grouped style table are placed into boxes (the groups) on a light gray background.
+</p><div class="image-80"><img src="graphics/img185.png"  alt="" title="A plain-style table (left) and a grouped table (right)" /></div>
+<p>The plain style is used for rows that all represent something similar, such as contacts in an address book where each row contains the name of one person.
+</p>
+<p>The grouped style is used when the items in the list can be organized by a particular attribute, like book categories for a list of books. The grouped style table could also be used to show related information which doesn&apos;t necessarily have to stand together - like the address information, contact information, and e-mail information for a contact.
+</p>
+<p>You will use both table styles in the <i>Checklists</i> app.
+</p>
+<p>The data for a table comes in the form of <em>rows</em>. In the first version of <i>Checklists</i>, each row will correspond to a to-do item that you can check off when you’re done with it.
+</p>
+<p>You can potentially have many rows (even tens of thousands) but that kind of design isn’t recommended. Most users will find it incredibly annoying to scroll through ten thousand rows to find the one they want. And who can blame them?
+</p>
+<p>Tables display their data in <em>cells</em>. A cell is related to a row but it’s not exactly the same. A cell is a view that shows a row of data that happens to be visible at that moment. If your table can show 10 rows at a time on the screen, then it only has 10 cells, even though there may be hundreds of rows of actual data.
+</p>
+<p>Whenever a row scrolls off the screen and becomes invisible, its cell will be re-used for a new row that becomes visible.
+</p><div class="image-60"><img src="graphics/img186.png"  alt="" title="Cells display the contents of rows" /></div>
+<h3 class="segment-chapter">Add a prototype cell</h3>
+
+<p>In the past, you had to put in quite a bit of effort to create cells for your tables. These days Xcode has a very handy feature named <i>prototype cells</i> that lets you design your cells visually in Interface Builder.
+</p>
+<p>➤ Open the storyboard and click the empty cell (the white row below the Prototype Cells label) to select it.
+</p><div class="image-60"><img src="graphics/img187.png"  alt="" title="Selecting the prototype cell" /></div>
+<p>Sometimes it can be hard to see exactly what is selected, so keep an eye on the Document Outline to make sure you’ve picked the right thing. (Or use the Document Outline to select the cell directly.)
+</p>
+<p>➤ Drag a <em>Label</em> from the Objects Library on to the white area in the table view representing the cell. Make sure the label spans the entire width of the cell (but leave a small margin on the sides).
+</p><div class="image-45"><img src="graphics/img188.png"  alt="" title="Adding the label to the prototype cell" /></div>
+<div class="note">
+<p><em>Note:</em> If you simply drag the label on to the table view, it might not work. You need to drag the label on to the cell itself. You can check where the label ended up using the Document Outline. It has to be inside the Content View for the table view cell.
+</p></div>
+
+<p>Besides the label you will also add a checkmark to the cell’s design. The checkmark is provided by something called the <em>accessory</em>, a built-in view that appears on the right side of the cell. You can choose from a few standard accessory controls or provide your own.
+</p>
+<p>➤ Select the <em>Table View Cell</em> again. In the <em>Attributes inspector</em>, set the <em>Accessory</em> field to <em>Checkmark</em>:
+</p><div class="image-30"><img src="graphics/img189.png"  alt="" title="Changing the accessory to get a checkmark" /></div>
+<p>(If you don’t see this option, then make sure you selected the Table View Cell, not the Content View or Label below it.)
+</p>
+<p>Your design should now look something like this:
+</p><div class="image-45"><img src="graphics/img190.png"  alt="" title="The design of the prototype cell: a label and a checkmark" /></div>
+<p><em>Note:</em> You may want to resize the label a bit so that it doesn’t overlap the checkmark.
+</p>
+<p>You also need to set a <i>reuse identifier</i> on the cell. This is an internal name that the table view uses to find free cells to reuse when rows scroll off the screen and new rows must become visible.
+</p>
+<p>The table needs to assign cells for those new rows, and recycling existing cells is more efficient than creating new cells. This technique is what makes table views scroll smoothly.
+</p>
+<p>Reuse identifiers are also important for when you want to display different types of cells in the same table. For example, one type of cell could have an image and a label and another could have a label and a button. You would give each cell type its own identifier, so the table view can assign the right cell for a given row type.
+</p>
+<p><i>Checklists</i> has only one type of cell but you still need to give it an identifier.
+</p>
+<p>➤ Type <em>ChecklistItem</em> into the Table View Cell’s <em>Identifier</em> field (you can find this in the <em>Attributes inspector</em>).
+</p><div class="image-30"><img src="graphics/img191.png"  alt="" title="Giving the table view cell a reuse identifier" /></div>
+<h3 class="segment-chapter">Compiler warnings</h3>
+
+<p>If you build your app at this point, you&apos;ll notice that the compiler warning about prototype table cells needing a reuse identifier goes away.
+</p>
+<p>But ... you&apos;ve got a new warning - one about views without any layout constraints clipping or overlapping other views. Sounds familiar?
+</p>
+<p>Yes, this is the same warning you saw in <i>Bull&apos;s Eye</i> when you had views without any Auto Layout constraints! And you know how to find the affected views now, right?
+</p>
+<p>➤ In the storyboard, click on the yellow warning circle for the table view to see the list of views with issues. It is the new label you just added to the prototype table cell.
+</p>
+<p>That&apos;s simple enough to fix, right? Simply select the label, select the <em>Add New Constraints</em> icon at the bottom of the Interface Builder window, and add 4 constraints for the left, top, right, and bottom of the label. (You can go with the current defaults as long as you have the label positioned correctly.)
+</p>
+<p>➤ Run the app and you’ll see… zip, zilch, nada - exactly the same as before :] The table is still empty.
+</p>
+<p>This is because you only added a cell design to the table, not actual data. Remember that the cell is just the visual representation of the row, not the actual data. To add data to the table, you have to write some code.
+</p>
+<h2 class="segment-chapter">The table view delegates</h2>
+
+<p>➤ Switch to <em>ChecklistViewController.swift</em> and add the following methods just before the closing bracket at the bottom of the file:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Table View Data Source</span>
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+      numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+}
+
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+             cellForRowAt indexPath: IndexPath)</span></span> -&gt; 
+             <span class="hljs-type">UITableViewCell</span> {
+  <span class="hljs-keyword">let</span> cell = tableView.dequeueReusableCell(
+                        withIdentifier: <span class="hljs-string">"ChecklistItem"</span>, 
+                                   <span class="hljs-keyword">for</span>: indexPath)
+  <span class="hljs-keyword">return</span> cell
+}</pre>
+<p>These methods look a bit more complicated than the ones you’ve seen in <i>Bull’s Eye</i>, but that’s because each takes two parameters and returns a value to the caller. Other than that, they work the same way as the methods you’ve dealt with before.
+</p>
+<h3 class="segment-chapter">Protocols</h3>
+
+<p>The above two methods are part of <code>UITableView</code>’s <em>data source</em> protocol.
+</p>
+<p>What&apos;s a protocol, you ask? Well, its a standard set of methods that a class must adhere to - a protocol to be followed, so to speak. It allows code to be written in such a way that you know that a given class would implement certain methods (with specific parameters of a given type) but where you don&apos;t need to know all the implementation details of the class - such as all it&apos;s methods. A protocol usually allows you to add functionality for a certain type of operation to a class - for example, handling data for a table view.
+</p>
+<p>The data source is the link between your data and the table view. Usually, the view controller plays the role of data source and implements the necessary methods. So, essentially, the view controller is acting as a delegate on behalf of the table view. (This is the delegate pattern that we&apos;ve talked about before - where an object does some work on behalf of another object.)
+</p>
+<p>The table view needs to know how many rows of data it has and how it should display each of those rows. But you can’t simply dump that data into the table view’s lap and be done with it. You don’t say: “Dear table view, here are my 100 rows, now go show them on the screen.”
+</p>
+<p>Instead, you say to the table view: “This view controller is now your data source. You can ask it questions about the data anytime you feel like it.”
+</p>
+<p>Once it is hooked up to a data source – i.e. your view controller – the table view sends a <code>numberOfRowsInSection</code> message to find out how many data rows there are.
+</p>
+<p>And when the table view needs to draw a particular row on the screen it sends a <code>cellForRowAt</code> message to ask the data source for a cell.
+</p>
+<p>You see this pattern all the time in iOS: one object does something on behalf of another object. In this case, the <code>ChecklistViewController</code> works to provide the data to the table view, but only when the table view asks for it.
+</p><div class="image-70"><img src="graphics/img192.png"  alt="" title="The dating ritual of a data source and a table view" /></div>
+<p>Your implementation of <code>tableView(_:numberOfRowsInSection:)</code> – the first method that you added – returns the value 1. This tells the table view that you have just one row of data.
+</p>
+<p>The <code>return</code> statement is very important in Swift. It allows a method to send data back to its caller. In the case of <code>tableView(_:numberOfRowsInSection:)</code>, the caller is the <code>UITableView</code> object and it wants to know how many rows are in the table.
+</p>
+<p>The statements inside a method usually perform some kind of computation using instance variables and any data received through the method’s parameters. When the method is done, <code>return</code> says, “Hey, I’m done. Here is the answer I came up with.” The return value is often called the <i>result</i> of the method.
+</p>
+<p>For <code>tableView(_:numberOfRowsInSection:)</code> the answer is really simple: there is only one row, so <code>return 1</code>.
+</p>
+<p>Now that the table view knows it has one row to display, it calls the second method you added – <code>tableView(_:cellForRowAt:)</code> – to obtain a cell for that row. This method grabs a copy of the prototype cell and gives that back to the table view, again with a <code>return</code> statement.
+</p>
+<p>Inside <code>tableView(_:cellForRowAt:)</code> is also where you would normally put the row data into the cell, but the app doesn’t have any row data yet.
+</p>
+<p>➤ Run the app and you’ll see there is a single cell in the table:
+</p><div class="image-30"><img src="graphics/img193.png"  alt="" title="The table now has one row" /></div>
+<h4 class="segment-chapter">Method signatures</h4>
+
+<p>In the above text, you might have noticed some special notation for the method names, like <code>tableView(_:numberOfRowsInSection:)</code> or <code>tableView(_:cellForRowAt:)</code>. If you are wondering what these are, these are known as <i>method signatures</i> - it is an easy way to uniquely identify a method without having to write out the full method name with the parameters.
+</p>
+<p>The method signature identifies where each parameter would be (and the parameter name, where necessary) by separating out the parameters with a colon. In the method for <code>tableView(_:numberOfRowsInSection:)</code> for example, you might notice an underscore for the first parameter - that means that that method does not need to have the parameter name specified when calling the method - it is simply a convenience in Swift where the parameter can generally be inferred from the method name. (You might have more questions about this - but we&apos;ll come back to that later.)
+</p>
+<p>If you are not sure about the signature for a method, take a look at the Xcode <em>Jump bar</em> (the tiny toolbar right above the source editor) and click on the last item of the file path elements to get a list of methods (and properties) in the current source file.
+</p><div class="image-80"><img src="graphics/img194.png"  alt="" title="The Jump Bar shows the method signatures" /></div>
+<p>Also, do note that in the above examples, <code>tableView</code> is not the method name - or rather, <code>tableView</code> by itself is not the method name. The method name is the <code>tableView</code> plus the parameter list  - everything up to the closing bracket for the parameter list. That&apos;s how you get multiple unique methods such as <code>tableView(_:numberOfRowsInSection:)</code> and <code>tableView(_:cellForRowAt:)</code> eventhough they all look as if they are methods called <code>tableName</code> - the complete signature uniquely identifies the method, if that makes sense?
+</p>
+<h4 class="segment-chapter">Special comments</h4>
+
+<p>You might have noticed the following line in the code you just added:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Table View Data Source</span></pre>
+<p>If you were wondering what that was for, here&apos;s the scoop. Of course, you already know that line is a comment, because the line begins with <code>//</code>, but it&apos;s not <i>just</i> a comment. As the keyword at the beginning of the comment line, MARK, indicates, it is a marker. But a marker for what?
+</p>
+<p>It&apos;s a marker to organize the code and for you to find a section of code (for example, a set of related methods, like for the table view data source) via the Xcode Jump Bar.
+</p>
+<p>Take a look at the previous screenshot showing the Xcode Jump Bar. Do you notice the separator line in the middle of the list of methods? Do you notice the bolded text title right after? Does that title seem familiar?
+</p>
+<p>The text you provide after the <code>MARK:</code> keyword defines how the section title is displayed in the menu. If you put in a hyphen (-), you get a separator line followed by any text after the hyphen as the section title. If you don&apos;t provide a hyphen but provide some text, then you simply get a section title but no separator. If you provide neither, then you just get a section icon with no text and no separator. (Try these out.)
+</p>
+<p>There are a couple of other comment tags besides <code>MARK:</code> that you can use in your Swift files. These are <code>TODO:</code> and <code>FIXME:</code>. The first is generally used to indicate portions of your code that need to be completed, while the latter is used to mark portions of code that need re-writing or fixing.
+</p>
+<p>Consider using these tags to organize your code better. When you are in a hurry and need to find that particular bit of code in a long source file, they come in very handy. I certainly use them all the time in my own code :]
+</p>
+<h4 class="segment-chapter">Testing the table view data source</h4>
+
+<div class="note">
+<p><em>Exercise:</em> Modify the app so that it shows five rows.
+</p></div>
+
+<p>That shouldn’t have been too hard:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+      numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-number">5</span>
+}</pre>
+<p>If you were tempted to go into the storyboard and duplicate the prototype cell five times, then you were confusing cells with rows :]
+</p>
+<p>When you make <code>tableView(_:numberOfRowsInSection:)</code> return the number 5, you tell the table view that there will be five rows.
+</p>
+<p>The table view then sends the <code>cellForRowAt</code> message five times, once for each row. Because <code>tableView(_:cellForRowAt:)</code> currently just returns a copy of the prototype cell, your table view will show five identical rows:
+</p><div class="image-25"><img src="graphics/img195.png"  alt="" title="The table now has five identical rows" /></div>
+<p>There are several ways to create cells in <code>tableView(_:cellForRowAt:)</code>, but by far the easiest approach is what you’ve done here:
+</p>
+<ol>
+<li>
+<p>Add a prototype cell to the table view in the storyboard.
+</p></li>
+
+<li>
+<p>Set a reuse identifier on the prototype cell.
+</p></li>
+
+<li>
+<p>Call <code>tableView.dequeueReusableCell(withIdentifier:for:)</code>. This makes a new copy of the prototype cell if necessary, or, recycles an existing cell that is no longer in use.
+</p></li>
+</ol>
+
+<p>Once you have a cell, you should set it up with the data from the corresponding row and give it back to the table view. That’s what you’ll do in the next section.
+</p>
+<h3 class="segment-chapter">Putting row data into the cells</h3>
+
+<p>Currently, the rows (or rather the cells) all contain the placeholder text “Label”. Let’s add some unique text for each row.
+</p>
+<p>➤ Open the storyboard and select the <em>Label</em> inside the table view cell. Go to the <em>Attributes inspector</em> and set the <em>Tag</em> field to 1000.
+</p><div class="image-30"><img src="graphics/img196.png"  alt="" title="Set the label’s tag to 1000" /></div>
+<p>A <i>tag</i> is a numeric identifier that you can give to a user interface control in order to uniquely identify it later. Why the number 1000? No particular reason. It should be something other than 0, as that is the default value for all tags. 1000 is as good a number as any.
+</p>
+<p>Double-check to make sure you set the tag on the <i>Label</i>, not on the Table View Cell or its Content View. It’s a common mistake to set the tag on the wrong view and then the results won’t be what you expected!
+</p>
+<p>➤ In <em>ChecklistViewController.swift</em>, change <code>tableView(_:cellForRowAt:)</code> to the following:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+             cellForRowAt indexPath: IndexPath)</span></span> 
+             -&gt; <span class="hljs-type">UITableViewCell</span> {
+  <span class="hljs-keyword">let</span> cell = tableView.dequeueReusableCell(
+                        withIdentifier: <span class="hljs-string">"ChecklistItem"</span>, 
+                                   <span class="hljs-keyword">for</span>: indexPath)
+                        
+  <span class="hljs-comment">// Add the following code</span>
+  <span class="hljs-keyword">let</span> label = cell.viewWithTag(<span class="hljs-number">1000</span>) <span class="hljs-keyword">as</span>! <span class="hljs-type">UILabel</span>
+
+  <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">0</span> {
+    label.text = <span class="hljs-string">"Walk the dog"</span>
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">1</span> {
+    label.text = <span class="hljs-string">"Brush my teeth"</span>
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">2</span> {
+    label.text = <span class="hljs-string">"Learn iOS development"</span>
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">3</span> {
+    label.text = <span class="hljs-string">"Soccer practice"</span>
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">4</span> {
+    label.text = <span class="hljs-string">"Eat ice cream"</span>
+  }
+  <span class="hljs-comment">// End of new code block</span>
+  
+  <span class="hljs-keyword">return</span> cell
+}</pre>
+<p>You’ve already seen the first line. It gets a copy of the prototype cell — either a new one or a recycled one — and puts it into a local constant named <code>cell</code>. (Recall that this is a constant because it’s declared with <code>let</code>, not <code>var</code>. It is local because it’s defined inside a method.)
+</p>
+<p>The first new line that you’ve just added is:
+</p><pre class="code-block">  <span class="hljs-keyword">let</span> label = cell.viewWithTag(<span class="hljs-number">1000</span>) <span class="hljs-keyword">as</span>! <span class="hljs-type">UILabel</span></pre>
+<p>Here you ask the table view cell for the view with tag 1000. That is the tag you just set on the label in the storyboard. So, this returns a reference to the corresponding <code>UILabel</code>.
+</p>
+<p>Using tags is a handy trick to get a reference to a UI element without having to make an <code>@IBOutlet</code> variable for it.
+</p>
+<div class="note">
+<p><em>Exercise:</em> Why can’t you simply add an <code>@IBOutlet</code> variable to the view controller and connect the cell’s label to that outlet in the storyboard? After all, that’s how you created references to the labels in <i>Bull’s Eye</i>… so why won’t that work here?
+</p></div>
+
+<p>Answer: There will be more than one cell in the table and each cell will have its own label. If you connected the label from the prototype cell to an outlet on the view controller, that outlet could only refer to the label from <i>one</i> of these cells, not all of them. Since the label belongs to the cell and not to the view controller as a whole, you can’t make an outlet for it on the view controller. Confused? We&apos;ll circle around to this topic soon, so don’t worry about it for now.
+</p>
+<p>Back to the code. What is this <code>indexPath</code> thing?
+</p>
+<p><code>IndexPath</code> is simply an object that points to a specific row in the table. When the table view asks the data source for a cell, you can look at the row number inside the <code>indexPath.row</code> property to find out the row for which the cell is intended.
+</p>
+<div class="note">
+<p><em>Note</em>: As I mentioned before, it is also possible for tables to group rows into sections. In an address book app you might sort contacts by last name. All contacts whose last name starts with “A” are grouped into their own section, all contacts whose last name starts with “B” are in another section, and so on.
+</p>
+<p>To find out which section a row belongs to, you’d look at the <code>indexPath.section</code> property. The <i>Checklists</i> app has no need for this kind of grouping, so you’ll ignore the <code>section</code> property of <code>IndexPath</code> for now.
+</p></div>
+
+<p>Now that you know about <code>indexPath</code>, the following code should make sense to you:
+</p><pre class="code-block">  <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">0</span> {
+    label.text = <span class="hljs-string">"Walk the dog"</span>
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">1</span> {
+    label.text = <span class="hljs-string">"Brush my teeth"</span>
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">2</span> {
+    label.text = <span class="hljs-string">"Learn iOS development"</span>
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">3</span> {
+    label.text = <span class="hljs-string">"Soccer practice"</span>
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">4</span> {
+    label.text = <span class="hljs-string">"Eat ice cream"</span>
+  }</pre>
+<p>You have seen this <code>if - else if - else</code> structure before. It simply looks at the value of <code>indexPath.row</code>, which contains the row number, and changes the label’s text accordingly. The cell for the first row gets the text “Walk the dog”, the cell for the second row gets the text “Brush my teeth”, and so on.
+</p>
+<div class="note">
+<p><em>Note:</em> Computers generally start counting at 0 for lists of items. If you have a list of 4 items, they are counted as 0, 1, 2 and 3. It may seem a little silly at first, but that’s just the way programmers do things.
+</p>
+<p>For the first row in the first section, <code>indexPath.row</code> is 0. The second row has row number 1, the third row is row 2, and so on.
+</p>
+<p>Counting from 0 may take some getting used to, but after a while it becomes second nature and you’ll start counting at 0 even when you’re out for groceries :]
+</p></div>
+
+<p>➤ Run the app - it now has five rows, each with its own text:
+</p><div class="image-30"><img src="graphics/img197.png"  alt="" title="The rows in the table now have their own text" /></div>
+<p>That is how you write the <code>tableView(_:cellForRowAt:)</code> method to provide data to the table. You first get a <code>UITableViewCell</code> object and then change the contents of that cell based on the row number of the <code>indexPath</code>.
+</p>
+<p>Just for the heck of it, let’s put 100 rows into the table.
+</p>
+<p>➤ Make <code>tableView(_:numberOfRowsInSection:)</code> return 100.
+</p>
+<p>➤ Also, change the code you added earlier to the following:
+</p><pre class="code-block">  <span class="hljs-keyword">if</span> indexPath.row % <span class="hljs-number">5</span> == <span class="hljs-number">0</span> {
+    label.text = <span class="hljs-string">"Walk the dog"</span>
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row % <span class="hljs-number">5</span> == <span class="hljs-number">1</span> {
+    label.text = <span class="hljs-string">"Brush my teeth"</span>
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row % <span class="hljs-number">5</span> == <span class="hljs-number">2</span> {
+    label.text = <span class="hljs-string">"Learn iOS development"</span>
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row % <span class="hljs-number">5</span> == <span class="hljs-number">3</span> {
+    label.text = <span class="hljs-string">"Soccer practice"</span>
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row % <span class="hljs-number">5</span> == <span class="hljs-number">4</span> {
+    label.text = <span class="hljs-string">"Eat ice cream"</span>
+  }</pre>
+<p>This uses the <em>remainder operator</em> (also known as the <em>modulo operator</em>), represented by the <code>%</code> sign, to determine what row you’re on.
+</p>
+<p>The <code>%</code> operator returns the remainder of a division operation. You may remember this from doing math in school. For example 13 % 4 = 1, because four goes into thirteen 3 times with a remainder of 1. However, 12 % 4 is 0 because there is no remainder.
+</p>
+<p>The first row, as well as the sixth, eleventh, sixteenth and so on, will show the text “Walk the dog”. The second, seventh and twelfth row will show “Brush my teeth”. The third, eight and thirteenth row will show “Learn iOS development”. And so on…
+</p>
+<p>I think you get the picture: every five rows these lines repeat. Rather than typing in all the possibilities all the way up to a hundred, you let the computer calculate this for you (afterall, that is what they are good at):
+</p><pre class="code-block">First row:     0 % 5 = 0
+Second row:    1 % 5 = 1
+Third row:     2 % 5 = 2
+Fourth row:    3 % 5 = 3
+Fifth row:     4 % 5 = 4
+
+Sixth row:     5 % 5 = 0  (same as first row)  *** The sequence 
+Seventh row:   6 % 5 = 1  (same as second row)     repeats here
+Eighth row:    7 % 5 = 2  (same as third row)
+Ninth row:     8 % 5 = 3  (same as fourth row)
+Tenth row:     9 % 5 = 4  (same as fifth row)
+
+Eleventh row: 10 % 5 = 0  (same as first row)  *** The sequence 
+Twelfth row:  11 % 5 = 1  (same as second row)     repeats again
+and so on...</pre>
+<p>If this makes no sense to you at all, then feel free to ignore it. You’re just using this trick to quickly fill up a large table with data.
+</p>
+<p>➤ Run the app and you should see this:
+</p><div class="image-20"><img src="graphics/img198.png"  alt="" title="The table now has 100 rows" /></div>
+<div class="note">
+<p><em>Note:</em> To scroll through this table view on the Simulator, you have to pretend you’re using an actual iPhone. Click the mouse to “grab” the table view and then drag up or down. Simply swiping without clicking first – the way you’d normally scroll things on the Mac – doesn’t work.
+</p></div>
+
+<div class="note">
+<p><em>Exercise:</em> How many cells do you think this table view uses?
+</p></div>
+
+<p>Answer: There are a 100 rows, but only about 14 (or more, depending on your device screen height) fit on the screen at a time. If you count the number of visible rows in the screenshot above you’ll get up to 13, but it’s possible to scroll the table in such a way that the top cell is still visible while a new cell is pulled in from below. So that makes at least 14 cells.
+</p>
+<p>If you scroll really fast, then I guess it is possible that the table view needs to make a few more temporary cells, but I’m not sure about that. Is this important to know? Not really. You should let the table view take care of juggling the cells behind the scenes. All you have to do is give the table view a cell when it asks for it and fill it up with the data for the corresponding row.
+</p>
+<p>You’ll usually have fewer cells than rows. If the app always made a cell for each row, iOS would run out of memory really fast, especially on large tables. Because not all rows can be visible at once, that would be very wasteful and slow. iOS is a good citizen and recycles cells whenever it can.
+</p>
+<p>Now you know why <code>UITableView</code> makes the distinction between rows – the data, of which you’ll usually have lots – and cells – the visible representation of that data on the screen, of which there are only about a dozen.
+</p>
+<p>As the song goes, “Rows and cells, rows and cells, tables all the way. Oh what fun it is to learn about new things every day!”
+</p>
+<h4 class="segment-chapter">Strange crashes?</h4>
+
+<p>A common question on the <i>iOS Apprentice</i> forums is, “I’m just following along with the book and suddenly my app crashes… What went wrong?”
+</p>
+<p>If that happens to you, then make sure you haven’t set a <i>breakpoint</i> on your code by accident. A breakpoint is a debugging tool that stops your program execution at a specific line and jumps into the Xcode debugger. It may appear like a crash, but your program simply paused.
+</p>
+<p>A breakpoint looks like a blue arrow in the left-hand margin (also known as the <em>gutter</em>) of the source editor:
+</p><div class="image-80"><img src="graphics/img199.png"  alt="" title="The blue arrow sets a breakpoint" /></div>
+<p>If your app suddenly pauses and the source editor shows a blue arrow on a particular line, then you simply hit a breakpoint. Sometimes people click in the margin by mistake and set a breakpoint without even realizing it (I’ve certainly done that!).
+</p>
+<p>To remove the breakpoint, drag it out of the Xcode window. Or, you can deactivate a breakpoint by simply clicking on it - it will still be there, ready to be activated again by a click, but will not pause code execution. A deactivated breakpoint is indicated by a faded blue arrow.
+</p><div class="image-80"><img src="graphics/img200.png"  alt="" title="A deactivated breakpoint" /></div>
+<h3 class="segment-chapter">Tap on the rows</h3>
+
+<p>When you tap on a row , the cell color changes to indicate it is selected. The cell remains selected till you tap another row. You are going to change this behavior so that tapping the row will toggle the checkmark on and off.
+</p><div class="image-30"><img src="graphics/img201.png"  alt="" title="A tapped row stays gray" /></div>
+<p>Taps on rows are handled by the table view’s <em>delegate</em>. Remember I said before that in iOS you often find objects doing something on behalf of other objects? The data source is one example of this, but the table view also depends on another little helper, the table view delegate.
+</p>
+<p>The concept of delegation is very common in iOS. An object will often rely on another object to help it out with certain tasks. This <i>separation of concerns</i> keeps the system simple, as each object does only what it is good at and lets other objects take care of the rest. The table view offers a great example of this.
+</p>
+<p>Because every app has its own requirements for what its data looks like, the table view must be able to deal with lots of different types of data. Instead of making the table view very complex, or requiring that you modify it to suit your own apps, the UIKit designers have chosen to delegate the duty of providing the cells to display to another object, the data source.
+</p>
+<p>The table view doesn’t really care who its data source is or what kind of data your app deals with, just that it can send the <code>cellForRowAt</code> message and receive a cell in return. This keeps the table view component simple and moves the responsibility for handling the data to where it belongs: your code.
+</p>
+<p>Likewise, the table view knows how to recognize when the user taps a row, but what it should do in response depends on the app. In this app, you’ll make it toggle the checkmark; another app will likely do something totally different.
+</p>
+<p>Using the delegation system, the table view can simply send a message that a tap occurred and let the delegate sort it out.
+</p>
+<p>Usually, components will have just one delegate. But the table view splits up its delegate duties into two separate helpers: the <code>UITableViewDataSource</code> for putting rows into the table, and the <code>UITableViewDelegate</code> for handling taps on the rows and several other tasks.
+</p>
+<p>➤ To see this, open the storyboard and <em>Control-click</em> on the table view to bring up its connections.
+</p><div class="image-70"><img src="graphics/img202.png"  alt="" title="The table’s data source and delegate are hooked up to the view controller" /></div>
+<p>You can see that the table view’s data source and delegate are both connected to the view controller. That is standard practice for a <code>UITableViewController</code>. (You can also use table views in a basic <code>UIViewController</code> but then you’ll have to connect the data source and delegate manually.)
+</p>
+<p>➤ Add the following method to <em>ChecklistViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Table View Delegate</span>
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+           didSelectRowAt indexPath: IndexPath)</span></span> {
+  tableView.deselectRow(at: indexPath, animated: <span class="hljs-literal">true</span>)
+}</pre>
+<p>The <code>tableView(_:didSelectRowAt:)</code> method is one of the table view delegate methods and gets called whenever the user taps on a cell. Run the app and tap a row – the cell briefly turns gray and then becomes de-selected again.
+</p>
+<p>➤ Let’s make <code>tableView(_:didSelectRowAt:)</code> toggle the checkmark. Change the method to the following:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+                        didSelectRowAt indexPath: IndexPath)</span></span> {
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> cell = tableView.cellForRow(at: indexPath) {
+    <span class="hljs-keyword">if</span> cell.accessoryType == .<span class="hljs-keyword">none</span> {
+      cell.accessoryType = .checkmark
+    } <span class="hljs-keyword">else</span> {
+      cell.accessoryType = .<span class="hljs-keyword">none</span>
+    }
+  }
+    
+  tableView.deselectRow(at: indexPath, animated: <span class="hljs-literal">true</span>)
+}</pre>
+<p>The checkmark is part of the cell (the accessory, remember?). So, you first need to find the <code>UITableViewCell</code> object for the tapped row. You simply ask the table view: what is the cell at this <code>indexPath</code> you’ve given me?
+</p>
+<p>It is theoretically possible that there is no cell at the specified index-path, for example if that row isn’t visible. So, you need to use the special <code>if let</code> statement.
+</p>
+<p>The <code>if let</code> tells Swift that you only want to perform the the code inside the <code>if</code> condition only if there really is a <code>UITableViewCell</code> object. In this app there always will be one – after all, that’s what the user just tapped – but Swift doesn’t know that.
+</p>
+<p>Once you have the <code>UITableViewCell</code> object, you look at the cell’s accessory type, which you can access via the <code>accessoryType</code> property. If it is “none”, then you change the accessory to a checkmark; if it is already a checkmark, you change it back to none.
+</p>
+<div class="note">
+<p><em>Note:</em> In the above code, to find the cell you call <code>tableView.cellForRow(at:)</code>.
+</p>
+<p>It’s important to realize this is not the same method as the data source method <code>tableView(_:cellForRowAt:)</code> that you added earlier.
+</p>
+<p>Despite the similar names they are different methods in different objects, performing different tasks. Tricky, eh?
+</p>
+<p>The purpose of your data source method is to deliver a new (or recycled) cell object to the table view when a row becomes visible. You never call this method yourself; only the <code>UITableView</code> may call its data source methods.
+</p>
+<p>The purpose of <code>tableView.cellForRow(at:)</code> is also to return a cell object, but this is an existing cell for a row that is currently being displayed. It won’t create any new cells. If there is no cell for that row yet, it will return the special value <code>nil</code>, meaning that no cell could be found. (You use the <code>if let</code> statement to “catch” such <code>nil</code> values.)
+</p>
+<p>Remember how I said methods should have clear, descriptive names? UIKit is generally pretty good with its names, but this is a case where a very similar name used in two different places can lead to confusion and despair. Beware this pitfall!
+</p></div>
+
+<p>➤ Run the app and try it out. You should be able to toggle the checkmarks on the rows. Sweet!
+</p><div class="image-30"><img src="graphics/img203.png"  alt="" title="You can now tap on a row to toggle the checkmark" /></div>
+<div class="note">
+<p><em>Note:</em> If the checkmark does not appear or disappear right away but only after you select <i>another</i> row, then make sure the method name is not <code>tableview(_:didDeselectRowAt:)</code>! You want <code>didSelect</code>, not <code>didDeselect</code>. Xcode’s autocompletion may have fooled you into picking the wrong method name.
+</p></div>
+
+<p>Unfortunately, the app has a bug. Here’s how to reproduce it:
+</p>
+<p>➤ Tap a row to remove the checkmark. Scroll that row off the screen and scroll back again (try scrolling really fast). The checkmark has reappeared!
+</p>
+<p>In addition, the checkmark seems to spontaneously disappear from other rows. What is going on here?
+</p>
+<p>Again, it’s a matter of cells vs. rows: you have toggled the checkmark on the cell but the cell may be reused for another row when you’re scrolling. Whether a checkmark is set or not should be a property of a given row (or rather, the data underlying that row), not the cell.
+</p>
+<p>Instead of using the cell’s accessory to remember to show a checkmark or not, you need some way to keep track of the checked status for each row. That means it’s time to expand the data source and make it use a proper <i>data model</i>, which is the topic of the next section.
+</p>
+<h4 class="segment-chapter">Methods with multiple parameters</h4>
+
+<p>Most of the methods you used in the <i>Bull’s Eye</i> app took only one parameter or did not have any parameters at all, but these new table view data source and delegate methods take two:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(
+           <span class="hljs-number">_</span> tableView: UITableView,             // parameter <span class="hljs-number">1</span>
+           numberOfRowsInSection section: Int)</span></span>   <span class="hljs-comment">// parameter 2</span>
+           -&gt; <span class="hljs-type">Int</span> {                              <span class="hljs-comment">// return value</span>
+  . . .
+}
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(
+          <span class="hljs-number">_</span> tableView: UITableView,              // parameter <span class="hljs-number">1</span>
+          cellForRowAt indexPath: IndexPath)</span></span>     <span class="hljs-comment">// parameter 2</span>
+          -&gt; <span class="hljs-type">UITableViewCell</span> {                   <span class="hljs-comment">// return value</span>
+  . . .
+}
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(
+       <span class="hljs-number">_</span> tableView: UITableView,                 // parameter <span class="hljs-number">1</span>
+       didSelectRowAt indexPath: IndexPath)</span></span> {    <span class="hljs-comment">// parameter 2</span>
+  . . .
+}</pre>
+<p>The first parameter is the <code>UITableView</code> object on whose behalf these methods are invoked. This is done for convenience, so you won’t have to make an <code>@IBOutlet</code> in order to send messages back to the table view.
+</p>
+<p>For <code>numberOfRowsInSection</code> the second parameter is the section number. For <code>cellForRowAt</code> and <code>didSelectRowAt</code> it is the index-path.
+</p>
+<p>Methods are not limited to just one or two parameters, they can have many. But for practical reasons two or three is usually more than enough, and you won’t see many methods with more than five parameters.
+</p>
+<p>In other programming languages a method typically looks like this:
+</p><pre class="code-block"><span class="hljs-type">Int</span> numberOfRowsInSection(<span class="hljs-type">UITableView</span> tableView, <span class="hljs-type">Int</span> section) {
+  . . .
+}</pre>
+<p>In Swift we do things a little differently, mostly to be compatible with the iOS frameworks, which are all written in the Objective-C programming language. Let’s take a look again at <code>numberOfRowsInSection</code>:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+      numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+  . . .
+}</pre>
+<p>The method signature for the above method, as discussed before, is  <code>tableView(_:numberOfRowsInSection:)</code>. If you say that out loud (without the underscores and colons, of course), it actually makes sense. It asks for the number of rows in a particular section of a particular table view.
+</p>
+<p>The first parameter looks like this:
+</p><pre class="code-block">    <span class="hljs-number">_</span> tableView: <span class="hljs-type">UITableView</span></pre>
+<p>The name of this parameter is <code>tableView</code>. The name is followed by a colon and the parameter’s type, <code>UITableView</code>.
+</p>
+<p>The second parameter looks like this:
+</p><pre class="code-block">    numberOfRowsInSection section: <span class="hljs-type">Int</span></pre>
+<p>This one has two names, <code>numberOfRowsInSection</code> and <code>section</code>.
+</p>
+<p>You use the first name, <code>numberOfRowsInSection</code>, when calling the method. This is the <i>external</i> parameter name. Inside the method itself you use the second name, <code>section</code>, known as the <i>local</i> parameter name. The data type of this parameter is <code>Int</code>.
+</p>
+<p>The <code>_</code> underscore is used when you don’t want a parameter to have an external name. You’ll often see the <code>_</code> on the first parameter of methods that come from Objective-C frameworks. With such methods the first parameter only has one name but the other parameters have two. Strange? Yes.
+</p>
+<p>It makes sense if you’ve ever programmed in Objective-C, but no doubt it looks weird if you’re coming from another language. Once you get used to it, you’ll find that this notation is actually quite readable.
+</p>
+<p>Sometimes people with experience in other languages get confused because they think that ChecklistViewController.swift contains three functions that are all named <code>tableView()</code>. But that’s not how it works in Swift: the names of the parameters are part of the full method name. That’s why these three methods are actually named:
+</p><pre class="code-block">    tableView(<span class="hljs-number">_</span>:numberOfRowsInSection:)
+    tableView(<span class="hljs-number">_</span>:cellForRowAt:)
+    tableView(<span class="hljs-number">_</span>:didSelectRowAt:)</pre>
+<p>By the way, the return type of the method is at the end, after the <code>-&gt;</code> arrow. If there is no arrow, as in <code>tableView(_:didSelectRowAt:)</code>, then the method is not supposed to return a value.
+</p>
+<p>Phew! That was a lot of new stuff to take in, so I hope you’re still with me. If not, then take a break and start at the beginning again. You’re being introduced to a whole bunch of new concepts all at once and that can be overwhelming.
+</p>
+<p>But don’t worry, it’s OK if everything doesn&apos;t make perfect sense yet. As long as you get the gist of what’s going on, you’re good to go.
+</p>
+<p>If you want to check your work up to this point, you can find the project files for the app under <em>09 - Table Views</em> in the Source Code folder.
+</p></body></html>

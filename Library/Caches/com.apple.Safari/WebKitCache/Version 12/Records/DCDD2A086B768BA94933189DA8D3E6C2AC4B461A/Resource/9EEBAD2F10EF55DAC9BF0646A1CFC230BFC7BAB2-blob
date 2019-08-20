@@ -1,0 +1,538 @@
+WEBVTT
+
+00:00.570 --> 00:06.120
+Ahora lo primero que vamos a hacer es abrir una terminal y dentro de la Terminal
+
+00:06.120 --> 00:08.000
+vamos a navegar a nuestro escritorio.
+
+00:08.010 --> 00:13.650
+Entonces, si no está familiarizado con la línea de comando y no ha visto el Marchal en la línea
+
+00:13.980 --> 00:18.390
+de comando, le recomiendo que lo revise ahora porque vamos a utilizar muchos de los
+
+00:18.390 --> 00:20.790
+comandos para crear directorios. y navega alrededor
+
+00:20.790 --> 00:25.290
+Entonces, si todavía no estás familiarizado, es un buen momento para echarle un vistazo.
+
+00:26.010 --> 00:33.600
+Entonces, lo primero que voy a hacer es ir a un CD en mi escritorio y aquí
+
+00:33.600 --> 00:43.920
+voy a crear un nuevo directorio llamado "story", luego voy a "CD" en este directorio de historias y vice shoyu con "ls".
+
+00:43.920 --> 00:45.870
+Puedes ver que está completamente vacío.
+
+00:45.990 --> 00:50.420
+Y del mismo modo, dentro del buscador, puedo mostrarte lo mismo.
+
+00:50.430 --> 00:54.600
+Entonces sigamos y creemos algunos archivos de texto.
+
+00:54.660 --> 01:01.590
+Así que voy a usar el tacto para crear un archivo llamado texto de punto del Capítulo 1 y luego
+
+01:01.590 --> 01:09.690
+voy a abrir el texto del capítulo 1 y puedes hacer esto simplemente escribiendo abrir y abrirlo dentro de la aplicación predeterminada que es
+
+01:09.750 --> 01:11.880
+texto en él en una Mac.
+
+01:12.120 --> 01:18.130
+Alternativamente, puede usar un texto dentro de la terminal, por ejemplo, Vin.
+
+01:18.210 --> 01:21.770
+Ahora esto es solo para personas que están realmente familiarizadas con esto.
+
+01:21.780 --> 01:24.050
+Entonces depende totalmente de ti lo que decidas usar.
+
+01:24.090 --> 01:30.180
+Pero si no está familiarizado con el uso de editores basados ​​en terminales, probablemente sea una
+
+01:30.180 --> 01:33.920
+buena idea quedarse con el comando abrir y usar textedit.
+
+01:33.930 --> 01:39.110
+Así que vamos y abrimos el capítulo 1 y escribamos algo dentro de Jawi
+
+01:42.990 --> 01:43.350
+OK.
+
+01:43.360 --> 01:45.270
+Así que esa es mi obra maestra hecho.
+
+01:45.390 --> 01:49.440
+Voy a seguir adelante y presionar guardar y voy a salir de textedit.
+
+01:49.570 --> 01:53.190
+Así que ese fue nuestro primer capítulo hecho.
+
+01:53.380 --> 02:01.100
+Entonces, creemos un repositorio de get local y comience a rastrear algunos de estos cambios de archivos.
+
+02:01.450 --> 02:06.350
+Entonces para inicializar get simplemente escribimos get it it.
+
+02:06.340 --> 02:12.490
+Y como pueden ver, se inicializa y vacía el repositorio dentro del directorio de la historia.
+
+02:12.490 --> 02:17.230
+Ahora bien, si tienes un buscador de interior, realmente no puedes ver este punto en absoluto.
+
+02:17.320 --> 02:18.900
+Pero como aprendimos antes.
+
+02:18.970 --> 02:20.720
+Si usa LS A.
+
+02:20.920 --> 02:26.620
+Puedes ver todos los archivos ocultos y puedes ver que Dogget está ahí y se usará para
+
+02:26.710 --> 02:32.320
+rastrear todos tus cambios para confirmar tus cambios y para realizar el control de la versión.
+
+02:32.320 --> 02:38.100
+Entonces, estamos actualmente dentro del directorio de historias y también puedes llamarlo el directorio de trabajo.
+
+02:38.110 --> 02:45.250
+Entonces, como mencioné antes de usarlo y aprender sobre el control de versiones, viene con algo de su propia
+
+02:45.340 --> 02:46.570
+terminología e idioma.
+
+02:46.570 --> 02:51.370
+Así que voy a tratar de desacreditar y simplificar muchos de estos términos que encontrarás solo para
+
+02:51.370 --> 02:55.440
+que todos estemos en la misma página y todos entendamos lo que está pasando.
+
+02:55.720 --> 03:01.770
+Por lo tanto, actualmente estamos dentro del directorio de trabajo que es el directorio de la historia.
+
+03:02.050 --> 03:07.750
+Y aquí solo para comenzar a rastrear los cambios de mis archivos.
+
+03:07.750 --> 03:15.350
+Por ejemplo, el texto del punto del capítulo 1, entonces necesito agregar este archivo a lo que se llama área de transición.
+
+03:15.790 --> 03:23.230
+Y eso es básicamente un lugar intermedio donde puedes escoger y elegir qué archivos dentro de
+
+03:23.230 --> 03:26.270
+tu directorio de trabajo deseas comprometer.
+
+03:26.320 --> 03:33.220
+Entonces, para ver qué hay actualmente dentro de su área de preparación, puede usar el comando get status y le muestra
+
+03:33.220 --> 03:39.630
+que hay archivos sin seguimiento que se mostrarán en rojo y esto es algo que simplemente está dentro de
+
+03:39.630 --> 03:41.080
+un directorio de trabajo.
+
+03:41.080 --> 03:42.410
+Así que adentro aquí.
+
+03:42.550 --> 03:45.560
+Pero aún no está en el área de preparación.
+
+03:45.610 --> 03:52.570
+al área de preparación y comenzar a rastrear cambios en él, entonces tenemos que usar el comando get.
+
+03:52.570 --> 03:53.940
+Entonces, para agregarlo
+
+03:54.020 --> 03:58.930
+Y entonces vamos a escribir "get added" y vamos a escribir el nombre del archivo.
+
+03:58.930 --> 04:01.730
+Entonces, en este caso, es el texto alternativo del Capítulo 1.
+
+04:01.960 --> 04:08.710
+Así que adelante y presione enter y luego, si tratamos de usar el estado obtener de nuevo, puede ver que ese archivo ha
+
+04:08.800 --> 04:11.820
+sido agregado como un nuevo archivo y ahora es verde.
+
+04:11.830 --> 04:16.380
+Así que esto ahora está en el área de preparación y está listo para comprometerse.
+
+04:16.390 --> 04:20.260
+Así que eso es seguir adelante y confirmar esto bajo control de versión.
+
+04:20.260 --> 04:28.480
+Entonces el comando es get commit y voy a usar el guion y la bandera para agregar un mensaje de confirmación.
+
+04:28.480 --> 04:31.450
+Entonces el mensaje de compromiso es realmente muy importante.
+
+04:31.630 --> 04:38.140
+Es algo que le ayuda a realizar un seguimiento de los cambios que ha realizado en cada compromiso.
+
+04:38.140 --> 04:47.200
+Por lo tanto, cuando crea un nuevo punto de guardado, desea ser lo más explícito posible sobre los cambios que se realizaron entre el último
+
+04:47.230 --> 04:50.380
+punto de guardado y el punto de guardado actual.
+
+04:50.380 --> 04:58.420
+Entonces, para nuestro compromiso inicial podemos usar algo muy simple como la confirmación inicial y esto muestra que este es
+
+04:58.420 --> 04:59.880
+nuestro punto de partida.
+
+05:00.100 --> 05:05.920
+Alternativamente, si quiere ser un poco más específico porque en nuestro caso hemos completado
+
+05:05.920 --> 05:07.090
+el capítulo 1.
+
+05:07.090 --> 05:11.180
+Entonces puedes escribir el capítulo 1 completo.
+
+05:11.200 --> 05:16.540
+Ahora, lo que notará es que generalmente con los mensajes de compromiso están escritos en tiempo
+
+05:16.540 --> 05:17.050
+presente.
+
+05:17.260 --> 05:18.600
+Y esta es la mejor práctica.
+
+05:18.610 --> 05:25.210
+Entonces, mientras que probablemente tendría más sentido, al menos en mi cabeza, de todos modos, escribiré el
+
+05:25.270 --> 05:28.200
+capítulo uno completo como este punto de guardado.
+
+05:28.240 --> 05:32.680
+De hecho, es por convención que siempre debes usar el tiempo presente.
+
+05:32.680 --> 05:36.910
+Entonces, es como si lo estuvieras haciendo ahora que estás enviando tus cambios ahora.
+
+05:37.000 --> 05:44.200
+Así que sigamos adelante y pulse y gire para hacer nuestra primera confirmación y puede ver las confirmaciones que ha
+
+05:44.200 --> 05:47.290
+realizado mediante el uso del comando Obtener registro.
+
+05:47.560 --> 05:53.320
+Entonces puedes ver que este compromiso fue hecho en este momento por esta persona.
+
+05:53.540 --> 06:00.720
+Y también tiene un hash y este hash identifica de forma única este compromiso particular.
+
+06:00.910 --> 06:06.620
+Y luego, al final, ve este mensaje de compromiso sobre de qué se trató este punto de guardado.
+
+06:07.870 --> 06:12.310
+Así que ahora voy a seguir adelante y crear dos capítulos más.
+
+06:12.340 --> 06:25.450
+Así que simplemente crearemos el texto del punto del capítulo dos y el del punto del capítulo tres, y ahora tenemos tres capítulos y voy a entrar
+
+06:25.720 --> 06:29.640
+y cambiar algunos de estos archivos de texto.
+
+06:29.680 --> 06:31.030
+Entonces digamos k así
+
+06:41.270 --> 06:43.710
+que está hecho el Capítulo 2.
+
+06:43.960 --> 06:49.330
+Y finalmente sigamos adelante y simplemente abra el capítulo 3 y edítelo también.
+
+07:00.930 --> 07:01.420
+Todo bien.
+
+07:01.450 --> 07:03.720
+Entonces los tres archivos han sido cambiados.
+
+07:03.760 --> 07:09.070
+Y aquí, en Finder, puedes echar un vistazo rápido a los contenidos que te
+
+07:09.070 --> 07:14.520
+serán realmente útiles para que pueda mostrarte lo que está haciendo detrás del fondo.
+
+07:14.800 --> 07:20.860
+Entonces, vamos a seguir leyendo estos dos nuevos archivos en nuestras áreas de preparación.
+
+07:20.860 --> 07:28.180
+Así que, de nuevo, si usamos el estado get, puede ver que hay dos archivos que no se rastrean, que están solo en el
+
+07:28.180 --> 07:31.970
+directorio de trabajo y aún no están dentro del área de ensayo.
+
+07:32.290 --> 07:38.630
+Así que podemos ponerlo en el área de ensayo simplemente agregando cada uno de ellos como lo hicimos antes.
+
+07:38.650 --> 07:42.610
+Obtener agregar y escribir algo así como las etiquetas de perro del Capítulo Dos.
+
+07:42.630 --> 07:45.430
+Y luego hacerlo capítulo tres punto de texto.
+
+07:45.640 --> 07:51.940
+Pero como puedes imaginar si tienes bastantes archivos, puede ser increíblemente tedioso tener que hacer
+
+07:51.940 --> 07:53.580
+esto uno por uno.
+
+07:53.590 --> 07:56.070
+Entonces, por supuesto, hay una mejor manera.
+
+07:56.080 --> 08:01.870
+Por lo tanto, en lugar de agregar estos archivos uno por uno, podemos decir simplemente obtener
+
+08:01.870 --> 08:07.050
+ADD y luego usar el punto para especificar todo dentro de este directorio actual.
+
+08:07.060 --> 08:09.840
+Entonces todo dentro del directorio de la historia.
+
+08:10.090 --> 08:14.740
+Entonces, si continúo y presiono enter, eso es para obtener estatores nuevamente.
+
+08:14.920 --> 08:22.150
+Puede ver los dos nuevos archivos que se han agregado al área de preparación y ahora vamos a asignar esos
+
+08:22.270 --> 08:26.580
+dos archivos a una nueva confirmación a un nuevo punto de guardado.
+
+08:26.920 --> 08:30.110
+Y sabes qué hacer si me sigues.
+
+08:30.130 --> 08:35.570
+Adelante, pruébalo.
+
+08:35.570 --> 08:35.930
+Todo bien.
+
+08:35.930 --> 08:43.430
+Entonces, ¿cómo es que si usted es un miembro del comando es llegar a comprometerse y
+
+08:43.430 --> 08:51.920
+vamos a utilizar la bandera M para especificar un mensaje de compromiso y vamos a escribir un mensaje
+
+08:51.920 --> 08:58.120
+que está en tiempo presente, así que digamos Completa el capítulo dos y tres.
+
+08:58.940 --> 09:05.590
+Así que eso es todo lo que hice entre el comentario inicial y este compromiso.
+
+09:05.600 --> 09:10.230
+La única diferencia es el hecho de que he completado ahora el capítulo dos en el capítulo tres.
+
+09:10.250 --> 09:13.170
+Así que vamos adelante y presionamos enter.
+
+09:13.550 --> 09:17.060
+Así que, de nuevo, revisémoslo usando get log.
+
+09:17.120 --> 09:24.170
+Podemos ver que ahora tenemos dos commits con hash diferentes porque son únicos
+
+09:24.170 --> 09:25.230
+y diferentes.
+
+09:25.280 --> 09:32.990
+Así que el inicial fue el capítulo 1 completo y se hizo en este momento y luego, más o menos cinco
+
+09:32.990 --> 09:36.100
+minutos más tarde, terminé el capítulo dos y tres.
+
+09:36.170 --> 09:38.110
+Y ese fue el segundo compromiso.
+
+09:38.480 --> 09:41.230
+Y aquí es donde estamos ahora.
+
+09:41.270 --> 09:49.480
+Para que pueda ver por la cabeza este Woodhead Esta es la posición o el estado actual en el que nos encontramos.
+
+09:49.490 --> 09:52.720
+Así que solo quiero resumir rápidamente lo que acabamos de hacer.
+
+09:52.970 --> 09:58.440
+Así que creamos un archivo en nuestro directorio de trabajo dentro de nuestro directorio de historias.
+
+09:58.630 --> 10:05.990
+Entonces, el directorio de trabajo es la carpeta o el directorio donde inicializa su repositorio get.
+
+10:06.100 --> 10:10.390
+Cuando dijimos entrar lo hicimos dentro del directorio de la historia.
+
+10:10.460 --> 10:12.540
+Entonces eso se convierte en un directorio de trabajo.
+
+10:12.740 --> 10:18.890
+Y a partir de ahora, intentará rastrear los cambios que ve entre el directorio
+
+10:19.310 --> 10:22.090
+de trabajo y el repositorio local.
+
+10:22.490 --> 10:31.040
+Así que al principio creamos un archivo dentro de nuestro directorio de trabajo dentro de la historia y luego lo
+
+10:31.040 --> 10:34.310
+usamos para agregarlo al área de preparación.
+
+10:34.310 --> 10:39.740
+Ahora la razón por la cual existe este área de transición intermedia es porque quizás se pregunte por qué
+
+10:39.740 --> 10:42.470
+no simplemente ir del directorio de trabajo directamente al repositorio.
+
+10:42.500 --> 10:44.690
+¿Por qué necesitamos este paso adicional?
+
+10:44.840 --> 10:52.430
+Bueno, a veces es posible que no desee agregar todos sus archivos para ser rastreados o que se comprometan
+
+10:52.430 --> 10:53.550
+todos sus archivos.
+
+10:53.600 --> 10:59.240
+Entonces, el área de preparación es un buen lugar para tratar de descubrir cuáles son las cosas que desea ignorar.
+
+10:59.390 --> 11:01.970
+Y una de las cosas que quiere que se rastree.
+
+11:02.210 --> 11:09.200
+los cambios que vamos a comprometer, el siguiente paso es seguir adelante y comprometerse utilizando el comando Obtener confirmación.
+
+11:09.200 --> 11:17.160
+Entonces, una vez que lo hemos usado y hemos dejado el archivo en el área de preparación y estamos contentos con
+
+11:17.180 --> 11:25.730
+Así que ahora nuestro archivo está dentro de nuestro repositorio local para que dot get y esa versión reciba un nombre a través
+
+11:25.730 --> 11:27.340
+del mensaje de confirmación.
+
+11:27.350 --> 11:35.540
+Eso significa que incluso si hemos desordenado nuestro archivo, aún podemos usar la última versión que está bajo control
+
+11:35.540 --> 11:43.820
+de versión y podemos usar un comando especial llamado Get check out para revertir o revertir a la última
+
+11:43.820 --> 11:46.200
+posición en nuestro repositorio local.
+
+11:46.370 --> 11:52.080
+Así que déjame mostrarte cómo se ve eso en la línea de comandos y cómo lo haríamos en la práctica.
+
+11:52.100 --> 11:57.410
+momento tengo tres capítulos bien escritos y tengo la sensación de que mi libro va a ser un gran éxito de ventas.
+
+11:57.410 --> 11:58.430
+Así que por el
+
+11:58.450 --> 12:06.530
+Así que ahora digamos que ya sé que he estado trabajando en el capítulo tres y lo he estropeado
+
+12:06.530 --> 12:13.910
+por completo y solo tú sabes que se quedó dormido en el teclado y casualmente guardé mi archivo.
+
+12:13.910 --> 12:20.140
+Y ahora, si lo miras, ahora es solo un juego de palabras y he arruinado mi obra maestra.
+
+12:20.360 --> 12:25.170
+Pero ffin on porque tenemos control de versiones y lo tenemos habilitado.
+
+12:25.370 --> 12:28.270
+Entonces no tenemos nada de qué preocuparse.
+
+12:28.610 --> 12:33.750
+De hecho, puedo revertir los cambios que hice localmente en mi directorio de trabajo.
+
+12:33.770 --> 12:39.290
+de texto de tres puntos que aún no se han confirmado o agregado al área de transición.
+
+12:39.280 --> 12:44.780
+Entonces, en este punto, puede utilizar los estatores para ver que tenemos modificaciones en nuestro archivo
+
+12:44.840 --> 12:50.920
+Entonces, si quisiéramos, podemos revertir esto a su gloria anterior.
+
+12:51.230 --> 12:57.920
+Pero antes de hacerlo podemos utilizar un buen comando para verificar una de las diferencias entre la versión
+
+12:57.920 --> 13:03.100
+actual del capítulo 3 y el último punto de guardado en nuestro repositorio get.
+
+13:03.230 --> 13:06.860
+Entonces para hacer eso puedes usar el comando get diff.
+
+13:06.950 --> 13:12.350
+Entonces esa diferencia y le daremos el nombre de archivo del capítulo 3.
+
+13:12.650 --> 13:17.210
+Y si presionas enter, puedes ver que esta es la parte que se eliminó.
+
+13:17.210 --> 13:23.860
+Así que la parte en rojo y luego esta fue la parte que se agregó, que es nuestro galimatías.
+
+13:24.050 --> 13:29.600
+Entonces, si he visto estas diferencias, es posible que sepas que solo hay algunos
+
+13:29.930 --> 13:36.480
+errores en mi nueva versión del capítulo 3 y solo quiero copiar algunas cosas o echar
+
+13:36.480 --> 13:41.390
+un vistazo a cómo hice ciertas cosas anteriormente. cambiar mi archivo actual
+
+13:41.700 --> 13:46.910
+Pero otras veces puede ser que sepas que solo quieres antorchar el nuevo archivo.
+
+13:46.920 --> 13:49.120
+Simplemente no quieres tener nada que ver con eso.
+
+13:49.140 --> 13:52.710
+Y preferiría retroceder a la versión anterior.
+
+13:52.980 --> 13:59.370
+Entonces, si quieres hacer eso, entonces hay un comando llamado "Check out" que te va a
+
+13:59.370 --> 14:00.510
+ser realmente útil.
+
+14:00.810 --> 14:03.190
+Así que echa un vistazo.
+
+14:03.210 --> 14:07.920
+Y luego vamos a especificar el nombre del archivo que queremos verificar, que es
+
+14:07.920 --> 14:14.170
+el texto del punto del Capítulo 3 y si solo ve aquí, que es la vista previa de
+
+14:14.170 --> 14:23.070
+la versión actual del texto del punto del Capítulo tres, una vez que presiono entrar en este comando que básicamente pide volver atrás este capítulo 3
+
+14:23.070 --> 14:26.550
+a la última versión que fue comprometida en nuestro repositorio local.
+
+14:26.550 --> 14:33.900
+Entonces, si presiono entrar, pueden ver que casi inmediatamente mi capítulo 3 ha sido restaurado a su glorioso estado anterior
+
+14:34.440 --> 14:41.610
+y esta es la versión del capítulo 3 en el último punto de control en el que lo comprometí.
+
+14:41.640 --> 14:46.000
+Así que ese fue el que se completó el capítulo 2 y 3.
+
+14:46.020 --> 14:51.770
+Entonces, mientras que en esta lección hemos analizado principalmente las implementaciones locales de niños.
+
+14:51.840 --> 14:58.460
+Entonces, guardando estas versiones en nuestra computadora localmente en la próxima lección, voy a hablar sobre cómo
+
+14:58.830 --> 15:02.580
+obtener concentrador y crear repositorios remotos, así veré el.

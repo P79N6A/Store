@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 43: Distributing the App</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 43: Distributing the App</h1>
+
+<p>What do you do with an app that is finished? Upload it to the App Store, of course! And with a little luck, make some big bucks…
+</p>
+<p>Throughout this book, you’ve probably been testing the apps on the Simulator and occasionally on your device. That’s great, but when the app is nearly done, you may want to let other people beta test it.
+</p>
+<p>In this chapter, you’ll learn how to beta test the <i>StoreSearch</i> app. After that, I’ll also show you how to submit the app to the App Store, which is basically an extension of the same process.
+</p>
+<p>By the way, I’d appreciate it if you don’t actually submit the apps from this book. Let’s not spam the App Store with dozens of identical <i>StoreSearch</i> or <i>Bull’s Eye</i> apps.
+</p>
+<p>This chapter will cover the following:
+</p>
+<ul>
+<li>
+<p><em>Join the Apple Developer program:</em> How to sign up for the paid Apple Developer Program.
+</p></li>
+
+<li>
+<p><em>Beta testing:</em> How to beta test your app using Apple&apos;s TestFlight service.
+</p></li>
+
+<li>
+<p><em>Submit to the App Store:</em> How to submit your app to Apple for review before being made availalbe on the App Store.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Join the Apple Developer program</h2>
+
+<p>Once you’re ready to make your creations available on the App Store, it’s time to join the paid Apple Developer Program.
+</p>
+<p>To sign up, go to <a href="https://developer.apple.com/programs/">developer.apple.com/programs/</a> and click the blue <em>Enroll</em> button.
+</p>
+<p>On the sign-up page you’ll need to enter your Apple ID. Your developer program membership will be tied to this account. It’s OK to use the same Apple ID that you’re already using with iTunes and your iPhone, but if you run a business you might want to create a new Apple ID to keep things separate.
+</p>
+<p>You can enroll as an Individual or as an Organization. There is also an <a href="https://developer.apple.com/programs/enterprise/">Enterprise Program</a>, but that’s for big companies who want to distribute apps within their own organization only. If you’re still in school, the <a href="https://developer.apple.com/programs/ios/university/">iOS Developer University Program</a> may be worth looking into as well.
+</p>
+<p>You buy the Developer Program membership from the online Apple Store for your particular country. Once your payment is processed, you’ll receive an activation code that you use to activate your account.
+</p>
+<p>Signing up is usually pretty quick. In the worst case it may take a few weeks, as Apple will check your credit card details and if they find anything out of the ordinary — such as a misspelled name — your application may run into delays. So make sure to enter your credit card details correctly or you’ll be in for an agonizing wait.
+</p>
+<p>If you’re signing up as an organization, you also need to provide a D-U-N-S Number, which is free, but may take some time to request. You cannot register as an organization if you have a single-person business such as a sole proprietorship or DBA (“doing business as”). In that case you need to sign up as an Individual.
+</p>
+<p>You will have to renew your membership every year, but if you’re serious about developing apps, then that $99/year will be worth it.
+</p>
+<h2 class="segment-chapter">Beta testing</h2>
+
+<p>You will be distributing your app for beta testing via Apple&apos;s TestFlight service.
+</p>
+<h3 class="segment-chapter">TestFlight</h3>
+
+<p>In the early days of iOS development, the only way to send builds to testers was via what was known as Ad Hoc distribution. You had to register specific devices for Ad Hoc distribution — for which you needed to know the unique ID for the device — and there was a limit of 100 devices per developer account. You could only reset the devices in this list once per year, when you renewed your developer account.
+</p>
+<p>Additionally, you had to go through a complicated manual signing process to sign builds for Ad Hoc distribution and you had to send these builds out to your users and hope that they could figure out how to install the builds on their devices and troubleshoot any installation issues by themselves, or provide you enough information to help them figure out what was going on.
+</p>
+<p>All this changed with the introduction of Apple&apos;s TestFlight service.
+</p>
+<p>TestFlight allows you to distribute your beta builds to 10,000 testers and all you need is just their e-mail address!
+</p>
+<p>What&apos;s more, the process itself is fairly straightfoward since you simply build your app in Xcode and upload to the App Store. The app binary would go through some processing at this point and once the processing is complete, you are able to offer the app for testing to your internal testers immediately.
+</p>
+<p>In addition to the 10,000 external testers, you can also have internal testers from your organization. The internal tester count is limited to 25 people — each of whom can run your app on up to 30 devices — and they have to be part of your Apple Developer team. If you signed up as a single developer, this probably would not work for you since you can&apos;t add additional members to your team on the Apple Developer portal. On the other hand, if you signed up as an organization, then you can start testing immediately.
+</p>
+<p>If you want to distriute to external testers — the 10,000 testers I mentioned earlier — you do have to go through an initial review of your app by Apple. This process is usually quite fast and takes about a day. This generally has to be done only once per new beta build — for the very first beta build. After that, you can simply push out new builds without needing to wait for approval from Apple.
+</p>
+<p>To add new users to beta test, you simply invite them using their e-mail address. They will receive an invitation e-mail which they can accept, or reject by simply ignoring the e-mail. If they accept the invitation, they are prompted to install the TestFlight app which will handle installing beta builds and notifying users of updates to beta builds from then on.
+</p>
+<p>You can read more on TestFlight at: <a href="https://developer.apple.com/testflight/">https://developer.apple.com/testflight/</a>
+</p>
+<h3 class="segment-chapter">Apple Developer portal</h3>
+
+<p>While the new TestFlight workflow for beta testing is miles ahead of what you had previously, it still requires you to do a bunch of things on several differetn Apple sites. You start out on the Apple Developer portal where you need to create an App ID for your new app.
+</p>
+<p>➤ Open your favorite web browser and navigate to your account details page at <a href="https://developer.apple.com/account">developer.apple.com/account</a>. You might need to sign in if you are not logged in. Once you are there, click on <em>Certificates, Identifiers </em><em>&amp;</em><em> Profiles</em>.
+</p>
+<p><em>Tip</em>: If you have trouble using the site and you are not using Safari, try using Safari. Other browsers can throw up weird issues sometimes.
+</p>
+<div class="note">
+<p><em>Note</em>: Like any piece of software, the Apple Developer Portal changes every now and then. It’s possible that by the time you read this, some of the options are in different places or have different names. The general flow should still be the same, though. And if you really get stuck, online help is usually available.
+</p></div>
+
+<p>➤ Click on <em>App IDs</em> under <em>Identifiers</em> in the sidebar — you should get a list of existing app IDs. Press the <em>+</em> button on the top right to add a new App ID:
+</p><div class="image-50"><img src="graphics/img751.png"  alt="" title="Creating a new App ID" /></div>
+<p>➤ Fill in the <em>App ID Description</em> field. This can be anything you want — it’s just for your reference on the Provisioning Portal.
+</p>
+<p>➤ The <em>App ID Prefix</em> field contains the ID for your team. You cannot modify this value.
+</p>
+<p>➤ Under <em>App ID Suffix</em>, select <em>Explicit App ID</em>. In the <em>Bundle ID</em> field you must enter the identifier that you used when you created the Xcode project. For me that is <em>com.raywenderlich.StoreSearch</em>.
+</p><div class="image-60"><img src="graphics/img752.png"  alt="" title="The Bundle ID must match with the identifier from Xcode" /></div>
+<p>If you want your app to support push notifications, In-App Purchases, or iCloud, then you can also configure that here. <i>StoreSearch</i> doesn’t need any of that, so leave the other fields on the default settings.
+</p>
+<p>➤ Press <em>Continue</em> and then <em>Register</em> to create the App ID. The portal will now generate the App ID for you and add it to the list.
+</p>
+<p>The full App ID is something like <em>U89ECKP4Y4.com.yourname.StoreSearch</em>. That number in front is your Apple Developer Team ID.
+</p>
+<h3 class="segment-chapter">App Store Connect</h3>
+
+<p>Next, you need to add your app to App Store Connect.
+</p>
+<p>➤ Navigate to <a href="https://appstoreconnect.apple.com">appstoreconnect.apple.com</a> via your browser of choice. Again, try using Safari if you run into any issues with the App Store Connect site.
+</p>
+<p>➤ Log in using the same Apple ID that you used to sign up for your Apple Developer account.
+</p>
+<p>➤ The first screen you see will look something like the following — if you are not an administrator for the App Store Connect account, you might see fewer options on the screen than in the screenshot.
+</p><div class="image-40"><img src="graphics/img753.png"  alt="" title="Initial App Store Connect screen" /></div>
+<p>➤ If you’ve never been to App Store Connect before, then make sure to first visit the <em>Agreements, Tax, and Banking</em> section and fill out the forms. All that stuff has to be in order before your app can be distributed on the App Store.
+</p>
+<p>➤ Select <em>My Apps</em> — this is the option you need to manage everything related to your apps. You create new app entries, edit existing ones, and manage your beta testing and app distribution tasks all from there.
+</p>
+<p>The page you are taken to lists your existing apps, if you have any. It also allows you to add new apps to App Store Connect.
+</p><div class="image-40"><img src="graphics/img754.png"  alt="" title="The My Apps page on App Store Connect" /></div>
+<p><em>Tip:</em> If you are stuck and don&apos;t know what to do, you can use the help icon on the top right to access guides and videos which might allow you to figure out how to use the App Store Connect site.
+</p>
+<p>➤ Click the plus (<em>+</em>) icon on the top left to add a new app and then select <em>New App</em> from the menu.
+</p><div class="image-40"><img src="graphics/img755.png"  alt="" title="Add a new app on App Store Connect" /></div>
+<p>➤ This should present you with a new dialog for entering the basic information necessary for an app.
+</p><div class="image-40"><img src="graphics/img756.png"  alt="" title="New app information on App Store Connect" /></div>
+<p>Select the checkbox for <em>iOS</em> (since yours is an iOS app), enter the name of your app, select the primary langauge from the dropdown and select the Bundle ID from the dropdown.
+</p>
+<p>The Bundle ID would be the app ID you added on the Apple Developer Portal earlier. If you don&apos;t see the app ID you added, try refreshing your browser or waiting for a bit in case the information has not updated on the Apple servers. Generally, the information should be reflected almost immediately.
+</p>
+<p><em>Tip</em>: If you are not sure about what you are supposed to enter for a particular field, you can always click on the question mark icon next to each field to get a hint as to what you should enter. Also note the hint in the above screenshot — you <em>must</em> have a bundle ID matching the ID you have in Xcode for your project. Otherwise, the upload from Xcode will fail.
+</p>
+<p>The last value you have to enter is the <em>SKU</em> (or “skew”), which stands for <em>S</em>tock-<em>K</em>eeping <em>U</em>nit. This one confuses people a bit since it can be any unique value <i>for your company</i>. Basically, Apple does not care what this value is — it&apos;s only used for reporting purposes. It has to be unique for your apps. So, for example, if you use 1001 as the SKU for your first app, you <i>can&apos;t</i> use 1001 as the SKU for your second app.
+</p>
+<p>➤ Once you&apos;ve filled in all the information, click <em>Create</em> and your new app will be added to App Store Connect — if there are no errors.
+</p>
+<p>If your app name has been used before — by anybody, not just you — for another app, or if your Bundle ID is not unique, or if your SKU has been used before, you will get an error message at this point. You would have to fix these issues and try again if this happens. Generally, it&apos;s the app name which gives you problems — so it&apos;s always a good idea to figure out if the name you selected is in use before you try to add a new app to App Store Connect.
+</p>
+<p>That&apos;s all you need to do at the App Store Connect end for the time being.
+</p>
+<h3 class="segment-chapter">Upload for beta testing</h3>
+
+<p>Once you have your app on App Store Connect, you can upload the app for beta testing — and later submission to Apple — quite easily.
+</p>
+<p>➤ Start Xcode, if you&apos;re not already running it, and then open the <i>StoreSearch</i> project.
+</p>
+<p>➤ In the <em>Project Settings</em> screen, in the <em>General</em> tab, choose the correct <em>Team</em>. As you noticed when you created the App ID, the team ID is connected to your App ID. So make sure that you have the right team selected here, otherwise you will run into issues later when you try to upload the build …
+</p><div class="image-90"><img src="graphics/img757.png"  alt="" title="Choosing the team" /></div>
+<p>➤ Change the device in the active sheme selector, on the Xcode toolbar, to <em>Generic iOS Device</em>.
+</p><div class="image-40"><img src="graphics/img758.png"  alt="" title="Selecting Generic iOS Device" /></div>
+<p>Normally, when you build your app, you build for a specific Simulator or for a connected device because your intention at that point is to run the build on that particular Simulator or device.
+</p>
+<p>But when you build for distribution, you have no idea which particular device a build would run on. So, you have to build using the generic device setting in order to ensure that the resulting app would be compiled correctly to run on all supported devices.
+</p>
+<p>➤ Select <em>Product ▸ Archive</em> from the Xcode menu.
+</p><div class="image-40"><img src="graphics/img759.png"  alt="" title="Create app archive" /></div>
+<p>If the Archive option is disabled, then you probably did not select the Generic iOS Device from the active scheme selector as per the previous step. You can only build an archive if you have the Generic iOS Device selected.
+</p>
+<p>The app will compile the project and link it. If everything goes smoothly, Xcode should open the Organizer window and and display the new archive which was just created.
+</p><div class="image-40"><img src="graphics/img760.png"  alt="" title="The Organizer window" /></div>
+<p>You are now ready to upload the build to the App Store, as the big blue button on the right sidebar testifies. :]
+</p>
+<p>You can simply click the big blue button, or, you can click the <i>Validate App</i> button below it to verify that your app passes all of Apple&apos;s initial validations. The validations are run even if you use the <i>Distribute App</i> button but the <i>Validate App</i> button is an easy way to check your app locally and verify that it passes muster before you upload it to the Apple servers.
+</p>
+<p>➤ Click the <em>Distribute App</em> button.
+</p>
+<p>You will be asked for the method of distribution:
+</p><div class="image-40"><img src="graphics/img761.png"  alt="" title="App distribution method" /></div>
+<p>You would, of course, want to select <em>iOS App Store</em> for this one.
+</p>
+<p>Then you need to select the destination:
+</p><div class="image-40"><img src="graphics/img762.png"  alt="" title="Destination options" /></div>
+<p>Here, you can opt to upload the binary file directly to the Apple servers or to create an export file that you can upload later. This option can be useful for situations where you are unable to upload via Xcode for some reason — it happens, more often than you might think.
+</p>
+<p>Next, you need to select some distribution options:
+</p><div class="image-40"><img src="graphics/img763.png"  alt="" title="App Store distribution options" /></div>
+<p>Each of the options has some helpful text describing what the option does — so you can basically go with the options that are suitable for you. If you are not sure, there should not be any harm in keeping all of the options checked.
+</p>
+<p>Tapping <em>Next</em> will take you to another dialog:
+</p><div class="image-40"><img src="graphics/img764.png"  alt="" title="Code signing options" /></div>
+<p>➤ Generally, it&apos;s best to go with <em>Automatically manage signing</em> unless you know what you are doing. The manual option gives you a lot more flexibility, but you also have to deal with the complexity that comes along with it — with great power comes great complexity. :]
+</p>
+<p>Tap <em>Next</em> to proceed and Xcode will work for a while signing your app and getting it ready for upload. When Xcode is ready, it should show you a screen similar to the following:
+</p><div class="image-40"><img src="graphics/img765.png"  alt="" title="Ready to upload app" /></div>
+<p>➤ Click <em>Upload</em> and Xcode will start uploading the binary for your app to the Apple servers. Depending on the size of your app — and the speed of your network connection — this might take a bit of time.
+</p>
+<p>While the upload is in progress, you&apos;ll get a progress indicator and status messages indicating what is going on. If the upload completes successfully, you should get a message similar to the following:
+</p><div class="image-40"><img src="graphics/img766.png"  alt="" title="App Store Connect app upload successful" /></div>
+<p>If the upload completes successfully, that&apos;s all you have to do at the Xcode end.
+</p>
+<p>Sometimes though, you might get an error.
+</p>
+<p>Some of these errors are basically incomprehensible since they might just be an App Store error code and a cryptic message. If your are unlucky enough to get one of those, you might have to Google for the error code and see if you find somebody else who has figured out the issue. Usually, it turns out to be an Xcode issue or an App Store issue that is resolved by Apple a few days later.
+</p>
+<p>On the other hand, you might get specific error messages such as your app missing the app icon, or an app icon for a specific size that App Store Connect expected. In such cases, fixing the issue by adding the missing assets and then creating another archive — you can&apos;t re-use the previous one — and uploading that should resolve the issue.
+</p>
+<p>Sometimes, you might also get warnings, like the following:
+</p><div class="image-40"><img src="graphics/img767.png"  alt="" title="App Store Connect error about specific issue" /></div>
+<p>The above indicates that the currently uploaded build is fine as far as passing the general validation goes, but that it&apos;s missing an icon. While this is just a warning, as the message indicates, you still cannot use this build for external beta testing or for submitting to the App Store for review. So you&apos;ll need to fix the issue and upload a new build.
+</p>
+<p>One thing you have to watch out for when uploading several builds for the same app to the Apple servers is the build number ...
+</p>
+<h3 class="segment-chapter">Build number</h3>
+
+<p>Each build you submit to Apple has to be uniquely identifiable. How this is generally done for Xcode projects is by combining the version number and build number for the project to get a unique value.
+</p>
+<p>But where is this version number and build number, you ask? Easy enough.
+</p>
+<p>In Xcode, go to your project root in the Project navigator, select your project target, go to the <em>General</em> tab, and then check the <em>Identity</em> section.
+</p><div class="image-70"><img src="graphics/img768.png"  alt="" title="Xcode version and build numbers" /></div>
+<p>For each new version of your app, you need to increment your version number. For each build you submit for a version, the build number has to change too, but, while you cannot repeat a version number, you can repeat a build number as long as the same build number is not used within a given version.
+</p>
+<p>So, for example, you can have the builds for version 1.0 start from 1 and go up to however many builds as you like. And while you cannot use build number 1 for another build for version 1.0, if you start a new version, say 2.0, then you can start the build numbers for the new version again from 1 and go up incrementally.
+</p>
+<p>So, if you&apos;ve already uploaded a build to App Store Connect and you have to upload another build — either because of an error or because you made a code change — then you need to remember to change the build number. If you don&apos;t, you&apos;d get an error during the upload process.
+</p><div class="image-40"><img src="graphics/img769.png"  alt="" title="App Store Connect error about build number" /></div>
+<p>Change the build number in your project settings, create a new archive, upload it and you should be good to go!
+</p>
+<h3 class="segment-chapter">Check your upload</h3>
+
+<p>You can check on the status of your uploaded build by logging into App Store Connect.
+</p>
+<p>➤ Select <em>My Apps</em> from the main dashboard to get a listing of your apps and then select the <i>StoreSearch</i> app from there.
+</p>
+<p>➤ You&apos;ll be taken to the app detail screen on App Store Connect:
+</p><div class="image-90"><img src="graphics/img770.png"  alt="" title="The app details on App Store Connect" /></div>
+<p>This is the screen where you would manage everything to do with a given app. You can edit the app information, add screenshots, change the price information, submit builds for review, and check the status of a build.
+</p>
+<p>➤ Click on the <em>Activity</em> tab at the top, on the second row of text from the top. This should take you to the latest activity for this particular app.
+</p><div class="image-90"><img src="graphics/img771.png"  alt="" title="The activity page on App Store Connect" /></div>
+<p>As the screen shows, your app is still processing. This can sometimes take a bit of time, though most of the time, the process is pretty quick. Once the processing is complete, you should receive a notification e-mail from Apple indicating that your app had completed processing and is now available for either testing or distribution.
+</p>
+<h3 class="segment-chapter">Internal testing</h3>
+
+<p>As I mentioned before, there are two test modes for TestFlight — internal and external. Once your app  upload completes processing, you can immediately start internal testing.
+</p>
+<p>➤ Log in to App Store Connect and go to your app&apos;s detail screen. From there, select <em>TestFlight</em> from the list of tabs at the top.
+</p><div class="image-90"><img src="graphics/img772.png"  alt="" title="The TestFlight page on App Store Connect" /></div>
+<p>As you might notice, your app build has a warning — it&apos;s apparently missing compliance information. This is standard for all builds unless you provide the compliance information beforehand. The easiest way to fix this is to click on the blue &quot;1&quot; next to the app icon — that is a link which would take you to the detail information page for this particular build — build #1.
+</p><div class="image-90"><img src="graphics/img773.png"  alt="" title="The build detail page on App Store Connect" /></div>
+<p>There, at the top of the page, is a big <em>Provide Export Compliance Information</em> button! Click on the button, go through another screen where you specify whether your app uses encryption or not, and you should be done with the export compliance stuff till you upload another build :]
+</p>
+<p>The above screen also has a place to add testers for this build. So, you might think that is where you add testers for your app. Well … yes, and no.
+</p>
+<p>To add <i>internal</i> testers for your app, you actually have to go to the <em>App Store Connect Users</em> link on the left of that screen. That takes you to a new screen from where you can select up to 25 existing users in your team to be added as internal testers.
+</p>
+<p>If you don&apos;t have any team members at the moment though, you would need to first go back to your App Store Connect dashboard, select the <em>Users and Roles</em> option, add some team members — and optionally, assign them the role of tester — and then come back and add the newly created users as internal testers for your app.
+</p>
+<p>The selected team members will be notified via e-mail that a new build is ready for testing and they will be asked to install the TestFlight iOS app so that they can participate in the testing process.
+</p>
+<p>Internal testing, as the name implies, is generally for testing within your team. So Apple does not require your beta build to go through any sort of review before you start testing. But internal testing is also limited to just 25 people at most.
+</p>
+<p>If you want to do more extensive beta testing, then you have to opt for external testing.
+</p>
+<h3 class="segment-chapter">External testing</h3>
+
+<p>External testing allows you to distribute beta builds of your app to 10,000 testers. But before you can start inviting testers, you have to get your beta build approved by Apple.
+</p>
+<p>Before you can submit your beta build to Apple for review, you have to fill in the relevant test information for the particular build you want tested.
+</p>
+<p>➤ Go to App Store Connect, select your app, and on the app detail screen, go to the <em>TestFlight</em> tab. There should be an item named <em>Test information</em> on the left sidebar. Select it.
+</p><div class="image-90"><img src="graphics/img774.png"  alt="" title="Enter test information on App Store Connect" /></div>
+<p>Fill in at least the <em>Feedback Email</em> and the whole <em>Beta App Review Information</em> section towards the end of the page before the warning at the top about completing test infomration goes away. However, it is possible that Apple may change these requirements from time to time. Once you are don, click <em>Save</em>.
+</p>
+<p>➤ Go to the <em>Builds - iOS</em> item on the left sidebar. Your build should now appear as &quot;Ready to Submit&quot; for the <i>External Testers</i> column.
+</p><div class="image-90"><img src="graphics/img775.png"  alt="" title="The build is ready for beta review" /></div>
+<p>➤ Go into the build details screen by clicking the blue &quot;1&quot; next to the app icon.
+</p>
+<p>➤ Before you can submit the app for beta review, you need to add at least one external beta tester. So, use the <em>Add Testers to this Build</em> link towards the bottom of the screen or the blue plus (<em>+</em>) icon above it — use the <em>Add New Testers</em> option — to start adding some external testers.
+</p><div class="image-40"><img src="graphics/img776.png"  alt="" title="Add external testers for your app" /></div>
+<p>➤ This shows a new dialog where you can add external testers by e-mail address. Add one or more testers here.
+</p><div class="image-70"><img src="graphics/img777.png"  alt="" title="The dialog for adding new testers" /></div>
+<p>➤ When you are done adding testers, click the <em>Next</em> button.
+</p>
+<p>This shows another screen which asks for sign in information in case your app requires a login. This is so that the Apple personnel reviewing your beta build have all the necessary information in order to test your app. Since <i>StoreSearch</i> does not require any login information, you can indicate that no sign in is required and proceed to the next screen.
+</p><div class="image-70"><img src="graphics/img778.png"  alt="" title="The submit for beta review dialog" /></div>
+<p>➤ Enter some text here explaining what you need tested — and perhaps what changes were made since the last build if this is a subsequent beta build — and then click <em>Submit for Review</em> to start the beta review process.
+</p>
+<p>Now, you wait :]
+</p>
+<p>Generally, you wll hear back from Apple within a day or two. If the Apple review team finds any issues with your app, they will let you know and you would need to fix the issues and submit another build and go through the review process again till you succeed.
+</p>
+<p>If the app passes review, then it will be in &quot;Testing&quot; state for external testing and your external testers will be notified via e-mail that a new build is ready for them to test. This will start off the beta cycle for your app. Congratulations!
+</p>
+<p>At this point, all you have to do is wait for feedback from your beta testers, fix any issues they find or make changes based on beta feedback, release another beta build. You rinse and repeat till you are certain that your app is ready to be submitted to Apple for review in preparation for release.
+</p>
+<h2 class="segment-chapter">Submit for review</h2>
+
+<p>When your beta testing is complete, you can submit the final build which passed beta testing for App Store review instead of uploading yet another build to App Store Connect. This way, you bypass the potential for accidental introduction of any new bugs when you create a new build.
+</p>
+<p>Since the build was already uploaded to the Apple servers when you uploaded it for beta testing, you simply have to move on to the next stage in the process using the correct build.
+</p>
+<p>At this point, if you only entered the bare minimum information to add an app to App Store Connect, you might need to provide some additional information for the app as well.
+</p>
+<p>➤ Go to your app&apos;s detail screen and then select the <em>App Store</em> tab and then the <em>App Information</em> option from the left sidebar.
+</p>
+<p>On this screen, make sure that the <em>Category</em> values are filled in correctly for your app. You can select any category from the dropdown here but do try to make sure that the categories you select are relevant for your app.
+</p>
+<p>➤ Select the <em>Pricing and Availability</em> option from the left sidebar and set a price for your app. And if you want your app to be available in only specific App Stores around the world, you&apos;d set that here via the Availability section.
+</p>
+<p>You need to do the above two steps only once for every new app. All the other information changes you make below, might have to be done for every new release.
+</p>
+<p>➤ Next, click on the <em>Prepare for Submission</em> link on the left sidebar with a yellow circle next to it. This is where you enter all the relevant information for each version that you submit to the App Store. Here, you&apos;d need to complete at least the following information — you can fill in more values than the listed ones, but these are the mandatory ones:
+</p>
+<ul>
+<li>
+<p>You can upload up to ten screenshots and three 30-second movies per device. At a minimum, you need to supply screenshots for the 5.5-inch iPhones, and the 12.9-inch iPad Pro. If you do not provide screenshots or videos for the smaller screen devices, the assets from the larger screen devices will be scaled down for the smaller screens.
+</p></li>
+
+<li>
+<p>A list of keywords that customers can search for — limited to 100 characters.
+</p></li>
+
+<li>
+<p>The URL for your support page.
+</p></li>
+
+<li>
+<p>A description that will be visible on the store.
+</p></li>
+
+<li>
+<p>The build to submit — this is the build that passed your beta testing. You can click on the plus icon (or use the link in the box) to get a list of uploaded builds and select the correct one from there.
+</p></li>
+
+<li>
+<p>A 1024×1024 icon image. This image is automatically picked from the binary for builds created with Xcode 9 or later. If you happen to build your app with an older version of Xcode, you would need to upload the icon yourself.
+</p></li>
+
+<li>
+<p>Copyright information.
+</p></li>
+
+<li>
+<p>The version number.
+</p></li>
+
+<li>
+<p>The app rating — this is to identify whether your app contains potentially offensive content. You have to select from a list of items to determine your final content rating.
+</p></li>
+
+<li>
+<p>Your contact details. Apple will contact you at this address if there are any problems with your submission.
+</p></li>
+
+<li>
+<p>Sign-in information. If your app requires a user login to test its functionality, provide the necessry demo user name and password here. If a demo login is not required, remember to uncheck the <em>Sign-in required</em> checkbox. Otherwise, you will get an error when you try to submit the app.
+</p></li>
+
+<li>
+<p>Notes for the reviewer. These are optional, but it&apos;s good to provide some notes if the reviewer needs to do anything special in order to test your app.
+</p></li>
+
+<li>
+<p>When your app should become available
+</p></li>
+</ul>
+
+<p>If your app supports multiple languages, then you can also supply a translated description, screenshots and even an application name.
+</p>
+<p>For more info and help, consult the guides available under Resources and Help on the home page.
+</p>
+<h4 class="segment-chapter">Make a good first impression</h4>
+
+<p>People who are searching or browsing the App Store for cool new apps generally look at things in this order:
+</p>
+<ol>
+<li>
+<p>The name of the app. Does it sound interesting or like it does what they are looking for?
+</p></li>
+
+<li>
+<p>The icon. You need to have an attractive icon. If your icon sucks, your app probably does too. Or at least that’s what people probably think and then they’re gone.
+</p></li>
+
+<li>
+<p>The screenshots. You need to have good screenshots that are exciting — make it clear what your app is about. A lot of developers go further than just regular screenshots; they turn these images into small billboards for their app.
+</p></li>
+
+<li>
+<p>App preview videos. Create up to three 15 to 30-second videos that show off the best features of your app.
+</p></li>
+
+<li>
+<p>If you didn’t lose the potential customer in the previous steps, they might finally read your description for more info.
+</p></li>
+
+<li>
+<p>The price. If you’ve convinced the customer they really can’t live without your app, then the price usually doesn’t matter that much anymore.
+</p></li>
+</ol>
+
+<p>So, get your visuals to do most of the selling for you. Even if you can’t afford to hire a good graphic designer to do your app’s user interface, at least invest in a good icon. It will make a world of difference in sales.
+</p>
+<p>After filling out all the fields, click the <em>Save</em> button at the top. When you’re ready to submit the app, press <em>Submit for Review</em>.
+</p>
+<p>If you missed any information, you will get an error message at the top of the screen indicating the errors. The error message will be accompanied by a link which takes you to the page with the missing (or invalid) information. Also, the fields with missing information will be highlighted in red or have a red circle with an exclamation point next to the title (or both). This will help you identify what information needs to be filled in, or corrected.
+</p>
+<p>Once you fix the issues, save and try submitting again. Sometimes, you have to do this multiple times before you finally succeed :]
+</p>
+<p>Once you successfully submit your app, it enters the App Store approval process. If you’re lucky, the app will go through in a few days, if you’re unlucky it can take several weeks. These days the wait time is fairly short. See <a href="http://appreviewtimes.com">http://appreviewtimes.com</a> for an indication of how long you might have to wait.
+</p>
+<p>If you find a major bug in the mean time, you can reject the file you uploaded on App Store Connect and upload a new one, but this will put you back at square one and you’ll have to start at the bottom of the app review queue once again.
+</p>
+<p>If after your app gets approved, you want to upload a new version of your app, the steps are largely the same. You change the version in Xcode (and change the build number), upload the new version to App Store Connect, update the information in the Prepare for Submission screen and re-submit.
+</p>
+<p>Updates take about the same amount of time to get reviewed as new apps, so you’ll always have to be patient for a few days.
+</p>
+<h2 class="segment-chapter">The end</h2>
+
+<p>Awesome, you’ve done it! You made it all the way through <i>The iOS Apprentice</i>. It’s been a long journey but I hope you have learned a lot about iOS programming, and software development in general. I had a lot of fun writing these chapters and I hope you had a lot of fun reading them!
+</p>
+<p>Because this book is packed with tips and information, you may want to go through it again in a few weeks, just to make sure you’ve picked up on everything!
+</p>
+<p>The world of mobile app development now lies at your fingertips. There is a lot more to be learned about iOS and I encourage you to read the official documentation — it’s pretty easy to follow once you understand the basics. And play around with the myriad of APIs that the iOS SDK has to offer.
+</p>
+<p>Most importantly, go write some apps of your own!
+</p>
+<p>Credits for <i>StoreSearch</i>: The shopping cart from the app icon is based on a design from the Noun Project (<a href="http://thenounproject.com/">thenounproject.com</a>).
+</p>
+<h3 class="segment-chapter">Want to learn more?</h3>
+
+<p>There are many great videos and books out there to learn more about iOS development. Here are some suggestions for you to start with:
+</p>
+<ul>
+<li>
+<p>The iOS Developer Library has the full API reference, programming guides, and sample code: <a href="https://developer.apple.com/develop/">developer.apple.com/develop/</a>
+</p></li>
+
+<li>
+<p>Mobile Human Interface Guidelines (the “HIG”): <a href="https://developer.apple.com/design/human-interface-guidelines">developer.apple.com/design/human-interface-guidelines</a>
+</p></li>
+
+<li>
+<p>iOS App Programming Guide: <a href="https://developer.apple.com/library/ios/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Introduction/Introduction.html">developer.apple.com/library/ios/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Introduction/Introduction.html</a>
+</p></li>
+
+<li>
+<p>View Controller Programming Guide: <a href="https://developer.apple.com/library/content/featuredarticles/ViewControllerPGforiPhoneOS/#//apple_ref/doc/uid/TP40007457-CH2-SW1">https://developer.apple.com/library/content/featuredarticles/ViewControllerPGforiPhoneOS/#//apple</a><a href="https://developer.apple.com/library/content/featuredarticles/ViewControllerPGforiPhoneOS/#//apple_ref/doc/uid/TP40007457-CH2-SW1">_</a><a href="https://developer.apple.com/library/content/featuredarticles/ViewControllerPGforiPhoneOS/#//apple_ref/doc/uid/TP40007457-CH2-SW1">ref/doc/uid/TP40007457-CH2-SW1</a>
+</p></li>
+
+<li>
+<p>The WWDC videos. WWDC is Apple’s yearly developer conference and the videos of the presentations can be watched online at <a href="https://developer.apple.com/videos/">developer.apple.com/videos/</a>. They are really worth it!
+</p></li>
+
+<li>
+<p>The team at raywenderlich.com and I also have several other books for sale, including more advanced tutorials on iOS development and game programming on iOS. If you’d like to check these out, visit our store here: <a href="https://store.raywenderlich.com">store.raywenderlich.com</a>
+</p></li>
+</ul>
+
+<h3 class="segment-chapter">Stuck?</h3>
+
+<p>If you are stuck, ask for help. Sites such as Stack Overflow (<a href="http://stackoverflow.com">stackoverflow.com</a>), the Apple Developer Forums (<a href="http://forums.developer.apple.com">forums.developer.apple.com</a>), and iPhoneDevSDK (<a href="http://www.iphonedevsdk.com/forum/">www.iphonedevsdk.com/forum/</a>) are great — and let’s not forget our own forums (<a href="https://forums.raywenderlich.com">forums.raywenderlich.com</a>).
+</p>
+<p>I often go on Stack Overflow to figure out how to write some code. I usually more-or-less know what I need to do — for example, resize a <code>UIImage</code> — and I could spend a few hours figuring out how to do it on my own. However, the chances are someone else already wrote a blog post about it. Stack Overflow has tons of great tips on almost anything you can do with iOS development.
+</p>
+<p>However, please don’t post questions like this:
+</p>
+<p>“i am having very small problem i just want to hide load more data option in tableview after finished loading problem is i am having 23 object in json and i am parsing 5 obj on each time at the end i just want to display three object without load more option.”
+</p>
+<p>This is an actual question that I copy-pasted from a forum. That guy isn’t going to get any help because a) his question is unreadable; b) he isn’t really making it easy for others to help him.
+</p>
+<p>Here are some pointers on how to ask effective questions:
+</p>
+<ul>
+<li>
+<p>Getting Answers <a href="http://www.mikeash.com/getting_answers.html">http://www.mikeash.com/getting</a><a href="http://www.mikeash.com/getting_answers.html">_</a><a href="http://www.mikeash.com/getting_answers.html">answers.html</a>
+</p></li>
+
+<li>
+<p>What Have You Tried? <a href="http://mattgemmell.com/what-have-you-tried/">http://mattgemmell.com/what-have-you-tried/</a>
+</p></li>
+
+<li>
+<p>How to Ask Questions the Smart Way <a href="http://www.catb.org/~esr/faqs/smart-questions.html">http://www.catb.org/~esr/faqs/smart-questions.html</a>
+</p></li>
+</ul>
+
+<h3 class="segment-chapter">And that’s a wrap!</h3>
+
+<p>I hope you learned a lot through the <i>iOS Apprentice</i>, and that you take what you’ve learned to go forth and make some great apps of your own.
+</p>
+<p>Above all, <i>have fun programming</i>, and let us know about your creations!
+</p>
+<p>— Fahim Farook &amp; Matthijs Hollemans
+</p></body></html>

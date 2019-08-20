@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 41: Internationalization</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 41: Internationalization</h1>
+
+<p>So far, the apps you’ve made in this book have all been in English. No doubt the United States is the single biggest market for apps, followed closely by Asia. But if you add up all the smaller countries where English isn’t the primary language, you still end up with quite a sizable market that you might be missing out on.
+</p>
+<p>Fortunately, iOS makes it very easy to add support for other languages to your apps, a process known as <i>internationalization</i>. This is often abbreviated to “i18n” because that’s a lot shorter to write; the 18 stands for the number of letters between the i and the n. You’ll also often hear the word <i>localization</i>, which means somewhat the same thing.
+</p>
+<p>In this chapter, to get your feet wet with localization, you’ll add support for Dutch. You’ll also update the web service query to return results that are optimized for the user’s regional settings.
+</p>
+<p>You&apos;ll cover the following items:
+</p>
+<ul>
+<li>
+<p><em>Add a new language:</em> How to add support for a new display language (for displayed text) to your app.
+</p></li>
+
+<li>
+<p><em>Localize on-screen text:</em> How to localize text values used in code.
+</p></li>
+
+<li>
+<p><em>InfoPlist.strings:</em> Localize Info.plist file settings such as the app name.
+</p></li>
+
+<li>
+<p><em>Regional Settings:</em> Modify the web query to send the device language and region to get localized search results.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Add a new language</h2>
+
+<p>At this point, the structure of your source code folder probably looks something like this:
+</p><div class="image-60"><img src="graphics/img686.png"  alt="" title="The files in the source code folder" /></div>
+<p>There is a subfolder named <em>Base.lproj</em> that contains at least the storyboard, <em>Main.storyboard</em>. The Base.lproj folder is for files that can be localized. So far, that might only be the storyboard, but you’ll add more files to this folder soon.
+</p>
+<p>When you add support for another language, a new <em>XX.lproj</em> folder is created with XX being the two-letter code for that new language — <em>en</em> for English, <em>nl</em> for Dutch etc.
+</p>
+<h3 class="segment-chapter">Localize a nib file</h3>
+
+<p>Let’s begin by localizing a simple file, the <em>NothingFoundCell.xib</em>. Often nib files contain text that needs to be translated. You can simply make a new copy of the existing nib file for a specific language and put it in the right .lproj folder. When the iPhone is using that language, it will automatically load the translated nib.
+</p>
+<p>➤ Select <em>NothingFoundCell.xib</em> in the Project navigator. Switch to the <em>File inspector</em> pane on the right.
+</p>
+<p>Because the NothingFoundCell.xib file isn’t in any XX.lproj folders, it does not have any localizations yet.
+</p><div class="image-25"><img src="graphics/img687.png"  alt="" title="The NothingFoundCell has no localizations" /></div>
+<p>➤ Click the <em>Localize…</em> button in the Localization section.
+</p>
+<p>Xcode asks for confirmation because this involves moving the file to a new folder:
+</p><div class="image-40"><img src="graphics/img688.png"  alt="" title="Xcode asks whether it’s OK to move the file" /></div>
+<p>➤ Choose <em>English</em> (<i>not</i> Base) and click <em>Localize</em> to continue.
+</p>
+<p>Look in Finder and you will see there is a new <em>en.lproj</em> — for English — folder and NothingFoundCell.xib has been moved to that folder:
+</p><div class="image-40"><img src="graphics/img689.png"  alt="" title="Xcode moved NothingFoundCell.xib to the en.lproj folder" /></div>
+<p>The <em>File inspector</em> for <em>NothingFoundCell.xib</em> now lists English as one of the localizations.
+</p><div class="image-30"><img src="graphics/img690.png"  alt="" title="The Localization section now contains an entry for English" /></div>
+<h3 class="segment-chapter">Add support for a new language</h3>
+
+<p>To add support for a new language to your app, you have to switch to the <em>Project Settings</em> screen.
+</p>
+<p>➤ Click on <em>StoreSearch</em> at the top of the Project navigator to open the settings page. From the  central sidebar, choose <em>StoreSearch</em> under <em>PROJECT</em> (<i>not</i> under TARGETS). If the central sidebar isn’t visible, click the small blue icon at the top of the sidebar area to open it.
+</p><div class="image-80"><img src="graphics/img691.png"  alt="" title="The Project Settings" /></div>
+<p>➤ In the <em>Info</em> tab, under the <em>Localizations</em> section press the <em>+</em> button:
+</p><div class="image-45"><img src="graphics/img692.tiff"  alt="" title="Adding a new language" /></div>
+<p>➤ From the pop-up menu choose <em>Dutch (nl)</em>.
+</p>
+<p>Xcode now asks which resources you want to localize. Uncheck everything except for <em>NothingFoundCell.xib</em> and click <em>Finish</em>.
+</p><div class="image-55"><img src="graphics/img693.png"  alt="" title="Choosing the files to localize" /></div>
+<p>If you look in Finder again you’ll notice that a new subfolder has been added, <em>nl.lproj</em>, and that it contains another copy of NothingFoundCell.xib.
+</p>
+<p>That means there are now two nib files for <code>NothingFoundCell</code>. You can also see this in the Project navigator:
+</p><div class="image-30"><img src="graphics/img694.png"  alt="" title="NothingFoundCell.xib has two localizations" /></div>
+<h3 class="segment-chapter">Edit a language specific nib</h3>
+
+<p>Let’s edit the Dutch version of this nib.
+</p>
+<p>➤ Click on <em>NothingFoundCell.xib (Dutch)</em> to open it in Interface Builder.
+</p>
+<p>➤ Change the label text to <em>Niets gevonden</em>.
+</p><div class="image-40"><img src="graphics/img695.png"  alt="" title="That’s how you say it in Dutch" /></div>
+<p>It is perfectly all right to resize or move around items in a translated nib. You could make the whole nib look completely different if you wanted to — but that’s probably a bad idea. Some languages, such as German, have very long words and in those cases you may have to tweak label sizes and fonts to get everything to fit.
+</p>
+<p>If you run the app now, nothing will have changed. You have to switch the Simulator to use the Dutch language first. However, before you do that, you really should remove the app from the simulator, clean the project, and do a fresh build.
+</p>
+<p>The reason for this is that the nibs were previously not localized. If you were to switch the simulator’s language now, the app might still use the old, non-localized versions of the nibs, or it might not. It&apos;s better to be safe than tear your hair out wondering what went wrong, right?
+</p>
+<div class="note">
+<p><em>Note</em>: For this reason, it’s a good idea to already put all your nib files and storyboards in the <em>en.lproj</em> folder — or in <em>Base.lproj</em>, which we’ll discuss shortly — when you create them. Even if you don’t intend to internationalize your app any time soon, you don’t want your users to run into the same problem later on. It’s not nice to ask your users to uninstall the app — and lose their data — in order to be able to switch languages.
+</p></div>
+
+<h3 class="segment-chapter">Switch device language</h3>
+
+<p>➤ Remove the app from the Simulator. Do a clean (<em>Product ▸ Clean</em> or <em>Shift-⌘-K</em>) and re-build the app.
+</p>
+<p>➤ Open the <em>Settings</em> app in the Simulator and go to <em>General ▸ Language </em><em>&amp;</em><em> Region ▸ iPhone Language</em>. From the list pick <em>Nederlands (Dutch)</em>.
+</p><div class="image-70"><img src="graphics/img696.png"  alt="" title="Switching languages in the Simulator" /></div>
+<p>The Simulator will take a moment to switch between languages. This terminates the app if it was still running.
+</p>
+<p>➤ Search for some nonsense text and the app will now respond in Dutch:
+</p><div class="image-30"><img src="graphics/img697.png"  alt="" title="I’d be surprised if that did turn up a match" /></div>
+<p>Pretty cool, just by placing some files in the <em>en.lproj</em> and <em>nl.lproj</em> folders, you have internationalized the app! You’re going to keep the Simulator in Dutch for a while because the other nibs need translating too.
+</p>
+<div class="note">
+<p><em>Note</em>: If the app crashes for you at this point, then the following might help. Quit Xcode. Reset the Simulator and then quit it. In Finder, go to your <em>Library</em> folder, <em>Developer/Xcode</em> and throw away the entire <em>DerivedData</em> folder. Empty your trashcan. Then open the <i>StoreSearch</i> project again and give it another try. Also, don’t forget to switch the Simulator back to <em>Nederlands</em>.
+</p></div>
+
+<h3 class="segment-chapter">Base internationalization</h3>
+
+<p>To localize the other nibs, you could repeat the process and add copies of their xib files to the <em>nl.lproj</em> folder. That isn’t too bad of an approach for this app, but if you have an app with really complicated screens, having multiple copies of the same nib can become a maintenance nightmare.
+</p>
+<p>Whenever you need to change something on that screen, you need to update all of those nibs. There’s a risk that you might overlook one or more nib files and they&apos;ll be out-of-sync. That’s just asking for bugs — in languages that you probably don’t speak!
+</p>
+<p>To prevent this from happening, you can use <i>base internationalization</i>. With this feature enabled, you don’t copy the entire nib, but only the text strings. This is what the <em>Base.lproj</em> folder is for.
+</p>
+<p>Let’s translate the other nibs.
+</p>
+<p>➤ Select <em>LoadingCell.xib</em> in the Project navigator. In the <em>File inspector</em> press the <em>Localize…</em> button. This time use <em>Base</em> as the language:
+</p><div class="image-40"><img src="graphics/img698.png"  alt="" title="Choosing the Base localization as the destination" /></div>
+<p>Verify with Finder that LoadingCell.xib got moved into the <em>Base.lproj</em> folder.
+</p>
+<p>➤ The Localization section in the <em>File inspector</em> for <em>LoadingCell.xib</em> now contains three options: Base (with a checkmark), English, and Dutch. Put a checkmark in front of <em>Dutch</em>:
+</p><div class="image-30"><img src="graphics/img699.png"  alt="" title="Adding a Dutch localization" /></div>
+<p>In Finder you can see that <em>nl.proj</em> doesn’t get a copy of the nib, but a new file does get added: <em>LoadingCell.strings</em>.
+</p>
+<p>➤ Click the disclosure triangle in front of <em>LoadingCell.xib</em> to expand it in the Project navigator and select the <em>LoadingCell.strings (Dutch)</em> file.
+</p>
+<p>You should see something like the following:
+</p><div class="image-90"><img src="graphics/img700.png"  alt="" title="The Dutch localization is a strings file" /></div>
+<p>There is still only one nib, the one from the Base localization. The Dutch translation consists of a “strings” file with just the text from the labels, buttons, and other controls.
+</p>
+<p>This particular strings file contains:
+</p><pre class="code-block"><span class="hljs-comment">/* Class = "UILabel"; text = "Loading..."; ObjectID = "hU7-Dc-hSi"; */</span>
+<span class="hljs-string">"hU7-Dc-hSi.text"</span> = <span class="hljs-string">"Loading..."</span>;</pre>
+<p>The green bit is a comment, just like in Swift. The second line says that the <em>text</em> property of the object with ID “hU7-Dc-hSi” contains the text <em>Loading…</em>
+</p>
+<p>The ID is an internal identifier that Xcode uses to keep track of the objects in your nibs; your own nib probably has a different ID than mine. You can see this ID in the Identity inspector for the label.
+</p>
+<p>➤ Change the text from <em>Loading…</em> to <em>Zoeken…</em>
+</p>
+<p><em>Tip</em>: You can use the Assistant editor in Interface Builder to get a preview of your localized nib. Switch to <em>LoadingCell.xib (Base)</em> and open the Assistant editor. From the Jump bar at the top, choose <em>Preview</em>. In the bottom-right corner it says English. Click this to switch to a Dutch preview.
+</p><div class="image-100"><img src="graphics/img701.png"  alt="" title="The Assistant editor shows a preview of the translation" /></div>
+<p>If you open a second assistant pane (with the <em>+</em>) and set that to <em>Localizations</em>, you can edit the translations and see what they look like at the same time. Very handy!
+</p>
+<p>➤ Do a <em>Product → Clean</em> (to be safe) and run the app again.
+</p><div class="image-30"><img src="graphics/img702.png"  alt="" title="The localized loading text" /></div>
+<div class="note">
+<p><em>Note</em>: If you don’t see the “Zoeken…” text then do the same dance again: quit Xcode, throw away the DerivedData folder, reset the Simulator.
+</p></div>
+
+<p>➤ Repeat the steps to add a Dutch localization for <em>Main.storyboard</em>. It already has a Base localization so you simply have to put a check in front of <em>Dutch</em> in the File inspector.
+</p>
+<p>For the Search View Controller screen, two things need to change: the placeholder text in the Search Bar and the labels on the Segmented Control.
+</p>
+<p>➤ In <em>Main.strings (Dutch)</em> change the placeholder text to <em>Naam van artiest, nummer, album</em>.
+</p><pre class="code-block"><span class="hljs-string">"68e-CH-NSs.placeholder"</span> = <span class="hljs-string">"Naam van artiest, nummer, album"</span>;</pre>
+<p>The segment labels will become: <em>Alles</em>, <em>Muziek</em>, <em>Software</em>, and <em>E-boeken</em>.
+</p><pre class="code-block"><span class="hljs-string">"Sjk-fv-Pca.segmentTitles[0]"</span> = <span class="hljs-string">"Alles"</span>;
+<span class="hljs-string">"Sjk-fv-Pca.segmentTitles[1]"</span> = <span class="hljs-string">"Muziek"</span>;
+<span class="hljs-string">"Sjk-fv-Pca.segmentTitles[2]"</span> = <span class="hljs-string">"Software"</span>;
+<span class="hljs-string">"Sjk-fv-Pca.segmentTitles[3]"</span> = <span class="hljs-string">"E-boeken"</span>;</pre>
+<p>Of course, your object IDs are going to  be different - so don&apos;t rely on the IDs to find the right values in the file.
+</p><div class="image-30"><img src="graphics/img703.png"  alt="" title="The localized SearchViewController" /></div>
+<p>➤ For the Detail pop-up, you only need to change the <em>Type:</em> label to say <em>Soort:</em>
+</p><pre class="code-block"><span class="hljs-string">"DCQ-US-EVg.text"</span> = <span class="hljs-string">"Soort:"</span>;</pre>
+<p>You don’t need to change these:
+</p><pre class="code-block"><span class="hljs-string">"ZYp-Zw-Fg6.text"</span> = <span class="hljs-string">"Genre:"</span>;
+<span class="hljs-string">"yz2-Gh-kzt.text"</span> = <span class="hljs-string">"Kind Value"</span>;
+<span class="hljs-string">"Ph9-wm-1LS.text"</span> = <span class="hljs-string">"Artist Name"</span>;
+<span class="hljs-string">"JVj-dj-Iz8.text"</span> = <span class="hljs-string">"Name"</span>;
+<span class="hljs-string">"7sM-UJ-kWH.text"</span> = <span class="hljs-string">"Genre Value"</span>;
+<span class="hljs-string">"xOH-GC-bHs.normalTitle"</span> = <span class="hljs-string">"$9.99"</span>;</pre>
+<p>These labels can remain the same because you will replace them with values from the <code>SearchResult</code> object anyway. Also, “Genre” is the same in both languages.
+</p>
+<div class="note">
+<p><em>Note</em>: If you wanted to, you could even remove the text that doen’t need localization from the strings file. If a localized version for a specific resource is missing for the user’s language, iOS will fall back to the one from the Base localization.
+</p></div>
+<div class="image-30"><img src="graphics/img704.png"  alt="" title="The pop-up in Dutch" /></div>
+<p>Thanks to Auto Layout, the labels automatically resize to fit the translated text. A common issue with localization is that English words tend to be shorter than words in other languages, so you have to make sure your labels are big enough to accommodate any language. With Auto Layout that is a piece of cake.
+</p>
+<p>The Landscape View Controller doesn’t have any text to translate.
+</p>
+<p>➤ There is no need to give <em>SearchResultCell.xib</em> a Dutch localization — there is no on-screen text in the nib itself — but do give it a Base localization. This prepares the app for the future, should you need to localize this nib at some point.
+</p>
+<p>When you’re done, there shouldn&apos;t be any <em>xib</em> files outside the <em>.</em><em>lproj</em> folders.
+</p>
+<p>That’s it for the nibs and the storyboard. Not so bad, was it? I’d say all these changes are commit-worthy.
+</p>
+<p><em>Tip</em>: You can also test localizations by changing the settings for the active scheme. Click on <em>StoreSearch</em> in the active scheme selector in the Xcode toolbar — next to the Simulator name — and choose <em>Edit Scheme</em>.
+</p><div class="image-65"><img src="graphics/img705.png"  alt="" title="" /></div>
+<p>In the <em>Options</em> tab you can change the <em>Application Language</em> and <em>Region</em> settings. That’s a bit quicker than restarting the Simulator.
+</p>
+<h2 class="segment-chapter">Localize on-screen text</h2>
+
+<p>Even though the nibs and storyboard have been translated, not all of the text is. For example, in the one-before-the-previous image the text from the <code>kind</code> property is still “Song”.
+</p>
+<p>While in this case you could probably get away with it — everyone in the world probably knows what the word “Song” means — not all of the text from the <code>type</code> property will be understood by non-English speaking users.
+</p>
+<h3 class="segment-chapter">Localize text used in code</h3>
+
+<p>To localize text that is not in a nib or storyboard, you have to use another approach.
+</p>
+<p>➤ In <em>SearchResult.swift</em>, make sure the Foundation framework is imported:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> Foundation</pre>
+<p>➤ Then replace the <code>type</code> property with:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> type:<span class="hljs-type">String</span> {
+  <span class="hljs-keyword">let</span> kind = <span class="hljs-keyword">self</span>.kind ?? <span class="hljs-string">"audiobook"</span>
+  <span class="hljs-keyword">switch</span> kind {
+  <span class="hljs-keyword">case</span> <span class="hljs-string">"album"</span>:
+    <span class="hljs-keyword">return</span> <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"Album"</span>, 
+                    comment: <span class="hljs-string">"Localized kind: Album"</span>)
+  <span class="hljs-keyword">case</span> <span class="hljs-string">"audiobook"</span>:
+    <span class="hljs-keyword">return</span> <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"Audio Book"</span>, 
+                    comment: <span class="hljs-string">"Localized kind: Audio Book"</span>)
+  <span class="hljs-keyword">case</span> <span class="hljs-string">"book"</span>:
+    <span class="hljs-keyword">return</span> <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"Book"</span>, 
+                    comment: <span class="hljs-string">"Localized kind: Book"</span>)
+  <span class="hljs-keyword">case</span> <span class="hljs-string">"ebook"</span>:
+    <span class="hljs-keyword">return</span> <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"E-Book"</span>, 
+                    comment: <span class="hljs-string">"Localized kind: E-Book"</span>)
+  <span class="hljs-keyword">case</span> <span class="hljs-string">"feature-movie"</span>:
+    <span class="hljs-keyword">return</span> <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"Movie"</span>, 
+                    comment: <span class="hljs-string">"Localized kind: Feature Movie"</span>)
+  <span class="hljs-keyword">case</span> <span class="hljs-string">"music-video"</span>:
+    <span class="hljs-keyword">return</span> <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"Music Video"</span>, 
+                    comment: <span class="hljs-string">"Localized kind: Music Video"</span>)
+  <span class="hljs-keyword">case</span> <span class="hljs-string">"podcast"</span>:
+    <span class="hljs-keyword">return</span> <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"Podcast"</span>, 
+                    comment: <span class="hljs-string">"Localized kind: Podcast"</span>)
+  <span class="hljs-keyword">case</span> <span class="hljs-string">"software"</span>:
+    <span class="hljs-keyword">return</span> <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"App"</span>, 
+                    comment: <span class="hljs-string">"Localized kind: Software"</span>)
+  <span class="hljs-keyword">case</span> <span class="hljs-string">"song"</span>:
+    <span class="hljs-keyword">return</span> <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"Song"</span>, 
+                    comment: <span class="hljs-string">"Localized kind: Song"</span>)
+  <span class="hljs-keyword">case</span> <span class="hljs-string">"tv-episode"</span>:
+    <span class="hljs-keyword">return</span> <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"TV Episode"</span>, 
+                    comment: <span class="hljs-string">"Localized kind: TV Episode"</span>)
+  <span class="hljs-keyword">default</span>:
+    <span class="hljs-keyword">return</span> kind
+  }
+}</pre>
+<div class="note">
+<p><em>Tip</em>: Rather than typing in the above, you can use Xcode’s powerful Regular Expression Replace feature to make those changes in just a few seconds.
+</p>
+<p>Go to the <em>Find navigator</em> — fourth tab, the one with the magnifying glass icon, on the left sidebar — and change its mode from Find to <em>Replace &gt; Regular Expression</em>.
+</p>
+<p>In the search box type: <em>return &quot;(.+)&quot;</em> and press <em>return</em> to search.
+</p>
+<p>In the replacement box type:
+</p>
+<p><em>return NSLocalizedString(&quot;</em><em>$</em><em>1&quot;, comment: &quot;Localized kind: </em><em>$</em><em>1&quot;)</em>
+</p>
+<p>This looks for any lines that match the pattern <i>return &quot;something&quot;</i>. Whatever that <i>something</i> is will be put in the $1 placeholder of the replacement text.
+</p>
+<p>Make sure only the relevant search results from <em>SearchResult.swift</em> are selected — you don’t want to make this change to all of the search results! Click <em>Replace</em> to finish.
+</p>
+<p>Thanks to Scott Gardner for the tip!
+</p></div>
+
+<p>The structure of <code>type</code> is still the same as before, but instead of doing:
+</p><pre class="code-block"><span class="hljs-keyword">return</span> <span class="hljs-string">"Album"</span></pre>
+<p>It now does:
+</p><pre class="code-block"><span class="hljs-keyword">return</span> <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"Album"</span>, comment: <span class="hljs-string">"Localized kind: Album"</span>)</pre>
+<p>Slightly more complicated, but also a lot more flexible.
+</p>
+<p><code>NSLocalizedString()</code> takes two parameters: the text to return, <code>&quot;Album&quot;</code>, and a comment, <code>&quot;Localized kind: Album&quot;</code>.
+</p>
+<p>Here is the cool thing: if your app includes a file named <em>Localizable.strings</em> for the user’s language, then <code>NSLocalizedString()</code> will look up the text (&quot;Album&quot;) and return the translation as specified in Localizable.strings.
+</p>
+<p>If no translation for that text is present, or there is no Localizable.strings file, then <code>NSLocalizedString()</code> simply returns the text as-is.
+</p>
+<p>➤ Run the app again. The “Type:” field in the pop-up — or “Soort:” in Dutch — should still show the same text values as before because you haven’t translated anything yet.
+</p>
+<p>First, you need to create an empty Localizable.strings file.
+</p>
+<p>➤ Right-click on the yellow <em>StoreSearch</em> folder in the Project navigator, select <em>New File…</em>, select the <em>Strings File</em> template under <em>iOS - Resources</em> and tap <em>Next</em>. Save the file as <em>Localizable.strings</em>.
+</p>
+<p>➤ Select <em>Localizable.strings</em>, in the File inspector (on the right) click <em>Localize…</em>, select <em>English</em> from the dropdown, and click <em>Localize</em>.
+</p>
+<p>This creates an empty English <em>Localizable.strings</em> file. You need to use a command line tool named <em>genstrings</em> to populate the file with text strings from your source files. This requires a trip to the Terminal.
+</p>
+<h3 class="segment-chapter">Generate localizable text strings</h3>
+
+<p>➤ Open a Terminal, <code>cd</code> to the folder that contains the <i>StoreSearch</i> project. You want to go into the folder that contains the actual source files. On my system that is:
+</p><pre class="code-block">cd ~/Desktop/StoreSearch/StoreSearch</pre>
+<p>Then, type the following command:
+</p><pre class="code-block">genstrings *.swift -o en.lproj</pre>
+<p>This looks at all your source files (*<em>.</em><em>swift</em>) and writes the text strings from those source files to the <em>Localizable.strings</em> file in the <em>en.lproj</em> folder.
+</p>
+<p>If you open the Localizable.strings file now, this is what it should contain:
+</p><pre class="code-block"><span class="hljs-comment">/* Localized kind: Album */</span>
+<span class="hljs-string">"Album"</span> = <span class="hljs-string">"Album"</span>;
+
+<span class="hljs-comment">/* Localized kind: Software */</span>
+<span class="hljs-string">"App"</span> = <span class="hljs-string">"App"</span>;
+
+<span class="hljs-comment">/* Localized kind: Audio Book */</span>
+<span class="hljs-string">"Audio Book"</span> = <span class="hljs-string">"Audio Book"</span>;
+
+<span class="hljs-comment">/* Localized kind: Book */</span>
+<span class="hljs-string">"Book"</span> = <span class="hljs-string">"Book"</span>;
+
+<span class="hljs-comment">/* Localized kind: E-Book */</span>
+<span class="hljs-string">"E-Book"</span> = <span class="hljs-string">"E-Book"</span>;
+
+<span class="hljs-comment">/* Localized kind: Feature Movie */</span>
+<span class="hljs-string">"Movie"</span> = <span class="hljs-string">"Movie"</span>;
+
+<span class="hljs-comment">/* Localized kind: Music Video */</span>
+<span class="hljs-string">"Music Video"</span> = <span class="hljs-string">"Music Video"</span>;
+
+<span class="hljs-comment">/* Localized kind: Podcast */</span>
+<span class="hljs-string">"Podcast"</span> = <span class="hljs-string">"Podcast"</span>;
+
+<span class="hljs-comment">/* Localized kind: Song */</span>
+<span class="hljs-string">"Song"</span> = <span class="hljs-string">"Song"</span>;
+
+<span class="hljs-comment">/* Localized kind: TV Episode */</span>
+<span class="hljs-string">"TV Episode"</span> = <span class="hljs-string">"TV Episode"</span>;</pre>
+<p>The things between the <code>/*</code> and <code>*/</code> symbols are the comments you specified as the second parameter of <code>NSLocalizedString()</code>. They give the translator some context about where the string is supposed to be used in the app.
+</p>
+<div class="note">
+<p><em>Tip</em>: It’s a good idea to make these comments as detailed as you can. In the words of fellow raywenderlich.com author Scott Gardner:
+</p>
+<p><i>“The comment to the translator should be as detailed as necessary to not only state the words to be transcribed, but also the perspective, intention, gender frame of reference, etc. Many languages have different words based on these considerations. I translated an app into Chinese Simplified once and it took multiple passes to get it right because my original comments were not detailed enough.”</i>
+</p></div>
+
+<p>➤ Change the “Song” line to:
+</p><pre class="code-block"><span class="hljs-string">"Song"</span> = <span class="hljs-string">"SUPER HIT!"</span>;</pre>
+<p>➤ Now run the app again and search for music. For any search result that is a song, it will now say “SUPER HIT!” instead of &quot;Song&quot;.
+</p><div class="image-30"><img src="graphics/img706.png"  alt="" title="Where it used to say Song it now says SUPER HIT! " /></div>
+<p>Of course, changing the text in the English localization doesn’t make much sense. Reverse the change to Song and then we’ll do it properly.
+</p>
+<p>➤ In the <em>File inspector</em>, add a Dutch localization for this file. This creates a copy of Localizable.strings in the <em>nl.lproj</em> folder.
+</p>
+<p>➤ Change the translations in the Dutch version of <em>Localizable.strings</em> to:
+</p><pre class="code-block"><span class="hljs-string">"Album"</span> = <span class="hljs-string">"Album"</span>;
+<span class="hljs-string">"App"</span> = <span class="hljs-string">"App"</span>;
+<span class="hljs-string">"Audio Book"</span> = <span class="hljs-string">"Audioboek"</span>;
+<span class="hljs-string">"Book"</span> = <span class="hljs-string">"Boek"</span>;
+<span class="hljs-string">"E-Book"</span> = <span class="hljs-string">"E-Boek"</span>;
+<span class="hljs-string">"Movie"</span> = <span class="hljs-string">"Film"</span>;
+<span class="hljs-string">"Music Video"</span> = <span class="hljs-string">"Videoclip"</span>;
+<span class="hljs-string">"Podcast"</span> = <span class="hljs-string">"Podcast"</span>;
+<span class="hljs-string">"Song"</span> = <span class="hljs-string">"Liedje"</span>;
+<span class="hljs-string">"TV Episode"</span> = <span class="hljs-string">"TV serie"</span>;</pre>
+<p>If you run the app again, the product types will all be in Dutch. Nice!
+</p>
+<div class="note">
+<p><em>Always use NSLocalizedString() from the beginning</em>
+</p>
+<p>There are a bunch of other strings in the app that need translation as well. You can search for anything that begins with <code>&quot;</code> but it would have been a lot easier if you had used <code>NSLocalizedString()</code> from the start. Then all you would’ve had to do was run the <em>genstrings</em> tool and you’d get all the strings.
+</p>
+<p>Now you have to comb through the source code and add <code>NSLocalizedString()</code> to all the text strings that will be shown to the user — mea culpa!
+</p>
+<p>You should really get into the habit of always using <code>NSLocalizedString()</code> for strings that you want to display to the user, even if you don’t care about internationalization right away.
+</p>
+<p>Adding support for other languages is a great way for your apps to become more popular, and going back through your code to add <code>NSLocalizedString()</code> is not much fun. It’s better to do it right from the start!
+</p></div>
+
+<p>Here are the other strings I found that need to be <code>NSLocalizedString</code>-ified:
+</p><pre class="code-block"><span class="hljs-comment">// DetailViewController, updateUI()</span>
+artistNameLabel.text = <span class="hljs-string">"Unknown"</span>
+priceText = <span class="hljs-string">"Free"</span>
+
+<span class="hljs-comment">// LandscapeViewController, showNothingFoundLabel()</span>
+label.text = <span class="hljs-string">"Nothing Found"</span>
+
+<span class="hljs-comment">// SearchResultCell, configure(for)</span>
+artistNameLabel.text = <span class="hljs-string">"Unknown"</span>
+
+<span class="hljs-comment">// SearchViewController, showNetworkError()</span>
+title: <span class="hljs-string">"Whoops..."</span>,
+message: <span class="hljs-string">"There was an error reading from the iTunes Store. 
+          Please try again."</span>,
+title: <span class="hljs-string">"OK"</span></pre>
+<p>➤ Add <code>NSLocalizedString()</code> around these strings. Don’t forget to use descriptive comments!
+</p>
+<p>For example, when instantiating the <code>UIAlertController</code> in <code>showNetworkError()</code>, you could write:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> alert = <span class="hljs-type">UIAlertController</span>(
+  title: <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"Whoops..."</span>, 
+  comment: <span class="hljs-string">"Error alert: title"</span>), message: <span class="hljs-type">NSLocalizedString</span>(
+  <span class="hljs-string">"There was an error reading from the iTunes Store. Please try again."</span>, comment: <span class="hljs-string">"Error alert: message"</span>), preferredStyle: .alert)</pre>
+<div class="note">
+<p><em>Note</em>: You don’t need to use <code>NSLocalizedString()</code> with your <code>print()</code>’s. Debug output is really intended only for you, the developer, so it’s best if it is in English, or whatever happens to be your native language.
+</p></div>
+
+<p>➤ Run the <em>genstrings</em> tool again. Give it the same arguments as before. It will put a clean file with all the new strings in the <em>en.lproj</em> folder.
+</p>
+<p>Unfortunately, there really isn’t a good way to make genstrings merge new strings into existing translations. It will overwrite your entire file and throw away any changes that you made. There is a way to make the tool append its output to an existing file, but then you end up with a lot of duplicate strings.
+</p>
+<div class="note">
+<p><em>Tip:</em> Always regenerate only the file in en.lproj and then copy over the missing strings to your other Localizable.strings files. You can use a tool such as FileMerge or Kaleidoscope to compare the two files to find the new strings. There are also several third-party tools on the Mac App Store that are a bit friendlier to use than genstrings.
+</p></div>
+
+<p>You might also get a warning similar to the following if you weren&apos;t consistent in using the same comment for the same word when it appears in multiple places:
+</p><pre class="code-block">Warning: Key <span class="hljs-string">"Unknown"</span> used with multiple comments <span class="hljs-string">"Artist name label: Unknown"</span> &amp; <span class="hljs-string">"Artist name: Unknown"</span></pre>
+<p>If you check the Localizable.strings file, you&apos;ll notice that you don&apos;t have two instances of the word &quot;Unknown&quot; (or whatever the word was that generated the error) in the file. But there are two comments for the same word.
+</p>
+<p>You can easily fix this — if you wanted to — by going back and using the same comment for the same word and then running the genstrings tool again.
+</p>
+<p>➤ Add these new translations to the Dutch <em>Localizable.strings</em>:
+</p><pre class="code-block"><span class="hljs-string">"Nothing Found"</span> = <span class="hljs-string">"Niets gevonden"</span>;
+
+<span class="hljs-string">"There was an error reading from the iTunes Store. Please try again."</span> = <span class="hljs-string">"Er ging iets fout bij het communiceren met de iTunes winkel. Probeer het nog eens."</span>;
+
+<span class="hljs-string">"Unknown"</span> = <span class="hljs-string">"Onbekend"</span>;
+
+<span class="hljs-string">"Whoops..."</span> = <span class="hljs-string">"Foutje..."</span>;</pre>
+<p>It may seem a little odd that such a long string as “There was an error reading from the iTunes Store. Please try again.” would be used as the lookup key for a translated string, but there really isn’t anything wrong with it.
+</p>
+<p>By the way, the semicolons at the end of each line are not optional. If you forget a  semicolon, the Localizable.strings file cannot be compiled and the build will fail.
+</p>
+<p>Some people write code for <code>NSLocalizedString</code> like this:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> s = <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"ERROR_MESSAGE23"</span>, 
+                 comment: <span class="hljs-string">"Error message on screen X"</span>)</pre>
+<p>The Localizable.strings file would then look like:
+</p><pre class="code-block"><span class="hljs-comment">/* Error message on screen X */</span>
+<span class="hljs-string">"ERROR_MESSAGE23"</span> = <span class="hljs-string">"Does not compute!"</span>;</pre>
+<p>This works, but I find it harder to read. It requires that you always have an English Localizable.strings as well.
+</p>
+<p>Note also that the text <code>&quot;Unknown&quot;</code> occurred only once in Localizable.strings even though it shows up in two different places in the source code. Each piece of text only needs to be translated once.
+</p>
+<h3 class="segment-chapter">Localize dynamically constructed strings</h3>
+
+<p>If your app builds strings dynamically, then you can also localize such text. For example, in <em>SearchResultCell.swift</em>, <code>configure(for:)</code> you do:
+</p><pre class="code-block">artistNameLabel.text = <span class="hljs-type">String</span>(format: <span class="hljs-string">"%@ (%@)"</span>, 
+   searchResult.artistName, searchResult.kindForDisplay())</pre>
+<p>➤ Internationalize this as follows:
+</p><pre class="code-block">artistNameLabel.text = <span class="hljs-type">String</span>(format: 
+  <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"%@ (%@)"</span>, 
+  comment: <span class="hljs-string">"Format for artist name"</span>), 
+  searchResult.artistName, searchResult.kindForDisplay())</pre>
+<p>After running <em>genstrings</em> again, this shows up in Localizable.strings as:
+</p><pre class="code-block"><span class="hljs-comment">/* Format for artist name */</span>
+<span class="hljs-string">"%@ (%@)"</span> = <span class="hljs-string">"%1$@ (%2$@)"</span>;</pre>
+<p>If you wanted to, you could change the order of these parameters in the translated file. For example:
+</p><pre class="code-block"><span class="hljs-string">"%@ (%@)"</span> = <span class="hljs-string">"%2$@ van %1$@"</span>;</pre>
+<p>It will turn the artist name label into something like this:
+</p><div class="image-40"><img src="graphics/img707.png"  alt="" title="The “kind” now comes first, the artist name last" /></div>
+<p>In this instance I would advocate the use of a special key rather than the literal string to find the translation. It’s thinkable that your app will employ the format string <code>&quot;%@ (%@)&quot;</code> in some other place and you may want to translate that completely differently there.
+</p>
+<p>I’d call it something like <code>ARTIST_NAME_LABEL_FORMAT</code> instead (this goes in the Dutch Localizable.strings):
+</p><pre class="code-block"><span class="hljs-comment">/* Format for artist name label */</span>
+<span class="hljs-string">"ARTIST_NAME_LABEL_FORMAT"</span> = <span class="hljs-string">"%2$@ van %1$@"</span>;</pre>
+<p>You also need to add this key to the English version of Localizable.strings:
+</p><pre class="code-block"><span class="hljs-comment">/* Format for artist name label */</span>
+<span class="hljs-string">"ARTIST_NAME_LABEL_FORMAT"</span> = <span class="hljs-string">"%1$@ (%2$@)"</span>;</pre>
+<p>Don’t forget to change the code as well:
+</p><pre class="code-block">artistNameLabel.text = <span class="hljs-type">String</span>(format: 
+  <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"ARTIST_NAME_LABEL_FORMAT"</span>, 
+  comment: <span class="hljs-string">"Format for artist name label"</span>), 
+  searchResult.artistName, searchResult.kindForDisplay())</pre>
+<h3 class="segment-chapter">Data-driven localization</h3>
+
+<p>There is one more thing I’d like to improve. Remember how in <em>SearchResult.swift</em> the <code>type</code> property is this enormous <code>switch</code> statement? That’s “smelly” to me. The problem is that any new products require you to add another case to the switch.
+</p>
+<p>For situations like these, it’s better to use a <i>data-driven</i> approach. Here, that means you place the product types and their human-readable names in a data structure, a dictionary, rather than a code structure.
+</p>
+<p>➤ Add the following dictionary to <em>SearchResult.swift</em>, above the <code>class</code> (you may want to copy-paste this from <code>type</code> as it’s almost identical):
+</p><pre class="code-block"><span class="hljs-keyword">private</span> <span class="hljs-keyword">let</span> typeForKind = [
+  <span class="hljs-string">"album"</span>: <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"Album"</span>, 
+                    comment: <span class="hljs-string">"Localized kind: Album"</span>),
+  <span class="hljs-string">"audiobook"</span>: <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"Audio Book"</span>, 
+                        comment: <span class="hljs-string">"Localized kind: Audio Book"</span>),
+  <span class="hljs-string">"book"</span>: <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"Book"</span>, 
+                   comment: <span class="hljs-string">"Localized kind: Book"</span>),
+  <span class="hljs-string">"ebook"</span>: <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"E-Book"</span>, 
+                    comment: <span class="hljs-string">"Localized kind: E-Book"</span>),
+  <span class="hljs-string">"feature-movie"</span>: <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"Movie"</span>, 
+                   comment: <span class="hljs-string">"Localized kind: Feature Movie"</span>),
+  <span class="hljs-string">"music-video"</span>: <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"Music Video"</span>, 
+                 comment: <span class="hljs-string">"Localized kind: Music Video"</span>),
+  <span class="hljs-string">"podcast"</span>: <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"Podcast"</span>, 
+                      comment: <span class="hljs-string">"Localized kind: Podcast"</span>),
+  <span class="hljs-string">"software"</span>: <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"App"</span>, 
+                       comment: <span class="hljs-string">"Localized kind: Software"</span>),
+  <span class="hljs-string">"song"</span>: <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"Song"</span>, 
+                   comment: <span class="hljs-string">"Localized kind: Song"</span>),
+  <span class="hljs-string">"tv-episode"</span>: <span class="hljs-type">NSLocalizedString</span>(<span class="hljs-string">"TV Episode"</span>, 
+                         comment: <span class="hljs-string">"Localized kind: TV Episode"</span>),
+]</pre>
+<p>Now the code for <code>type</code> becomes really short:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> type: <span class="hljs-type">String</span> {
+  <span class="hljs-keyword">let</span> kind = <span class="hljs-keyword">self</span>.kind ?? <span class="hljs-string">"audiobook"</span>
+  <span class="hljs-keyword">return</span> typeForKind[kind] ?? kind
+}</pre>
+<p>It’s nothing more than a simple dictionary lookup.
+</p>
+<p>The <code>??</code> is the nil coalescing operator. Remember that dictionary lookups always return an optional, just in case the key you’re looking for — <code>kind</code> in this case — does not exist in the dictionary. That could happen if the iTunes web service added new product types. If the dictionary gives you <code>nil</code>, the <code>??</code> operator simply returns the original value of kind.
+</p>
+<h2 class="segment-chapter">InfoPlist.strings</h2>
+
+<p>The app itself can have a different name depending on the user’s language. The name that is displayed on the iPhone’s home screen comes from the <em>Bundle name</em> setting in <em>Info.plist</em> or if present, the <em>Bundle display name</em> setting.
+</p>
+<p>To localize the strings from Info.plist, you need a file named <em>InfoPlist.strings</em>.
+</p>
+<p>➤ Add a new file to the project. In the template chooser scroll down to the <em>Resource</em> group and choose <em>Strings File</em>. Name it <em>InfoPlist.strings</em> (the capitalization matters!).
+</p><div class="image-50"><img src="graphics/img708.png"  alt="" title="Adding a new Strings file to the project" /></div>
+<p>➤ Open <em>InfoPlist.strings</em> and press the <em>Localize…</em> button from the File inspector. Choose the <em>English</em> localization.
+</p>
+<p>➤ Also add a <em>Dutch</em> localization for this file.
+</p>
+<p>➤ Open the Dutch version and add the following line:
+</p><pre class="code-block"><span class="hljs-type">CFBundleDisplayName</span> = <span class="hljs-string">"StoreZoeker"</span>;</pre>
+<p>The key for the “Bundle display name” setting is <code>CFBundleDisplayName</code>.
+</p>
+<p>Dutch readers, sorry for the silly name. This is the best I could come up with. Feel free to substitute your own.
+</p>
+<p>➤ Run the app and close it so you can see its icon. The Simulator’s springboard should now show the translated app name:
+</p><div class="image-15"><img src="graphics/img709.png"  alt="" title="Even the app’s name is localized!" /></div>
+<p>If you switch the Simulator back to English, the app name is StoreSearch again (and of course, all the other text is back to English as well).
+</p>
+<h2 class="segment-chapter">Regional settings</h2>
+
+<p>I don’t know if you noticed in some of the earlier screenshots, but even though you switched the language to Dutch, the prices of the products still show up in US dollars instead of Euros. That&apos;s for two reasons:
+</p>
+<ol>
+<li>
+<p>The language settings are independent of the regional settings. How currencies and numbers are displayed depends on the region settings, not the language.
+</p></li>
+
+<li>
+<p>The app does not specify anything about country or language when it sends the requests to the iTunes store, so the web service always returns prices in US dollars.
+</p></li>
+</ol>
+
+<h3 class="segment-chapter">Fix web request to include language and region</h3>
+
+<p>You’ll fix the app so that it sends information about the user’s language and regional settings to the iTunes store.
+</p>
+<p>➤ In <em>Search.swift</em>, change the <code>iTunesURL(searchText:category:)</code> method as follows:
+</p><pre class="code-block"><span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">iTunesURL</span><span class="hljs-params">(searchText: String, 
+                         category: Category)</span></span> -&gt; <span class="hljs-type">URL</span> {
+  <span class="hljs-comment">// Add the following 3 lines</span>
+  <span class="hljs-keyword">let</span> locale = <span class="hljs-type">Locale</span>.autoupdatingCurrent
+  <span class="hljs-keyword">let</span> language = locale.identifier
+  <span class="hljs-keyword">let</span> countryCode = locale.regionCode ?? <span class="hljs-string">"en_US"</span>
+  . . .
+  <span class="hljs-comment">// Modify the URL string</span>
+  <span class="hljs-keyword">let</span> urlString = <span class="hljs-string">"https://itunes.apple.com/search?"</span> + 
+    <span class="hljs-string">"term=<span class="hljs-subst">\(encodedText)</span>&amp;limit=200&amp;entity=<span class="hljs-subst">\(kind)</span>"</span> + 
+    <span class="hljs-string">"&amp;lang=<span class="hljs-subst">\(language)</span>&amp;country=<span class="hljs-subst">\(countryCode)</span>"</span>
+    
+  <span class="hljs-keyword">let</span> url = <span class="hljs-type">URL</span>(string: urlString)
+  <span class="hljs-built_in">print</span>(<span class="hljs-string">"URL: <span class="hljs-subst">\(url!)</span>"</span>)            <span class="hljs-comment">// Add this</span>
+  <span class="hljs-keyword">return</span> url!
+}</pre>
+<p>The regional settings are also referred to as the user’s <i>locale</i> and of course there is an object to represent it — <code>Locale</code>. You get a reference to the <code>autoupdatingCurrent</code> locale.
+</p>
+<p>This locale object is called “autoupdating” because it always reflects the current state of the user’s locale settings. In other words, if the user changes their regional information while the app is running, the app will automatically use these new settings the next time it does something with the <code>Locale</code> object.
+</p>
+<p>From the <code>locale</code> object you get the language and the country code. You then put these two values into the URL using the <code>&amp;lang=</code> and <code>&amp;country=</code> parameters. Because <code>locale.regionCode</code> may be <code>nil</code>, we use <code>?? &quot;US&quot;</code> as a failsafe.
+</p>
+<p>The <code>print()</code> lets you see what exactly the URL will be.
+</p>
+<p>➤ Run the app and do a search. Xcode should output something like the following if you have English set as the language:
+</p><pre class="code-block">https://itunes.apple.com/search?term=bird&amp;limit=200&amp;entity=&amp;lang=en_US&amp;country=US</pre>
+<p>It added “en_US” as the language identifier and just “US” as the country. For products that have descriptions (such as apps) the iTunes web service will return the English version of the description. The prices of all items will have USD as the currency.
+</p>
+<div class="note">
+<p><em>Note</em>: It’s also possible you got an error message, which happens when the locale identifier returns something nonsensical such as <code>nl_US</code>. This is due to the combination of language and region settings on your Mac or the Simulator. If you also change the region (see below), the error should disappear. The iTunes web service does not support all combinations of languages and regions — so an improvement to the app would be to check the value of <code>language</code> against a list of allowed languages. I&apos;ll leave that as an exercise for you.
+</p></div>
+
+<h3 class="segment-chapter">Test for region changes</h3>
+
+<p>➤ In the Simulator, switch to the <em>Settings</em> app to change the regional settings. Go to <em>General ▸ Language </em><em>&amp;</em><em> Region ▸ Region</em>. Select <em>Netherlands</em>.
+</p>
+<p>If the Simulator is still in Dutch, then it is under <em>Algemeen ▸ Taal en Regio ▸ Regio</em>. Change it to <em>Nederland</em>. If the language is not set to Dutch, then set the language to Dutch now.
+</p>
+<p>➤ Run StoreSearch again and repeat the search.
+</p>
+<p>Xcode now says:
+</p><pre class="code-block">https://itunes.apple.com/search?term=bird&amp;limit=200&amp;entity=&amp;lang=nl_NL&amp;country=NL</pre>
+<p>The language and country are both now set to NL — for the Netherlands. If you tap on a search result you’ll see that the price is now in Euros:
+</p><div class="image-30"><img src="graphics/img710.png"  alt="" title="The price according to the user’s region settings" /></div>
+<p>Of course, you have to thank <code>NumberFormatter</code> for this. It now knows the region settings are from the Netherlands, so it uses a comma for the decimal point.
+</p>
+<p>And because the web service now returns <code>&quot;EUR&quot;</code> as the currency code, the number formatter puts the Euro symbol in front of the amount. You can get a lot of functionality for free if you know which classes to use!
+</p>
+<p>That’s it as far as internationalization goes. It takes only a small bit of effort, but it definitely pays back.
+</p>
+<p>You can put the Simulator back to English now.
+</p>
+<p>➤ It’s time to commit because you’re going to make some big changes in the next section.
+</p>
+<p>If you’ve also been tagging the code, you can call this v0.9, as you’re rapidly approaching the 1.0 version that is ready for release.
+</p>
+<p>You can find the project files for this chaper under <em>41 – Internationalization</em> in the Source Code folder.
+</p></body></html>

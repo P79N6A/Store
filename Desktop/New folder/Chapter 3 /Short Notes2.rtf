@@ -1,0 +1,316 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 LucidaGrande;\f2\fnil\fcharset178 GeezaPro;
+\f3\fnil\fcharset0 Menlo-Regular;\f4\fswiss\fcharset0 Helvetica-Bold;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue255;\red0\green0\blue0;\red38\green38\blue38;
+\red0\green0\blue0;\red255\green255\blue255;\red19\green20\blue21;}
+{\*\expandedcolortbl;;\cssrgb\c1680\c19835\c100000;\cssrgb\c0\c0\c0;\cssrgb\c20000\c20000\c20000;
+\csgenericrgb\c0\c0\c0;\csgenericrgb\c100000\c100000\c100000;\cssrgb\c9804\c10196\c10588\c80000;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh11520\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs36 \cf0 Chapter 21 swift review\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs24 \cf0 1- \cf2 var item: ChecklistItem \cf0 \'97> it only tells swift you want to store a checklist item object into the item\
+    Variable	 but it doesn\'92t create that checklistItem object itself. For that you need to write \
+    \cf2 Item = checlistItem()\cf0 \
+    You can combine the above into a single line var \cf2 item = checklistItem()\cf0 	
+\fs36 \
+\
+
+\fs24 2- filling up the object with its initial values is initialization \'97the process called instantiating\
+    That\'92s mean making an object instance 	\
+    \'93The instance: is the block of memory that holds the values of the object\'92s variables	\
+3-you can\'92t leave out the() this how swift knows that you want to make new checklistItem instance\
+   And some object allows you to pass parameters to their init method to prepare the newly allocated \
+   Object for usage\
+ \cf2  \'93var item = ChecklistItem(text: "Charge my iPhone", checked: false)\'94\cf0 \
+\
+4- If the constant is local to a method , it\'92s allows to give the constant a new value the next time the   \
+    method is called ,\
+   -the values from the previous method invocation is destroyed when that method ends and the next    \
+    time the app enters that method you are creating a new constant with a new value\
+   - the duration of that method call the constant\'92s value must remain the same\
+\
+5- always using let for everything- that\'92s the right solution 90% of the time , when you get it wrong the swift compiler will warn that you are trying to change a constant only then should you change it to var\
+\
+6- Swift requires that al variables and constant have a value . You can either specify a value when you declare the variable or contains or , by assigning a value inside init method \
+\
+7- NavigationController?.delegate = self  \'97> anything after the ? Will simply ignored if navigationController does not have a value  (called optional chaining)\
+\cf2 \'93if navigationController != nil \{\
+  navigationController!.delegate = self\
+\}\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf3 8- \'93Objects are what it\'92s all about. They combine data with functionality into coherent, reusable units\'94\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f1 \cf3 9- Porperties: there are two types of properties \
+	stored properties \
+	coupled properties \'97> don\'92t store a value but perform logic when you read from , or w						write to, their values\
+						every time someone uses this property it perform the code \
+						the get or set block\
+\
+10- Methods
+\f2  
+\f1 there
+\f2  
+\f1 are
+\f2  
+\f1 three
+\f2  
+\f1 kinds
+\f2  
+\f1 of
+\f2  
+\f1 methods\
+	Instance methods. Class methods   Init methods\
+\
+11- 
+\f0\fs36 \cf4 	
+\fs24 \'95	\expnd0\expndtw0\kerning0
+When you upcast, you cast from a subclass to a superclass (upwards)\
+\kerning1\expnd0\expndtw0          \'95       \expnd0\expndtw0\kerning0
+When you downcast, you cast from a superclass to a subclass (downwards)\
+\pard\tx566\pardeftab720\partightenfactor0
+\cf3 \kerning1\expnd0\expndtw0 \
+\
+
+\f1 12-
+\f2   
+\f1 Closure are mainly used for two reasons\
+			1- Completion blocks\
+			2- Higher order functions \
+			https://www.programiz.com/swift-programming/closures
+\f0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf3 \'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Chapter 22\
+\
+1- As you saw in checklist, a view controller that sits inside a navigation controller has a navigation item object that allows it to configure the navigation bar , tab bars works the same way. Each view controller that represents the tab has a tab bar Item object \
+\
+2- there are two type of authorization the first is called (when in use authorization) which allows the app to get location update while it is open and the user is interacting wit it .\
+- the second is called(Always in use authorization)  which permits the app to check the user\'92s location even when it is not active that\'92s useul for a navigation app \
+\
+3- , your device has several ways of obtaining location data, ranging from fast but inaccurate (cell towers, Wi-Fi) to accurate but slow (GPS). And none of these are guaranteed to work. Some devices don\'92t even have a GPS or cellular radio at all and have to rely on just Wi-Fi. Suddenly obtaining a location seems a lot trickier\'94\
+\
+\pard\tx593\pardeftab593\pardirnatural\partightenfactor0
+\cf5 \cb6 -\'93Fortunately for us, Core Location does all of the hard work of turning the location readings from its various sources into a useful number. Instead of making you wait for the definitive results from the GPS \'97 which may never come \'97 Core Location sends location data to the app as soon as it gets it, and then follows up with more and more accurate readings\'94\
+
+\f3 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0 \cf3 \cb1 4- String(format: \'93%.8f\'94, location.coordinate.latitude)\'97>  that\'92s mean it will decimal number and puts it \
+     In the string . The .8 means that there should always be 8 digits behind the decimal point \
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Chapter 23\
+\
+1-\'93Note that a larger accuracy value means less accurate \'97 after all, accurate up to 100 meters is worse than accurate up to 10 meters. That\'92s why you check whether the previous reading,\'94\
+\
+2-CLError enumeration has a list of values define most of errors you are facing\
+	examples : \'93CLError.locationUnknown - the location is currently unknown, but Core Location will \
+                             keep trying.\
+                           CLError.denied - the user denied the app permission to use location services.\
+                            CLError.network - there was a network-related error.\'94\
+\
+3- \'93You\'92ll use the CLGeocoder object to turn the location data into a human-readable address and then display that address on screen\'94\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\qj\partightenfactor0
+\cf3 - CLPlacemark is the object that contains the address results.\
+\
+4- \'93Closures are basically the same principle as using delegate methods, except you\'92re not putting the code into a separate method but in a closure.\
+\'94\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+Chapter 24\
+\
+1- \'93You\'92ve already used the UITextField control, which is for editing a single line of text; the UITextView is very similar, but for editing multiple lines.\'94\
+\
+
+\f1 2-
+\f2  
+\f1 Structs:
+\f2  
+\f1 are
+\f2  
+\f1 like
+\f2  
+\f1 classes
+\f2  
+\f1 but
+\f2  
+\f1 a
+\f2  
+\f1 little
+\f2  
+\f1 less
+\f2  
+\f1 powerful
+\f2 . 
+\f1 They can have properties and methods \
+But unlike classes, they cannot inherit from one another\
+
+\f0 \
+   - Structs are more lightweight than classes. If you just need to pass around a set of values it\'92s often 	easier to bundle them into a struct and pass that struct around \
+\
+\
+\
+3- 	struct CLLocationCoorinte2d \{\
+		var latitude: double\
+		var latitude: double\
+		\}\
+	- type alias CLLocationDegrees = Double  // after typing the typeAlias you can instead of \
+		double with CLLocationDegrees so you can write struct like this\
+\
+		struct CLLocationCoorinte2d \{\
+		var latitude: CLLocationDegrees\
+		var latitude: CLLocationDegrees \
+		\}\
+	-the purpose of typing CLocationdegrees instead of double is that \'93CL Location Degrees\'94 tells you what this type is intended for: it stores the degrees of a location from the Core Location framework.\'94\
+\
+\
+4- when you type code like; private let x: int\
+	private means it is only visible inside it\'92s class , it \'92s not  global in all Classe\
+\
+5- \'93To create the object and set its properties in one go, you can use a closure:\'94  1187\
+\
+6- in order to make an unwind segue, you need to define an action method that takes a UIStoryboardSegue parameter.\'94  1204\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+
+\fs28 Chapter 26\
+
+\fs24 \
+1- A gesture recognizer is a very handy object that can recognize touch-based actions like taps, swipe, pans and pinches \'93You simply create the gesture recognizer object, give it a method to call when that particular gesture has been observed to take place, and add the recognizer object to a view.\'94   1214\
+\
+-\'93You\'92re using a UITapGestureRecognizer, which as the name implies, recognizes simple taps\'94\
+\
+\
+2- the Desin pattern is called  target action \'97> we already used it whenever you have connected UIButtons , UIBarButtonItems  and other control to action methods.\
+- also notice the target is the object receiving the message which is often self , and \'93action\'94 is the message to send \
+\
+3- CGPoint is a common struct that you see all the time in UIKit . It contains two feeds X and y, that describe a position on screen\
+\
+4- HUD is a brief for Heads- Up Display\'97> if you are are wondering how you can display anything on top of a table view, this HUD is simply UIView subclass , you can add view on top of other views , that\'92s what you have bee doin all along  in fact\
+\
+- for example the labels are views that we added on top of the cells which are also views. The cells themselves are added on the table view and the table view in turn Is added on top of the navigation controller\'92s content view \
+\
+- often, using the standard buttons and labels is sufficient. But when you want to do something that is not available as a standard view you can always make your own. You either subclass UIView or UIControl and do your own drawing . That\'92s what you are going to do for the HUD view as well\
+\
+5- a convenience constructor: is generally a class method I.e a method that works on the class as a whole and not any particular instance.\
+And the whole purpose of this method is to create an instance of the HUD view for you so you don\'92t have to do that yourself and to place it on top of another view\
+\
+6-\'93GCD is a very handy but somewhat low-level library for handling asynchronous tasks. Telling the app to wait a few seconds before executing some code\'94\
+\
+______________________________________________________________________________\
+\
+
+\fs28 Chapter 27 \
+
+\fs24 \
+\
+
+\f1 1-
+\f0  \'93Core Data requires the use of a data model. This is a special file that you add to your project to describe the objects that you want to persist. \'94 \'93For each object that you want Core Data to manage, you have to add an entity.\'94\
+-\'93 Even though the Core Data store can handle big \'93blobs\'94 of data, it is usually better to store photos as separate files in the app\'92s Documents directory. More about that later\'94\
+\
+2-\cf7 \expnd0\expndtw0\kerning0
+It is actually a framework that lets developers store (or retrieve) data in database in an object-oriented way.\
+\pard\pardeftab720\partightenfactor0
+\cf7 With Core Data, you can easily map the objects in your apps to the table records in the database without even knowing any SQL.\cf3 \kerning1\expnd0\expndtw0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\qj\partightenfactor0
+\cf3 \
+3- NSManagedObject is the base class for all objects that are managed by Core Data. Regular objects inherit from NSObject, but Core Data objects extend NSManagedObject.\'94\
+\
+4- \'93 The @NSManaged keyword in data model tells the compiler that these properties will be resolved at runtime by Core Data. When you put a new value into one of these properties, Core Data will place that value into the data store for safekeeping, instead of in a regular instance variable.\
+\'94
+\fs26 \
+5-  
+\f4\b Core Data stack\'94.\'94
+\f0\b0 \
+1-Create an NSManagedObjectModel from the Core Data model This object represents the data model during runtime. You can ask it what sort of entities it has, what attributes these entities have, and so on. In most apps, you don\'92t need to use the NSManagedObjectModel object directly.\
+\
+2-Create an NSPersistentStoreCoordinator object. This object is in charge of the SQLite database.\
+\
+3-Finally, create the NSManagedObjectContext object and connect it to the persistent store coordinator. \'93the NSManagedObjectContext object. This is the object that you use to talk to Core Data. It is often described as a \'93scratchpad\'94.\'94\
+And \'93 every object that needs to do something with Core Data needs to have a reference to the NSManagedObjectContext object\'94\
+\
+Together, these objects are also known as the \'93Core Data stack\'94.\
+\'93Previously, you had to perform the above steps one-by-one in code, which could get a little messy. But as of iOS 10, there is a new object, the NSPersistentContainer, that takes care of everything.
+\fs24 \
+\
+
+\f1 2-
+\f2  
+\f1 \'93Notice
+\f2  
+\f1 the
+\f2  
+\f1 lazy
+\f2  
+\f1 keyword?
+\f2  
+\f1 That
+\f2  
+\f1 means
+\f2  
+\f1 the
+\f2  
+\f1 entire
+\f2  
+\f1 block
+\f2  
+\f1 of
+\f2  
+\f1 code
+\f2  
+\f1 in
+\f2  
+\f1 the
+\f2  
+\f1 \{
+\f2  ... 
+\f1 \}()
+\f2  
+\f1 closure
+\f2  
+\f1 isn\'92t
+\f2  
+\f1 actually
+\f2  
+\f1 performed
+\f2  
+\f1 right
+\f2  
+\f1 away
+\f2 . 
+\f1 \'94 1291
+\f2 \
+
+\f1 __________________________________________________________\
+Chapter 28 \
+\
+1- \'93The UIImagePickerController is a view controller like any other, but it is built into UIKit and it takes care of the entire process of taking new photos or picking them from the user\'92s photo library.\'94\
+\
+2-\'93Apple recommends that apps remove any alert or action sheet from the screen when the user presses the Home button to move the app to the background.\'94\
+\
+\
+3-\'93You saw in the Checklists app that the AppDelegate is notified by the operating system when the app is about to go to the background through its applicationDidEnterBackground(_:) method.\
+\'94\
+\
+4- \'93Remember that for an object that is managed by Core Data, you have to declare the property as @NSManaged.\
+\'94\
+\
+5- \'93. Remember that Core Data is an Objective-C framework, so you\'92re limited by the possibilities of that language. NSNumber is how number objects are handled in Objective-C.\'94\
+\
+6- \'93An assertion is a special debugging tool that is used to check that your code always does something valid. If not, the app will crash with a helpful error message.\'94\
+\
+\'93Assertions are usually enabled only while you\'92re developing and testing your app and disabled when you upload the final build of your app to the App Store.\'94\
+\
+7- \'93you\'92ve used extensions on your view controllers to group related functionality together, such as delegate methods. But you can also use extensions to add new functionality to classes that you didn\'92t write yourself. \'94\
+\
+\'93You can also use extensions on types that don\'92t even allow inheritance, such as structs and enums.\
+}

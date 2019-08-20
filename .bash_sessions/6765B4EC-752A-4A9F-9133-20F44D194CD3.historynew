@@ -1,0 +1,7 @@
+git init
+cd /Users/ahmed/Desktop/MyProjects
+git add storesearch
+git comit -m "storesearch"
+git commit -m "storesearch"
+git remote add origin https://github.com/AhmedMagdyOmar/Store.git
+git pull origin master

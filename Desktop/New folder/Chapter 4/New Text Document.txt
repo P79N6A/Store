@@ -1,0 +1,1 @@
+5- to parse json to data you will use the json decoder class

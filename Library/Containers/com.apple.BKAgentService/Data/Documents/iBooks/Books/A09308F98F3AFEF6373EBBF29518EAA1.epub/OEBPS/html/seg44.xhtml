@@ -1,0 +1,841 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 36: URLSession</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 36: URLSession</h1>
+
+<p>So far, you’ve used the <code>Data(contentsOf:)</code> method to perform the search on the iTunes web service. That is great for simple apps, but I want to show you another way to do networking that is more powerful.
+</p>
+<p>iOS itself comes with a number of different classes for doing networking, from low-level sockets stuff that is only interesting to really hardcore network programmers, to convenient classes such as <code>URLSession</code>.
+</p>
+<p>In this chapter you’ll replace the existing networking code with the <code>URLSession</code> API. That is the API the pros use for building real apps, but don’t worry, it’s not more difficult than what you’ve done before — just more powerful.
+</p>
+<p>You&apos;ll cover the following items in this chapter:
+</p>
+<ul>
+<li>
+<p><em>Branch it:</em> Creating Git branches for major code changes.
+</p></li>
+
+<li>
+<p><em>Put URLSession into action:</em> Use the <code>URLSession</code> class for asynchronouys networking instead of downloading the contents of a URL directly.
+</p></li>
+
+<li>
+<p><em>Cancel operations:</em> Canceling a running network request when a second network request is initiated.
+</p></li>
+
+<li>
+<p><em>Search different categories:</em> Allow the user to select a specific iTunes Store category to search in instead of returning items from all categories.
+</p></li>
+
+<li>
+<p><em>Download the artwork:</em> Download the images for search result items and display them as part of the search result listing.
+</p></li>
+
+<li>
+<p><em>Merge the branch:</em> Merge your changes from your working Git branch back to your master branch.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Branch it</h2>
+
+<p>Whenever you make a big change to the code — such as replacing all the networking stuff with <code>URLSession</code> — there is a possibility that you’ll mess things up. I certainly do often enough! That’s why it’s smart to create a Git <em>branch</em> first.
+</p>
+<p>The Git repository contains a history of all the app’s code, but it can also contain this history along different paths.
+</p>
+<p>You just finished the first version of the networking code and it works pretty well. Now you’re going to completely replace that with a — hopefully — better solution. In doing so, you may want to commit your progress at several points along the way.
+</p>
+<p>What if it turns out that switching to <code>URLSession</code> wasn’t such a good idea after all? Then you’d have to restore the source code to a previous commit from before you started making those changes. In order to avoid this potential mess, you can make a branch instead.
+</p><div class="image-60"><img src="graphics/img604.png"  alt="" title="Branches in action" /></div>
+<p>Every time you’re about to add a new feature to your code or have a bug to fix, it’s a good idea to make a new branch and work on that. When you’re done and are satisfied that everything works as it should, merge your changes back into the master branch. Different people use different branching strategies but this is the general principle.
+</p>
+<p>So far you have been committing your changes to the “master” branch. Now you’re going to make a new branch, let’s call it “urlsession”, and commit your changes to that. When you’re done with this new feature you will merge everything back into the master branch.
+</p>
+<p>You can find the branches for your repository in the <em>Source Control navigator</em>:
+</p><div class="image-50"><img src="graphics/img605.png"  alt="" title="The Source Control branch list" /></div>
+<div class="note">
+<p><em>Note:</em> In my case, for the above screenshot, I have multiple branches already — I have a branch for each chapter of the book. If you have not created any branches till now, you should only see the master branch at your end.
+</p></div>
+
+<p>➤ Select <em>master</em> — or whatever is your current branch — from the branch list, and right-click on the branch name to get a context-menu with possible actions. Select <em>Branch from &quot;master&quot;…</em>:
+</p><div class="image-35"><img src="graphics/img606.png"  alt="" title="The branch context-menu" /></div>
+<p>➤  You will get a dialog asking for the new branch name. Enter <em>urlsession</em> as the new name and click <em>Create</em>.
+</p><div class="image-60"><img src="graphics/img607.png"  alt="" title="Creating a new branch" /></div>
+<p>When Xcode is done, you’ll see that a new “urlsession” branch has been added and that it is now the current one.
+</p>
+<p>This new branch contains the exact same source code and history as the master branch, or whichever branch you used as the parent for the new branch. But from here on out the two paths will diverge — any changes you make happen on the “urlsession” branch only.
+</p>
+<h2 class="segment-chapter">Put URLSession into action</h2>
+
+<p>Good, now that you’re in a new branch, it’s safe to experiment with these new APIs.
+</p>
+<p>➤ First, remove <code>performStoreRequest(with:)</code> from <em>SearchViewController.swift</em>. Yup, that’s right, you won’t be needing that method anymore.
+</p>
+<p>Don’t be afraid to remove old code. Some developers only comment out the old code but leave it in the project, just in case they may need it again some day. You don’t have to worry about that because you’re using source control. Should you really need it, you can always find the old code in the Git history. Besides, if the experiment should fail, you can simply throw away this branch and switch back to the “original” one.
+</p>
+<p>Anyway, on to <code>URLSession</code>. This is a closured-based API, meaning that instead of making a delegate, you pass it a closure containing the code that should be performed once the response from the server has been received. <code>URLSession</code> calls this closure the <i>completion handler</i>.
+</p>
+<p>➤ Change <code>searchBarSearchButtonClicked(_:)</code> as follows:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">searchBarSearchButtonClicked</span><span class="hljs-params">(<span class="hljs-number">_</span> searchBar: UISearchBar)</span></span> {
+  <span class="hljs-keyword">if</span> !searchBar.text!.isEmpty {
+    . . .
+    searchResults = []
+    <span class="hljs-comment">// Replace all code after this with new code below</span>
+    <span class="hljs-comment">// 1</span>
+    <span class="hljs-keyword">let</span> url = iTunesURL(searchText: searchBar.text!)
+    <span class="hljs-comment">// 2</span>
+    <span class="hljs-keyword">let</span> session = <span class="hljs-type">URLSession</span>.shared
+    <span class="hljs-comment">// 3</span>
+    <span class="hljs-keyword">let</span> dataTask = session.dataTask(with: url, 
+      completionHandler: { data, response, error <span class="hljs-keyword">in</span>
+      <span class="hljs-comment">// 4</span>
+      <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> error = error {
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">"Failure! <span class="hljs-subst">\(error.localizedDescription)</span>"</span>)
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">"Success! <span class="hljs-subst">\(response!)</span>"</span>)
+      }
+    })    
+    <span class="hljs-comment">// 5</span>
+    dataTask.resume()
+  }
+}</pre>
+<p>This is what the changes do:
+</p>
+<ol>
+<li>
+<p>Create the <code>URL</code> object using the search text, just like before.
+</p></li>
+
+<li>
+<p>Get a shared <code>URLSession</code> instance, which uses the default configuration with respect to caching, cookies, and other web stuff.
+</p>
+<p>If you want to use a different configuration — for example, to restrict networking to when Wi-Fi is available but not when there is only cellular access — then you have to create your own <code>URLSessionConfiguration</code> and <code>URLSession</code> objects. But for this app, the default one will be fine.
+</p></li>
+</ol>
+
+<ol>
+<li>
+<p>Create a data task. Data tasks are for fetching the contents of a given URL. The code from the completion handler will be invoked when the data task has received a response from the server.
+</p></li>
+
+<li>
+<p>Inside the closure, you’re given three parameters: <code>data</code>, <code>response</code>, and <code>error</code>. These are all optionals so they can be <code>nil</code> and have to be unwrapped before you can use them.
+</p>
+<p>If there was a problem, error contains an <code>Error</code> object describing what went wrong. This happens when the server cannot be reached or the network is down or there is some other hardware failure.
+</p>
+<p>If <code>error</code> is <code>nil</code>, the communication with the server succeeded; <code>response</code> holds the server’s response code and headers, and <code>data</code> contains the actual data fetched from the server, in this case a blob of JSON.
+</p>
+<p>For now, you simply use a <code>print()</code> to show success or failure.
+</p></li>
+</ol>
+
+<ol>
+<li>
+<p>Finally, once you have created the data task, you need to call <code>resume()</code> to start it. This sends the request to the server on a background thread. So, the app is immediately free to continue — <code>URLSession</code> is as asynchronous as they come.
+</p></li>
+</ol>
+
+<p>With these changes made, you can run the app and see what <code>URLSession</code> makes of it.
+</p>
+<p>➤ Run the app and search for something. After a second or two you should see a Console message saying “Success!” followed by a dump of the HTTP response headers.
+</p>
+<p>Excellent!
+</p>
+<h4 class="segment-chapter">A brief review of closures</h4>
+
+<p>You’ve seen closures a few times now. They are a really powerful feature of Swift and you can expect to be using them all the time when you’re working with Swift code. So, it’s good to have at least a basic understanding of how they work.
+</p>
+<p>A closure is simply a piece of source code that you can pass around just like any other type of object. The difference between a closure and regular source code is that the code from the closure does not get performed right away. Instead, it is stored in a “closure object” and can be performed at a later point, even more than once.
+</p>
+<p>That’s exactly what <code>URLSession</code> does: it holds on to the “completion handler” closure and only performs it when a response is received from the web server or when a network error occurs.
+</p>
+<p>A closure typically looks like this:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> dataTask = session.dataTask(with: url, completionHandler: { 
+   data, response, error <span class="hljs-keyword">in</span>
+   . . . source code . . .
+})</pre>
+<p>The thing behind <code>completionHandler</code> inside the <code>{ }</code> brackets is the closure. The form of a closure is always:
+</p><pre class="code-block">{ parameters <span class="hljs-keyword">in</span> 
+  your source code
+}</pre>
+<p>or without parameters:
+</p><pre class="code-block">{ 
+  your source code
+}</pre>
+<p>Just like a method or function, a closure can accept parameters. They are separated from the source code by the “<code>in</code>” keyword. In <code>URLSession</code>’s completion handler the parameters are <code>data</code>, <code>response</code>, and <code>error</code>.
+</p>
+<p>Thanks to Swift’s type inference, you don’t need to specify the data types of the parameters. However, you could write them out in full if you wanted to:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> dataTask = session.dataTask(with: url, completionHandler: {
+  (data: <span class="hljs-type">Data</span>?, response: <span class="hljs-type">URLResponse</span>?, error: <span class="hljs-type">Error</span>?) <span class="hljs-keyword">in</span>
+  . . .
+})</pre>
+<p><em>Tip:</em> For a parameter without the type annotation, you can Option-click in Xcode to find out what its type is. This trick works for any symbol in your code.
+</p>
+<p>If you don’t care about a particular parameter you can substitute it with <code>_</code>, the <i>wildcard</i> symbol:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> dataTask = session.dataTask(with: url, completionHandler: { 
+   data, <span class="hljs-number">_</span>, error <span class="hljs-keyword">in</span>
+  . . .
+})</pre>
+<p>If a closure is really simple, you can leave out the parameter list altogether and use <code>$0</code>, <code>$1</code>, and so on as the parameter names.
+</p><pre class="code-block"><span class="hljs-keyword">let</span> dataTask = session.dataTask(with: url, completionHandler: { 
+   <span class="hljs-built_in">print</span>(<span class="hljs-string">"My parameters are <span class="hljs-subst">\($<span class="hljs-number">0</span>)</span>, <span class="hljs-subst">\($<span class="hljs-number">1</span>)</span>, <span class="hljs-subst">\($<span class="hljs-number">2</span>)</span>"</span>)
+})</pre>
+<p>You wouldn’t do that with <code>URLSession</code>’s completion handler, though. It’s much easier if you know the parameters are called <code>data</code>, <code>response</code>, and <code>error</code> than remembering what <code>$0</code>, <code>$1</code>, and <code>$2</code> stand for.
+</p>
+<p>If a closure is the last parameter of a method, you can use <i>trailing</i> syntax to simplify the code a little:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> dataTask = session.dataTask(with: url) {
+  data, response, error <span class="hljs-keyword">in</span>
+  . . .
+}</pre>
+<p>Now the closure appears after the closing parenthesis, not inside. Many people, myself included, find this more natural to read.
+</p>
+<p>Closures are useful for other things too, such as initializing objects and lazy loading:
+</p><pre class="code-block"><span class="hljs-built_in">lazy</span> <span class="hljs-keyword">var</span> dateFormatter: <span class="hljs-type">DateFormatter</span> = {
+  <span class="hljs-keyword">let</span> formatter = <span class="hljs-type">DateFormatter</span>()
+  formatter.dateStyle = .medium
+  formatter.timeStyle = .short
+  <span class="hljs-keyword">return</span> formatter
+}()</pre>
+<p>The code to create and initialize the <code>DateFormatter</code> object sits inside a closure. The <code>()</code> at the end causes the closure to be <i>evaluated</i> and the returned object is put inside the <code>dataFormatter</code> variable. This is a common trick for placing complex initialization code right next to the variable declaration.
+</p>
+<p>It’s no coincidence that closures look a lot like functions. In Swift, closures, methods, and functions are really all the same thing. For example, you can supply the name of a method or function when a closure is expected, as long as the parameters match:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> dataTask = session.dataTask(with: url, 
+                   completionHandler: myHandler)
+. . .
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">myHandler</span><span class="hljs-params">(data: Data?, response: URLResponse?, 
+              error: Error?)</span></span> {
+  . . .
+}</pre>
+<p>The above somewhat negates one of the prime benefits of closures — keeping all the code in the same place — but there are situations where this is quite useful when the method acts as a “mini” delegate.
+</p>
+<p>One final thing to be aware of with closures is that they <i>capture</i> any variables used inside the closure, including <code>self</code>. This can create ownership cycles, often leading to memory leaks. To avoid this, you can supply a <i>capture list</i>:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> dataTask = session.dataTask(with: url) {
+  [<span class="hljs-keyword">weak</span> <span class="hljs-keyword">self</span>] data, response, error <span class="hljs-keyword">in</span>
+  . . .
+}</pre>
+<p>Whenever you access a property or call a method, you’re implicitly using <code>self</code>. Inside a closure, however, Swift requires that you always write <code>self.</code> in front of the method or property name. This makes it clear that <code>self</code> is being captured by the closure:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> dataTask = session.dataTask(with: url) {
+  data, response, error <span class="hljs-keyword">in</span>
+  <span class="hljs-keyword">self</span>.callSomeMethod()     <span class="hljs-comment">// self is required</span>
+}</pre>
+<p><code>SearchViewController</code> doesn’t have to worry about <code>URLSession</code> capturing <code>self</code> because the data task is only short-lived, while the view controller sticks around for as long as the app itself. This ownership cycle is quite harmless. As you add more functionality to <i>StoreSearch</i> you <i>will</i> have to use <code>[weak self]</code> with <code>URLSession</code> or the app might crash and burn!
+</p>
+<div class="note">
+<p><em>Note:</em> Swift also has the concept of “no escape” closures. We won’t go into that here, except to mention that no-escape closures don’t capture <code>self</code>, so you don’t have to write “<code>self.</code>” everywhere. Nice, but you can only use such closures under very specific circumstances!
+</p></div>
+
+<h3 class="segment-chapter">Handle status codes</h3>
+
+<p>After a successful request, the app prints the HTTP response from the server. The response object might look something like this:
+</p><pre class="code-block">Success! &lt;NSHTTPURLResponse: 0x7f8b19e38d10&gt; { URL: https://itunes.apple.com/search?term=metallica&amp;limit=200 } { 
+status code: 200, headers {
+    &quot;Cache-Control&quot; = &quot;no-transform, max-age=41&quot;;
+    Connection = &quot;keep-alive&quot;;
+    &quot;Content-Encoding&quot; = gzip;
+    &quot;Content-Length&quot; = 34254;
+    &quot;Content-Type&quot; = &quot;text/javascript; charset=utf-8&quot;;
+    Date = &quot;Fri, 21 Aug 2015 09:53:20 GMT&quot;;
+    . . . 
+} }</pre>
+<p>If you’ve done any web development before, this should look familiar. These “HTTP headers” are always the first part of the response from a web server that precedes the actual data you’re receiving. The headers give additional information about the communication that just happened.
+</p>
+<p>What you’re especially interested in is the <i>status code</i>. The HTTP protocol has defined a number of status codes that tell clients whether the request was successful or not. No doubt you’re familiar with 404, web page not found.
+</p>
+<p>The status code you want to see is 200 OK, which indicates success — Wikipedia has the complete list of codes, <a href="https://wikipedia.org/wiki/List_of_HTTP_status_codes">wikipedia.org/wiki/List</a><a href="https://wikipedia.org/wiki/List_of_HTTP_status_codes">_</a><a href="https://wikipedia.org/wiki/List_of_HTTP_status_codes">of</a><a href="https://wikipedia.org/wiki/List_of_HTTP_status_codes">_</a><a href="https://wikipedia.org/wiki/List_of_HTTP_status_codes">HTTP</a><a href="https://wikipedia.org/wiki/List_of_HTTP_status_codes">_</a><a href="https://wikipedia.org/wiki/List_of_HTTP_status_codes">status</a><a href="https://wikipedia.org/wiki/List_of_HTTP_status_codes">_</a><a href="https://wikipedia.org/wiki/List_of_HTTP_status_codes">codes</a>.
+</p>
+<p>To make the error handling of the app a bit more robust, let’s check to make sure the HTTP response code really is 200. If not, something has gone wrong and we can’t assume that the received data contains the JSON we’re after.
+</p>
+<p>➤ Change the contents of the <code>completionHandler</code> to:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> error = error {
+  <span class="hljs-built_in">print</span>(<span class="hljs-string">"Failure! <span class="hljs-subst">\(error.localizedDescription)</span>"</span>)
+} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> httpResponse = response <span class="hljs-keyword">as</span>? <span class="hljs-type">HTTPURLResponse</span>,  
+              httpResponse.statusCode == <span class="hljs-number">200</span> {
+  <span class="hljs-built_in">print</span>(<span class="hljs-string">"Success! <span class="hljs-subst">\(data!)</span>"</span>)
+} <span class="hljs-keyword">else</span> {
+  <span class="hljs-built_in">print</span>(<span class="hljs-string">"Failure! <span class="hljs-subst">\(response!)</span>"</span>)
+}</pre>
+<p>The <code>response</code> parameter has the data type <code>URLResponse</code>, but that doesn’t have a property for the status code. Because you’re using the HTTP protocol, what you’ve really received is an <code>HTTPURLResponse</code> object, a subclass of <code>URLResponse</code>. So, first you cast it to the proper type, and then look at its <code>statusCode</code> property — you’ll consider the job a success only if it is 200.
+</p>
+<p>Notice the use of the comma inside the <code>if let</code> statement to combine these checks into a single line. You could also have written it with a second <code>if</code>, but I find that harder to read:
+</p><pre class="code-block">} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> httpResponse = response <span class="hljs-keyword">as</span>? <span class="hljs-type">HTTPURLResponse</span> {
+  <span class="hljs-keyword">if</span> httpResponse.statusCode == <span class="hljs-number">200</span> {
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"Success! <span class="hljs-subst">\(data!)</span>"</span>)
+  }</pre>
+<p>Whenever you need to unwrap an optional and also check the value of that optional, using <code>if let …, …</code> is the nicest way to do that.
+</p>
+<p>➤ Run the app and search for something. You should now see something like:
+</p><pre class="code-block">Success! 295831 bytes</pre>
+<p>Since your received data is in the form of a  <code>Data</code> object, unlike text, its content can&apos;t be printed out. So, you just get the length of the data instead.
+</p>
+<p>It’s always a good idea to actually test your error handling code. So, let’s first fake an error and get that out of the way.
+</p>
+<p>➤  In <code>iTunesURL(searchText:)</code>, change the URL string to:
+</p><pre class="code-block"><span class="hljs-string">"https://itunes.apple.com/searchLOL?term=%@&amp;limit=200"</span></pre>
+<p>Here, I’ve changed the endpoint from <code>search</code> to <code>searchLOL</code>. It doesn’t really matter what you type there, as long as it’s something that cannot possibly exist on the iTunes server.
+</p>
+<p>➤ Run the app again. Now a search should respond with something like this:
+</p><pre class="code-block">Failure! &lt;NSHTTPURLResponse: 0x7ff76b42d4b0&gt; { URL: https://itunes.apple.com/searchLOL?term=metallica&amp;limit=200 } { 
+status code: 404, headers {
+    Connection = &quot;keep-alive&quot;;
+    &quot;Content-Length&quot; = 207;
+    &quot;Content-Type&quot; = &quot;text/html; charset=iso-8859-1&quot;;
+    . . .
+} }</pre>
+<p>As you can see, the status code is now 404 — there is no searchLOL page — and the app correctly considers this a failure. That’s a good thing too, because if you were to convert the value of <code>data</code> to text, <code>data</code> now contains the following:
+</p><pre class="code-block"><span class="hljs-meta">&lt;!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>404 Not Found<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Not Found<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>The requested URL /searchLOL was not found on this server.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></pre>
+<p>That is definitely not JSON but HTML. If you tried to convert that into JSON objects, you’d fail horribly.
+</p>
+<p>Great, so the error handling works! Let’s parse received JSON data.
+</p>
+<h3 class="segment-chapter">Parse the data</h3>
+
+<p>➤ First, put <code>iTunesURL(searchText:)</code> back to the way it was — use <em>⌘+Z</em> to undo.
+</p>
+<p>➤ In the <code>completionHandler</code>, replace the <code>print(&quot;Success! \(data)&quot;)</code> line with:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> data = data {
+  <span class="hljs-keyword">self</span>.searchResults = <span class="hljs-keyword">self</span>.parse(data: data)
+  <span class="hljs-keyword">self</span>.searchResults.<span class="hljs-built_in">sort</span>(by: &lt;)
+  <span class="hljs-type">DispatchQueue</span>.main.async {
+    <span class="hljs-keyword">self</span>.isLoading = <span class="hljs-literal">false</span>
+    <span class="hljs-keyword">self</span>.tableView.reloadData()
+  }
+  <span class="hljs-keyword">return</span>
+}</pre>
+<p>This unwraps the optional object from the <code>data</code> parameter and then calls <code>parse(data:)</code> to turn the dictionary’s contents into <code>SearchResult</code> objects, just like you did before. Finally, you sort the results and put everything into the table view. This should look very familiar.
+</p>
+<p>It’s important to realize that the completion handler closure won’t be performed on the main thread. Because <code>URLSession</code> does all the networking asynchronously, it will also call the completion handler on a background thread.
+</p>
+<p>Parsing the JSON and sorting the list of search results could potentially take a while — not seconds but possibly long enough to be noticeable. You don’t want to block the main thread while that is happening, so it’s preferable that this happens in the background too.
+</p>
+<p>But when the time comes to update the UI, you need to switch back to the main thread — them’s the rules. That’s why you wrap the reloading of the table view in a  <code>DispatchQueue.main.async</code> closure.
+</p>
+<p>If you forget to do this, your app may still appear to work. That’s the insidious thing about working with multiple threads. However, it may also crash in all kinds of mysterious ways. So remember, UI stuff should always happen on the main thread. Write it on a Post-It note and stick it to your screen!
+</p>
+<p>➤ Run the app. The search should work again. You have successfully replaced the old networking code with <code>URLSession</code>!
+</p>
+<div class="note">
+<p><em>Tip:</em> If you want to determine via code whether a particular piece of code is being run on the main thread or not, add the following code snippet:
+</p>
+<p><code>print(&quot;On main thread? &quot; + (Thread.current.isMainThread ? &quot;Yes&quot; : &quot;No&quot;))</code>
+</p>
+<p>Go ahead, paste this at the top of the <code>completionHandler</code> closure and see what it says.
+</p>
+<p>Of course, the official framework documentation should be your first stop. Usually when a method takes a closure, the docs mention whether it is performed on the main thread or not. But if you’re not sure, or just can’t find it in the docs, add the above <code>print()</code> and be enlightened.
+</p></div>
+
+<h3 class="segment-chapter">Handle errors</h3>
+
+<p>➤ At the very end of the completion handler closure, below the <code>if</code> statements, add the following:
+</p><pre class="code-block"><span class="hljs-type">DispatchQueue</span>.main.async {
+  <span class="hljs-keyword">self</span>.hasSearched = <span class="hljs-literal">false</span>
+  <span class="hljs-keyword">self</span>.isLoading = <span class="hljs-literal">false</span>
+  <span class="hljs-keyword">self</span>.tableView.reloadData()
+  <span class="hljs-keyword">self</span>.showNetworkError()
+}</pre>
+<p>The code execution reaches here only if something went wrong. You call <code>showNetworkError()</code> to let the user know about the problem.
+</p>
+<p>Note that you do <code>tableView.reloadData()</code> here too, because the contents of the table view need to be refreshed to get rid of the Loading… indicator. And of course, all this happens on the main thread.
+</p>
+<div class="note">
+<p><em>Exercise.</em> Why doesn’t the error alert show up on success? After all, the above piece of code sits at the bottom of the closure, so doesn’t it always get executed?
+</p></div>
+
+<p>Answer: Upon successfully loading the data, the <code>return</code> statement exits the closure after the search results get displayed in the table view. So in that case, execution never reaches the bottom of the closure.
+</p>
+<p>➤ Fake an error situation to test that the error handling code really works.
+</p>
+<p>Testing errors is not a luxury! The last thing you want is for your app to crash when a networking error occurs because of faulty error handling code. I’ve worked on codebases where it was obvious the previous developer never bothered to verify that the app was able to recover from errors — that’s probably why they were the <i>previous</i> developer.
+</p>
+<p>Things will go wrong in the wild and your app better be prepared to deal with it. As the MythBusters say, “failure is always an option”.
+</p>
+<p>Does the error handling code work? Great! Time to add some new networking features to the app.
+</p>
+<p>➤ This is a good time to commit your changes. Remember, this commit only happens on the &quot;urlsession&quot; branch, not on the master branch.
+</p>
+<h2 class="segment-chapter">Cancel operations</h2>
+
+<p>What happens when a search takes a long time and the user starts a second search while the first one is still going? The app doesn’t disable the search bar, so it’s possible for the user to do this. When dealing with networking — or any asynchronous process, really — you have to think these kinds of situations through.
+</p>
+<p>There is no way to predict what happens, but it will most likely be a strange experience for the user. They might see the results from their first search, which they are no longer expecting, only for that to be replaced by the results of the second search a few seconds later. Confusing!
+</p>
+<p>But there is no guarantee the first search completes before the second, so the results from search #2 may arrive first and then get overwritten by the results from search #1, which is definitely not what the user wanted to see either.
+</p>
+<p>Because you’re no longer blocking the main thread, the UI always accepts user input, and you cannot assume the user will sit still and wait until the request is done.
+</p>
+<p>You can usually fix this in one of two ways:
+</p>
+<ol>
+<li>
+<p>Disable all controls. The user cannot tap anything while the operation is taking place. This does not mean you’re blocking the main thread; you’re just making sure the user cannot mess up the order of things.
+</p></li>
+
+<li>
+<p>Cancel the on-going request when the user initiates a new request.
+</p></li>
+</ol>
+
+<p>For this app, you’re going to pick the second solution because it makes for a nicer user experience. Every time the user performs a new search, you cancel the previous request. <code>URLSession</code> makes this easy: data tasks have a <code>cancel()</code> method.
+</p>
+<p>When you created the data task, you were given a <code>URLSessionDataTask</code> object, and you placed this into a local constant named <code>dataTask</code>. Cancelling the task, however, needs to happen the <i>next</i> time <code>searchBarSearchButtonClicked(_:)</code> is called.
+</p>
+<p>Storing the <code>URLSessionDataTask</code> object into a local variable isn’t good enough anymore; you need to keep that reference beyond the scope of the method. In other words, you have to store it in an instance variable.
+</p>
+<p>➤ Add the following instance variable to <em>SearchViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> dataTask: <span class="hljs-type">URLSessionDataTask</span>?</pre>
+<p>This is an optional because you won’t have a data task until the user performs a search.
+</p>
+<p>➤ In <code>searchBarSearchButtonClicked(_:)</code>, remove <code>let</code> from the line that creates the new data task object:
+</p><pre class="code-block">dataTask = session.dataTask(with: url, completionHandler: {</pre>
+<p>You’ve removed the <code>let</code> keyword because <code>dataTask</code> should no longer be a local; it now refers to the instance variable.
+</p>
+<p>➤ At the end of the method, add a question mark to the line that starts the task:
+</p><pre class="code-block">dataTask?.resume()</pre>
+<p>Because <code>dataTask</code> is an optional, you have to unwrap the optional somehow before you can use it. Here you’re using optional chaining.
+</p>
+<p>➤ Finally, near the top of the method before you set <code>isLoading</code> to <code>true</code>, add:
+</p><pre class="code-block">dataTask?.cancel()</pre>
+<p>If there is an active data task, this cancels it, making sure that no old searches can ever get in the way of the new search.
+</p>
+<p>Thanks to the optional chaining, if no search has been done yet and <code>dataTask</code> is still <code>nil</code>, this simply ignores the call to <code>cancel()</code>. You could also unwrap the optional with <code>if let</code>, but using the question mark is shorter and just as safe.
+</p>
+<div class="note">
+<p><em>Exercise.</em> Why can’t you write <code>dataTask!.cancel()</code> to unwrap the optional?
+</p></div>
+
+<p>Answer: If an optional is <code>nil</code>, using <code>!</code> will crash the app. You’re only supposed to use <code>!</code> to unwrap an optional when you’re sure it won’t be <code>nil</code>. But the very first time the user types something into the search bar, <code>dataTask</code> will still be <code>nil</code> and using <code>!</code> is not a good idea.
+</p>
+<p>➤ Test the app with and without this call to <code>dataTask.cancel()</code> to experience the difference.
+</p>
+<p>Use the Network Link Conditioner preferences pane to delay each query by a few seconds so it’s easier to get two requests running at the same time.
+</p>
+<p>Hmm… you may notice something odd. When the data task gets cancelled, you get the error popup and the Xcode Console says:
+</p><pre class="code-block">Failure! cancelled
+2018-07-28 16:17:18.314825+0200 StoreSearch[21563:11484838] Task &lt;FD358C0B-EE6B-4B10-8336-970CF1C2192D&gt;.&lt;2&gt; finished with error - code: -999</pre>
+<p>As it turns out, when a data task gets cancelled, its completion handler is still invoked but with an <code>Error</code> object that has error code -999. That’s what caused the error alert to pop up.
+</p>
+<p>You’ll have to make the error handler a little smarter to ignore code -999. After all, the user cancelling the previous search is no cause for panic.
+</p>
+<p>➤ In the <code>completionHandler</code>, change the <code>if let error</code> section to:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> error = error <span class="hljs-keyword">as</span> <span class="hljs-type">NSError</span>?, error.code == -<span class="hljs-number">999</span> {
+  <span class="hljs-keyword">return</span>  <span class="hljs-comment">// Search was cancelled</span>
+} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> httpResponse = . . .</pre>
+<p>This simply ends the closure when there is an error with code -999. The rest of the closure gets skipped.
+</p>
+<p>➤ If you’re satisfied it works, commit the changes to the repository.
+</p>
+<div class="note">
+<p><em>Note:</em> Maybe you don’t think it’s worth making a commit when you’ve only changed a few lines, but many small commits are often better than a few big ones. Each time you fix a bug or add a new feature, it is a good time to commit.
+</p></div>
+
+<h2 class="segment-chapter">Search different categories</h2>
+
+<p>The iTunes store has a vast collection of products and each search returns at most 200 items. It can be hard to find what you’re looking for by name alone. So, you’ll add a control to the screen that lets users pick the category they want to search in. It will look like this:
+</p><div class="image-30"><img src="graphics/img608.png"  alt="" title="Searching in the Software category" /></div>
+<p>This type of control is called a <em>segmented control</em> and is used to pick one option out of a set of choices.
+</p>
+<h3 class="segment-chapter">Add the segmented control</h3>
+
+<p>➤ Open the storyboard. Drag a new <em>Navigation Bar</em> into the view and put it below the Search Bar. You’re using the Navigation Bar purely for decorative purposes, as a container for the segmented control.
+</p>
+<p>Make sure the Navigation Bar doesn’t get added inside the Table View. It may be easiest to drag it from the Objects Library directly into the Document Outline and drop it below the Search Bar. Then change its Y-position to 76.
+</p>
+<p>➤ With the Navigation Bar selected, open the <em>Add New Constraints menu</em> and pin its <em>top</em>, <em>left</em>, and <em>right</em> sides.
+</p>
+<p>➤ Drag a new <em>Segmented Control</em> from the Objects Library on to the Navigation Bar’s title to replace the title.
+</p>
+<p>The design should now look like this:
+</p><div class="image-40"><img src="graphics/img609.png"  alt="" title="The Segmented Control sits in a Navigation Bar below the Search Bar" /></div>
+<p>➤ Select the Segmented Control. Set its <em>Width</em> to 300 points (make sure you change the width of the entire control, not of the individual segments).
+</p>
+<p>➤ In the <em>Attributes inspector</em>, set the number of segments to 4.
+</p>
+<p>➤ Change the title of the first segment to <em>All</em>. Then select the second segment and set its title to <em>Music</em>. The title for the third segment should be <em>Software</em> and the fourth segment is <em>E-books</em>.
+</p>
+<p>You can change the segment title by double-clicking inside the segment or by changing the <em>Segment</em> dropdown in the Attributes inspector to select the correct segment.
+</p>
+<p>The scene should look like this now:
+</p><div class="image-40"><img src="graphics/img610.png"  alt="" title="The finished Segmented Control" /></div>
+<p>Next, you’ll add a new outlet and action method for the Segmented Control. This is a good opportunity to practice using the Assistant editor.
+</p>
+<h3 class="segment-chapter">Use the assistant editor</h3>
+
+<p>➤ Press <em>Option+⌘+Enter</em> to open the Assistant editor and then Control-drag from the Segmented Control into the view controller source code to add the new outlet:
+</p><pre class="code-block"><span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> segmentedControl: <span class="hljs-type">UISegmentedControl</span>!</pre>
+<p>To add the action method you can also use the Assistant editor. Control-drag from the Segmented Control into the source code again, but this time choose:
+</p><div class="image-30"><img src="graphics/img611.png"  alt="" title="Adding an action method for the segmented control" /></div>
+<ul>
+<li>
+<p>Connection: <em>Action</em>
+</p></li>
+
+<li>
+<p>Name: <em>segmentChanged</em>
+</p></li>
+
+<li>
+<p>Type: <em>UISegmentedControl</em>
+</p></li>
+
+<li>
+<p>Event: Value Changed
+</p></li>
+
+<li>
+<p>Arguments: Sender
+</p></li>
+</ul>
+
+<p>➤ Press <em>Connect</em> to add the action method. Then, add a <code>print()</code> statement to the new method:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">segmentChanged</span><span class="hljs-params">(<span class="hljs-number">_</span> sender: UISegmentedControl)</span></span> {
+  <span class="hljs-built_in">print</span>(<span class="hljs-string">"Segment changed: <span class="hljs-subst">\(sender.selectedSegmentIndex)</span>"</span>)
+}</pre>
+<p>Type <em>⌘+Enter</em> (without Option) to close the Assistant editor again. These are very handy keyboard shortcuts to remember.
+</p>
+<p>➤ Run the app to make sure everything still works. Tapping a segment should log a number — the index of that segment — to the Console.
+</p><div class="image-30"><img src="graphics/img612.png"  alt="" title="The segmented control in action" /></div>
+<h3 class="segment-chapter">Use the segmented control</h3>
+
+<p>Notice that the first row of the table view is partially obscured again. Because you placed a navigation bar below the search bar, you need to add another 44 points to the table view’s content inset.
+</p>
+<p>➤ Change that line in <code>viewDidLoad()</code> to:
+</p><pre class="code-block">tableView.contentInset = <span class="hljs-type">UIEdgeInsets</span>(top: <span class="hljs-number">108</span>, <span class="hljs-keyword">left</span>: <span class="hljs-number">0</span>, . . .</pre>
+<p>You will be using the segmented control in two ways. First of all, it determines what sort of products the app will search for. Second, if you have already performed a search and you tap on one of the other segment buttons, the app will search again for the new product category.
+</p>
+<p>That means a search can now be triggered by two different events: tapping the Search button on the keyboard and selecting an item in the Segmented Control.
+</p>
+<p>➤ Rename the <code>searchBarSearchButtonClicked(_:)</code> method to <code>performSearch()</code> and remove the <code>searchBar</code> parameter.
+</p>
+<p>You’re doing this to put the search logic into a separate method that can be invoked from more than one place. Removing <code>searchBar</code> as the parameter of this method is no problem because there is also an <code>@IBOutlet</code> property with that name and any references to <code>searchBar</code> in <code>performSearch()</code> will simply use that property.
+</p>
+<p>➤ Now add a new version of <code>searchBarSearchButtonClicked(_:)</code> to the source code:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">searchBarSearchButtonClicked</span><span class="hljs-params">(<span class="hljs-number">_</span> searchBar: UISearchBar)</span></span> {
+  performSearch()
+}</pre>
+<p>➤ Also replace the <code>segmentChanged(_:)</code> action method with:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">segmentChanged</span><span class="hljs-params">(<span class="hljs-number">_</span> sender: UISegmentedControl)</span></span> {
+  performSearch()
+}</pre>
+<p>➤ Run the app and verify that searching still works. When you tap on the different segments, the search should be performed again as well.
+</p>
+<div class="note">
+<p><em>Note:</em> The second time you search for the same thing, the app may return results very quickly. The networking layer is now returning a <i>cached</i> response so it doesn’t have to download the whole thing again, which is usually a performance gain on mobile devices. However, there is an API to turn off this caching behavior if that makes sense for your app.
+</p></div>
+
+<p>There is one thing left to be done — you have to tell the app to use the category based on the selected segment for the search. You’ve already seen that you can get the index of the selected segment with the <code>selectedSegmentIndex</code> property. This returns an <code>Int</code> value (0, 1, 2, or 3).
+</p>
+<p>➤ Change the <code>iTunesURL(searchText:)</code> method so that it accepts this <code>Int</code> as a parameter and then builds up the request URL accordingly:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">iTunesURL</span><span class="hljs-params">(searchText: String, category: Int)</span></span> -&gt; <span class="hljs-type">URL</span> {
+  <span class="hljs-keyword">let</span> kind: <span class="hljs-type">String</span>
+  <span class="hljs-keyword">switch</span> category {
+    <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>: kind = <span class="hljs-string">"musicTrack"</span>
+    <span class="hljs-keyword">case</span> <span class="hljs-number">2</span>: kind = <span class="hljs-string">"software"</span>
+    <span class="hljs-keyword">case</span> <span class="hljs-number">3</span>: kind = <span class="hljs-string">"ebook"</span>
+    <span class="hljs-keyword">default</span>: kind = <span class="hljs-string">""</span>
+  }
+
+  <span class="hljs-keyword">let</span> encodedText = searchText.addingPercentEncoding(
+      withAllowedCharacters: <span class="hljs-type">CharacterSet</span>.urlQueryAllowed)!
+  
+  <span class="hljs-keyword">let</span> urlString = <span class="hljs-string">"https://itunes.apple.com/search?"</span> + 
+    <span class="hljs-string">"term=<span class="hljs-subst">\(encodedText)</span>&amp;limit=200&amp;entity=<span class="hljs-subst">\(kind)</span>"</span>
+  
+  <span class="hljs-keyword">let</span> url = <span class="hljs-type">URL</span>(string: urlString)
+  <span class="hljs-keyword">return</span> url!
+}</pre>
+<p>This first turns the category index from a number into a string, <code>kind</code>. Note that the category index is passed to the method as a new parameter.
+</p>
+<p>Then it puts this string behind the <code>&amp;entity=</code> parameter in the URL. For the “All” category, the entity value is empty, but for the other categories it is “musicTrack”, “software”, and “ebook”, respectively. Also note that instead of calling <code>String(format:)</code>, you now construct the URL string using string interpolation.
+</p>
+<p>➤ In <code>performSearch()</code>, change the line that gets the URL to the following:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> url = iTunesURL(searchText: searchBar.text!, 
+          category: segmentedControl.selectedSegmentIndex)</pre>
+<p>And that should do it!
+</p>
+<div class="note">
+<p><em>Note:</em> You could have used <code>segmentedControl.selectedSegmentIndex</code> directly inside <code>iTunesURL</code> instead of passing the category index as a parameter. Using the parameter is the better design, though. It makes it possible to reuse the same method with a different type of control, should you decide that a Segmented Control isn’t really the right component for this app. It is always a good idea to make methods as independent from each other as possible.
+</p></div>
+
+<p>➤ Run the app and search for “stephen king”. In the All category that gives results for anything from songs to movies to podcasts to audio books. But if all you wanted were to get to his books, you can now use the E-Books category to finally find some of his novels.
+</p><div class="image-30"><img src="graphics/img613.png"  alt="" title="You can now limit the search to just e-books" /></div>
+<p>This finalizes the UI design of the main screen. This is as good a point as any to replace the empty white launch screen from the template.
+</p>
+<h3 class="segment-chapter">Set the launch screen</h3>
+
+<p>➤ Remove the <em>LaunchScreen.storyboard</em> file from the project.
+</p>
+<p>➤ In the <em>Project Settings</em> screen, under <em>App Icons and Launch Images</em>, change <em>Launch Screen File</em> to <em>Main.storyboard</em>.
+</p>
+<p>Now when the app starts, it uses the initial view controller from the storyboard as the launch image. Also verify that the app works properly on the iPad simulator and the larger iPhone models.
+</p>
+<p>➤ Commit the changes and get ready for some more networking!
+</p>
+<h2 class="segment-chapter">Download the artwork</h2>
+
+<p>The JSON search results contain a number of URLs to images and you put two of those — <code>imageSmall</code> and <code>imageLarge</code> — into the <code>SearchResult</code> object. Now you are going to download these images over the Internet and display them in the table view cells.
+</p>
+<p>Downloading images, just like using a web service, is simply a matter of doing an HTTP request to a server that is connected to the Internet. An example of such a URL is:
+</p>
+<p><a href="http://is4.mzstatic.com/image/thumb/Video1/v4/9c/d2/a5/9cd2a5e5-4710-abf4-925f-377e1666b0de/source/100x100bb.jpg">http://is4.mzstatic.com/image/thumb/Video1/v4/9c/d2/a5/9cd2a5e5-4710-abf4-925f-377e1666b0de/source/100x100bb.jpg</a>
+</p>
+<p>Click that link and it will open the picture in a new web browser window. The server where this picture is stored is not itunes.apple.com but is4.mzstatic.com, but that doesn’t matter at all to the app. As long as it has a valid URL, the app will just go fetch the file at that location, no matter where it is and what kind of file it is.
+</p>
+<p>There are various ways that you can download files from the Internet. You’re going to use <code>URLSession</code> and write a handy <code>UIImageView</code> extension to make this really convenient. Of course, you’ll be downloading these images asynchronously!
+</p>
+<h3 class="segment-chapter">SearchResultCell refactoring</h3>
+
+<p>First, you will move the logic for configuring the contents of the table view cells into the <code>SearchResultCell</code> class. That’s a better place for it. Logic related to an object should live inside that object as much as possible, not somewhere else.
+</p>
+<p>Many developers have a tendency to stuff everything into their view controllers, but if you can move some of the logic into other objects, that makes for a much cleaner program.
+</p>
+<p>➤ Add the following method to <em>SearchResultCell.swift</em>:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Public Methods</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">configure</span><span class="hljs-params">(<span class="hljs-keyword">for</span> result: SearchResult)</span></span> {
+  nameLabel.text = result.name
+  
+  <span class="hljs-keyword">if</span> result.artist.isEmpty {
+    artistNameLabel.text = <span class="hljs-string">"Unknown"</span>
+  } <span class="hljs-keyword">else</span> {
+    artistNameLabel.text = <span class="hljs-type">String</span>(format: <span class="hljs-string">"%@ (%@)"</span>, 
+                           result.artist, result.type)
+  }
+}</pre>
+<p>This is basically the same code as in <code>tableView(_:cellForRowAt:)</code>.
+</p>
+<p>➤ Now, change <code>tableView(_:cellForRowAt:)</code> as follows:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+    cellForRowAt indexPath: IndexPath)</span></span> -&gt; <span class="hljs-type">UITableViewCell</span> {
+  <span class="hljs-keyword">if</span> isLoading {
+    . . .
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> searchResults.<span class="hljs-built_in">count</span> == <span class="hljs-number">0</span> {
+    . . .
+  } <span class="hljs-keyword">else</span> {
+    . . .
+    <span class="hljs-keyword">let</span> searchResult = searchResults[indexPath.row]
+    <span class="hljs-comment">// Replace all code after this with new code below</span>
+    cell.configure(<span class="hljs-keyword">for</span>: searchResult)
+    <span class="hljs-keyword">return</span> cell
+  }
+}</pre>
+<p>This small refactoring of moving some code from one class, <code>SearchViewController</code>, into another, <code>SearchResultCell</code>, was necessary to make the next bit work right.
+</p>
+<p>In hindsight, it makes more sense to do this sort of thing in <code>SearchResultCell</code> anyway, but until now it did not really matter. Don’t be afraid to refactor your code! Remember, if you screw up, you can always go back to your last Git commit.
+</p>
+<p>➤ Run the app to make sure everything still works fine.
+</p>
+<h3 class="segment-chapter">UIImageView extension for downloading images</h3>
+
+<p>OK, here comes the cool part. You will now add an extension for <code>UIImageView</code> that downloads the image and automatically displays it via the image view on the table view cell with just one line of code!
+</p>
+<p>As you know, an extension can be used to extend the functionality of an existing class without having to subclass it. This works even for classes from system frameworks.
+</p>
+<p><code>UIImageView</code> doesn’t have built-in support for downloading images, but this is a very common thing to do in apps. It’s great that you can simply plug in your own extension and from then on every <code>UIImageView</code> in your app has this new ability.
+</p>
+<p>➤ Add a new file to the project using the <em>Swift File</em> template, and name it <em>UIImageView+DownloadImage.swift</em>.
+</p>
+<p>➤ Replace the contents of the new file with the following:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> UIKit
+
+<span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">UIImageView</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">loadImage</span><span class="hljs-params">(url: URL)</span></span> -&gt; <span class="hljs-type">URLSessionDownloadTask</span> {
+    <span class="hljs-keyword">let</span> session = <span class="hljs-type">URLSession</span>.shared
+    <span class="hljs-comment">// 1</span>
+    <span class="hljs-keyword">let</span> downloadTask = session.downloadTask(with: url, 
+        completionHandler: { [<span class="hljs-keyword">weak</span> <span class="hljs-keyword">self</span>] url, response, error <span class="hljs-keyword">in</span>
+      <span class="hljs-comment">// 2</span>
+      <span class="hljs-keyword">if</span> error == <span class="hljs-literal">nil</span>, <span class="hljs-keyword">let</span> url = url, 
+         <span class="hljs-keyword">let</span> data = <span class="hljs-keyword">try</span>? <span class="hljs-type">Data</span>(contentsOf: url),   <span class="hljs-comment">// 3</span>
+         <span class="hljs-keyword">let</span> image = <span class="hljs-type">UIImage</span>(data: data) {
+        <span class="hljs-comment">// 4 </span>
+        <span class="hljs-type">DispatchQueue</span>.main.async {
+          <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> weakSelf = <span class="hljs-keyword">self</span> {
+            weakSelf.image = image
+          }
+        }
+      }
+    })
+    <span class="hljs-comment">// 5</span>
+    downloadTask.resume()
+    <span class="hljs-keyword">return</span> downloadTask
+  }
+}</pre>
+<p>This should look very similar to what you did before with <code>URLSession</code>, but there are some differences:
+</p>
+<ol>
+<li>
+<p>After obtaining a reference to the shared <code>URLSession</code>, you create a download task. This is similar to a data task, but it saves the downloaded file to a temporary location on disk instead of keeping it in memory.
+</p></li>
+
+<li>
+<p>Inside the completion handler for the download task, you’re given a URL where you can find the downloaded file — this URL points to a local file rather than an internet address. Of course, you must also check that <code>error</code> is <code>nil</code> before you continue.
+</p></li>
+
+<li>
+<p>With this local URL you can load the file into a <code>Data</code> object and then create an image from that. It’s possible that constructing the <code>UIImage</code> fails, for example, when what you downloaded was not a valid image but a 404 page or something else unexpected. As you can tell, when dealing with networking code, you need to check for errors every step of the way!
+</p></li>
+
+<li>
+<p>Once you have the image, you can put it into the <code>UIImageView</code>’s <code>image</code> property. Because this is UI code you need to do this on the main thread.
+</p>
+<p>Here’s the tricky thing: it is theoretically possible that the <code>UIImageView</code> no longer exists by the time the image arrives from the server. After all, it may take a few seconds and the user might have navigated away to a different part of the app by then.
+</p>
+<p>That won’t happen in this part of the app because the image view is part of a table view cell and they get recycled but not thrown away. But later on you’ll use this same code to load an image on a screen that may be closed while the image file is still downloading. In that case, you don’t want to set the image if the <code>UIImageView</code> is not visible anymore.
+</p>
+<p>That’s why the capture list for this closure includes <code>[weak self]</code>, where <code>self</code> now refers to the <code>UIImageView</code>. Inside the <code>DispatchQueue.main.async</code> you need to check whether “self” still exists; if not, then there is no more <code>UIImageView</code> to set the image on.
+</p></li>
+</ol>
+
+<ol>
+<li>
+<p>After creating the download task, you call <code>resume()</code> to start it, and then return the <code>URLSessionDownloadTask</code> object to the caller. Why return it? That gives the app the opportunity to call <code>cancel()</code> on the download task if necessary. You’ll see how that works in a minute.
+</p></li>
+</ol>
+
+<p>And that’s all you need to do. From now on you can call <code>loadImage(url:)</code> on any <code>UIImageView</code> object in your project. Cool, huh?
+</p>
+<div class="note">
+<p><em>Note:</em> Swift lets you combine multiple <code>if let</code> statements into a single line, like you did above:
+</p>
+<p><code>if error == nil, let url = …, let data = …, let image = … {</code>
+</p>
+<p>There are three optionals being unwrapped here: 1) <code>url</code>, 2) the result from <code>Data(contentsOf:)</code>, and 3) the result from <code>UIImage(data:)</code>.
+</p>
+<p>You can write this as three separate <code>if let</code> statements, and one for <code>if error == nil</code>, but I find that having everything inside a single <code>if</code> statement is easier to read than many nested <code>if</code> statements spread over several lines.
+</p></div>
+
+<h3 class="segment-chapter">Use the image downloader extension</h3>
+
+<p>➤ Switch to <em>SearchResultCell.swift</em> and add a new instance variable, <code>downloadTask</code>, to hold a reference to the image downloader:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> downloadTask: <span class="hljs-type">URLSessionDownloadTask</span>?</pre>
+<p>➤ Now, add the following lines to the end of <code>configure(for:)</code>:
+</p><pre class="code-block">artworkImageView.image = <span class="hljs-type">UIImage</span>(named: <span class="hljs-string">"Placeholder"</span>)
+<span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> smallURL = <span class="hljs-type">URL</span>(string: result.imageSmall) {
+  downloadTask = artworkImageView.loadImage(url: smallURL)
+}</pre>
+<p>This tells the <code>UIImageView</code> to load the image from <code>imageSmall</code> and to place it in the cell’s image view. While the real artwork is downloading, the image view displays a placeholder image — the same one from the nib for this cell.
+</p>
+<p>➤ Run the app and enjoy your colourful images!
+</p><div class="image-30"><img src="graphics/img614.png"  alt="" title="The app now downloads the album artwork" /></div>
+<h3 class="segment-chapter">App transport security</h3>
+
+<p>While your image downloading experience worked brilliantly here, sometimes when dealing with image downloads, or accessing any web URL for that matter, you might see something like the following in the Xcode Console, alongwith a ton of error messages for failed download tasks:
+</p><pre class="code-block">App Transport Security has blocked a cleartext HTTP (http://) resource load since it is insecure. Temporary exceptions can be configured via your app&apos;s Info.plist file.</pre>
+<p>As of iOS 9, you can no longer download files over HTTP. Instead, you always need to use HTTPS.
+</p>
+<p>As the error message indicates, you can add a key to the app’s Info.plist to bypass this App Transport Security feature, allowing you to use plain <code>http://</code> URLs.
+</p>
+<p>➤ Open <em>Info.plist</em> and add a new row. Give it the key <em>NSAppTransportSecurity</em>, or choose <em>App Transport Security Settings</em> from the list.
+</p>
+<p>➤ Make sure the Type is a Dictionary.
+</p>
+<p>➤ Add a new key inside that dictionary named <em>NSAllowsArbitraryLoads</em>, or choose <em>Allow Arbitrary Loads</em> from the list. Make this a Boolean and set it to YES.
+</p><div class="image-75"><img src="graphics/img615.png"  alt="" title="Overriding App Transport Security" /></div>
+<p>That&apos;s all you need to do to access HTTP links. However, you’re only supposed to bypass App Transport Security if there is absolutely no way you can make the app work over HTTPS. If you’re making an app that talks to a server you control, then the best thing to do is to enable HTTPS on the server, not disable HTTPS in the app.
+</p>
+<p>The Info.plist setting is only intended for when you need to communicate with other people’s servers that do not support HTTPS. Obviously, in that case, the app should not send sensitive data to those servers! Unprotected HTTP should only be used for downloading publicly accessible data, such as images.
+</p>
+<p>When you set the key <code>NSAllowsArbitraryLoads</code> to YES, the app can use <i>any</i> URL that starts with http://, regardless of the domain. To allow HTTP on specific domains only, set <code>NSAllowsArbitraryLoads</code> to NO and add a new dictionary named <code>NSExceptionDomains</code>. Under that dictionary, you can add a new dictionary for each domain.
+</p>
+<p>For example, the iTunes web service appears to host all its preview images on the website mzstatic.com. You could configure Info.plist as follows:
+</p><div class="image-75"><img src="graphics/img616.png"  alt="" title="" /></div>
+<p>Now the app only allows http:// requests from mzstatic.com and any of its subdomains, but requires https:// URLs for any other domains.
+</p>
+<p>Note that Apple has indicated that this ability to bypass App Transport Security (ATS) will be removed at some time in the future. So do not rely on the ATS-bypass being something which would always be available.
+</p>
+<h3 class="segment-chapter">Cancel previous image downloads</h3>
+
+<p>These images already look pretty sweet, but you’re not quite done yet. Remember that table view cells can be reused, so it’s theoretically possible that you’re scrolling through the table and some cell is about to be reused while its previous image is still downloading.
+</p>
+<p>You no longer need that image, so you should really cancel the pending download. Table view cells have a special method named <code>prepareForReuse()</code> that is ideal for this.
+</p>
+<p>➤ Add the following method to <em>SearchResultCell.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">prepareForReuse</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">super</span>.prepareForReuse()
+  downloadTask?.cancel()
+  downloadTask = <span class="hljs-literal">nil</span>
+}</pre>
+<p>You simply cancel any image download that is still in progress.
+</p>
+<div class="note">
+<p><em>Exercise.</em> Put a <code>print()</code> in the <code>prepareForReuse()</code> method and see if you can trigger it.
+</p></div>
+
+<p>On a decent Wi-Fi connection, loading the images is very fast. You almost cannot see it happen, even if you scroll quickly. It also helps that the image files are small — only 60 by 60 pixels — and that the iTunes servers are fast.
+</p>
+<p>That is key to having a snappy app: don’t download more data than you need.
+</p>
+<h4 class="segment-chapter">Caching</h4>
+
+<p>Depending on what you searched for, you may have noticed that many of the images were the same. For example, you might get many identical album covers in the search results. <code>URLSession</code> is smart enough not to download identical images — or at least images with identical URLs — twice. That principle is called <i>caching</i> and it’s very important on mobile devices.
+</p>
+<p>Mobile developers are always trying to optimize their apps to do as little as possible. If you can download something once and then use it over and over, that’s a lot more efficient than re-downloading it all the time.
+</p>
+<p>Images aren&apos;t the only things that you can cache. You can also cache the results of big computations, for example. Or views, as you have been doing in the previous apps, probably without even realizing it. When you use the principle of lazy loading, you delay the creation of an object until you need it and then you cache it for the next time.
+</p>
+<p>Cached data does not stick around forever. When your app gets a memory warning, it’s a good idea to remove any cached data that you don’t need right away. That means you will have to reload that data when you need it again later, but that’s the price you have to pay. For <code>URLSession</code> this is completely automatic, so that takes another burden off your shoulders.
+</p>
+<p>Some caches are in-memory — the cached data only stays in the computer’s working memory. But it is also possible to cache the data to the disk. Your app even has a special directory for it, Library/Caches.
+</p>
+<p>The caching policy used by <i>StoreSearch</i> is very simple — it uses the default settings. But you can configure <code>URLSession</code> to be much more advanced. Look into the documentation for <code>URLCache</code> and <code>URLSessionConfiguration</code> to learn more.
+</p>
+<h2 class="segment-chapter">Merge the branch</h2>
+
+<p>This concludes the section on talking to the web service and downloading images. Later on, you’ll tweak the web service requests a bit more to include the user’s language and country, but for now, you’re done with this feature. I hope you got a good glimpse of what is possible with web services and how easy it is to build this functionality into your apps using <code>URLSession</code>.
+</p>
+<p>➤ Commit these latest changes to the repository.
+</p>
+<h3 class="segment-chapter">Merge the branch using Xcode</h3>
+
+<p>Now that you’ve completed a feature, you can merge this temporary branch back into the master branch.
+</p>
+<p>➤ Switch to the <em>Source Control navigator</em>, select the <em>master</em> branch — or whatever was your main branch previously — under branches, and right-click to get the context menu of actions. Select <em>Merge &quot;urlsession&quot; into &quot;master&quot;…</em>:
+</p><div class="image-40"><img src="graphics/img617.png"  alt="" title="Merging your changes back to the master branch" /></div>
+<p>➤ You&apos;ll get a confirmation dialog. Click <em>Merge</em> if you want to continue.
+</p><div class="image-40"><img src="graphics/img618.png"  alt="" title="The confirmation dialog before merging changes" /></div>
+<p>Now that the master branch is up-to-date with the networking changes, if you wanted to, you could remove the “urlsession” branch. Or, you could keep it and do more work on it later.
+</p>
+<h3 class="segment-chapter">Merge the branch from the command line</h3>
+
+<p>The source control features in Xcode used to be a bit rough around the edges. So, it was possible that certain commands, especially merging changes, might not work correctly. If Xcode didn’t want to cooperate when you tried to merge changes, here is how you’d do it from the command line.
+</p>
+<p>➤ First close Xcode. You don’t want to do any of this while Xcode still has the project open. That’s just asking for trouble.
+</p>
+<p>➤ Open a Terminal, <code>cd</code> to the <i>StoreSearch</i> folder, and type the following commands:
+</p><pre class="code-block">git stash</pre>
+<p>This moves any unsaved files out of the way — no, it doesn’t have anything to do with facial hair :] This saves any uncommitted changes so you can later restore them, if need be.
+</p><pre class="code-block">git checkout master</pre>
+<p>This switches the current branch back to the master branch.
+</p><pre class="code-block">git merge urlsession</pre>
+<p>This merges the changes from the “urlsession” branch back into the master branch. If you get an error message at this point, then simply do <code>git stash</code> again and repeat the <code>git merge</code> command.
+</p>
+<p>By the way, you don’t really need to keep those stashed files around, so if you want to remove them from your repository, you can do <code>git stash drop</code>. If you stashed twice, you also need to drop twice.
+</p>
+<p>➤ Open the project again in Xcode. Now you’re back at the master branch and it also has the latest networking changes.
+</p>
+<p>➤ Build and run to see if everything still works.
+</p>
+<p>Git is a pretty awesome tool, but it takes a while to get familiar with it. Xcode’s Git support has improved a lot since Xcode 9, but for more complex things you might still need to use the command line — it’s well worth learning!
+</p>
+<div class="note">
+<p><em>Note:</em> Even though <code>URLSession</code> is pretty easy to use and quite capable, many developers prefer to use third-party networking libraries that are often even more convenient and powerful.
+</p>
+<p>One of the most popular native Swift libraries at this point is Alamofire (<a href="https://github.com/Alamofire">github.com/Alamofire</a>).
+</p>
+<p>I suggest you check out some of these libraries and see how you like them. Networking is such an important feature of mobile apps that it’s worth being familiar with the different possible approaches to send data up and down the ’net.
+</p></div>
+
+<p>You can find the project files for this chaper under <em>36 – URLSession</em> in the Source Code folder.
+</p></body></html>

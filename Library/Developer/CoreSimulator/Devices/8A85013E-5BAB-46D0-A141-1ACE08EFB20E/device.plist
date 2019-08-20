@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>UDID</key>
+	<string>8A85013E-5BAB-46D0-A141-1ACE08EFB20E</string>
+	<key>deviceType</key>
+	<string>com.apple.CoreSimulator.SimDeviceType.Apple-Watch-Series-4-40mm</string>
+	<key>isDeleted</key>
+	<false/>
+	<key>name</key>
+	<string>Apple Watch Series 4 - 40mm</string>
+	<key>runtime</key>
+	<string>com.apple.CoreSimulator.SimRuntime.watchOS-5-0</string>
+	<key>state</key>
+	<integer>1</integer>
+</dict>
+</plist>

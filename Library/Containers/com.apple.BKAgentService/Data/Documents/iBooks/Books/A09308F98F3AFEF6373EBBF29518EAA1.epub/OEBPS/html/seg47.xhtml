@@ -1,0 +1,1065 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 39: Landscape</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 39: Landscape</h1>
+
+<p>So far, the apps you’ve made were either portrait or landscape, but not both. Let’s change <i>StoreSearch</i> so that it shows a completely different user interface when you rotate the device. When you’re done, the app will look like this:
+</p><div class="image-50"><img src="graphics/img660.png"  alt="" title="The app looks completely different in landscape orientation" /></div>
+<p>The landscape screen shows just the artwork for the search results. Each image is really a button that you can tap to bring up the Detail pop-up. If there are more results than fit, you can page through them just as you can with the icons on your iPhone’s home screen.
+</p>
+<p>You&apos;ll cover the following in this chapter:
+</p>
+<ul>
+<li>
+<p><em>The landscape view controller:</em> Create a basic landscape view controller to make sure that the functionality works.
+</p></li>
+
+<li>
+<p><em>Fix issues:</em> Tweak the code to fix various minor issues related to device rotation.
+</p></li>
+
+<li>
+<p><em>Add a scroll view:</em> Add a scroll view so that you can have multiple pages of search result icons that can be scrolled through.
+</p></li>
+</ul>
+
+<ul>
+<li>
+<p><em>Add result buttons:</em> Add buttons in a grid for the search results to the scroll view, so that the result list can be scrolled through.
+</p></li>
+
+<li>
+<p><em>Paging:</em> Configure scrolling through results page-by-page rather than as a single scrolling list.
+</p></li>
+
+<li>
+<p><em>Download the artwork:</em> Download the images for each search result item and display it in the scroll view.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">The landscape view controller</h2>
+
+<p>Let’s begin by creating a very simple view controller that shows just a text label.
+</p>
+<h3 class="segment-chapter">The storyboard</h3>
+
+<p>➤ Add a new file to the project using the <em>Cocoa Touch Class</em> template. Name it <em>LandscapeViewController</em> and make it a subclass of <em>UIViewController</em>.
+</p>
+<p>➤ In Interface Builder, with <em>Main</em> storyboard open, drag a new <em>View Controller</em> on to the canvas.
+</p>
+<p>➤ In the Document Outline, click on the yellow circle for the view controller and change it&apos;s name to <em>Landscape</em>.
+</p>
+<p>➤ In the Identity inspector, change the <em>Class</em> to <em>LandscapeViewController</em>. Also type this into the <em>Storyboard ID</em> field.
+</p><div class="image-30"><img src="graphics/img661.png"  alt="" title="Giving the view controller an ID" /></div>
+<p>There will be no segue to this view controller. Instead, you’ll instantiate this view controller programmatically when you detect a device rotation. For that, it needs to have an ID so you can uniquely identify this particular view controller in the storyboard.
+</p>
+<p>➤ Use the <em>View as:</em> panel to change the orientation to landcape.
+</p><div class="image-40"><img src="graphics/img662.png"  alt="" title="Changing Interface Builder to landscape" /></div>
+<p>This flips <i>all</i> the scenes in the storyboard to landscape, but that is OK — it doesn’t change what happens when you run the app. Putting Interface Builder in landscape mode is just a design aid that makes it easier to lay out your UI. What actually happens when you run the app depends on the orientation the user holds the device in. The trick is to use Auto Layout constraints to make sure that the view controllers properly resize to landscape or portrait at runtime.
+</p>
+<p>➤ Change <em>View - Background</em> to <em>Black</em> color for the Landscape scene.
+</p>
+<p>➤ Drag a new <em>Label</em> into the scene and give it some text. You’re just using this label to verify that the new view controller shows up in the correct orientation.
+</p>
+<p>➤ Change the label&apos;s <em>Label - Color</em> to <em>White</em>, and if not all the text is showing use the <em>Editor ▸ Size to Fit Content</em> menu option (or the <em>⌘=</em> shortcut) to resize the label to fit its content.
+</p>
+<p>➤ Use the <em>Align</em> Auto Layout menu to center the label horizontally and vertically.
+</p>
+<p>Your design should look something like this:
+</p><div class="image-60"><img src="graphics/img663.png"  alt="" title="Initial design for the Landscape scene" /></div>
+<h3 class="segment-chapter">Show the landscape view on device rotation</h3>
+
+<p>As you know by now, view controllers have a bunch of methods such as <code>viewDidLoad()</code>, <code>viewWillAppear()</code> and so on that are invoked by UIKit at given times. There is also a method that is invoked when the device is rotated. You can override this method to show (and hide) the new <code>LandscapeViewController</code>.
+</p>
+<p>➤ Add the following method to <em>SearchViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">willTransition</span><span class="hljs-params">(
+    to newCollection: UITraitCollection, 
+    with coordinator: UIViewControllerTransitionCoordinator)</span></span> {
+  <span class="hljs-keyword">super</span>.willTransition(to: newCollection, with: coordinator)
+  
+  <span class="hljs-keyword">switch</span> newCollection.verticalSizeClass {
+  <span class="hljs-keyword">case</span> .compact:
+    showLandscape(with: coordinator)
+  <span class="hljs-keyword">case</span> .regular, .unspecified:
+    hideLandscape(with: coordinator)
+  }
+}</pre>
+<p>This method isn’t just invoked on device rotations, but any time the <i>trait collection</i> for the view controller changes. So what is a trait collection? It is, um, a collection of <i>traits</i>, where a trait can be:
+</p>
+<ul>
+<li>
+<p>The horizontal size class
+</p></li>
+
+<li>
+<p>The vertical size class
+</p></li>
+
+<li>
+<p>The display scale — is this a Retina screen or not?
+</p></li>
+
+<li>
+<p>The user interface idiom — is this an iPhone or iPad?
+</p></li>
+
+<li>
+<p>The preferred Dynamic Type font size
+</p></li>
+
+<li>
+<p>And a few other things
+</p></li>
+</ul>
+
+<p>Whenever one or more of these traits change, for whatever reason, UIKit calls <code>willTransition(to:with:)</code> to give the view controller a chance to adapt to the new traits.
+</p>
+<p>What we are interested in here are the <i>size classes</i>. This feature allows you to design a user interface that is independent of the device’s actual dimensions or orientation. With size classes, you can create a single storyboard that works across all devices, from iPhone to iPad — a “universal storyboard”.
+</p>
+<p>So how exactly do these size classes work? Well, there’s two of them, a horizontal one and a vertical one, and each can have two values: <i>compact</i> or <i>regular</i>.
+</p>
+<p>The combination of these four things creates the following possibilities:
+</p><div class="image-40"><img src="graphics/img664.png"  alt="" title="Horizontal and vertical size classes" /></div>
+<p>When an iPhone app is in portrait orientation, the horizontal size class is <i>compact</i> and the vertical size class is <i>regular</i>.
+</p>
+<p>Upon a rotation to landscape, the vertical size class changes to <i>compact</i>.
+</p>
+<p>What you may not have expected is that the horizontal size class doesn’t change and stays <i>compact</i> in both portrait and landscape orientations — except on the iPhone Plus models, that is.
+</p>
+<p>In landscape, the horizontal size class on the Plus is <i>regular</i>. That’s because the larger dimensions of the iPhone Plus devices can fit a split screen in landscape mode, like the iPad — something you’ll see later on.
+</p>
+<p>What this boils down to is, to detect an iPhone rotation you just have to look at how the vertical size class changed. That’s exactly what the <code>switch</code> statement does:
+</p><pre class="code-block"><span class="hljs-keyword">switch</span> newCollection.verticalSizeClass {
+<span class="hljs-keyword">case</span> .compact:
+  showLandscape(with: coordinator)
+<span class="hljs-keyword">case</span> .regular, .unspecified:
+  hideLandscape(with: coordinator)
+}</pre>
+<p>If the new vertical size class is <code>.compact</code> the device got flipped to landscape and you show the <code>LandscapeViewController</code>. But if the new size class is <code>.regular</code>, the app is back in portrait and you hide the landscape view again.
+</p>
+<p>The reason the second <code>case</code> statement also checks <code>.unspecified</code> is because <code>switch</code> statements must always be exhaustive and have cases for all possible values. <code>.unspecified</code> shouldn’t happen, but just in case it does, you also hide the landscape view. This is another example of defensive programming.
+</p>
+<p>Just to keep things readable, the actual showing and hiding happens in methods of their own. You will add these next.
+</p>
+<p>In the early years of iOS, it was tricky to put more than one view controller on the same screen. The motto used to be: one screen, one view controller. However, when devices with larger screens became available, that became inconvenient — you often want one area of the screen to be controlled by one view controller and a second area by a separate view controller. So now, view controllers are allowed to be part of other view controllers if you follow a few rules.
+</p>
+<p>This is called <i>view controller containment</i>. These APIs are not limited to just the iPad; you can take advantage of them on the iPhone as well. These days a view controller is no longer expected to manage a screenful of content, but manages a “self-contained presentation unit”, whatever that may be for your app.
+</p>
+<p>You’re going to use view controller containment for the <code>LandscapeViewController</code>.
+</p>
+<p>It would be eminently possible to make a modal segue to this scene and use your own presentation and animation controllers for the transition. But you’ve already done that and it’s more fun to play with something new. Besides, it’s useful to learn about containment and child view controllers.
+</p>
+<p>➤ Add an instance variable to <em>SearchViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> landscapeVC: <span class="hljs-type">LandscapeViewController</span>?</pre>
+<p>This is an optional because there will only be an active <code>LandscapeViewController</code> instance if the phone is in landscape orientation. In portrait orientation this will be <code>nil</code>.
+</p>
+<p>➤ Add the following helper method:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showLandscape</span><span class="hljs-params">(with coordinator: 
+                   UIViewControllerTransitionCoordinator)</span></span> {
+  <span class="hljs-comment">// 1</span>
+  <span class="hljs-keyword">guard</span> landscapeVC == <span class="hljs-literal">nil</span> <span class="hljs-keyword">else</span> { <span class="hljs-keyword">return</span> }
+  <span class="hljs-comment">// 2</span>
+  landscapeVC = storyboard!.instantiateViewController(
+                withIdentifier: <span class="hljs-string">"LandscapeViewController"</span>) 
+                <span class="hljs-keyword">as</span>? <span class="hljs-type">LandscapeViewController</span>
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> controller = landscapeVC {
+    <span class="hljs-comment">// 3</span>
+    controller.view.frame = view.bounds
+    <span class="hljs-comment">// 4</span>
+    view.addSubview(controller.view)
+    addChild(controller)
+    controller.didMove(toParent: <span class="hljs-keyword">self</span>)
+  }
+}</pre>
+<p>In previous apps you called <code>present(animated:completion:)</code> or made a segue to show a new modal screen. Here, however, you add the new <code>LandscapeViewController</code> as a <i>child</i> view controller of <code>SearchViewController</code>.
+</p>
+<p>Here’s how it works, step-by-step:
+</p>
+<ol>
+<li>
+<p>It should never happen that the app instantiates a second landscape view when you’re already looking at one. The <code>guard</code> statement codifies this requirement. If it should happen that <code>landscapeVC</code> is not <code>nil</code>,  then you’re already showing the landscape view and you simply <code>return</code> right away.
+</p></li>
+
+<li>
+<p>Find the scene with the ID “LandscapeViewController” in the storyboard and instantiate it. Because you don’t have a segue, you need to instanitate the view controller manually. This is why you filled in that Storyboard ID field in the Identity inspector.
+</p>
+<p>The <code>landscapeVC</code> instance variable is an optional, so you need to unwrap it before you can continue.
+</p></li>
+</ol>
+
+<ol>
+<li>
+<p>Set the size and position of the new view controller. This makes the landscape view just as big as the <code>SearchViewController</code>, covering the entire screen.
+</p>
+<p>The <code>frame</code> is the rectangle that describes the view’s position and size in terms of its superview. To move a view to its final position and size you usually set its <code>frame</code>. The <code>bounds</code> is also a rectangle but seen from inside the view.
+</p>
+<p>Because <code>SearchViewController</code>’s view is the superview here, the <code>frame</code> of the landscape view must be made equal to the <code>SearchViewController</code>’s <code>bounds</code>.
+</p></li>
+</ol>
+
+<ol>
+<li>
+<p>These are the minimum required steps to add the contents of one view controller to another, in this order:
+</p>
+<p>a. Add the landscape controller’s view as a subview. This places it on top of the table view, search bar and segmented control.
+</p>
+<p>b. Tell the <code>SearchViewController</code> that the <code>LandscapeViewController</code> is now managing that part of the screen, using <code>addChild()</code>. If you forget this step, then the new view controller may not always work correctly.
+</p>
+<p>c. Tell the new view controller that it now has a parent view controller with <code>didMove(toParent:)</code>.
+</p>
+<p>In this new arrangement, <code>SearchViewController</code> is the “parent” view controller, and <code>LandscapeViewController</code> is the “child”. In other words, the Landscape screen is embedded inside the <code>SearchViewController</code>.
+</p></li>
+</ol>
+
+<div class="note">
+<p><em>Note:</em> Even though it will appear on top of everything else, the Landscape screen is not presented modally. It is “contained” in its parent view controller, and therefore owned and managed by the parent — it isn&apos;t independent like a modal screen. This is an important distinction.
+</p>
+<p>View controller containment is also used for navigation and tab bar controllers where the <code>UINavigationController</code> and <code>UITabBarController</code> “wrap around” their child view controllers.
+</p>
+<p>Usually, when you want to show a view controller that takes over the whole screen, you’d use a modal segue. But when you want just a portion of the screen to be managed by its own view controller, you’d make it a child view controller.
+</p>
+<p>One of the reasons you’re not using a modal segue for the Landscape screen in this app, even though it is a full-screen view controller, is that the Detail pop-up already is modally presented and this could potentially cause conflicts. Besides, I wanted to show you a fun alternative to modal segues.
+</p></div>
+
+<p>➤ To get the app to compile, add an empty implementation of the “hide” method:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">hideLandscape</span><span class="hljs-params">(with coordinator: 
+                   UIViewControllerTransitionCoordinator)</span></span> {
+}</pre>
+<p>By the way, the transition coordinator parameter is needed for doing animations, which you’ll add soon.
+</p>
+<p>➤ Try it out! Run the app, do a search and rotate your iPhone or the Simulator to landscape.
+</p><div class="image-35"><img src="graphics/img665.png"  alt="" title="The Simulator after flipping to landscape" /></div>
+<p>Remember: to rotate the Simulator, press <em>⌘</em> and the left (or right) arrow keys. It’s possible that the Simulator won’t flip over right away — it can be buggy like that. If that happens, press <em>⌘+arrow key</em> a few more times.
+</p>
+<p>This is not doing any animation just yet. As always, first get it to work right, and <i>then</i> make it look pretty.
+</p>
+<p>If you don’t do a search first before rotating to landscape, the keyboard may remain visible. You’ll fix that shortly. In the mean time you can press <em>⌘+K</em> (on the Simulator only) to hide the keyboard manually.
+</p>
+<h3 class="segment-chapter">Switch back to the portrait view</h3>
+
+<p>Switching back to portrait doesn’t work yet, but that’s easily fixed.
+</p>
+<p>➤ Replace the <i>method stub</i>, which is basically a method name with no implementation code, that you added earlier with the following implementation to hide the landscape view controller:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">hideLandscape</span><span class="hljs-params">(with coordinator: 
+                   UIViewControllerTransitionCoordinator)</span></span> {
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> controller = landscapeVC {
+    controller.willMove(toParent: <span class="hljs-literal">nil</span>)
+    controller.view.removeFromSuperview()
+    controller.removeFromParent()
+    landscapeVC = <span class="hljs-literal">nil</span>
+  }
+}</pre>
+<p>This is essentially the inverse of what you did to embed the landscape view controller.
+</p>
+<p>First, you call <code>willMove(toParent:)</code> to tell the view controller that it is leaving the view controller hierarchy and it no longer has a parent. Then, you remove its view from the screen, and finally, <code>removeFromParent()</code> truly disposes of the view controller.
+</p>
+<p>You also set the instance variable to <code>nil</code> in order to remove the last strong reference to the <code>LandscapeViewController</code> object now that you’re done with it.
+</p>
+<p>➤ Run the app. Switching back to portrait should remove the black landscape view.
+</p>
+<div class="note">
+<p><em>Note:</em> If you press <em>⌘-right</em> (or <em>⌘-left</em>) twice, the Simulator first rotates to landscape and then to portrait, but the <code>LandscapeViewController</code> does not disappear. Why is that?
+</p>
+<p>It’s might not be immediately evident, but what you’re looking at now is <i>not</i> portrait but portrait upside down. This orientation is not recognized by the app — see the Device Orientation setting under Deployment Info in the project settings — and therefore the app keeps thinking it’s in landscape.
+</p>
+<p>Press <em>⌘-right</em> (or <em>⌘-left</em>) twice again and you’re back in regular portrait.
+</p></div>
+
+<h3 class="segment-chapter">Animate the transition to landscape</h3>
+
+<p>The transition to the landscape view is a bit abrupt. I don’t want to go overboard with animations here as the screen is already doing a rotating animation. A simple crossfade will be sufficient.
+</p>
+<p>➤ Change the <code>showLandscape(with:)</code> method in <em>SearchViewController.swift</em> as follows:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showLandscape</span><span class="hljs-params">(with coordinator: 
+                   UIViewControllerTransitionCoordinator)</span></span> {
+  . . .
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> controller = landscapeVC {
+    controller.view.frame = view.bounds
+    controller.view.alpha = <span class="hljs-number">0</span>           <span class="hljs-comment">// New line</span>
+      
+    view.addSubview(controller.view)
+    addChild(controller)
+    <span class="hljs-comment">// Replace all code after this with the following lines</span>
+    coordinator.animate(alongsideTransition: { <span class="hljs-number">_</span> <span class="hljs-keyword">in</span>
+      controller.view.alpha = <span class="hljs-number">1</span>
+    }, completion: { <span class="hljs-number">_</span> <span class="hljs-keyword">in</span>
+      controller.didMove(toParent: <span class="hljs-keyword">self</span>)
+    })
+  }
+}</pre>
+<p>You’re still doing the same things as before, except now, the landscape view starts out completely transparent — <code>alpha</code> = 0 — and slowly fades in while the rotation takes place until it’s fully visible — <code>alpha</code> = 1.
+</p>
+<p>Now you see why the <code>UIViewControllerTransitionCoordinator</code> object is needed — so your animation can be performed alongside the rest of the transition from the old traits to the new. This ensures the animations run as smoothly as possible.
+</p>
+<p>The call to <code>animate(alongsideTransition:completion:)</code> takes two closures: the first is for the animation itself, the second is a “completion handler” that gets called after the animation finishes. The completion handler gives you a chance to delay the call to <code>didMove(toParent:)</code> until the animation is over.
+</p>
+<p>Both closures are given a “transition coordinator context” parameter (the same context that animation controllers get) but you don&apos;t use it here and so, you use the <code>_</code> wildcard to ignore it.
+</p>
+<h3 class="segment-chapter">Animate the transition from landscape</h3>
+
+<p>➤ Make similar changes to <code>hideLandscape(with:)</code>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">hideLandscape</span><span class="hljs-params">(with coordinator: 
+                   UIViewControllerTransitionCoordinator)</span></span> {
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> controller = landscapeVC {
+    controller.willMove(toParent: <span class="hljs-literal">nil</span>)
+    <span class="hljs-comment">// Replace all code after this with the following lines</span>
+    coordinator.animate(alongsideTransition: { <span class="hljs-number">_</span> <span class="hljs-keyword">in</span>
+      controller.view.alpha = <span class="hljs-number">0</span>
+    }, completion: { <span class="hljs-number">_</span> <span class="hljs-keyword">in</span>
+      controller.view.removeFromSuperview()
+      controller.removeFromParent()
+      <span class="hljs-keyword">self</span>.landscapeVC = <span class="hljs-literal">nil</span>
+    })
+  }
+}</pre>
+<p>This time you fade out the view. You don’t remove the view and the controller until the animation is completely done.
+</p>
+<p>➤ Try it out. The transition between the portrait and landscape views should be a lot smoother now.
+</p><div class="image-35"><img src="graphics/img666.png"  alt="" title="The transition from portrait to landscape" /></div>
+<p><em>Tip:</em> To see the transition animation in slow motion, select <em>Debug ▸ Slow Animations</em> from the Simulator menu.
+</p>
+<div class="note">
+<p><em>Note:</em> The order of operations for removing a child view controller is exactly the reverse of adding a child view controller, except for the calls to <code>willMove</code> and <code>didMove(toParent:)</code>.
+</p>
+<p>The rules for view controller containment say that when adding a child view controller, the last step is to call <code>didMove(toParent:)</code>. UIKit does not know when to call this method, as that needs to happen after any of your animations. You are responsible for sending the “did move to parent” message to the child view controller once the animation completes.
+</p></div>
+
+<div class="note">
+<p>There is also a <code>willMove(toParent:)</code> but that gets called on your behalf by <code>addChild()</code> already, so you’re not supposed to do that yourself.
+</p>
+<p>The rules are opposite when removing the child controller. First you should call <code>willMove(toParent: nil)</code> to let the child view controller know that it’s about to be removed from its parent. The child view controller shouldn’t actually be removed until the animation completes, at which point you call <code>removeFromParent()</code>. That method will then take care of sending the “did move to parent” message.
+</p>
+<p>You can find these rules in the API documentation for <code>UIViewController</code>.
+</p></div>
+
+<h2 class="segment-chapter">Fix issues</h2>
+
+<p>There are two more small tweaks that you need to make.
+</p>
+<h3 class="segment-chapter">Hide the keyboard</h3>
+
+<p>Maybe you already noticed that when rotating the app while the keyboard is showing, the keyboard doesn’t go away.
+</p><div class="image-35"><img src="graphics/img667.png"  alt="" title="The keyboard is still showing in landscape mode" /></div>
+<div class="note">
+<p><em>Exercise.</em> See if you can fix this yourself.
+</p></div>
+
+<p>Answer: You’ve done something similar already after the user taps the Search button. The code is exactly the same here.
+</p>
+<p>➤ Add the following line to <code>showLandscape(with:)</code>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showLandscape</span><span class="hljs-params">(with coordinator: 
+                   UIViewControllerTransitionCoordinator)</span></span> {
+    . . .
+    coordinator.animate(alongsideTransition: { <span class="hljs-number">_</span> <span class="hljs-keyword">in</span>
+      controller.view.alpha = <span class="hljs-number">1</span>
+      <span class="hljs-keyword">self</span>.searchBar.resignFirstResponder()    <span class="hljs-comment">// Add this line</span>
+    }, completion: { <span class="hljs-number">_</span> <span class="hljs-keyword">in</span>
+      . . .
+    })
+  }
+}</pre>
+<p>Now the keyboard disappears as soon as you rotate the device. I found it looks best if you call <code>resignFirstResponder()</code> inside the animate-alongside-transition closure. After all, hiding the keyboard also happens with an animation.
+</p>
+<h3 class="segment-chapter">Hide the Detail pop-up</h3>
+
+<p>Speaking of things that stay visible, what happens when you tap a row in the table view and then rotate to landscape? The Detail pop-up stays on the screen and floats on top of the <code>LandscapeViewController</code>. I find that a little strange. It would be better if the app dismissed the pop-up before rotating.
+</p>
+<div class="note">
+<p><em>Exercise.</em> See if you can fix that one.
+</p></div>
+
+<p>The Detail pop-up is presented modally via a segue, so you can call <code>dismiss(animated:completion:)</code> to dismiss it, just like you do in the <code>close()</code> action method.
+</p>
+<p>There’s a complication though: you should only dismiss the Detail screen when it is actually visible. For that, you can look at the <code>presentedViewController</code> property. This returns a reference to the current modal view controller, if any. If <code>presentedViewController</code> is <code>nil</code> there isn’t anything to dismiss.
+</p>
+<p>➤ Add the following code to the end of the <code>animate(alongsideTransition:)</code> closure in <code>showLandscape(with:)</code>:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.presentedViewController != <span class="hljs-literal">nil</span> {
+  <span class="hljs-keyword">self</span>.dismiss(animated: <span class="hljs-literal">true</span>, completion: <span class="hljs-literal">nil</span>)
+}</pre>
+<p>➤ Run the app and tap on a search result, then rotate to landscape. The pop-up should now fly off the screen. When you return to portrait, the pop-up is nowhere to be seen.
+</p>
+<h3 class="segment-chapter">Fix the gradient view</h3>
+
+<p>If you look really carefully while the screen rotates, you can see a glitch at the right side of the screen. The gradient view doesn’t appear to stretch to fill up the extra space:
+</p><div class="image-35"><img src="graphics/img668.png"  alt="" title="There is a gap next to the gradient view" /></div>
+<p>Press <em>⌘+T</em> to turn on slow animations in the Simulator so you can clearly see this happening. But do this only after the Detail pop-up has appeared. Some (all?) of the animation completions don&apos;t appear to fire with slow animations on and so you might not get the expected behavior otherwise.
+</p>
+<p>It’s only a small detail, but we can’t have such imperfections in our app!
+</p>
+<p>The solution is to pin the <code>GradientView</code> to the edges of the window so that it will always stretch along with the window. But you didn’t create <code>GradientView</code> in Interface Builder… how do you give it constraints?
+</p>
+<p>It is possible to create constraints in code, using the <code>NSLayoutConstraint</code> class, but there is an easier solution: you can simply change the <code>GradientView</code>’s autoresizing behavior.
+</p>
+<p>Autoresizing is what iOS developers used before Auto Layout existed. It’s simpler to use but also less powerful. It’s very easy to add autoresizing via code.
+</p>
+<p>Using the <code>autoresizingMask</code> property, you can tell a view what it should do when its superview changes size. You have a variety of options, such as: do nothing, stick to a certain edge of the superview, or change in size proportionally.
+</p>
+<p>The possibilities are much more limited than what you can do with Auto Layout, but for many scenarios, autoresizing is good enough.
+</p>
+<p>The easiest place to set this autoresizing mask is in <code>GradientView</code>’s <code>init</code> methods.
+</p>
+<p>➤ Add the following line to <code>init(frame:)</code> and <code>init?(coder:)</code> in <em>GradientView.swift</em>:
+</p><pre class="code-block">autoresizingMask = [.flexibleWidth , .flexibleHeight]</pre>
+<p>This tells the view that it should change both its width and its height proportionally when the superview it belongs to resizes due to being rotated, or for some other reason.
+</p>
+<p>In practice, this means the <code>GradientView</code> will always cover the same area that its superview covers and there should be no more gaps, even if the device is rotated.
+</p>
+<p>➤ Try it out! The gradient now always covers the whole screen.
+</p>
+<h3 class="segment-chapter">Tweak the animation</h3>
+
+<p>The Detail pop-up flying up and out the screen looks a little weird in combination with the rotation animation. There’s too much happening on the screen at once for my taste. Let’s give the <code>DetailViewController</code> a more subtle fade-out animation especially for this situation.
+</p>
+<p>When you tap the X button to dismiss the pop-up, you’ll still make it fly out of the screen. But when it is automatically dismissed upon rotation, the pop-up will fade out with the rest of the table view instead.
+</p>
+<p>You’ll give <code>DetailViewController</code> a property that that specifies how it will animate the pop-up’s dismissal. You can use an <code>enum</code> for this.
+</p>
+<p>➤ Add the following to <em>DetailViewController.swift</em>, <i>inside</i> the class:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">AnimationStyle</span> </span>{
+  <span class="hljs-keyword">case</span> slide
+  <span class="hljs-keyword">case</span> fade
+}
+
+<span class="hljs-keyword">var</span> dismissStyle = <span class="hljs-type">AnimationStyle</span>.fade</pre>
+<p>This defines a new <code>enum</code> named <code>AnimationStyle</code>. An enum, or enumeration, is simply a list of possible values. The <code>AnimationStyle</code> enum has two values, <code>slide</code> and <code>fade</code>. Those are the animations the Detail pop-up can perform when dismissed.
+</p>
+<p>The <code>dismissStyle</code> variable determines which animation is chosen. This variable is of type <code>AnimationStyle</code>, so it can only contain one of the values from that enum. By default it is <code>.fade</code>, the animation that will be used when rotating to landscape.
+</p>
+<div class="note">
+<p><em>Note:</em> The full name of the enum is <code>DetailViewController.AnimationStyle</code> because it sits inside the <code>DetailViewController</code> class.
+</p>
+<p>It’s a good idea to keep the things that are closely related to a particular class, such as this enum, inside the definition for that class. That puts them inside the class’s <i>namespace</i>.
+</p>
+<p>Doing this allows you to also add a completely different <code>AnimationStyle</code> enum to one of the other view controllers, without running into naming conflicts.
+</p></div>
+
+<p>➤ In the <code>close()</code> method, set the animation style to <code>.slide</code>, so that it keeps using the animation you’re already familiar with:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">close</span><span class="hljs-params">()</span></span> {
+  dismissStyle = .slide                   <span class="hljs-comment">// Add this line</span>
+  dismiss(animated: <span class="hljs-literal">true</span>, completion: <span class="hljs-literal">nil</span>)
+}</pre>
+<p>➤ Add a new <em>Swift File</em> to the project, named <em>FadeOutAnimationController</em>. This will handle the animation for the <code>.fade</code> style.
+</p>
+<p>➤ Replace the source code of this new file with:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> UIKit
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FadeOutAnimationController</span>: <span class="hljs-title">NSObject</span>, 
+                         <span class="hljs-title">UIViewControllerAnimatedTransitioning</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">transitionDuration</span><span class="hljs-params">(using transitionContext: 
+       UIViewControllerContextTransitioning?)</span></span> -&gt; <span class="hljs-type">TimeInterval</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0.4</span>
+  }
+  
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">animateTransition</span><span class="hljs-params">(using transitionContext: 
+       UIViewControllerContextTransitioning)</span></span> {
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> fromView = transitionContext.view(
+           forKey: <span class="hljs-type">UITransitionContextViewKey</span>.from) {
+      <span class="hljs-keyword">let</span> time = transitionDuration(using: transitionContext)
+      <span class="hljs-type">UIView</span>.animate(withDuration: time, animations: {
+        fromView.alpha = <span class="hljs-number">0</span>
+      }, completion: { finished <span class="hljs-keyword">in</span>
+        transitionContext.completeTransition(finished)
+      })
+    }
+  }
+}</pre>
+<p>This is mostly the same as the other animation controllers. The actual animation simply sets the view’s <code>alpha</code> value to 0 in order to fade it out.
+</p>
+<p>➤ Switch to <em>DetailViewController.swift</em> and in the extension for the transitioning delegate, change the method that returns the animation controller for dismissing the pop-up to the following:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">animationController</span><span class="hljs-params">(forDismissed dismissed: 
+   UIViewController)</span></span> -&gt; <span class="hljs-type">UIViewControllerAnimatedTransitioning</span>? {
+  <span class="hljs-keyword">switch</span> dismissStyle {
+  <span class="hljs-keyword">case</span> .slide:
+    <span class="hljs-keyword">return</span> <span class="hljs-type">SlideOutAnimationController</span>()
+  <span class="hljs-keyword">case</span> .fade:
+    <span class="hljs-keyword">return</span> <span class="hljs-type">FadeOutAnimationController</span>()
+  }
+}</pre>
+<p>Instead of always returning a new <code>SlideOutAnimationController</code> instance, it now looks at the value from <code>dismissStyle</code>. If it is <code>.fade</code>, then it returns an instance of the new <code>FadeOutAnimationController</code> object.
+</p>
+<p>➤ Run the app, bring up the Detail pop-up and rotate to landscape. The pop-up should now fade out while the landscape view fades in — enable slow animations to clearly see what is going on.
+</p><div class="image-30"><img src="graphics/img669.png"  alt="" title="The pop-up fades out instead of flying away" /></div>
+<p>And that does it. If you want to create more animations that can be used on dismissal, you only have to add a new value to the <code>AnimationStyle</code> enum and check for it in the <code>animationController(forDismissed:)</code> method. And build a new animation controller, of course.
+</p>
+<p>That concludes the first version of the landscape screen. It doesn’t do much yet, but it’s already well integrated with the rest of the app. That’s worthy of a commit, methinks.
+</p>
+<h2 class="segment-chapter">Add a scroll view</h2>
+
+<p>If an app has more content to show than can fit on the screen, you can use a <i>scroll view</i>, which allows the user to, as the name implies, scroll through the content horizontally and/or vertically.
+</p>
+<p>You’ve already been working with scroll views all this time without knowing it: the <code>UITableView</code> object extends from <code>UIScrollView</code>.
+</p>
+<p>In this section, you’ll use a scroll view of your own, in combination with a <i>paging control</i>, to show the artwork for all the search results, even if there are more images than can fit on the screen at once.
+</p>
+<h3 class="segment-chapter">Add the scrollview to the storyboard</h3>
+
+<p>➤ Open the storyboard and delete the label from the Landscape scene.
+</p>
+<p>➤ Now, drag a <em>Scroll View</em> into the scene and set it to completely cover the screen —568 x 320 if you&apos;re using the iPhone SE layout.
+</p>
+<p>➤ Drag a new <em>Page Control</em> object into the scene — make sure you pick Page Control and <i>not</i> Page View Controller.
+</p>
+<p>This gives you a small view with three white dots. Place it bottom center. The exact location doesn’t matter because you’ll move it to the right position later.
+</p>
+<p><em>Important:</em> Do not place the Page Control <i>inside</i> the Scroll View. They should be at the same level in the view hierarchy:
+</p><div class="image-60"><img src="graphics/img670.png"  alt="" title="The Page Control should be a “sibling” of the Scroll View, not a child" /></div>
+<p>If you did drop your Page Control inside the Scroll View instead of on top, then you can rearrange it in the Document Outline.
+</p>
+<p>That concludes the design of the Landscape scene. The rest you will do in code, not in Interface Builder.
+</p><div class="image-55"><img src="graphics/img671.png"  alt="" title="The final design of the Landscape scene" /></div>
+<h3 class="segment-chapter">Disable Auto Layout for a view controller</h3>
+
+<p>The other view controllers you&apos;ve created all employ Auto Layout to resize them to the dimensions of the user’s screen, but here, you’re going to take a different approach. Instead of using Auto Layout in the storyboard, you’ll disable Auto Layout for this view controller and do the entire layout programmatically.
+</p>
+<p>You do need to hook up the controls to outlets, of course.
+</p>
+<p>➤ Add these outlets to <em>LandscapeViewController.swift</em>, and connect them in Interface Builder:
+</p><pre class="code-block"><span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> scrollView: <span class="hljs-type">UIScrollView</span>!
+<span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> pageControl: <span class="hljs-type">UIPageControl</span>!</pre>
+<p>Next up you’ll disable Auto Layout for this view controller. The storyboard has a “Use Auto Layout” checkbox but you cannot use that. It would turn off Auto Layout for all the view controllers, not just this one.
+</p>
+<p>➤ Replace <em>LandscapeViewController.swift</em>’s <code>viewDidLoad()</code> with:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">super</span>.viewDidLoad()
+  <span class="hljs-comment">// Remove constraints from main view</span>
+  view.removeConstraints(view.constraints)
+  view.translatesAutoresizingMaskIntoConstraints = <span class="hljs-literal">true</span>
+  <span class="hljs-comment">// Remove constraints for page control</span>
+  pageControl.removeConstraints(pageControl.constraints)
+  pageControl.translatesAutoresizingMaskIntoConstraints = <span class="hljs-literal">true</span>
+  <span class="hljs-comment">// Remove constraints for scroll view</span>
+  scrollView.removeConstraints(scrollView.constraints)
+  scrollView.translatesAutoresizingMaskIntoConstraints = <span class="hljs-literal">true</span>
+}</pre>
+<p>Remember how, if you don’t add constraints of your own, Interface Builder will give the views automatic constraints? Well, those automatic constraints get in the way if you’re going to do your own layout. That’s why you need to remove these unwanted constraints from all the visible views in the view controller first.
+</p>
+<p>You also do <code>translatesAutoresizingMaskIntoConstraints = true</code>. This allows you to position and size your views manually by changing their <code>frame</code> property.
+</p>
+<p>When Auto Layout is enabled, you’re not really supposed to change the <code>frame</code> yourself — you can only indirectly move views into position by creating constraints. Modifying the <code>frame</code> by hand can cause conflicts with the existing constraints and bring all sorts of trouble — you don’t want to make Auto Layout angry, you wouldn&apos;t like it when it&apos;s angry.
+</p>
+<p>For this view controller, it’s much more convenient to manipulate the <code>frame</code> property directly than it is making constraints — especially when you’re placing the buttons for the search results — which is why you’re disabling Auto Layout.
+</p>
+<div class="note">
+<p><em>Note:</em> Auto Layout doesn’t really get disabled, but with the “translates autoresizing mask” option set to true, UIKit will convert your manual layout code into the proper constraints behind the scenes. That’s also why you removed the automatic constraints because they will conflict with the new ones, possibly causing your app to crash.
+</p></div>
+
+<h3 class="segment-chapter">Custom scroll view layout</h3>
+
+<p>Now that Auto Layout is out of the way, you can do your own layout. That happens in the  <code>viewWillLayoutSubviews()</code> method.
+</p>
+<p>➤ Add this new method:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewWillLayoutSubviews</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">super</span>.viewWillLayoutSubviews()
+  <span class="hljs-keyword">let</span> safeFrame = view.safeAreaLayoutGuide.layoutFrame
+  scrollView.frame = safeFrame
+  pageControl.frame = <span class="hljs-type">CGRect</span>(x: safeFrame.origin.x,
+    y: safeFrame.size.height - pageControl.frame.size.height,
+    width: safeFrame.size.width,
+    height: pageControl.frame.size.height)
+}</pre>
+<p>The <code>viewWillLayoutSubviews()</code> method is called by UIKit as part of the layout phase of your view controller when it first appears on screen. It’s the ideal place for changing the <code>frame</code>s of your views by hand.
+</p>
+<p>The scroll view should always be as large as the entire screen, so you would think that you should make its <code>frame</code> equal to the main view’s <code>bounds</code>. This used to be the case till Apple introduced the iPhone X. But things change ...
+</p>
+<p>With the iPhone X, you had to make sure that your content did not appear where the iPhone X&apos;s notch was, or where the scroll bar appeared at the bottom of the screen. So, Apple introduced the <i>safe area</i> concept — iOS would tell you what parts of a view were safte to have content on and each view would have several properties which defined the safe area for that view.
+</p>
+<p>We make use of the <code>safeAreaLayoutGuide</code> property of the main view to get its <code>layoutFrame</code> — the safe area for the view in its own coordinate system — and then use that to set up the scroll view and the page control.
+</p>
+<p>The page control is located at the bottom of the screen, and spans the entire width of the safe area. If this calculation doesn’t make any sense to you, then try to sketch what happens on a piece of paper. It’s what I usually do when writing my own layout code.
+</p>
+<div class="note">
+<p><em>Note</em>: If you&apos;re confused about how the layout looks/works, one easy way to get a better understanding is to set the background color of the scroll view and the page control to two distinctive colors like yellow and red and then run the app.
+</p>
+<p>You will now see each control&apos;s actual content area in different colors against the black background and show you how each view is laid out.
+</p>
+<p>You will find that this is a good technique to use in debugging any view positioning/sizing related issue.
+</p></div>
+
+<p>➤ Run the app and flip to landscape. Nothing much happens yet: the screen has the page control at the bottom (the dots) but it still mostly black.
+</p>
+<h3 class="segment-chapter">Add a background to the view</h3>
+
+<p>Let&apos;s make the view a little less plain by adding a background to it.
+</p>
+<p>➤ Add the following line to <code>viewDidLoad()</code>:
+</p><pre class="code-block">view.backgroundColor = <span class="hljs-type">UIColor</span>(patternImage: 
+           <span class="hljs-type">UIImage</span>(named: <span class="hljs-string">"LandscapeBackground"</span>)!)</pre>
+<p>This puts an image as the main view’s background. An image? But you’re setting the <code>backgroundColor</code> property, which is a <code>UIColor</code>, not a <code>UIImage</code>! Yup, that’s true, but <code>UIColor</code> has a cool trick that lets you use a tile-able image as a color.
+</p>
+<p>If you take a peek at the <em>LandscapeBackground</em> image in the asset catalog, you’ll see that it is a small square. When you set this image as a pattern image for the background, the image repeats to cover the entire area. Tile-able images can be used anywhere where you can use a <code>UIColor</code>.
+</p>
+<p>You might be tempted to set the background for the scroll view instead of the main view and for most iOS devices, that would work just as well. In fact, it would work better in the case of the scroll view because when you scroll the view, the background would animate.
+</p>
+<p>However, on an iPhone X, if you set the image as the background for the scroll view, you&apos;ll notice that it doesn&apos;t cover the whole screen. This is again due to that pesky safe area.
+</p>
+<p>Try it for yourself and see the difference.
+</p>
+<p>And if you have the bright idea of setting the background of the main view <i>and</i> the background of the scroll view to the same image in the hopes of having a seamless background that scrolls, all I can say is to try that too and see what happens. :]
+</p>
+<h3 class="segment-chapter">Set the Scroll View content size</h3>
+
+<p>To get the scroll view to actually scroll, you need to set its content size.
+</p>
+<p>➤ Add the following line to <code>viewDidLoad()</code>:
+</p><pre class="code-block">scrollView.contentSize = <span class="hljs-type">CGSize</span>(width: <span class="hljs-number">1000</span>, height: <span class="hljs-number">1000</span>)</pre>
+<p>It is very important to set the <code>contentSize</code> property when dealing with scroll views. This tells the scroll view how big the content area for the scroll view is — a scroll view&apos;s inside (the content area), can be bigger than its actual bounds. If the content area is bigger than the scroll view&apos;s bounds, that&apos;s when the scroll view allows you to scroll.
+</p>
+<p>People often forget this step and then they wonder why their scroll view doesn’t scroll. Unfortunately, you cannot set <code>contentSize</code> from Interface Builder, so it must be done from code.
+</p>
+<p>➤ Run the app and try some scrolling:
+</p><div class="image-40"><img src="graphics/img672.png"  alt="" title="The scroll view now has a background image and it can scroll" /></div>
+<p>You might not notice too much of a difference since the background is static, but if you pay close attention, you&apos;ll notice that the horizontal and vertical scroll bars do move as you scroll around.
+</p>
+<p>If the dots at the bottom also move while scrolling, then you’ve placed the page control inside the scroll view. Open the storyboard and in the Document Outline drag the Page Control below the Scroll View.
+</p>
+<p>The page control itself doesn’t do anything yet. Before you can make that work, you first have to add some content to the scroll view.
+</p>
+<h2 class="segment-chapter">Add result buttons</h2>
+
+<p>The idea is to show the search results in a grid:
+</p><div class="image-40"><img src="graphics/img673.png"  alt="" title="" /></div>
+<p>Each of these results is really a button. Before you can place these buttons on the screen, you need to calculate how many will fit on the screen at once. Easier said than done, because different iPhone models have different screen sizes.
+</p>
+<p>Time for some math! Let’s assume the app runs on a 4-inch device. In that case, the scroll view is 568 points wide by 320 points tall. It can fit 3 rows of 6 columns if you put each search result in a rectangle of 94 by 88 points. That comes to 3×6 = 18 search results on the screen at once. A search may return up to 200 results. Obviously, there is not enough room for everything and you will have to spread out the results over several pages.
+</p>
+<p>One page contains 18 buttons. For the maximum number of results you will need 200 / 18 = 11.1111 pages, which rounds up to 12 pages. That last page will only be filled partially.
+</p>
+<p>The 4.7-inch iPhone models have room for 7 columns plus some leftover vertical space, and the 5.5-inch iPhone Plus models can fit yet another column plus an extra row.
+</p>
+<p>That’s a lot of different possibilities!
+</p>
+<p>You need to add the logic to <code>LandscapeViewController</code> so it can calculate how big the scroll view’s <code>contentSize</code> has to be. It will also need to add a <code>UIButton</code> object for each search result.
+</p>
+<p>Once you have that working, you can display the artwork via that <code>UIButton</code>.
+</p>
+<p>Of course, this means the app first needs to pass the array of search results to <code>LandscapeViewController</code> so it can use them for its calculations.
+</p>
+<h3 class="segment-chapter">Pass the search results to the landscape view</h3>
+
+<p>➤ Let’s add a property for this to <em>LandscapeViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> searchResults = [<span class="hljs-type">SearchResult</span>]()</pre>
+<p>Initially, this will be an empty array. <code>SearchViewController</code> replaces it with the real array upon rotation to landscape.
+</p>
+<p>➤ Assign the array to the new property in <em>SearchViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showLandscape</span><span class="hljs-params">(with coordinator: 
+                   UIViewControllerTransitionCoordinator)</span></span> {
+  . . . 
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> controller = landscapeVC {
+    controller.searchResults = searchResults  <span class="hljs-comment">// add this line</span>
+    . . .</pre>
+<p>You have to be sure to set <code>searchResults</code> before you access the <code>view</code> property from the <code>LandscapeViewController</code>, because that will trigger the view to be loaded and call <code>viewDidLoad()</code>.
+</p>
+<p>The view controller will read from the <code>searchResults</code> array in <code>viewDidLoad()</code> to build up the contents of its scroll view. But if you access <code>controller.view</code> before setting <code>searchResults</code>, this property will still be <code>nil</code> and no buttons will be created. The order in which you do things matters here!
+</p>
+<p>➤ Switch back to <em>LandscapeViewController.swift</em>. Remove the line that sets <code>scrollView.contentSize</code> from <code>viewDidLoad()</code>. That was just for testing.
+</p>
+<p>Now let’s go make those buttons.
+</p>
+<h3 class="segment-chapter">Initial configuration</h3>
+
+<p>➤ Add a new instance variable:
+</p><pre class="code-block"><span class="hljs-keyword">private</span> <span class="hljs-keyword">var</span> firstTime = <span class="hljs-literal">true</span></pre>
+<p>The purpose for this variable will become clear in a moment.
+</p>
+<h4 class="segment-chapter">Private parts</h4>
+
+<p>You declared the <code>firstTime</code> instance variable as <code>private</code>. This is because <code>firstTime</code> is an internal piece of state that only <code>LandscapeViewController</code> cares about. It should not be visible to other objects.
+</p>
+<p>You don’t want the other objects in your app to know about the existence of <code>firstTime</code>, or worse, actually try to use this variable. Strange things are bound to happen if some other view controller changes the value of <code>firstTime</code> when <code>LandscapeViewController</code> isn&apos;t expecting the change.
+</p>
+<p>We haven’t talked much about the distinction between <i>interface</i> and <i>implementation</i> yet, but what an object shows to the outside is different from what it has on the inside. That’s done on purpose because its internals — the implementation details — should not be of interest to anyone else, and are often even dangerous to expose since messing around with internal settings can crash the app.
+</p>
+<p>It is considered good programming practice to hide as much as possible inside the object and only show a few things on the outside. To make certain variables and methods invisible from outside of your own class, you declare them to be <code>private</code>. That removes them from the object’s public interface.
+</p>
+<div class="note">
+<p><em>Exercise:</em> Find other variables and methods in the app that can be made <code>private</code>.
+</p></div>
+
+<p>➤ Add the following lines to the end of <code>viewWillLayoutSubviews()</code>:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> firstTime {
+  firstTime = <span class="hljs-literal">false</span>
+  tileButtons(searchResults)
+}</pre>
+<p>This calls a new method, <code>tileButtons(_:)</code>, that performs the necessary math and places the buttons on the screen in neat rows and columns. This needs to happen just once, when the <code>LandscapeViewController</code> is added to the screen.
+</p>
+<p>You may think that <code>viewDidLoad()</code> would be a good place for this, but at the point in the view controller’s lifecycle when <code>viewDidLoad()</code> is called, the view is not on the screen yet and has not been added into the view hierarchy. At this time, it doesn’t know how large the view should be. Only after <code>viewDidLoad()</code> is done does the view get resized to fit the actual screen.
+</p>
+<p>So you can’t use <code>viewDidLoad()</code> for this. The only safe place to perform calculations based on the final size of the view — that is, any calculations that use the view’s <code>frame</code> or <code>bounds</code> — is in <code>viewWillLayoutSubviews()</code>.
+</p>
+<p>A warning: <code>viewWillLayoutSubviews()</code> may be invoked more than once! For example, it’s also called when the landscape view gets removed from the screen. You use the <code>firstTime</code> variable to make sure you only place the buttons once.
+</p>
+<h3 class="segment-chapter">Calculate the tile grid</h3>
+
+<p>➤ Add the new <code>tileButtons(_:)</code> method. It’s a big &apos;un, so we’ll take it piece-by-piece.
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Private Methods</span>
+<span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tileButtons</span><span class="hljs-params">(<span class="hljs-number">_</span> searchResults: [SearchResult])</span></span> {
+  <span class="hljs-keyword">var</span> columnsPerPage = <span class="hljs-number">6</span>
+  <span class="hljs-keyword">var</span> rowsPerPage = <span class="hljs-number">3</span>
+  <span class="hljs-keyword">var</span> itemWidth: <span class="hljs-type">CGFloat</span> = <span class="hljs-number">94</span>
+  <span class="hljs-keyword">var</span> itemHeight: <span class="hljs-type">CGFloat</span> = <span class="hljs-number">88</span>
+  <span class="hljs-keyword">var</span> marginX: <span class="hljs-type">CGFloat</span> = <span class="hljs-number">2</span>
+  <span class="hljs-keyword">var</span> marginY: <span class="hljs-type">CGFloat</span> = <span class="hljs-number">20</span>
+  
+  <span class="hljs-keyword">let</span> viewWidth = scrollView.bounds.size.width
+  
+  <span class="hljs-keyword">switch</span> viewWidth {
+  <span class="hljs-keyword">case</span> <span class="hljs-number">568</span>:
+    <span class="hljs-comment">// 4-inch device</span>
+    <span class="hljs-keyword">break</span>
+    
+  <span class="hljs-keyword">case</span> <span class="hljs-number">667</span>:
+    <span class="hljs-comment">// 4.7-inch device</span>
+    columnsPerPage = <span class="hljs-number">7</span>
+    itemWidth = <span class="hljs-number">95</span>
+    itemHeight = <span class="hljs-number">98</span>
+    marginX = <span class="hljs-number">1</span>
+    marginY = <span class="hljs-number">29</span>
+    
+  <span class="hljs-keyword">case</span> <span class="hljs-number">736</span>:
+    <span class="hljs-comment">// 5.5-inch device</span>
+    columnsPerPage = <span class="hljs-number">8</span>
+    rowsPerPage = <span class="hljs-number">4</span>
+    itemWidth = <span class="hljs-number">92</span>
+    marginX = <span class="hljs-number">0</span>
+    
+  <span class="hljs-keyword">case</span> <span class="hljs-number">724</span>:
+    <span class="hljs-comment">// iPhone X</span>
+    columnsPerPage = <span class="hljs-number">8</span>
+    rowsPerPage = <span class="hljs-number">3</span>
+    itemWidth = <span class="hljs-number">90</span>
+    itemHeight = <span class="hljs-number">98</span>
+    marginX = <span class="hljs-number">2</span>
+    marginY = <span class="hljs-number">29</span>
+    
+  <span class="hljs-keyword">default</span>:
+    <span class="hljs-keyword">break</span>
+  }
+  
+  <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> more to come here</span>
+}</pre>
+<p>First, the method must decide on how big the grid squares should be and how many squares you need to fill up each page. There are four cases to consider, based on the width of the screen:
+</p>
+<ul>
+<li>
+<p><em>568 points</em>, 4-inch device.  A single page fits 3 rows (<code>rowsPerPage</code>) of 6 columns (<code>columnsPerPage</code>). Each grid square is 94 by 88 points (<code>itemWidth</code> and <code>itemHeight</code>). The first row starts at Y = 20 (<code>marginY</code>). Because 568 doesn’t evenly divide by 6, the <code>marginX</code> variable is used to adjust for the 4 points that are left over — 2 on each side of the page. All these are set as defaults at the top and so we don&apos;t need to do any changes for this case and we simply <code>break</code> out.
+</p></li>
+
+<li>
+<p><em>667 points</em>, 4.7-inch device. This still has 3 rows but 7 columns. Because there’s some extra vertical space, the rows are higher (98 points) and there is a larger margin at the top.
+</p></li>
+
+<li>
+<p><em>736 points</em>, 5.5-inch device. This device is huge and can house 4 rows of 8 columns.
+</p></li>
+
+<li>
+<p><em>724 points</em>, iPhone X. This device is thinner than the 5.5-inch device, but is wider. However, the safe area takes out some of the available space and you end up with less space than the 5.5-inch device. So, it can only hold 3 rows by 8 columns and you still have to drop the cell width.
+</p></li>
+</ul>
+
+<p>The variables at the top of the method keep track of all these measurements.
+</p>
+<div class="note">
+<p><em>Note:</em> Shouldn’t it be possible to come up with a nice formula that calculates all this stuff for you, rather than <i>hard-coding</i> these sizes and margin values? Probably, but it won’t be easy. There are two things you want to optimize for: getting the maximum number of rows and columns on the screen, but at the same time, not making the grid squares too small. Give it a shot if you think you can solve this puzzle! Let me know if you do — I might put your solution in the next book update.
+</p></div>
+
+<p>From now on, you&apos;ll keep adding more code to the end of <code>tileButtons()</code> (where the <code>TODO</code> comment is) till the method is complete.
+</p>
+<p>➤ Add the following lines to <code>tileButtons()</code>:
+</p><pre class="code-block"><span class="hljs-comment">// Button size</span>
+<span class="hljs-keyword">let</span> buttonWidth: <span class="hljs-type">CGFloat</span> = <span class="hljs-number">82</span>
+<span class="hljs-keyword">let</span> buttonHeight: <span class="hljs-type">CGFloat</span> = <span class="hljs-number">82</span>
+<span class="hljs-keyword">let</span> paddingHorz = (itemWidth - buttonWidth)/<span class="hljs-number">2</span>
+<span class="hljs-keyword">let</span> paddingVert = (itemHeight - buttonHeight)/<span class="hljs-number">2</span></pre>
+<p>You’ve already determined that each search result gets a grid square of give-or-take 90 by 88 points (depending on the device), but that doesn’t mean you need to make the buttons that big as well.
+</p>
+<p>The image you’ll put on the buttons is 60×60 pixels, so that leaves quite a gap around the image. After playing with the design a bit, I decided that the buttons will be 82×82 points (<code>buttonWidth</code> and <code>buttonHeight</code>), leaving a small amount of padding between each button and its neighbors (<code>paddingHorz</code> and <code>paddingVert</code>).
+</p><div class="image-40"><img src="graphics/img674.png"  alt="" title="The dimensions of the buttons in the 5x3 grid" /></div>
+<h3 class="segment-chapter">Add buttons</h3>
+
+<p>Now you can loop through the array of search results and make a new button for each <code>SearchResult</code> object.
+</p>
+<p>➤ Add the following lines to <code>tileButtons()</code>:
+</p><pre class="code-block"><span class="hljs-comment">// Add the buttons</span>
+<span class="hljs-keyword">var</span> row = <span class="hljs-number">0</span>
+<span class="hljs-keyword">var</span> column = <span class="hljs-number">0</span>
+<span class="hljs-keyword">var</span> x = marginX
+<span class="hljs-keyword">for</span> (index, result) <span class="hljs-keyword">in</span> searchResults.enumerated() {
+  <span class="hljs-comment">// 1</span>
+  <span class="hljs-keyword">let</span> button = <span class="hljs-type">UIButton</span>(type: .system)
+  button.backgroundColor = <span class="hljs-type">UIColor</span>.white
+  button.setTitle(<span class="hljs-string">"<span class="hljs-subst">\(index)</span>"</span>, <span class="hljs-keyword">for</span>: .normal)
+  <span class="hljs-comment">// 2</span>
+  button.frame = <span class="hljs-type">CGRect</span>(x: x + paddingHorz, 
+         y: marginY + <span class="hljs-type">CGFloat</span>(row)*itemHeight + paddingVert, 
+         width: buttonWidth, height: buttonHeight)
+  <span class="hljs-comment">// 3</span>
+  scrollView.addSubview(button)
+  <span class="hljs-comment">// 4</span>
+  row += <span class="hljs-number">1</span>
+  <span class="hljs-keyword">if</span> row == rowsPerPage {
+    row = <span class="hljs-number">0</span>; x += itemWidth; column += <span class="hljs-number">1</span>
+    
+    <span class="hljs-keyword">if</span> column == columnsPerPage {
+      column = <span class="hljs-number">0</span>; x += marginX * <span class="hljs-number">2</span>
+    }
+  }
+}</pre>
+<p>Here is how this works:
+</p>
+<ol>
+<li>
+<p>Create the <code>UIButton</code> object. For debugging purposes, you give each button a title with the array index. If there are 200 results in the search, you also should end up with 200 buttons. Setting the index on the button will help to verify this.
+</p></li>
+
+<li>
+<p>When you make a button by hand, you always have to set its <code>frame</code>. Using the measurements you figured out earlier, you determine the position and size of the button. Notice that <code>CGRect</code>’s properties are all  <code>CGFloat</code> but <code>row</code> is an <code>Int</code>. You need to convert <code>row</code> to a <code>CGFloat</code> before you can use it in the calculation.
+</p></li>
+
+<li>
+<p>You add the new button object to the <code>UIScrollView</code> as a subview. After the first 18 or so buttons (depending on the screen size), this places any subsequent buttons out of the visible range of the scroll view, but that’s the whole point. As long as you set the scroll view’s <code>contentSize</code> accordingly, the user can scroll to view these other buttons.
+</p></li>
+
+<li>
+<p>You use the <code>x</code> and <code>row</code> variables to position the buttons, going from top to bottom (by increasing <code>row</code>). When you’ve reached the bottom (<code>row</code> equals <code>rowsPerPage</code>), you go up again to row 0 and skip to the next column (by increasing the <code>column</code> variable).
+</p>
+<p>When the <code>column</code> reaches the end of the screen (equals <code>columnsPerPage</code>), you reset it to 0 and add any leftover space to <code>x</code> (twice the X-margin).
+</p>
+<p>Note that in Swift you can put multiple statements on a single line by separating them with a semicolon. I did that to save some space, you can have those statements on separate lines, if you so prefer.
+</p></li>
+</ol>
+
+<p>If this sounds like hocus pocus to you, I suggest you play around a bit with these calculations to gain insight into how they work. It’s not rocket science, but it does require some mental gymnastics. Tip: Sketching the process on paper can help!
+</p>
+<div class="note">
+<p><em>Note:</em> By the way, did you notice what happened in the <code>for in</code> loop?
+</p>
+<p><code>for (index, result) in searchResults.enumerated() {</code>
+</p>
+<p>This <code>for...in</code> loop steps through the <code>SearchResult</code> objects from the array, but with a twist. By calling the array&apos;s <code>enumerated()</code> method, you get a <i>tuple</i> containing not only the next <code>SearchResult</code> object but also its index in the array.
+</p>
+<p>A tuple is nothing more than a temporary list with two or more items in it. Here, the tuple is <code>(index, result)</code>. This is a neat trick to loop through an array and get both the objects and their indices.
+</p></div>
+
+<p>➤ Finally, add the last part of this very long method:
+</p><pre class="code-block"><span class="hljs-comment">// Set scroll view content size</span>
+<span class="hljs-keyword">let</span> buttonsPerPage = columnsPerPage * rowsPerPage
+<span class="hljs-keyword">let</span> numPages = <span class="hljs-number">1</span> + (searchResults.<span class="hljs-built_in">count</span> - <span class="hljs-number">1</span>) / buttonsPerPage  
+scrollView.contentSize = <span class="hljs-type">CGSize</span>(
+      width: <span class="hljs-type">CGFloat</span>(numPages) * viewWidth, 
+      height: scrollView.bounds.size.height)
+
+<span class="hljs-built_in">print</span>(<span class="hljs-string">"Number of pages: <span class="hljs-subst">\(numPages)</span>"</span>)</pre>
+<p>At the end of the method you calculate the <code>contentSize</code> for the scroll view based on how many buttons fit on a page and the number of <code>SearchResult</code> objects.
+</p>
+<p>You want the user to be able to “page” through these results — you&apos;ll enable this feature shortly — rather than simply scroll. So, you should always make the content width a multiple of the scroll width (568, 667, 736, or 812 points). You can then determine how many pages you need with a simple formula.
+</p>
+<div class="note">
+<p><em>Note:</em> Dividing an integer value by an integer always results in an integer. If <code>buttonsPerPage</code> is 18 (3 rows × 6 columns) and there are fewer than 18 search results, <code>searchResults.count / buttonsPerPage</code> is 0.
+</p>
+<p>It’s important to realize that <code>numPages</code> will never have a fractional value because all the variables involved in the calculation are <code>Int</code>s, which makes <code>numPages</code> an <code>Int</code> too.
+</p>
+<p>That’s why the formula is <code>1 + (searchResults.count – 1) / buttonsPerPage</code>.
+</p>
+<p>If there are 18 results, exactly enough to fill a single page, <code>numPages = 1 + 17/18 = 1 + 0 = 1</code>. But if there are 19 results, the 19th result needs to go on the second page, and <code>numPages = 1 + 18/18 = 1 + 1 = 2</code>. Plug in some other values to verify this formula is correct.
+</p></div>
+
+<p>I also threw in a <code>print()</code> for good measure, so you can verify that you really end up with the right number of pages.
+</p>
+<div class="note">
+<p><em>Note:</em> Xcode currently gives a warning “Immutable value &apos;result&apos; was never used; consider replacing with&apos; _&apos; or removing it”. That warning will go away once you use the <code>result</code> variable in the next section.
+</p></div>
+
+<p>➤ Run the app, do a search, and rotate to landscape. You should now see a whole bunch of buttons:
+</p><div class="image-35"><img src="graphics/img675.png"  alt="" title="The landscape view has buttons" /></div>
+<p>Scroll all the way to the right and it looks like this on the iPhone SE:
+</p><div class="image-35"><img src="graphics/img676.png"  alt="" title="The last page of the search results" /></div>
+<p>That is 200 buttons indeed — you started counting at 0, remember?.
+</p>
+<p>Just to make sure that this logic works properly, you should test a few different scenarios. What happens when there are fewer results than 18 — the amount that fit on a single page on 4-inch device? What happens when there are exactly 18 search results? How about 19, one more than can go on a single page?
+</p>
+<p>The easiest way to test these situations is to change the <code>&amp;limit</code> parameter in the search URL.
+</p>
+<div class="note">
+<p><em>Exercise.</em> Try these situations for yourself and see what happens.
+</p></div>
+
+<p>➤ Also test when there are no search results. The landscape view should now be empty. You’ll add a “Nothing Found” label to this screen too, in a bit.
+</p>
+<h2 class="segment-chapter">Paging</h2>
+
+<p>So far, the Page Control at the bottom of the screen has always shown three dots. And there wasn’t much paging to be done on the scroll view either.
+</p>
+<p>In case you’re wondering what <i>paging</i> means: if the user has moved the scroll view a certain amount, it should snap to a new page.
+</p>
+<p>With paging enabled, you can quickly flick through the contents of a scroll view, without having to drag it all the way. You’re no doubt familiar with this effect because it is what the iPhone uses in its springboard. Many other apps use the effect too, for example, the Weather app uses paging to flip between the cards for different cities.
+</p>
+<h3 class="segment-chapter">Enable scroll view paging</h3>
+
+<p>➤ Go to <em>Landscape</em> scene in the storyboard and check the <em>Scrolling - Paging Enabled</em> option for the scroll view in the Attributes inspector.
+</p>
+<p>There, that was easy! Now run the app and the scroll view will let you page rather than scroll. That’s cool, but you also need to do something with the page control at the bottom of the screen.
+</p>
+<h3 class="segment-chapter">Configure the page control</h3>
+
+<p>➤ Switch to <em>LandscapeViewController.swift</em> and add this line to <code>viewDidLoad()</code>:
+</p><pre class="code-block">pageControl.numberOfPages = <span class="hljs-number">0</span></pre>
+<p>This effectively hides the page control, which is what you want to do when there are no search results.
+</p>
+<p>➤ Add the following lines to the end of <code>tileButtons()</code>:
+</p><pre class="code-block">pageControl.numberOfPages = numPages
+pageControl.currentPage = <span class="hljs-number">0</span></pre>
+<p>This sets the number of dots that the page control displays to the number of pages that you calculated.
+</p>
+<p>The active dot — the white one — needs to be synchronized with the active page in the scroll view. Currently, it never changes unless you tap in the page control and even then it has no effect on the scroll view.
+</p>
+<p>To get this to work, you’ll have to make the page control talk to the scroll view, and vice versa. The view controller must become the delegate of the scroll view so it will be notified when the user is flicking through the pages.
+</p>
+<h3 class="segment-chapter">Connect the scroll view and page control</h3>
+
+<p>➤ Add this new extension to the end of <em>LandscapeViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">LandscapeViewController</span>: <span class="hljs-title">UIScrollViewDelegate</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">scrollViewDidScroll</span><span class="hljs-params">(<span class="hljs-number">_</span> scrollView: UIScrollView)</span></span> {
+    <span class="hljs-keyword">let</span> width = scrollView.bounds.size.width
+    <span class="hljs-keyword">let</span> page = <span class="hljs-type">Int</span>((scrollView.contentOffset.x + width / <span class="hljs-number">2</span>) 
+                                                   / width)
+    pageControl.currentPage = page
+  }
+}</pre>
+<p>This is a <code>UIScrollViewDelegate</code> method. You figure out what the index of the current page is by looking at the <code>contentOffset</code> property of the scroll view. This property determines how far the scroll view has been scrolled and is updated while you’re dragging the scroll view.
+</p>
+<p>Unfortunately, the scroll view doesn’t simply tell us, “The user has flipped to page X”. So, you have to calculate this yourself. If the content offset gets beyond halfway on the page <code>(width/2)</code>, the scroll view will move to the next page. In that case, you update the <code>pageControl</code>’s active page number.
+</p>
+<p>You also need to know when the user taps on the Page Control so you can update the scroll view. There is no delegate for this, but you can use a regular <code>@IBAction</code> method for it.
+</p>
+<p>➤ Add the action method:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Actions</span>
+<span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">pageChanged</span><span class="hljs-params">(<span class="hljs-number">_</span> sender: UIPageControl)</span></span> {
+  scrollView.contentOffset = <span class="hljs-type">CGPoint</span>(
+    x: scrollView.bounds.size.width * 
+    <span class="hljs-type">CGFloat</span>(sender.currentPage), y: <span class="hljs-number">0</span>)
+}</pre>
+<p>This works the other way around: when the user taps in the Page Control, its <code>currentPage</code> property gets updated. You use that to calculate a new <code>contentOffset</code> for the scroll view.
+</p>
+<p>➤ In the storyboard, for the <em>Landscape</em> scene, <em>Control-drag</em> from the Scroll View to the view controller and select <em>delegate</em>.
+</p>
+<p>➤ Also <em>Control-drag</em> from the Page Control to the view controller and select <em>pageChanged:</em> under Sent Events.
+</p>
+<p>➤ Try it out, the page control and the scroll view should now be in sync.
+</p>
+<p>The transition from one page to another after tapping in the page control is still a little abrupt, though. An animation would help here.
+</p>
+<div class="note">
+<p><em>Exercise.</em> See if you can animate what happens in <code>pageChanged(_:)</code>.
+</p></div>
+
+<p>You can simply wrap the code from the action method in an animation block:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">pageChanged</span><span class="hljs-params">(<span class="hljs-number">_</span> sender: UIPageControl)</span></span> {
+  <span class="hljs-type">UIView</span>.animate(withDuration: <span class="hljs-number">0.3</span>, delay: <span class="hljs-number">0</span>, 
+         options: [.curveEaseInOut], animations: {
+   <span class="hljs-keyword">self</span>.scrollView.contentOffset = <span class="hljs-type">CGPoint</span>(
+     x: <span class="hljs-keyword">self</span>.scrollView.bounds.size.width * 
+     <span class="hljs-type">CGFloat</span>(sender.currentPage), y: <span class="hljs-number">0</span>)
+  },
+  completion: <span class="hljs-literal">nil</span>)
+}</pre>
+<p>You’re using a version of the <code>UIView</code> animation method that allows you to specify options because the “Ease In, Ease Out” timing (<code>.curveEaseInOut</code>) looks good here.
+</p><div class="image-35"><img src="graphics/img677.png"  alt="" title="We’ve got paging!" /></div>
+<p>➤ This is a good time to commit.
+</p>
+<h2 class="segment-chapter">Download the artwork</h2>
+
+<p>First, let’s give the buttons a nicer look.
+</p>
+<h3 class="segment-chapter">Set button background</h3>
+
+<p>➤ Replace the button creation code in <code>tileButtons()</code> (in <em>LandscapeViewController.swift</em>) with:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> button = <span class="hljs-type">UIButton</span>(type: .custom)
+button.setBackgroundImage(<span class="hljs-type">UIImage</span>(named: <span class="hljs-string">"LandscapeButton"</span>), 
+                          <span class="hljs-keyword">for</span>: .normal)</pre>
+<p>Instead of a regular button, you now make a <code>.custom</code> one, and you give it a background image instead of a white background and a title.
+</p>
+<p>If you run the app, it will look like this:
+</p><div class="image-35"><img src="graphics/img678.png"  alt="" title="The buttons now have a custom background image" /></div>
+<h3 class="segment-chapter">Display button images</h3>
+
+<p>Now you have to download the artwork images, if they haven’t already been downloaded and cached by the table view, and put them on the buttons.
+</p>
+<p>Problem: You’re dealing with <code>UIButton</code>s here, not <code>UIImageView</code>s, so you cannot simply use that handy extension from earlier. Fortunately, the code is very similar!
+</p>
+<p>➤ Add a new method to <em>LandscapeViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">downloadImage</span><span class="hljs-params">(<span class="hljs-keyword">for</span> searchResult: SearchResult, 
+                          andPlaceOn button: UIButton)</span></span> {
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> url = <span class="hljs-type">URL</span>(string: searchResult.imageSmall) {
+    <span class="hljs-keyword">let</span> task = <span class="hljs-type">URLSession</span>.shared.downloadTask(with: url) {
+      [<span class="hljs-keyword">weak</span> button] url, response, error <span class="hljs-keyword">in</span>
+      
+      <span class="hljs-keyword">if</span> error == <span class="hljs-literal">nil</span>, <span class="hljs-keyword">let</span> url = url, 
+         <span class="hljs-keyword">let</span> data = <span class="hljs-keyword">try</span>? <span class="hljs-type">Data</span>(contentsOf: url),
+         <span class="hljs-keyword">let</span> image = <span class="hljs-type">UIImage</span>(data: data) {
+        <span class="hljs-type">DispatchQueue</span>.main.async {
+          <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> button = button {
+            button.setImage(image, <span class="hljs-keyword">for</span>: .normal)
+          }
+        }
+      }
+    }
+    task.resume()
+  }
+}</pre>
+<p>This looks very much like what you did in the <code>UIImageView</code> extension.
+</p>
+<p>First you get a <code>URL</code> instance with the link to the 60×60-pixel artwork, and then you create a download task. Inside the completion handler you put the downloaded file into a <code>UIImage</code>, and if all that succeeds, use <code>DispatchQueue.main.async</code> to place the image on the button.
+</p>
+<p>➤ Add the following line to <code>tileButtons()</code> to call this new method, right after where you create the button:
+</p><pre class="code-block">downloadImage(<span class="hljs-keyword">for</span>: result, andPlaceOn: button)</pre>
+<p>And that should do it. Run the app and you’ll get some cool-looking buttons:
+</p><div class="image-40"><img src="graphics/img679.png"  alt="" title="Showing the artwork on the buttons" /></div>
+<div class="note">
+<p><em>Note:</em> The Xcode warning about <code>result</code> is gone, but now it gives the same message for the <code>index</code> variable. Xcode doesn’t like it if you declare variables but don&apos;t use them. You’ll use <code>index</code> again later in this app but in the mean time, you can replace it by the <code>_</code> wildcard symbol to stop Xcode from complaining.
+</p></div>
+
+<h3 class="segment-chapter">Clean up</h3>
+
+<p>It’s always a good idea to clean up after yourself, in life as well as in programming. :] Imagine this: what would happen if the app is still downloading images and the user flips back to portrait mode?
+</p>
+<p>At that point, the <code>LandscapeViewController</code> is deallocated but the image downloads keep going. That is exactly the sort of situation that can crash your app if not handled properly.
+</p>
+<p>To avoid ownership cycles, you capture the button with a <code>weak</code> reference. When <code>LandscapeViewController</code> is deallocated, so are the buttons. So, the completion handler’s captured <code>button</code> reference automatically becomes <code>nil</code>. The <code>if let</code> inside the <code>DispatchQueue.main.async</code> block will now safely skip <code>button.setImage(for)</code>. No harm done. That’s why you wrote <code>[weak button]</code>.
+</p>
+<p>However, to conserve resources, the app should really stop downloading these images because they are not needed. Otherwise, it’s just wasting bandwidth and battery life, and users don’t take too kindly to apps that do this.
+</p>
+<p>➤ Add a new property to <em>LandscapeViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">private</span> <span class="hljs-keyword">var</span> downloads = [<span class="hljs-type">URLSessionDownloadTask</span>]()</pre>
+<p>This array will keep track of all the active <code>URLSessionDownloadTask</code> objects.
+</p>
+<p>➤ Add the following line to the end of <code>downloadImage(for:andPlaceOn:)</code>, right after where you resume the download task:
+</p><pre class="code-block">downloads.append(task)</pre>
+<p>➤ And finally, add a <code>deinit</code> method to cancel any operations that are still on the way:
+</p><pre class="code-block"><span class="hljs-keyword">deinit</span> {
+  <span class="hljs-built_in">print</span>(<span class="hljs-string">"deinit <span class="hljs-subst">\(<span class="hljs-keyword">self</span>)</span>"</span>)
+  <span class="hljs-keyword">for</span> task <span class="hljs-keyword">in</span> downloads {
+    task.cancel()
+  }
+}</pre>
+<p>This will stop the download for any button whose image was still pending or in transit. Good job, partner!
+</p>
+<p>➤ Commit your changes.
+</p>
+<div class="note">
+<p><em>Exercise.</em> Despite what the iTunes web service promises, not all of the artwork is truly 60×60 pixels. Some of it is bigger, some are not even square, and so, it might not always fit nicely in the button. Your challenge is to use the image sizing code from <i>MyLocations</i> to always resize the image to 60×60 points before you put it on the button. Note that we’re talking points here, not pixels — on Retina devices, the image should actually end up being 120×120 or even 180×180 pixels in size.
+</p></div>
+
+<div class="note">
+<p><em>Note:</em> In this section you learned how to create a grid-like view using a <code>UIScrollView</code>. iOS comes with a versatile class, <code>UICollectionView</code>, that lets you do the same thing — and much more! — without having to resort to the sort of math you did in <code>tileButtons()</code>. To learn more about <code>UICollectionView</code>, check out the website: <a href="https://www.raywenderlich.com/tag/collection-view">raywenderlich.com/tag/collection-view</a>
+</p></div>
+
+<p>You can find the project files for this chaper under <em>39 – Landscape</em> in the Source Code folder.
+</p></body></html>

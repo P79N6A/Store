@@ -1,0 +1,2236 @@
+/**  css queries  **/
+
+/**  desktop  **/
+@media only screen and (min-width:1025px) and (max-width:1279px) {
+  .banner {background: none !important;}
+.container {
+width: auto;
+}
+.header .header-title {
+padding-left: 0;
+text-align: right;
+}
+.header .menu-container {
+padding: 10px 0 0 0;
+float: right;
+}
+
+}
+@media only screen and (min-width:991px) and (max-width:1024px) {
+  .bgvid {width: auto !important;}
+  .section-clientcarousel-container .client-carousel {
+    width: 78%;
+  }
+}
+
+@media only screen and (min-width:769px) and (max-width:1024px) {
+.bgvid {display: none !important;}
+.container {
+width: auto;
+}
+.header, .header p {
+font-size: 16px;
+}
+.header .social, .header .header-contact, .header .header-title {
+margin-top: 35px;
+}
+.header .social, .header .header-contact {
+margin-left: 15px;
+}
+.header .header-title {
+padding-left: 0;
+text-align: right;
+}
+.header .menu-container {
+clear: both;
+padding: 10px 0 0 0;
+float: right;
+}
+.menu a {
+padding: 7px 15px 50px 15px;
+}
+.form-overlay {
+width: auto;
+}
+.form-title h2 {
+font-size: 20px;
+margin-right: 10px
+}
+.articles-insights-container .column-4-12, .articles-brands-container .column-4-12, .section-blog .column-container .column-9-12, .section-blog .column-container .column-3-12, .related-articles-container .column-4-12, .section-articles-container .column-6-12, .section-jobs .column-container .column-9-12, .section-recruiter-details .column-container .column-4-12 {
+width: auto;
+float: none;
+}
+.blog-content, .sidebar, .section-articles-related .related-articles-container, .section-articles-container .column-space {
+margin-left: 0;
+margin-right: 0;
+}
+.job-box-container .column-3-12, .section-business-grows .column-container .column-3-12, .specialism-box-container .column-4-12 {
+width: 50%;
+}
+.section-consultants .article-consult {
+margin: 0 25px;
+}
+.section-staff .column-container .column-1-5 {
+width: 25%;
+}
+.section-blog, .section-blog .column-9-12 {
+background: none;
+}
+.section-blog .column-9-12 {
+min-height: 0px !important;
+}
+.blog-content {
+padding-bottom: 50px;
+}
+.sidebar {
+padding-top: 0;
+}
+.sidebar .widget-ebook {
+margin-left: 0;
+}
+.order-book-container .column-space, .contact-form .column-space, .section-employers-perspective .column-space, .section-employers-options .column-space, .section-purple .column-space, .section-business-bg .article-overlay, .section-business-bg .download-book {
+margin-left: 15px;
+margin-right: 15px;
+}
+.menu-section li {
+display: inline !important;
+margin: 0 10px !important;
+padding: 0 !important;
+background: none !important;
+}
+.section-recruiter {
+padding-top: 30px;
+}
+.section-recruiter .recruiter-info, .section-recruiter .recruiter-contact, .section-recruiter .recruiter-social, .section-recruiter h1 {
+text-align: center;
+}
+.section-recruiter .recruiter-info, .section-recruiter .recruiter-contact, .section-recruiter .recruiter-social {
+width: auto;
+float: none;
+margin: 0;
+padding: 0;
+}
+.section-recruiter .recruiter-thumb {
+width: 235px;
+float: none;
+margin: 0 auto;
+}
+.section-recruiter-jobs .article-last-job {
+margin: 0 25px 50px 25px;
+}
+.section-airplane {
+background-position: 100% 50%
+}
+.section-airplane .button-white {
+min-width: 0;
+}
+.search-job-form .check-radio-container {
+text-align: left;
+}
+.search-job-form .check-radio-container label {
+margin: 0 13px 0 0;
+}
+.section-business-bg .download-book {
+float: none;
+width: auto
+}
+.section-business-bg .download-book img {
+width: 100%;
+}
+.footer h3 {
+font-size: 17px;
+}
+.widgets-container .column1 {
+width: 15%;
+}
+.widgets-container .column2 {
+width: 14%;
+}
+.widgets-container .column3 {
+width: 14%;
+}
+.widgets-container .column4 {
+width: 15%;
+}
+.widgets-container .column5 {
+width: 9%;
+}
+.widgets-container .column6 {
+width: 12%;
+}
+.widgets-container .column7 {
+width: 9%;
+}
+.widgets-container .column8 {
+width: 12%;
+}
+.specialism-box {
+  max-height: 319px;
+}
+.specialism-box img {
+  max-height: 319px;
+}
+.job-box {
+  max-height: 319px;
+}
+.job-box img {
+  max-height: 319px;
+}
+
+.section-clientcarousel-container .owl-buttons .owl-next {
+  right: -1% !important;
+}
+}
+
+/**  tablet  **/
+@media only screen and (min-width:481px) and (max-width:768px) {
+.bgvid {display: none !important;}
+
+.section-clientcarousel-container .client-carousel {
+  width: 78%;
+}
+.register-form .form-title h2 {
+  float: none;
+  width: 100%;
+}
+.container {
+width: auto;
+}
+.header {
+font-size: 18px;
+padding-top: 25px;
+padding-bottom: 25px;
+}
+.header .logo {
+margin-top: 0;
+}
+.logo img {
+max-width: 95px;
+}
+.header .social, .header .header-title {
+display: none;
+}
+.header .header-contact {
+float: none;
+padding: 0;
+margin: 0 0 25px 0;
+text-align: right;
+}
+.header .menu-container {
+display: none;
+}
+.header .icon-menu, .menu-mob-container {
+display: block;
+}
+.wrapper.menu-opened {
+margin-left: -210px !important;
+margin-right: 210px !important;
+}
+
+h1, .article-role h2, .section-skills h5, .section-airplane h1, .section-articles-related h6 {
+font-size: 24px;
+margin-bottom: 25px;
+}
+.article-wecome h1, .article-consult h1, .section-business-grows h1, .single-post h2, .section-articles-related h1, .section-employers-perspective h1, .perspective-descr h1, .section-salary h1, .article-last-job h2, .section-get-survey h6, .article-learn h6, .survey-form h6, .section-salary-calculator h6, .archive-list-block h6, .salary-form h6, .section-search-job h1, .search-job-form h1, .article-font-small h5 {
+font-size: 21px;
+}
+.section-green .gutter, .section-featured-jobs .gutter, .section-insights .gutter, .section-consultants .gutter, .section-staff .gutter, .sidebar, .sidebar .widget-ebook, .section-articles-related .related-articles-container, .related-articles-container, .order-book-container .column-space, .contact-form .column-space, .section-employers-perspective .column-space, .section-employers-perspective .gutter, .section-employers-options .column-space, .section-specialisms .gutter, .section-articles-container .column-space, .section-purple .gutter, .section-purple .column-space, .referral-form .column-space, .section-get-survey .column-space, .section-salary-calculator .gutter, .section-salary-calculator .column-space, .section-search-job .column-space, .search-job-form .column-space, .section-business-bg .gutter, .section-business-bg .article-overlay, .section-business-bg .download-book, .section-send-cv .column-space, .send-cv-form .column-space {
+margin-left: 0;
+margin-right: 0;
+}
+.section-featured-jobs, .section-insights, .section-brands-jobs, .section-featured-clients, .section-business-grows, .section-articles-related, .section-ebook, .section-employers-perspective, .section-articles-container, .section-job-overview, .section-recruiter, .section-recruiter-details, .section-recruiter-jobs, .section-get-survey, .section-search-job, .section-send-cv {
+padding-top: 35px;
+}
+.section-featured-jobs, .section-insights, .section-featured-clients, .blog-content, .section-specialisms {
+padding-bottom: 0;
+}
+.job-box-container, .job-box-container .job-box, .job-box h2, .articles-insights-container .article-short {
+margin-bottom: 0;
+}
+.job-box-container .column-3-12, .articles-insights-container .column-4-12, .articles-brands-container .column-4-12, .section-consultants .column-container .column-6-12, .section-business-grows .column-container .column-3-12, .section-blog .column-9-12, .section-blog .column-3-12, .related-articles-container .column-4-12, .order-book-container .column-6-12, .contact-form .column-container .column-6-12, .articles-perspective-container .column-6-12, .section-employers-options .column-container .column-6-12, .specialism-box-container .column-4-12, .articles-container .column-6-12, .overview-container .column-3-12, .section-purple .column-container .column-6-12, .section-recruiter-details .column-container .column-4-12, .section-recruiter-jobs .column-container .column-6-12, .referral-form .column-container .column-6-12, .section-coverage .column-container .column-6-12, .section-get-survey .column-container .column-6-12, .section-salary-calculator .column-container .column-6-12, .section-employer-information .column-container .column-3-12, .section-employer-information .column-container .column-4-12, .section-employer-information .column-container .column-5-12, .search-job-form .column-container .column-6-12, .section-business-bg .column-container .column-6-12, .section-send-cv .column-container .column-6-12, .send-cv-form .column-container .column-6-12, .section-jobs .column-container .column-9-12, .section-contact-info .column-container .column-6-12 {
+width: auto;
+float: none;
+}
+
+.section-contact-info .column-container .column-6-12{ 
+width:100%!important; 
+display:block!important; 
+float:none!important;
+}
+
+.menu-section-container {
+margin-bottom: 30px;
+}
+.menu-section li, .section-employers-header .menu-section li {
+display: block;
+padding: 0;
+background: none;
+}
+.menu-section li a:after {
+content: ' >';
+}
+.blog-content, .sidebar {
+padding-top: 30px;
+}
+.section-employers-header .scrollTo-container, .section-employers-descr .scrollTo-container, .section-employers-perspective .scrollTo-container, .section-ebook-title .scrollTo-container, .single-post .section-blog-header .scrollTo-container, .section-recruiter .scrollTo-container, .section-recruiter-details .scrollTo-container, .section-recruiter-jobs .scrollTo-container, .section-referal-scheme .scrollTo-container, .section-coverage .scrollTo-container, .section-salary-header .scrollTo-container, .section-airplane .scrollTo-container, .section-search-job .scrollTo-container, .section-business-bg .scrollTo-container, .section-sendcv-header .scrollTo-container, .section-timeline .scrollTo-container {
+display: none;
+}
+.button-apply, .content .button-apply , .timeline-block .slider-nav-mob{
+display: block;
+}
+.section-qualifications h5, .section-rewards h5, .section-contact-details h5 {
+margin-bottom: 40px;
+}
+.search-form .gutter, .section-salary-calculator .archive-list-block, .article-top, .article-wecome, .section-role .article-role, .section-qualifications ul {
+margin-left: 13px;
+margin-right: 13px;
+}
+
+.form-overlay .gutter {
+margin-left: 3px;
+margin-right: 3px;
+}
+.section-featured-jobs .jobs-details {
+display: none;
+}
+.job-box-container .job-box {
+border-top: 2px solid #ffffff;
+}
+.job-box img, .job-box p, .job-box .button-orange {
+display: none;
+}
+.job-box .overlay {
+position: static;
+top: auto;
+bottom: auto;
+left: auto;
+right: auto;
+overflow: visible;
+padding: 0;
+}
+.job-box h2, .job-box h2 a, .job-box .overlay h2 a {
+font-family: 'Bliss2Light';
+font-size: 18px;
+text-align: left;
+color: #383838;
+background-color: #e8e8e8;
+}
+.job-box h2 a {
+display: block;
+padding: 24px 30px 24px 13px;
+background-image: url(../img/arrows/right-383838.png);
+background-repeat: no-repeat;
+background-position: 100% 50%;
+}
+.section-insights .article-short {
+background: url(../img/arrows/right-ffffff.png) no-repeat 100% 50% #ff7a2b;
+padding: 20px 100px 20px 13px;
+border-top: 2px solid #f2f2f2;
+}
+.section-insights  .article-short, .section-insights  .article-short h2 a:hover, .section-insights  .article-short h2 a:hover span {
+color: #70320d;
+}
+.section-insights  .article-short img, .section-insights  .article-short .button-orange {
+display: none;
+}
+.section-insights  .article-short .article-text {
+padding: 0;
+margin: 0;
+}
+.section-insights .article-short h2, .section-insights .article-short h2 span {
+font-family: 'Bliss2Light';
+font-size: 21px;
+}
+.section-insights .article-short h2 {
+margin: 0 0 3px 0;
+padding-bottom: 0;
+border-bottom: 0 none;
+}
+.section-insights .article-short h2 a, .section-insights .article-short h2 span {
+display: inline;
+}
+.section-insights .article-short h2, .section-insights .article-short h2 a, .section-insights .article-short h2 a span {
+color: #ffffff;
+}
+.section-timeline .timeline-block {
+margin-bottom: 0;
+}
+.articles-brands-container .article-short {
+text-align: center;
+padding-bottom: 25px;
+margin-bottom: 30px;
+border-bottom: 1px solid #dededd;
+}
+.article-short h2 {
+padding-bottom: 0;
+margin-bottom: 20px;
+border-bottom: 0 none;
+}
+.articles-brands-container .article-short img {
+display: block;
+float: none;
+width: auto;
+margin: 0 auto 20px auto;
+}
+.articles-brands-container .article-short .article-text {
+padding: 0;
+}
+.logotypes {
+display: block;
+}
+.logotypes li  {
+display: block;
+float: none;
+width: auto;
+border: 0 none;
+}
+.section-about-top {
+background-position: 100% 50%;
+}
+.section-about-top h1 {
+font-size: 36px;
+margin-bottom: 50px;
+}
+.section-wecome {
+padding-top: 50px;
+padding-bottom: 20px;
+}
+.article-wecome h1 {
+padding-bottom: 25px;
+margin-bottom: 25px;
+}
+.section-consultants {
+padding-top: 40px;
+}
+.section-consultants .article-consult {
+margin: 0 13px 125px 13px;
+padding: 0;
+}
+.section-staff {
+padding: 0;
+}
+.section-staff .column-container .column-1-5 {
+width: 50%;
+}
+.section-business-grows {
+padding-bottom: 10px;
+}
+.business-box {
+margin-bottom: 20px;
+}
+.section-business-grows h1 {
+margin-bottom: 20px;
+}
+.section-business-grows h1 span {
+display: block
+}
+.single-post .section-blog-header {
+padding-top: 40px;
+padding-bottom: 40px;
+background-image: url(../img/sections-mobile/green-texture-v1.jpg);
+background-position: 50% 50%;
+}
+.section-blog-header {
+padding-top: 40px;
+padding-bottom: 0;
+background-position: 0 50%;
+}
+.section-blog-header h1, .section-jobs-header h1 {
+font-size: 36px;
+margin-bottom: 20px;
+}
+.blog-content {
+margin-left: 30px;
+margin-right: 30px;
+}
+.section-blog, .section-blog .column-9-12 {
+background: none;
+}
+.section-blog .column-9-12 {
+min-height: 0 !important;
+}
+.single-post h2 {
+margin-bottom: 3px;
+}
+.section-blog .sidebar {
+display: none;
+}
+.page-template-template-news-php .section-blog .sidebar {
+display: block;
+padding: 30px 0 0 0;
+}
+.page-template-template-news-php .section-blog .sidebar .widget {
+display: none
+}
+.page-template-template-news-php .section-blog .sidebar .downloadbook {
+display: block;
+margin: 0 -10px;
+}
+.section-articles-related {
+padding-bottom: 30px;
+}
+.section-articles-related h1 {
+margin-bottom: 30px;
+}
+.section-articles-related .article-related {
+margin-bottom: 40px;
+}
+.article-related h2 {
+font-size: 14px;
+margin-bottom: 13px;
+}
+.article-related .meta {
+font-size: 11px;
+}
+.buttons-wrapper .button-white {
+display: block;
+width: 250px;
+max-width: 100%;
+margin: 10px auto;
+padding: 13px 0;
+}
+.page-template-template-news-php .section-blog-header {
+padding-top: 25px;
+}
+.page-template-template-news-php .section-blog-header .search-blog-form {
+position: static;
+left: auto;
+top: auto;
+width: 285px;
+max-width: 100%;
+margin: 0 auto 2px auto;
+}
+.page-template-template-news-php .section-blog-header .search-blog-form .field-column, .page-template-template-news-php .section-blog-header .search-blog-form .button-column {
+width: auto;
+float: none;
+margin-bottom: 11px;
+}
+.page-template-template-news-php .section-blog-header .search-blog-form .button-search-post {
+width: 160px;
+margin: 0 auto;
+}
+.page-template-template-news-php .section-blog-header .search-blog-form .gutter {
+margin-left: 0;
+margin-right: 0;
+}
+.article-blog {
+margin-bottom: 45px;
+}
+.article-blog img {
+display: block;
+margin-bottom: 20px;
+margin-right:15px;
+}
+.article-blog h2 {
+font-size: 18px;
+margin-bottom: 5px;
+}
+.article-blog .article-text {
+padding: 0;
+}
+.section-ebook-title {
+padding-top: 100px;
+padding-bottom: 190px;
+background-image: url(../img/sections-mobile/green-texture-v2.jpg);
+background-position: 50% 50%;
+}
+.section-ebook-title h1 {
+font-size: 36px;
+margin-bottom: 0;
+}
+.section-ebook {
+padding-bottom: 40px;
+}
+.section-ebook .article-ebook {
+margin-bottom: 45px;
+}
+.section-contact-header {
+padding-top: 45px;
+padding-bottom: 45px;
+background-image: url(../img/sections-mobile/green-texture-v3.jpg);
+background-position: 50% 50%;
+}
+.section-contact-header .button-section {
+margin-bottom: 60px;
+}
+.section-contact-header h1 {
+font-size: 36px;
+margin-bottom: 25px;
+}
+.section-contact-descr {
+padding-top: 50px;
+padding-bottom: 50px;
+}
+.section-contact-info {
+padding-top: 60px;
+}
+.section-contact-form {
+padding-top: 40px;
+}
+.contact-form .form-legend {
+margin-bottom: 25px;
+}
+.contact-form .label-container{
+margin-bottom: 20px;
+}
+.contact-form .buttons-wrapp, .contact-form .buttons-wrapp .label {
+width: auto;
+}
+.section-employers-header {
+padding-bottom: 50px;
+}
+.section-employers-header h1 {
+font-size: 36px;
+margin-bottom: 30px;
+}
+.section-employers-header .employers-descr {
+font-size: 15px;
+margin-bottom: 0;
+}
+.section-employers-descr {
+padding-top: 25px;
+padding-bottom: 20px;
+}
+.section-employers-descr img {
+margin-bottom: 13px;
+}
+.section-employers-perspective {
+padding-bottom: 55px;
+}
+.section-employers-perspective .article-overlay {
+min-height: 0;
+}
+.perspective-descr, .section-employers-perspective .article-overlay {
+padding: 30px;
+}
+.perspective-descr {
+margin: 0 0 5px 0;
+}
+.section-employers-perspective .article-overlay {
+margin-bottom: 0;
+}
+.section-employers-options {
+padding-top: 55px;
+padding-bottom: 10px;
+}
+.section-employers-options .scrollTo-container {
+display: none;
+}
+.section-employers-options .article-employers-options {
+margin: 0 0 35px 0;
+}
+.article-employers-options h5 {
+margin-bottom: 20px;
+}
+.section-specialisms {
+padding-top: 30px;
+}
+.specialism-box {
+margin-bottom: 0;
+text-align: left;
+}
+.specialism-box img, .specialism-box .overlay p, .specialism-box .overlay .button-orange {
+display: none;
+}
+.specialism-box .overlay {
+position: static;
+top: auto;
+right: auto;
+bottom: auto;
+left: auto;
+padding: 0;
+overflow: visible;
+background: none;
+}
+.specialism-box h5, .specialism-box h5 span {
+font-family: 'Bliss2Light';
+font-size: 18px;
+line-height: 21px;
+}
+.specialism-box h5 {
+text-align: left;
+text-transform: none;
+font-size: 18px;
+margin: 0;
+padding: 0;
+border: 0 none;
+border-top: 2px solid #ffffff;
+background: #e8e8e8;
+}
+.specialism-box h5 span {
+display: inline
+}
+.specialism-box h5 a {
+display: block;
+padding: 23px 30px 23px 13px;
+background: url(../img/arrows/right-383838.png) no-repeat 100% 50% #e8e8e8;
+}
+.specialism-box h5 a, .specialism-box h5 a span {
+color: #383838 !important;
+}
+.section-salary {
+padding-top: 50px;
+padding-bottom: 50px;
+}
+.section-articles-container {
+padding-bottom: 75px;
+}
+.section-articles-container .articles-container {
+margin-bottom: 5px;
+}
+.section-articles-container .article-large-thumb {
+margin-bottom: 40px;
+}
+.article-large-thumb img {
+width: 160px;
+height: auto !important;
+}
+.article-large-thumb .article-text {
+padding: 10px 0 0 170px;
+}
+.article-large-thumb h2 {
+font-size: 18px;
+padding-bottom: 10px;
+margin-bottom: 3px
+}
+.section-iceberg-job .menu-section-container {
+margin-bottom: 30px;
+}
+.section-iceberg-job h1 {
+font-size: 36px;
+margin-bottom: 20px;
+}
+.section-iceberg-job .button-apply {
+margin-bottom: 20px;
+}
+.section-job-overview h1 {
+font-size: 24px;
+margin-bottom: 30px;
+}
+.overview-container {
+padding-bottom: 0;
+margin-bottom: 5px;
+border-bottom: 0 none;
+}
+.overview-container .column-3-12 {
+margin-bottom: 20px;
+}
+.section-job-overview .overview-descr {
+margin-bottom: 40px;
+}
+.section-role {
+padding-top: 50px;
+}
+.section-role .article-role {
+margin-bottom: 50px;
+}
+.article-role {
+font-size: 15px;
+}
+.article-role h2 {
+padding-bottom: 20px;
+}
+.section-skills {
+padding-top: 40px;
+padding-bottom: 0;
+}
+.section-skills h5 {
+margin-bottom: 30px;
+}
+.section-skills h5 span {
+display: block;
+}
+.section-skills .scrollTo-container {
+margin-top: 0
+}
+.section-qualifications {
+padding-top: 50px;
+padding-bottom: 75px;
+}
+.section-qualifications ul {
+text-align: left;
+line-height: 1.4;
+}
+.section-qualifications ul li {
+padding-left: 30px;
+position: relative;
+}
+.section-qualifications ul li img{
+display: block;
+width: 17px;
+height: 13px;
+position: absolute;
+left: 0;
+top: 7px;
+}
+.section-rewards {
+padding-top: 50px;
+padding-bottom: 50px;
+}
+.section-innovation {
+padding-top: 40px;
+}
+.section-innovation h1 {
+font-size: 36px;
+margin-bottom: 35px;
+}
+.section-innovation .scrollTo-container {
+padding-bottom: 30px;
+}
+.section-salary {
+padding-top: 65px;
+background-position: 10% 0;
+}
+.section-salary h1 span {
+display: block
+}
+.section-purple {
+padding-top: 0;
+padding-bottom: 0;
+}
+.section-purple .column-6-12 {
+margin-top: 20px;
+margin-bottom: 20px;
+}
+.section-purple .column-container .column-6-12:first-child {
+margin-top: 0;
+}
+.section-purple .column-container .column-6-12.first-child {
+margin-top: 0;
+}
+.section-purple .column-container .column-6-12:last-child {
+margin-bottom: 0;
+}
+.section-purple .column-container .column-6-12.last-child {
+margin-bottom: 0;
+}
+.section-purple .column-container .article-overlay {
+margin-bottom: 0;
+}
+.section-recruiter .recruiter-thumb {
+float: none;
+width: 130px;
+margin: 15px auto 0 auto;
+}
+.recruiter-thumb img {
+width: 100%;
+}
+.section-recruiter, .section-recruiter h1 {
+text-align: center;
+}
+.section-recruiter .recruiter-info, .section-recruiter .recruiter-contact, .section-recruiter .recruiter-social {
+float: none;
+width: auto;
+padding: 0;
+margin: 0;
+}
+.section-recruiter h1 {
+font-size: 36px;
+margin-bottom: 7px;
+}
+.section-recruiter .recruiter-contact {
+font-size: 18px;
+}
+.section-recruiter-details {
+padding-bottom: 30px;
+}
+.section-recruiter-jobs h6 {
+margin-bottom: 25px;
+}
+.section-articles-related h6 {
+margin-bottom: 35px;
+}
+.section-recruiter-details .article-recruiter, .section-recruiter-jobs .article-last-job, .single-recruiter .article-related {
+margin-left: 20px;
+margin-right: 20px;
+}
+.section-recruiter-details .article-recruiter, .section-recruiter-jobs .article-last-job  {
+margin-bottom: 35px;
+margin-top: 0;
+}
+.article-recruiter h6, .article-recruiter img {
+margin-bottom: 10px;
+}
+.last-job-info p {
+width: auto;
+float: none;
+}
+.section-referal-scheme {
+padding-top: 90px;
+padding-bottom: 100px;
+}
+.section-referal-scheme h1 {
+font-size: 36px;
+margin-bottom: 20px;
+}
+.section-referral-form {
+padding-top: 5px;
+padding-bottom: 30px;
+}
+.referral-form .column-container {
+background: none;
+margin-bottom: 0;
+}
+.referral-form .column-container .column-6-12 {
+padding-top: 45px;
+}
+.referral-form h1 {
+margin-bottom: 25px;
+}
+.referral-form .label {
+font-size: 18px;
+}
+.referral-form .buttons-wrapp {
+width: auto;
+margin-top: 25px;
+}
+.section-coverage {
+padding-top: 50px;
+padding-bottom: 60px;
+}
+.section-coverage .column-container {
+margin-bottom: 70px;
+}
+.section-coverage ul, .section-coverage .share-bar {
+margin-bottom: 0;
+}
+.section-salary-header {
+padding-top: 90px;
+padding-bottom: 75px;
+}
+.section-salary-header h1 {
+font-size: 36px;
+margin-bottom: 30px;
+}
+.section-get-survey {
+padding-bottom: 45px;
+}
+.section-get-survey .column-6-12 {
+margin-bottom: 0;
+}
+.article-learn {
+margin-bottom: 40px;
+}
+.article-learn img {
+margin-bottom: 25px;
+}
+.survey-form-container {
+padding: 0;
+}
+.survey-form .label-container {
+margin-bottom: 20px;
+}
+.section-salary-calculator {
+padding-top: 40px;
+padding-bottom: 0;
+}
+.section-salary-calculator .column-6-12 {
+margin-bottom: 0;
+}
+.section-salary-calculator .archive-list-block {
+padding-top: 0;
+padding-bottom: 10px;
+}
+.archive-list-block h6 {
+margin-bottom: 25px;
+}
+.section-salary-calculator .salary-form-container  {
+margin-bottom: 0;
+padding: 45px 13px 20px 13px;
+}
+.section-airplane {
+padding-bottom: 15px;
+background-position: 100% 50%;
+}
+.section-airplane .menu-section-container {
+margin-bottom: 20px;
+}
+.section-airplane .button-section, .section-airplane h1 {
+margin-bottom: 30px;
+}
+.section-airplane .button-white {
+display: block;
+margin: 0 auto 15px auto;
+min-width: 0;
+width: 230px;
+max-width: 100%;
+padding-left: 0;
+padding-right: 0;
+}
+.e-general-info .e-name, .section-employer-information .e-quote, .section-employer-information .e-contact-info {
+padding-top: 0;
+}
+.e-general-info {
+margin-bottom: 10px;
+}
+.e-name, .e-general-info .e-name {
+font-size: 18px;
+margin-bottom: 20px;
+}
+.e-quote {
+text-align: center;
+margin-bottom: 15px;
+}
+.e-contact-info {
+text-align: center;
+}
+.e-contact-info a {
+margin: 0;
+}
+.section-search-job {
+padding-bottom: 40px;
+}
+.section-search-job h1, .search-job-form h1 {
+margin-bottom: 20px;
+}
+.search-job-form .column-container {
+margin-bottom: 10px;
+}
+.search-job-form .label-container {
+margin-bottom: 20px;
+}
+.search-job-form .check-radio-container {
+text-align: left
+}
+.search-job-form .check-radio-container label {
+display: inline;
+margin: 0;
+padding-right: 24px;
+}
+.section-business-bg {
+padding-top: 0px;
+padding-bottom: 0px;
+}
+.section-business-bg .column-container, .section-business-bg .article-overlay, .section-business-bg .download-book {
+margin-bottom: 0
+}
+.article-overlay {
+padding: 35px 30px 15px 30px;
+}
+.section-business-bg .download-book {
+float: none;
+}
+.download-book img {
+width: 100%;
+}
+.section-sendcv-header {
+padding-top: 70px;
+padding-bottom: 110px;
+}
+.section-sendcv-header .button-section {
+margin-bottom: 40px;
+}
+.section-sendcv-header h1 {
+font-size: 36px;
+margin-bottom: 0;
+}
+.send-cv-form .column-container {
+background-image: none;
+}
+.send-cv-form .titles-container {
+margin-top: 30px;
+}
+.send-cv-form h2 {
+margin-bottom: 3px;
+font-size: 21px;
+padding: 35px 13px;
+}
+.send-cv-form .fields-wrapp {
+padding-top: 45px;
+}
+.send-cv-form .innerwrapp .label-container {
+margin-bottom: 35px;
+}
+.send-cv-form .innerwrapp .label-container:last-child {
+margin-bottom: 35px;
+}
+.send-cv-form .innerwrapp .label-container.last-child {
+margin-bottom: 35px;
+}
+.send-cv-form .buttons-wrapp .label {
+width: auto;
+}
+.section-employers-descr p{
+margin-left: 17px;
+margin-right: 17px;
+}
+.article-job .article-text p {
+display: none;
+}
+.article-job .article-text h2 {
+height: 86px;
+overflow: hidden;
+}
+
+.article-top h1 {
+font-size: 36px;
+}
+.form-overlay {
+width: auto;
+padding: 20px;
+}
+.search-form {
+padding-top: 40px;
+padding-bottom: 20px;
+}
+.search-form .column-container .column-1-5 {
+width: auto;
+float: none;
+margin-bottom: 20px;
+}
+.search-form .search-title {
+margin: 0 0 25px 0
+}
+.search-title, .search-title span {
+font-size: 28px;
+}
+.search-title span {
+display: inline;
+}
+.search-form-block  .search-form-mask {
+background-position: 250px 100%;
+}
+.register-form-block .register-form-mask {
+background-position: 250px 100%;
+}
+.register-form {
+padding-top: 35px;
+}
+.form-title h2, .form-title p {
+text-align: center;
+display: block;
+margin: 0 0 20px 0
+}
+.form-title p {
+line-height: 1.3
+}
+
+.footer {
+padding-top: 50px;
+padding-bottom: 45px;
+}
+.footer .widgets-container {
+margin-bottom: 30px;
+}
+.widgets-container .column1 {
+width: auto;
+float: none;
+margin-bottom: 0;
+}
+.widgets-container .column2,
+.widgets-container .column3,
+.widgets-container .column4,
+.widgets-container .column5,
+.widgets-container .column6,
+.widgets-container .column7,
+.widgets-container .column8 {
+display: none;
+}
+.footer-contact-container {
+clear: both;
+padding-top: 0;
+}
+.footer-contact-container .social {
+float: none;
+text-align: right;
+margin-top: -62px;
+}
+.footer-contact-container .footer-contact {
+padding-top: 0;
+margin-top: 30px;
+text-align: center;
+}
+.footer-contact {
+line-height: 1.4;
+}
+.footer-contact span {
+margin: 5px 10px;
+white-space: nowrap;
+}
+.section-clientcarousel-container .client-carousel .logo-wrap {
+  min-height: 160px;
+}
+.section-clientcarousel-container .owl-buttons .owl-prev,
+.section-clientcarousel-container .owl-buttons .owl-next {
+  background-size: 50% !important;
+  top: 40% !important;
+}
+.section-clientcarousel-container .owl-buttons .owl-prev {
+  left: -10px !important;
+}
+.section-clientcarousel-container .owl-buttons .owl-next {
+  right: -20px !important;
+}
+}
+/**  mobile  **/
+@media only screen and (max-width:480px) {
+  .bgvid {display: none !important;}
+.container {
+width: auto;
+}
+.gutter, .register-form .gutter, .article-wecome {
+margin-left: 13px;
+margin-right: 13px;
+}
+.header {
+font-size: 18px;
+padding-top: 25px;
+padding-bottom: 25px;
+}
+.header .logo {
+margin-top: 0;
+}
+.logo img {
+max-width: 95px;
+}
+.header .social, .header .header-title {
+display: none;
+}
+.header .header-contact {
+float: none;
+padding: 0;
+margin: 0 0 25px 0;
+text-align: right;
+}
+.header .menu-container {
+display: none;
+}
+.header .icon-menu, .menu-mob-container {
+display: block;
+}
+.wrapper.menu-opened {
+margin-left: -210px !important;
+margin-right: 210px !important;
+}
+
+h1, .article-role h2, .section-skills h5, .section-airplane h1, .section-articles-related h6 {
+font-size: 24px;
+margin-bottom: 25px;
+}
+.article-wecome h1, .article-consult h1, .section-business-grows h1, .single-post h2, .section-articles-related h1, .section-employers-perspective h1, .perspective-descr h1, .section-salary h1, .article-last-job h2, .section-get-survey h6, .article-learn h6, .survey-form h6, .section-salary-calculator h6, .archive-list-block h6, .salary-form h6, .section-search-job h1, .search-job-form h1, .article-font-small h5 {
+font-size: 21px;
+}
+.section-green .gutter, .section-featured-jobs .gutter, .section-insights .gutter, .section-consultants .gutter, .section-staff .gutter, .sidebar, .sidebar .widget-ebook, .section-articles-related .related-articles-container, .related-articles-container, .order-book-container .column-space, .contact-form .column-space, .section-employers-perspective .column-space, .section-employers-perspective .gutter, .section-employers-options .column-space, .section-specialisms .gutter, .section-articles-container .column-space, .section-purple .gutter, .section-purple .column-space, .referral-form .column-space, .section-get-survey .column-space, .section-salary-calculator .gutter, .section-salary-calculator .column-space, .section-search-job .column-space, .search-job-form .column-space, .section-business-bg .gutter, .section-business-bg .article-overlay, .section-business-bg .download-book, .section-send-cv .column-space, .send-cv-form .column-space {
+margin-left: 0;
+margin-right: 0;
+}
+.section-featured-jobs, .section-insights, .section-brands-jobs, .section-featured-clients, .section-business-grows, .section-articles-related, .section-ebook, .section-employers-perspective, .section-articles-container, .section-job-overview, .section-recruiter, .section-recruiter-details, .section-recruiter-jobs, .section-get-survey, .section-search-job, .section-send-cv {
+padding-top: 35px;
+}
+.section-featured-jobs, .section-insights, .section-featured-clients, .blog-content, .section-specialisms {
+padding-bottom: 0;
+}
+.job-box-container, .job-box-container .job-box, .job-box h2, .articles-insights-container .article-short {
+margin-bottom: 0;
+}
+.job-box-container .column-3-12, .articles-insights-container .column-4-12, .articles-brands-container .column-4-12, .section-consultants .column-container .column-6-12, .section-business-grows .column-container .column-3-12, .section-blog .column-9-12, .section-blog .column-3-12, .related-articles-container .column-4-12, .order-book-container .column-6-12, .contact-form .column-container .column-6-12, .articles-perspective-container .column-6-12, .section-employers-options .column-container .column-6-12, .specialism-box-container .column-4-12, .articles-container .column-6-12, .overview-container .column-3-12, .section-purple .column-container .column-6-12, .section-recruiter-details .column-container .column-4-12, .section-recruiter-jobs .column-container .column-6-12, .referral-form .column-container .column-6-12, .section-coverage .column-container .column-6-12, .section-get-survey .column-container .column-6-12, .section-salary-calculator .column-container .column-6-12, .section-employer-information .column-container .column-3-12, .section-employer-information .column-container .column-4-12, .section-employer-information .column-container .column-5-12, .search-job-form .column-container .column-6-12, .section-business-bg .column-container .column-6-12, .section-send-cv .column-container .column-6-12, .send-cv-form .column-container .column-6-12, .section-jobs .column-container .column-9-12,.section-contact-info .column-container .column-6-12 {
+width: auto;
+float: none;
+}
+.section-contact-info .column-container .column-6-12{ 
+width:100%!important; 
+display:block!important; 
+float:none!important;
+}
+.menu-section-container {
+padding-top: 20px;
+padding-bottom: 20px;
+margin-bottom: 30px;
+}
+.menu-section li, .section-employers-header .menu-section li {
+display: block;
+padding: 2px 0;
+background: none;
+}
+.menu-section li a:after {
+content: ' >';
+}
+.blog-content, .sidebar {
+padding-top: 30px;
+}
+.section-employers-header .scrollTo-container, .section-employers-descr .scrollTo-container, .section-employers-perspective .scrollTo-container, .section-ebook-title .scrollTo-container, .single-post .section-blog-header .scrollTo-container, .section-recruiter .scrollTo-container, .section-recruiter-details .scrollTo-container, .section-recruiter-jobs .scrollTo-container, .section-referal-scheme .scrollTo-container, .section-coverage .scrollTo-container, .section-salary-header .scrollTo-container, .section-airplane .scrollTo-container, .section-search-job .scrollTo-container, .section-business-bg .scrollTo-container, .section-sendcv-header .scrollTo-container, .section-timeline .scrollTo-container, .page-id-13 .section-salary, .blog-content .textexcerpt {
+display: none;
+}
+.button-apply, .content .button-apply, .timeline-block .slider-nav-mob {
+display: block;
+}
+.section-qualifications h5, .section-rewards h5, .section-contact-details h5 {
+margin-bottom: 40px;
+}
+.search-form .gutter, .section-salary-calculator .archive-list-block, .article-top, .article-wecome, .section-role .article-role, .section-qualifications ul {
+margin-left: 13px;
+margin-right: 13px;
+}
+
+.form-overlay .gutter {
+margin-left: 3px;
+margin-right: 3px;
+}
+.section-featured-jobs .jobs-details {
+display: none;
+}
+.job-box-container .job-box {
+border-top: 2px solid #ffffff;
+}
+.job-box img, .job-box p, .job-box .button-orange {
+display: none;
+}
+.job-box .overlay {
+position: static;
+top: auto;
+bottom: auto;
+left: auto;
+right: auto;
+overflow: visible;
+padding: 0;
+}
+.job-box h2, .job-box h2 a, .job-box .overlay h2 a {
+font-family: 'Bliss2Light';
+font-size: 18px;
+text-align: left;
+color: #383838;
+background-color: #e8e8e8;
+}
+.job-box h2 a {
+display: block;
+padding: 24px 30px 24px 13px;
+background-image: url(../img/arrows/right-383838.png);
+background-repeat: no-repeat;
+background-position: 100% 50%;
+}
+.section-insights .article-short {
+background: url(../img/arrows/right-ffffff.png) no-repeat 100% 50% #ff7a2b;
+padding: 20px 100px 20px 13px;
+border-top: 2px solid #f2f2f2;
+}
+.section-insights  .article-short, .section-insights  .article-short h2 a:hover, .section-insights  .article-short h2 a:hover span {
+color: #70320d;
+}
+.section-insights  .article-short img, .section-insights  .article-short .button-orange {
+display: none;
+}
+.section-insights  .article-short .article-text {
+padding: 0;
+margin: 0;
+}
+.section-insights .article-short h2, .section-insights .article-short h2 span {
+font-family: 'Bliss2Light';
+font-size: 21px;
+}
+.section-insights .article-short h2 {
+margin: 0 0 3px 0;
+padding-bottom: 0;
+border-bottom: 0 none;
+}
+.section-insights .article-short h2 a, .section-insights .article-short h2 span {
+display: inline;
+}
+.section-insights .article-short h2, .section-insights .article-short h2 a, .section-insights .article-short h2 a span {
+color: #ffffff;
+}
+.section-timeline .timeline-block {
+margin-bottom: 0;
+}
+.articles-brands-container .article-short {
+text-align: center;
+padding-bottom: 25px;
+margin-bottom: 30px;
+border-bottom: 1px solid #dededd;
+}
+.article-short h2 {
+padding-bottom: 0;
+margin-bottom: 20px;
+border-bottom: 0 none;
+}
+.articles-brands-container .article-short img {
+display: block;
+float: none;
+width: auto;
+margin: 0 auto 20px auto;
+}
+.articles-brands-container .article-short .article-text {
+padding: 0;
+}
+.logotypes {
+display: block;
+}
+.logotypes li  {
+display: block;
+float: none;
+width: auto;
+border: 0 none;
+}
+.section-about-top {
+background-position: 100% 50%;
+}
+.section-about-top h1 {
+font-size: 36px;
+margin-bottom: 50px;
+}
+.section-wecome {
+padding-top: 50px;
+padding-bottom: 20px;
+}
+.article-wecome h1 {
+padding-bottom: 25px;
+margin-bottom: 25px;
+}
+.section-consultants {
+padding-top: 40px;
+}
+.section-consultants .article-consult {
+margin: 0 13px 125px 13px;
+padding: 0;
+}
+.section-staff {
+padding: 0;
+}
+.section-staff .column-container .column-1-5 {
+width: 50%;
+}
+.section-business-grows {
+padding-bottom: 10px;
+}
+.business-box {
+margin-bottom: 20px;
+}
+.section-business-grows h1 {
+margin-bottom: 20px;
+}
+.section-business-grows h1 span {
+display: block
+}
+.single-post .section-blog-header {
+padding-top: 40px;
+padding-bottom: 40px;
+background-image: url(../img/sections-mobile/green-texture-v1.jpg);
+background-position: 50% 50%;
+}
+.section-blog-header {
+padding-top: 40px;
+padding-bottom: 0;
+background-position: 0 50%;
+}
+.section-blog-header h1 {
+font-size: 36px;
+margin-bottom: 20px;
+}
+.section-jobs-header h1 {
+font-size: 28px;
+margin-bottom: 20px;
+}
+.section-blog, .section-blog .column-9-12 {
+background: none;
+}
+.blog-content {
+margin-left: 30px;
+margin-right: 30px;
+}
+.section-blog .column-9-12 {
+min-height: 0 !important;
+}
+.single-post h2 {
+margin-bottom: 3px;
+}
+.section-blog .sidebar {
+display: none;
+}
+.page-template-template-news-php .section-blog .sidebar {
+display: block;
+padding: 30px 0 0 0;
+}
+.page-template-template-news-php .section-blog .sidebar .widget {
+display: none
+}
+.page-template-template-news-php .section-blog .sidebar .downloadbook {
+display: block;
+margin: 0 -13px;
+}
+.section-articles-related {
+padding-bottom: 30px;
+}
+.section-articles-related h1 {
+margin-bottom: 30px;
+}
+.section-articles-related .article-related {
+margin-bottom: 40px;
+}
+.article-related h2 {
+font-size: 14px;
+margin-bottom: 13px;
+}
+.article-related .meta {
+font-size: 11px;
+}
+.buttons-wrapper .button-white {
+display: block;
+width: 250px;
+max-width: 100%;
+margin: 10px auto;
+padding: 13px 0;
+}
+
+.page-template-template-news-php .section-blog-header {
+padding-top: 25px;
+}
+.page-template-template-news-php .section-blog-header .search-blog-form {
+position: static;
+left: auto;
+top: auto;
+width: 285px;
+max-width: 100%;
+margin: 0 auto 2px auto;
+}
+.page-template-template-news-php .section-blog-header .search-blog-form .field-column, .page-template-template-news-php .section-blog-header .search-blog-form .button-column {
+width: auto;
+float: none;
+margin-bottom: 11px;
+}
+.page-template-template-news-php .section-blog-header .search-blog-form .button-search-post {
+width: 160px;
+margin: 0 auto;
+}
+.page-template-template-news-php .section-blog-header .search-blog-form .gutter {
+margin-left: 0;
+margin-right: 0;
+}
+.article-blog {
+margin-bottom: 45px;
+}
+.article-blog img {
+display: block;
+float: none;
+width: 100%;
+margin-bottom: 20px;
+}
+.article-blog h2 {
+font-size: 18px;
+margin-bottom: 5px;
+}
+.article-blog .article-text {
+padding: 0;
+}
+.section-ebook-title {
+padding-top: 100px;
+padding-bottom: 190px;
+background-image: url(../img/sections-mobile/green-texture-v2.jpg);
+background-position: 50% 50%;
+}
+.section-ebook-title h1 {
+font-size: 36px;
+margin-bottom: 0;
+}
+.section-ebook {
+padding-bottom: 40px;
+}
+.section-ebook .article-ebook {
+margin-bottom: 45px;
+}
+.section-contact-header {
+padding-top: 45px;
+padding-bottom: 45px;
+background-image: url(../img/sections-mobile/green-texture-v3.jpg);
+background-position: 50% 50%;
+}
+.section-contact-header .button-section {
+margin-bottom: 60px;
+}
+.section-contact-header h1 {
+font-size: 36px;
+margin-bottom: 25px;
+}
+.section-contact-descr {
+padding-top: 50px;
+padding-bottom: 50px;
+}
+.section-contact-info {
+padding-top: 60px;
+}
+.section-contact-form {
+padding-top: 40px;
+}
+.contact-form .form-legend {
+margin: 0 13px 25px 13px;
+}
+.contact-form .label-container{
+margin-bottom: 20px;
+}
+.contact-form .buttons-wrapp, .contact-form .buttons-wrapp .label {
+width: auto;
+}
+.section-employers-header {
+background-image: url(../img/sections-mobile/iceberg.jpg);
+padding-bottom: 50px;
+}
+.section-employers-header h1 {
+font-size: 36px;
+margin-bottom: 30px;
+}
+.section-employers-header .employers-descr {
+font-size: 15px;
+margin-bottom: 0;
+}
+.section-employers-descr {
+padding-top: 25px;
+padding-bottom: 20px;
+}
+.section-employers-descr img {
+margin-bottom: 13px;
+}
+.section-employers-perspective {
+padding-bottom: 55px;
+}
+.section-employers-perspective .article-overlay {
+min-height: 0;
+}
+.perspective-descr, .section-employers-perspective .article-overlay {
+padding: 30px;
+}
+.perspective-descr {
+margin: 0 0 5px 0;
+}
+.section-employers-perspective .article-overlay {
+margin-bottom: 0;
+}
+.section-employers-options {
+padding-top: 55px;
+padding-bottom: 10px;
+}
+.section-employers-options .scrollTo-container {
+display: none;
+}
+.section-employers-options .article-employers-options {
+margin: 0 0 35px 0;
+}
+.article-employers-options h5 {
+margin-bottom: 20px;
+}
+.section-specialisms {
+padding-top: 30px;
+}
+.specialism-box {
+margin-bottom: 0;
+text-align: left;
+}
+.specialism-box img, .specialism-box .overlay p, .specialism-box .overlay .button-orange {
+display: none;
+}
+.specialism-box .overlay {
+position: static;
+top: auto;
+right: auto;
+bottom: auto;
+left: auto;
+padding: 0;
+overflow: visible;
+background: none;
+}
+.specialism-box h5, .specialism-box h5 span {
+font-family: 'Bliss2Light';
+font-size: 18px;
+line-height: 21px;
+}
+.specialism-box h5 {
+text-align: left;
+text-transform: none;
+font-size: 18px;
+margin: 0;
+padding: 0;
+border: 0 none;
+border-top: 2px solid #ffffff;
+background: #e8e8e8;
+}
+.specialism-box h5 span {
+display: inline
+}
+.specialism-box h5 a {
+display: block;
+padding: 23px 30px 23px 13px;
+background: url(../img/arrows/right-383838.png) no-repeat 100% 50% #e8e8e8;
+}
+.specialism-box h5 a, .specialism-box h5 a span {
+color: #383838 !important;
+}
+.section-salary {
+padding-top: 50px;
+padding-bottom: 50px;
+}
+.section-articles-container {
+padding-bottom: 75px;
+}
+.section-articles-container .articles-container {
+margin-bottom: 5px;
+}
+.section-articles-container .article-large-thumb {
+margin-bottom: 40px;
+}
+.article-large-thumb img {
+width: 160px;
+height: auto !important;
+}
+.article-large-thumb .article-text {
+padding: 10px 0 0 170px;
+}
+.article-large-thumb h2 {
+font-size: 18px;
+padding-bottom: 10px;
+margin-bottom: 3px
+}
+.section-iceberg-job .menu-section-container {
+margin-bottom: 30px;
+}
+.section-iceberg-job h1 {
+font-size: 36px;
+margin-bottom: 20px;
+}
+.section-iceberg-job .button-apply {
+margin-bottom: 20px;
+}
+.section-job-overview h1 {
+font-size: 24px;
+margin-bottom: 30px;
+}
+.overview-container {
+padding-bottom: 0;
+margin-bottom: 5px;
+border-bottom: 0 none;
+}
+.overview-container .column-3-12 {
+margin-bottom: 20px;
+}
+.section-job-overview .overview-descr {
+margin-bottom: 40px;
+}
+.section-role {
+padding-top: 50px;
+}
+.section-role .article-role {
+margin-bottom: 50px;
+}
+.article-role {
+font-size: 15px;
+}
+.article-role h2 {
+padding-bottom: 20px;
+}
+.section-skills {
+padding-top: 40px;
+padding-bottom: 0;
+}
+.section-skills h5 {
+margin-bottom: 30px;
+}
+.section-skills h5 span {
+display: block;
+}
+.section-skills .scrollTo-container {
+margin-top: 0
+}
+.section-qualifications {
+padding-top: 50px;
+padding-bottom: 75px;
+}
+.section-qualifications ul {
+text-align: left;
+line-height: 1.4;
+}
+.section-qualifications ul li {
+padding-left: 30px;
+position: relative;
+}
+.section-qualifications ul li img{
+display: block;
+width: 17px;
+height: 13px;
+position: absolute;
+left: 0;
+top: 7px;
+}
+.section-rewards {
+padding-top: 50px;
+padding-bottom: 50px;
+}
+.section-innovation {
+padding-top: 40px;
+}
+.section-innovation h1 {
+font-size: 36px;
+margin-bottom: 35px;
+}
+.section-innovation .scrollTo-container {
+padding-bottom: 30px;
+}
+.section-salary {
+padding-top: 65px;
+background-position: 10% 0;
+}
+.section-salary h1 span {
+display: block
+}
+.section-purple {
+padding-top: 0;
+padding-bottom: 0;
+}
+.section-purple .column-6-12 {
+margin-top: 20px;
+margin-bottom: 20px;
+}
+.section-purple .column-container .column-6-12:first-child {
+margin-top: 0;
+}
+.section-purple .column-container .column-6-12.first-child {
+margin-top: 0;
+}
+.section-purple .column-container .column-6-12:last-child {
+margin-bottom: 0;
+}
+.section-purple .column-container .column-6-12.last-child {
+margin-bottom: 0;
+}
+.section-purple .column-container .article-overlay {
+margin-bottom: 0;
+}
+.section-recruiter .recruiter-thumb {
+float: none;
+width: 130px;
+margin: 15px auto 0 auto;
+}
+.recruiter-thumb img {
+width: 100%;
+}
+.section-recruiter, .section-recruiter h1 {
+text-align: center;
+}
+.section-recruiter .recruiter-info, .section-recruiter .recruiter-contact, .section-recruiter .recruiter-social {
+float: none;
+width: auto;
+padding: 0;
+margin: 0;
+}
+.section-recruiter h1 {
+font-size: 36px;
+margin-bottom: 7px;
+}
+.section-recruiter .recruiter-contact {
+font-size: 18px;
+}
+.section-recruiter-details {
+padding-bottom: 30px;
+}
+.section-recruiter-jobs h6 {
+margin-bottom: 25px;
+}
+.section-articles-related h6 {
+margin-bottom: 35px;
+}
+.section-recruiter-details .article-recruiter, .section-recruiter-jobs .article-last-job, .single-recruiter .article-related {
+margin-left: 20px;
+margin-right: 20px;
+}
+.section-recruiter-details .article-recruiter, .section-recruiter-jobs .article-last-job  {
+margin-bottom: 35px;
+margin-top: 0;
+}
+.article-recruiter h6, .article-recruiter img {
+margin-bottom: 10px;
+}
+.last-job-info p {
+width: auto;
+float: none;
+}
+.section-referal-scheme {
+padding-top: 90px;
+padding-bottom: 100px;
+}
+.section-referal-scheme h1 {
+font-size: 36px;
+margin-bottom: 20px;
+}
+.section-referral-form {
+padding-top: 5px;
+padding-bottom: 30px;
+}
+.referral-form .column-container {
+background: none;
+margin-bottom: 0;
+}
+.referral-form .column-container .column-6-12 {
+padding-top: 45px;
+}
+.referral-form h1 {
+margin-bottom: 25px;
+}
+.referral-form .label {
+font-size: 18px;
+}
+.referral-form .buttons-wrapp {
+width: auto;
+margin-top: 25px;
+}
+.section-coverage {
+padding-top: 50px;
+padding-bottom: 60px;
+}
+.section-coverage .gutter {
+margin:0px;
+}
+.section-coverage .column-container {
+margin:0px 13px;
+}
+.section-coverage .column-container {
+margin-bottom: 70px;
+}
+.section-coverage ul, .section-coverage .share-bar {
+margin-bottom: 0;
+}
+.section-salary-header {
+padding-top: 90px;
+padding-bottom: 75px;
+}
+.section-salary-header h1 {
+font-size: 36px;
+margin-bottom: 30px;
+}
+.section-get-survey {
+padding-bottom: 45px;
+}
+.section-get-survey .column-6-12 {
+margin-bottom: 0;
+}
+.article-learn {
+margin-bottom: 40px;
+}
+.article-learn img {
+margin-bottom: 25px;
+}
+.survey-form-container {
+padding: 0;
+}
+.survey-form .label-container {
+margin-bottom: 20px;
+}
+.section-salary-calculator {
+padding-top: 40px;
+padding-bottom: 0;
+}
+.section-salary-calculator .column-6-12 {
+margin-bottom: 0;
+}
+.section-salary-calculator .archive-list-block {
+padding-top: 0;
+padding-bottom: 10px;
+}
+.archive-list-block h6 {
+margin-bottom: 25px;
+}
+.section-salary-calculator .salary-form-container  {
+margin-bottom: 0;
+padding: 45px 13px 20px 13px;
+}
+.section-airplane {
+padding-bottom: 15px;
+background-position: 100% 50%;
+}
+.section-airplane .menu-section-container {
+margin-bottom: 20px;
+}
+.section-airplane .button-section, .section-airplane h1 {
+margin-bottom: 30px;
+}
+.section-airplane .button-white {
+display: block;
+margin: 0 auto 15px auto;
+min-width: 0;
+width: 230px;
+max-width: 100%;
+padding-left: 0;
+padding-right: 0;
+}
+.e-general-info .e-name, .section-employer-information .e-quote, .section-employer-information .e-contact-info {
+padding-top: 0;
+}
+.e-general-info {
+margin-bottom: 10px;
+}
+.e-name, .e-general-info .e-name {
+font-size: 18px;
+margin-bottom: 20px;
+}
+.e-quote {
+text-align: center;
+margin-bottom: 15px;
+}
+.e-contact-info {
+text-align: center;
+}
+.e-contact-info a {
+margin: 0;
+}
+.section-search-job {
+padding-bottom: 40px;
+}
+.section-search-job h1, .search-job-form h1 {
+margin-bottom: 20px;
+}
+.search-job-form .column-container {
+margin-bottom: 10px;
+}
+.search-job-form .label-container {
+margin-bottom: 20px;
+}
+.search-job-form .check-radio-container {
+text-align: left
+}
+.search-job-form .check-radio-container label {
+margin: 0;
+display: block;
+}
+.section-business-bg {
+padding-top: 0px;
+padding-bottom: 0px;
+}
+.section-business-bg .column-container, .section-business-bg .article-overlay, .section-business-bg .download-book {
+margin-bottom: 0
+}
+.article-overlay {
+padding: 35px 30px 15px 30px;
+}
+.section-business-bg .download-book {
+float: none;
+}
+.download-book img {
+width: 100%;
+}
+.section-sendcv-header {
+padding-top: 70px;
+padding-bottom: 110px;
+}
+.section-sendcv-header .button-section {
+margin-bottom: 40px;
+}
+.section-sendcv-header h1 {
+font-size: 36px;
+margin-bottom: 0;
+}
+.send-cv-form .column-container {
+background-image: none;
+}
+.send-cv-form .titles-container {
+margin-top: 30px;
+}
+.send-cv-form h2 {
+margin-bottom: 3px;
+font-size: 21px;
+padding: 35px 13px;
+}
+.send-cv-form .fields-wrapp {
+padding-top: 45px;
+}
+.send-cv-form .innerwrapp .label-container {
+margin-bottom: 35px;
+}
+.send-cv-form .innerwrapp .label-container:last-child {
+margin-bottom: 35px;
+}
+.send-cv-form .innerwrapp .label-container.last-child {
+margin-bottom: 35px;
+}
+.send-cv-form .buttons-wrapp .label {
+width: auto;
+}
+.send-cv-form .clickhere-mob {
+margin-bottom: 20px;
+}
+.send-cv-form .clickhere-mob, .send-cv-form .clickhere-mob a{
+color: #ff7a2b;
+}
+.send-cv-form .clickhere-mob a:hover{
+color: #737272
+}
+.section-employers-descr p{
+margin-left: 17px;
+margin-right: 17px;
+}
+
+.article-job .article-job-info {
+width: auto;
+float: none;
+}
+.article-job .article-text {
+padding: 25px 0 0 0;
+}
+.section-articles-related .article-related .article-text {
+ clear: both;
+padding-left: 0;
+}
+.article-job h2 {
+margin-bottom: 15px;
+}
+.uploader {
+background-position: 110% 50%;
+}
+
+.slider-section-green{
+padding-top: 40px;
+padding-bottom: 230px;
+}
+.article-top h1 {
+font-size: 28px;
+}
+.section-green .gutter .form-overlay-container {
+bottom: 140px;
+}
+.form-overlay {
+width: auto;
+padding: 10px;
+}
+.get-hired-form .column-container .column-6-12 {
+width: auto;
+float: none;
+padding-top: 10px;
+padding-bottom: 10px;
+}
+.search-form {
+padding-top: 40px;
+padding-bottom: 20px;
+}
+.search-form .column-container .column-1-5 {
+width: auto;
+float: none;
+margin-bottom: 20px;
+}
+.search-form .search-title {
+margin: 0 0 25px 0;
+}
+.search-title, .search-title span {
+font-size: 24px;
+}
+.search-title span {
+display: inline
+}
+.search-form-block  .search-form-mask {
+background-position: 13px 100%;
+}
+.register-form-block .register-form-mask {
+background-position: 13px 100%;
+}
+.register-form {
+padding-top: 35px;
+padding-bottom: 10px;
+margin-left: 0;
+margin-right: 0;
+}
+.register-form .column-container .column-4-12 {
+width: auto;
+float: none;
+margin-bottom: 25px;
+}
+.form-title h2, .form-title p {
+text-align: center;
+display: block;
+margin: 0 0 20px 0
+}
+
+.form-title p {
+line-height: 1.3
+}
+.footer {
+padding-top: 50px;
+padding-bottom: 45px;
+}
+.footer .widgets-container {
+margin-bottom: 30px;
+}
+.widgets-container .column1 {
+width: auto;
+float: none;
+margin-bottom: 0;
+}
+.widgets-container .column2,
+.widgets-container .column3,
+.widgets-container .column4,
+.widgets-container .column5,
+.widgets-container .column6,
+.widgets-container .column7,
+.widgets-container .column8 {
+display: none;
+}
+.footer-contact-container {
+clear: both;
+padding-top: 0;
+}
+.footer-contact-container .social {
+float: none;
+text-align: right;
+margin-top: -62px;
+}
+.footer-contact-container .footer-contact {
+padding-top: 0;
+margin-top: 30px;
+text-align: center;
+}
+.footer-contact {
+line-height: 1.4;
+}
+.footer-contact span {
+margin: 5px 10px;
+white-space: nowrap;
+}
+.section-coverage ul li {
+padding-left: 0%;
+}
+.logotypes li {
+    float: left;
+    height: 100px;
+    width: 50%;
+}
+.twitter-follow {
+  margin: 0 13px;
+}
+.twitter-follow p {
+  font-size: 15px;
+}
+.register-form .form-title h2 {
+  width: 100%;
+}
+.section-clientcarousel-container {
+  padding: 40px 0 100px;
+}
+.section-clientcarousel-container h3 {
+  margin-bottom: 40px;
+}
+.section-clientcarousel-container .client-carousel {
+  width: 70%;
+}
+.section-clientcarousel-container .client-carousel .logo-wrap {
+  margin: 0;
+  max-width: 100%;
+  min-height: 200px;
+}
+.section-clientcarousel-container .client-carousel .logo-wrap img {
+  max-height: 80%;
+}
+.section-clientcarousel-container .owl-buttons .owl-prev,
+.section-clientcarousel-container .owl-buttons .owl-next {
+  top: 48% !important;
+  background-size: 40% !important;
+}
+.section-clientcarousel-container .owl-buttons .owl-prev {
+  left: -25px !important;
+}
+.section-clientcarousel-container .owl-buttons .owl-next {
+  right: -50px !important;
+}
+}
+/**  retina display  **/
+@media
+only screen and (-webkit-min-device-pixel-ratio: 1.5),
+only screen and (   min--moz-device-pixel-ratio: 1.5),
+only screen and (     -o-min-device-pixel-ratio: 3/2),
+only screen and (        min-device-pixel-ratio: 1.5),
+only screen and (             min-resolution: 144dpi),
+only screen and (            min-resolution: 1.5dppx) {
+
+  /* Retina-specific stuff here */
+
+}

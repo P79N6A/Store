@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 33: Custom Table Cells</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 33: Custom Table Cells</h1>
+
+<p>Before your app can search the iTunes store for real, first let’s make the table view look a little better. Appearance does matter when it comes to apps!
+</p>
+<p>Your app will still use the same fake data, but you’ll make it look a bit better. This is what you’ll have by the end of this chapter:
+</p><div class="image-15"><img src="graphics/img545.png"  alt="" title="The app with better looks" /></div>
+<p>In the process, you will learn the following:
+</p>
+<ul>
+<li>
+<p><em>Custom table cells and nibs:</em> How to create, configure and use a custom table cell via nib file.
+</p></li>
+
+<li>
+<p><em>Change the look of the app:</em> Change the look of the app to make it more exciting and vibrant.
+</p></li>
+
+<li>
+<p><em>Tag commits:</em> Use Xcode&apos;s built-in Git support to tag a specific commit for later identification of significant milestones in the codebase.
+</p></li>
+
+<li>
+<p><em>The debugger:</em> Use the debugger to identify common crashes and figure out the root cause of the crash.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Custom table cells and nibs</h2>
+
+<p>For the previous apps, you used prototype cells to create your own table view cell layouts. That works great, but there’s another way. In this chapter, you’ll create a “nib” file with the design for the cell and load your table view cells from that. The principle is very similar to prototype cells.
+</p>
+<p>A nib, also called a xib, is very much like a storyboard except that it only contains the design for a single item. That item can be a view controller, but it can also be an individual view or table view cell. A nib is really nothing more than a container for a “freeze dried” object that you can edit in Interface Builder.
+</p>
+<p>In practice, many apps consist of a combination of nibs and storyboard files, so it’s good to know how to work with both.
+</p>
+<h3 class="segment-chapter">Add assets</h3>
+
+<p>➤ First, add the contents of the <em>Images</em> folder from this app’s resources into the project’s asset catalog, <em>Assets.xcassets</em>.
+</p><div class="image-60"><img src="graphics/img546.png"  alt="" title="Imported images in the asset catalog" /></div>
+<p>Each of the images comes in two versions: 2x and 3x. There are no low-resolution 1x devices that can run the latest version of iOS. So there’s no point in including 1x images.
+</p>
+<h3 class="segment-chapter">Add a nib file</h3>
+
+<p>➤ Add a new file to the project. Choose the <em>Empty</em> template from the <em>User Interface</em> category after scrolling down in the template chooser. This will create a new empty nib.
+</p><div class="image-60"><img src="graphics/img547.png"  alt="" title="Adding an empty nib to the project" /></div>
+<p>➤ Click <em>Next</em> and save the new file as <em>SearchResultCell</em>.
+</p>
+<p>Open <em>SearchResultCell.xib</em> and you will see an empty canvas.
+</p>
+<div class="note">
+<p><em>Xib or nib</em>
+</p>
+<p>I’ve been calling it a nib but the file extension is <em>.</em><em>xib</em>. So what is the difference? In practice, these terms are used interchangeably. Technically speaking, a xib file is compiled into a nib file that is put into your application bundle. The term nib mostly stuck for historical reasons — it stands for <i>NeXT Interface Builder</i>, from the old NeXT platform from the 1990s.
+</p>
+<p>You can consider the terms “xib file” and “nib file” to be equivalent. The preferred term seems to be nib, so that is what I will be using from now on. This won’t be the last time computer terminology is confusing, ambiguous or inconsistent. The world of programming is full of jargon.
+</p></div>
+
+<p>➤ Use the <em>View as:</em> panel to switch to <em>iPhone SE</em> dimensions. As usual, we’ll design for this device but use Auto Layout to make the user interface adapt to larger devices/screens.
+</p>
+<p>➤ From the Objects Library, drag a new <em>Table View Cell</em> on to the canvas:
+</p><div class="image-25"><img src="graphics/img548.png"  alt="" title="The Table View Cell in the Objects Library" /></div>
+<p>➤ Select the new Table View Cell and go to the <em>Size inspector</em>. Type 80 in the <em>Height</em> field (not Row Height). Make sure <em>Width</em> is 320, the width of the iPhone SE screen.
+</p>
+<p>The cell now looks like this:
+</p><div class="image-40"><img src="graphics/img549.png"  alt="" title="An empty table view cell" /></div>
+<div class="note">
+<p><em>Note:</em> Sometimes, you might have a blue bounding rectangle for the cell which is slightly offset from the actual cell&apos;s location. This is an Interface Builder bug. If this happens to you, simply switch to some other file and then switch back to the SearchResultCell.xib — all should be well at this point.
+</p></div>
+
+<p>➤ Drag an <em>Image View</em> and two <em>Labels</em> into the cell, like this:
+</p><div class="image-40"><img src="graphics/img550.png"  alt="" title="The design of the cell" /></div>
+<div class="note">
+<p><em>Note:</em> If you get blue rectangles around each item like above — or would like to get the rectangles to see the full bounds of each item — then use the <em>Editor → Canvas → Show Bounds Rectangles</em> menu item to toggle the bounds rectangles on/off.
+</p></div>
+
+<p>➤ Position the Image View at <em>X</em>:16, <em>Y</em>:10, <em>Width</em>:60, <em>Height</em>:60.
+</p>
+<p>➤ Set the <em>Text</em> of the first label to <em>Name</em>, <em>Font</em> to <em>System 18</em>, <em>X</em>:84, <em>Y</em>:16, <em>Width</em>:220, <em>Height</em>:22.
+</p>
+<p>➤ Set the <em>Text</em> for the second label to <em>Artist Name</em>, <em>Font</em> to <em>System 15</em>, <em>Color</em> to <em>black with 50% opacity</em>, <em>X</em>:84, <em>Y</em>:44, <em>Width</em>:220, <em>Height</em>:18. .
+</p>
+<p>As you can see, editing a nib is just like editing a storyboard. The difference is that the canvas is a lot smaller because you’re only editing a single table view cell, not an entire view controller.
+</p>
+<p>➤ The Table View Cell itself needs to have a reuse identifier. You can set this in the <em>Attributes inspector</em> to <em>SearchResultCell</em>.
+</p>
+<p>The image view will hold the artwork for the found item, such as an album cover, book cover, or an app icon. It may take a few seconds for these images to be loaded, so until then, it’s a good idea to show a placeholder image. That placeholder is part of the image files you just added to the project.
+</p>
+<p>➤ Select the Image View. In the <em>Attributes inspector</em>, set <em>Image</em> to <em>Placeholder</em>.
+</p>
+<p>The cell design should now look like this:
+</p><div class="image-40"><img src="graphics/img551.png"  alt="" title="The cell design with placeholder image" /></div>
+<p>You’re not done yet. The design for the cell is only 320 points wide but there are iOS devices with screens wider than that. The cell itself will resize to accommodate those larger screens, but the labels won’t, potentially causing their text to be cut off. You’ll have to add some Auto Layout constraints to make the labels resize along with the cell.
+</p>
+<h3 class="segment-chapter">Set up Auto Layout constraints</h3>
+
+<p>When setting up Auto Layout constraints, it&apos;s best to start from one edge — like the top left for left-to-right screens, but do remember there are also screens which can be right-to-left — and work your way left and down. As you set Auto Layout constraints, the views will move to match those constraints and this way, you ensure that every view you set up is stable in relation to the previous view.
+</p>
+<p>If you randomly set up layout constraints for views, you&apos;ll see your views moving all over the place and you might not remember after a while where you originally had any view placed.
+</p>
+<p>➤ Select the <em>Image View</em> and open the <em>Add New Constraints</em> menu. Uncheck <em>Constrain to margins</em> and pin the Image View to the <em>top</em> and <em>left</em> sides of the cell. Also give it <em>Width</em> and <em>Height</em> constraints so that its size is always fixed at 60 by 60 points:
+</p><div class="image-30"><img src="graphics/img552.png"  alt="" title="The constraints for the Image View" /></div>
+<p>➤ Click <em>Add 4 Constraints</em> to actually add the constraints.
+</p>
+<p>➤ Select the <em>Name</em> label and again use the <em>Add New Constraints</em> menu. Uncheck <em>Constrain to margins</em> and select the <em>top</em>, <em>left</em>, and <em>right</em> pins (but not the bottom one):
+</p><div class="image-25"><img src="graphics/img553.png"  alt="" title="The constraints for the Name label" /></div>
+<p>➤ Click <em>Add 3 Constraints</em>.
+</p>
+<p>➤ Finally, pin the <em>Artist Name</em> label to the <em>left</em>, <em>top</em>, <em>right</em> and <em>bottom</em> — again without constraining to margins — as above by adding 4 new constraints.
+</p>
+<p>That concludes the design for this cell. Now you have to tell the app to use this nib.
+</p>
+<h3 class="segment-chapter">Register nib file for use in code</h3>
+
+<p>➤ In <em>SearchViewController.swift</em>, add these lines to the end of <code>viewDidLoad()</code>:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> cellNib = <span class="hljs-type">UINib</span>(nibName: <span class="hljs-string">"SearchResultCell"</span>, bundle: <span class="hljs-literal">nil</span>)
+tableView.register(cellNib, forCellReuseIdentifier: 
+                            <span class="hljs-string">"SearchResultCell"</span>)</pre>
+<p>The <code>UINib</code> class is used to load nibs. Here, you tell it to load the nib you just created — note that you don’t specify the .xib file extension. Then you ask the table view to register this nib for the reuse identifier “SearchResultCell”.
+</p>
+<p>From now on, when you call <code>dequeueReusableCell(withIdentifier:)</code> for the identifier “SearchResultCell”, <code>UITableView</code> will automatically make a new cell from the nib — or reuse an existing cell if one is available, of course. And that’s all you need to do.
+</p>
+<p>➤ In <code>tableView(_:cellForRowAt:)</code> change this bit of code:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> cellIdentifier = <span class="hljs-string">"SearchResultCell"</span>
+
+<span class="hljs-keyword">var</span> cell: <span class="hljs-type">UITableViewCell</span>! = tableView.dequeueReusableCell(
+                             withIdentifier: cellIdentifier)
+<span class="hljs-keyword">if</span> cell == <span class="hljs-literal">nil</span> {
+  cell = <span class="hljs-type">UITableViewCell</span>(style: .subtitle, 
+                         reuseIdentifier: cellIdentifier)
+}</pre>
+<p>So that the final method looks like this:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+    cellForRowAt indexPath: IndexPath)</span></span> -&gt; <span class="hljs-type">UITableViewCell</span> {
+
+  <span class="hljs-keyword">let</span> cell = tableView.dequeueReusableCell(
+             withIdentifier: <span class="hljs-string">"SearchResultCell"</span>, <span class="hljs-keyword">for</span>: indexPath)
+  <span class="hljs-keyword">if</span> searchResults.<span class="hljs-built_in">count</span> == <span class="hljs-number">0</span> {
+    . . .
+  } <span class="hljs-keyword">else</span> {
+    . . .
+  }
+  <span class="hljs-keyword">return</span> cell
+}</pre>
+<p>You were able to replace a chunk of code with just one statement. Now, it’s almost exactly like using prototype cells, except that you have to create your own nib object and you need to register it with the table view beforehand.
+</p>
+<div class="note">
+<p><em>Note:</em> The call to <code>dequeueReusableCell(withIdentifier:)</code> now takes a second parameter, <code>for:</code>, that takes an <code>IndexPath</code> value. This variant of the dequeue method lets the table view be a bit smarter, but it only works when you have registered a nib with the table view — or when you use a prototype cell.
+</p></div>
+
+<p>➤ Run the app and do a (fake) search. Yikes, the app crashes.
+</p>
+<div class="note">
+<p><em>Exercise.</em> Any ideas why?
+</p></div>
+
+<p>Answer: Because you made your own custom cell design, you cannot use the <code>textLabel</code> and <code>detailTextLabel</code> properties of <code>UITableViewCell</code>.
+</p>
+<p>Every table view cell — even a custom cell that you load from a nib — has a few labels and an image view of its own, but you should only employ these when you’re using one of the standard cell styles: <code>.default</code>, <code>.subtitle</code>, etc. If you use them on custom cells, then these built-in labels get in the way of your own labels.
+</p>
+<p>In this case, you shouldn’t use <code>textLabel</code> and <code>detailTextLabel</code> to put text into the cell — you need to make your own properties for your labels.
+</p>
+<p>Where do you put these properties? In a new class, of course. You’re going to make a new class named <code>SearchResultCell</code> which extends <code>UITableViewCell</code> and has properties — and logic — for displaying the search results in this app.
+</p>
+<h3 class="segment-chapter">Add a custom UITableVIewCell subclass</h3>
+
+<p>➤ Add a new file to the project using the <em>Cocoa Touch Class</em> template. Name it <em>SearchResultCell</em> and make it a subclass of <em>UITableViewCell</em> — watch out for the class name changing if you select the subclass after you set the name. “Also create XIB file” should be unchecked as you already have one.
+</p>
+<p>This creates the Swift file to accompany the nib file you created earlier.
+</p>
+<p>➤ Open <em>SearchResultCell.xib</em> and select the Table View Cell — make sure you select the actual Table View Cell object, not its Content View.
+</p>
+<p>➤ In the <em>Identity inspector</em>, change its class from “UITableViewCell” to <em>SearchResultCell</em>.
+</p>
+<p>You do this to tell the nib that the top-level view object it contains is no longer a <code>UITableViewCell</code> but your own <code>SearchResultCell</code> subclass. From now on, whenever you call <code>dequeueReusableCell()</code>, the table view will return an object of type <code>SearchResultCell</code>.
+</p>
+<p>➤ Add the following outlet properties to <em>SearchResultCell.swift</em>:
+</p><pre class="code-block"><span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> nameLabel: <span class="hljs-type">UILabel</span>!
+<span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> artistNameLabel: <span class="hljs-type">UILabel</span>!
+<span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> artworkImageView: <span class="hljs-type">UIImageView</span>!</pre>
+<p>➤ Hook these outlets up to the respective labels and image view in the nib. It is easiest to do this from the Connections inspector for SearchResultCell:
+</p><div class="image-90"><img src="graphics/img554.tiff"  alt="" title="Connect the labels and image view to Search Result Cell" /></div>
+<p>You can also open the Assistant editor and Control-drag from the labels and image view to their respective outlet definitions. If you’ve used nib files before you might be tempted to connect the outlets to File’s Owner but that won’t work in this case; they must be connected to the table view cell.
+</p>
+<p>Now that this is all set up, you can tell the <code>SearchViewController</code> to use these new <code>SearchResultCell</code> objects.
+</p>
+<h3 class="segment-chapter">Use custom table view cell in app</h3>
+
+<p>➤ In <em>SearchViewController.swift</em>, change <code>cellForRowAt</code> to:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+    cellForRowAt indexPath: IndexPath)</span></span> -&gt; <span class="hljs-type">UITableViewCell</span> {
+
+  <span class="hljs-keyword">let</span> cell = tableView.dequeueReusableCell(withIdentifier: 
+             <span class="hljs-string">"SearchResultCell"</span>, <span class="hljs-keyword">for</span>: indexPath) 
+             <span class="hljs-keyword">as</span>! <span class="hljs-type">SearchResultCell</span>
+  <span class="hljs-keyword">if</span> searchResults.<span class="hljs-built_in">count</span> == <span class="hljs-number">0</span> {
+    cell.nameLabel.text = <span class="hljs-string">"(Nothing found)"</span>
+    cell.artistNameLabel.text = <span class="hljs-string">""</span>
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">let</span> searchResult = searchResults[indexPath.row]
+    cell.nameLabel.text = searchResult.name
+    cell.artistNameLabel.text = searchResult.artistName
+  }
+  <span class="hljs-keyword">return</span> cell
+}</pre>
+<p>Notice the change in the first line. Previously this returned a <code>UITableViewCell</code> object, but now that you’ve changed the class name in the nib, you’re guaranteed to always receive a <code>SearchResultCell</code> — you still need to cast it with <code>as!</code>, though.
+</p>
+<p>Given that cell, you can put the name and artist name from the search result into the proper labels. You’re now using the cell’s <code>nameLabel</code> and <code>artistNameLabel</code> outlets instead of <code>textLabel</code> and <code>detailTextLabel</code>. You also no longer need to write <code>!</code> to unwrap because the outlets are implicitly unwrapped optionals.
+</p>
+<p>➤ Run the app and it should look something like this:
+</p><div class="image-30"><img src="graphics/img555.png"  alt="" title="Much better!" /></div>
+<p>There are a few more things to improve. Notice that you’ve been using the string literal &quot;SearchResultCell&quot; in a few different places? It’s generally better to create a constant for such occasions.
+</p>
+<h3 class="segment-chapter">Use a constant for table cell identifier</h3>
+
+<p>Let&apos;s suppose you — or one of your co-workers — renamed the reuse identifier in one place for some reason. Then you’d also have to remember to change it in all the other places where the identifier &quot;SearchResultCell&quot; is used. It’s better to limit those changes to one single spot by using a symbolic name instead.
+</p>
+<p>➤ Add the following to <em>SearchViewController.swift</em>, somewhere within the class definition:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">TableView</span> </span>{
+  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">CellIdentifiers</span> </span>{
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">let</span> searchResultCell = <span class="hljs-string">"SearchResultCell"</span>
+  }
+}</pre>
+<p>This defines a new struct, <code>TableView</code>, containing a secondary struct named <code>CellIdentifiers</code> which contains a constant named <code>searchResultCell</code> with the value &quot;SearchResultCell&quot;.
+</p>
+<p>Should you want to change this value, then you only have to do it here and any code that uses <code>TableView.CellIdentifiers.searchResultCell</code> will be automatically updated.
+</p>
+<p>There is another reason for using a symbolic name rather than the actual value: it gives extra meaning. Just seeing the text &quot;SearchResultCell&quot; says less about its intended purpose than the symbol <code>TableView.CellIdentifiers.searchResultCell</code>.
+</p>
+<div class="note">
+<p><em>Note:</em> Putting symbolic constants as <code>static let</code> members inside a <code>struct</code> — or a series of structs — is a common trick in Swift. A static value can be used without an instance so you don’t need to instantiate <code>TableView.CellIdentifiers</code> before you can use it — like you would need to do with a class.
+</p>
+<p>It’s allowed in Swift to place a struct <i>inside</i> a class, which permits different classes to all have their own <code>TableView.CellIdentifier</code> structs. This wouldn’t work if you placed the struct outside the class — then you’d have multiple structs with the same name in the global namespace, which is not allowed.
+</p></div>
+
+<p>➤ In <em>SearchViewController.swift</em>, replace the string &quot;SearchResultCell&quot; with <code>TableView.CellIdentifiers.searchResultCell</code>.
+</p>
+<p>For example, <code>viewDidLoad()</code> will now look like this:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  . . .
+  <span class="hljs-keyword">let</span> cellNib = <span class="hljs-type">UINib</span>(nibName: 
+      <span class="hljs-type">TableView</span>.<span class="hljs-type">CellIdentifiers</span>.searchResultCell, bundle: <span class="hljs-literal">nil</span>)
+  tableView.register(cellNib, forCellReuseIdentifier: 
+                     <span class="hljs-type">TableView</span>.<span class="hljs-type">CellIdentifiers</span>.searchResultCell)
+}</pre>
+<p>The other change is in <code>tableView(_:cellForRowAt:)</code>.
+</p>
+<p>➤ Run the app to make sure everything still works.
+</p>
+<h3 class="segment-chapter">A new “No results” cell</h3>
+
+<p>Remember our friend Justin Bieber? Searching for him now looks like this:
+</p><div class="image-30"><img src="graphics/img556.png"  alt="" title="The Nothing Found label now looks like this" /></div>
+<p>That’s not very pretty — not to mention slightly off. It would be nicer if you gave this its own look. That’s not too hard: you can simply make another nib for it.
+</p>
+<p>➤ Add another nib file to the project. Again this will be an <em>Empty</em> nib. Name it <em>NothingFoundCell.xib</em>.
+</p>
+<p>➤ Drag a new <em>Table View Cell</em> on to the canvas. Set its <em>Width</em> to 320, its <em>Height</em> to 80 and give it the reuse identifier <em>NothingFoundCell</em>.
+</p>
+<p>➤ Drag a <em>Label</em> into the cell and give it the text <em>Nothing Found</em>. Make the text color 50% opaque black and the font <em>System 15</em>.
+</p>
+<p>➤ Use <em>Editor → Size to Fit Content</em> to make the label fit the text exactly — you may have to deselect and select the label again to enable the menu option.
+</p>
+<p>➤ Center the label in the cell, using the blue guides to snap it exactly to the center.
+</p>
+<p>It should look like this:
+</p><div class="image-40"><img src="graphics/img557.png"  alt="" title="Design of the Nothing Found cell" /></div>
+<p>In order to keep the text centered on all devices, you can use the Auto Layout <em>Align menu</em>:
+</p><div class="image-30"><img src="graphics/img558.png"  alt="" title="Creating the alignment constraints" /></div>
+<p>➤ Choose <em>Horizontally in Container</em> and <em>Vertically in Container</em> and click <em>Add 2 Constraints</em>.
+</p>
+<p>The constraints should look like this:
+</p><div class="image-40"><img src="graphics/img559.png"  alt="" title="The constraints for the label" /></div>
+<p>One more thing to fix. Remember that in <code>willSelectRowAt</code> you return <code>nil</code> if there are no search results to prevent the row from being selected? Well, if you are persistent enough you can still make the row appear gray as if it were selected.
+</p>
+<p>For some reason, UIKit draws the selected background if you press down on the cell for long enough, even though this doesn’t count as a real selection. To prevent this, you have to tell the cell not to use a selection color.
+</p>
+<p>➤ Select the cell itself. In the <em>Attributes inspector</em>, set <em>Selection</em> to <em>None</em>. Now tapping or holding down on the Nothing Found row will no longer show any sort of selection.
+</p>
+<p>You don’t have to make a <code>UITableViewCell</code> subclass for this cell because there is no text to change or properties to set. All you need to do is register this nib with the table view.
+</p>
+<p>➤ Add a new reuse identifier to the struct in <em>SearchViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">TableView</span> </span>{
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">CellIdentifiers</span> </span>{
+      <span class="hljs-keyword">static</span> <span class="hljs-keyword">let</span> searchResultCell = <span class="hljs-string">"SearchResultCell"</span>
+      <span class="hljs-keyword">static</span> <span class="hljs-keyword">let</span> nothingFoundCell = <span class="hljs-string">"NothingFoundCell"</span>    <span class="hljs-comment">// New</span>
+    }
+}</pre>
+<p>➤ Add these lines to <code>viewDidLoad()</code>, below the other code registering the nib:
+</p><pre class="code-block">cellNib = <span class="hljs-type">UINib</span>(nibName: 
+  <span class="hljs-type">TableView</span>.<span class="hljs-type">CellIdentifiers</span>.nothingFoundCell, bundle: <span class="hljs-literal">nil</span>)
+tableView.register(cellNib, forCellReuseIdentifier:
+  <span class="hljs-type">TableView</span>.<span class="hljs-type">CellIdentifiers</span>.nothingFoundCell)</pre>
+<p>This also requires you to change <code>let cellNib</code> two lines up to <code>var</code> because you’re re-using the <code>cellNib</code> local variable.
+</p>
+<p>➤ And finally, change <code>tableView(_:cellForRowAt:)</code> to:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+    cellForRowAt indexPath: IndexPath)</span></span> -&gt; <span class="hljs-type">UITableViewCell</span> {
+
+  <span class="hljs-keyword">if</span> searchResults.<span class="hljs-built_in">count</span> == <span class="hljs-number">0</span> {
+    <span class="hljs-keyword">return</span> tableView.dequeueReusableCell(withIdentifier:
+      <span class="hljs-type">TableView</span>.<span class="hljs-type">CellIdentifiers</span>.nothingFoundCell, 
+      <span class="hljs-keyword">for</span>: indexPath)
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">let</span> cell = tableView.dequeueReusableCell(withIdentifier:
+      <span class="hljs-type">TableView</span>.<span class="hljs-type">CellIdentifiers</span>.searchResultCell, 
+      <span class="hljs-keyword">for</span>: indexPath) <span class="hljs-keyword">as</span>! <span class="hljs-type">SearchResultCell</span>
+
+    <span class="hljs-keyword">let</span> searchResult = searchResults[indexPath.row]
+    cell.nameLabel.text = searchResult.name
+    cell.artistNameLabel.text = searchResult.artistName
+    <span class="hljs-keyword">return</span> cell
+  }
+}</pre>
+<p>The logic here has been restructured a little. You only make a <code>SearchResultCell</code> if there are actually any results. If the array is empty, you’ll simply dequeue the cell for the <code>nothingFoundCell</code> identifier and return it since there is nothing to configure for that cell.
+</p>
+<p>➤ Run the app. The search results for Justin Bieber now look like this:
+</p><div class="image-30"><img src="graphics/img560.png"  alt="" title="The new Nothing Found cell in action" /></div>
+<p>Also try it out on larger screen devices. The label should always be centered in the cell.
+</p>
+<p>Sweet. It has been a while since your last commit, so this seems like a good time to secure your work.
+</p>
+<h4 class="segment-chapter">Source Control Changes</h4>
+
+<p>But before you commit your changes, take a look at <em>SearchViewController.swift</em> in your editor view. You might notice some blue lines along the gutter like this:
+</p><div class="image-80"><img src="graphics/img561.png"  alt="" title="Source control change indicator in editor view" /></div>
+<p>Whatever could those blue lines mean?
+</p>
+<p>This is actually something new in Xcode 10 — those blue lines appear in projects which have source control enabled and they indicate the changes made by the developer since the last commit.
+</p>
+<p>But it goes beyond that, if you work with other developers and somebody else made a change to the file you are working on and committed their change to Git, Xcode will even show these pending changes so that you are aware of changes made by somebody else that might impact the work you&apos;re doing. Very handy!
+</p>
+<p>➤ Commit the changes to the repository. I used the message “Use custom cells for search results.”
+</p>
+<h2 class="segment-chapter">Change the look of the app</h2>
+
+<p>As I write this, it’s gray and rainy outside. The app too looks quite gray and dull. Let’s cheer it up a little by giving it more vibrant colors.
+</p>
+<p>➤ Add the following method to <em>AppDelegate.swift</em>:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Helper Methods</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">customizeAppearance</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> barTintColor = <span class="hljs-type">UIColor</span>(red: <span class="hljs-number">20</span>/<span class="hljs-number">255</span>, green: <span class="hljs-number">160</span>/<span class="hljs-number">255</span>, 
+                            blue: <span class="hljs-number">160</span>/<span class="hljs-number">255</span>, alpha: <span class="hljs-number">1</span>)
+  <span class="hljs-type">UISearchBar</span>.appearance().barTintColor = barTintColor
+  window!.tintColor = <span class="hljs-type">UIColor</span>(red: <span class="hljs-number">10</span>/<span class="hljs-number">255</span>, green: <span class="hljs-number">80</span>/<span class="hljs-number">255</span>, 
+                             blue: <span class="hljs-number">80</span>/<span class="hljs-number">255</span>, alpha: <span class="hljs-number">1</span>)
+}</pre>
+<p>This changes the appearance of the <code>UISearchBar</code> — in fact, it changes <i>all</i> search bars in the application. You only have one, but if you had several then this changes the whole lot in one fell swoop.
+</p>
+<p>The <code>UIColor(red:green:blue:alpha:)</code> method makes a new <code>UIColor</code> object based on the RGB and alpha color components that you specify.
+</p>
+<p>Many painting programs let you pick RGB values going from 0 to 255 so that’s the range of color values that many programmers are accustomed to thinking in. The <code>UIColor</code> initializer, however, accepts values between 0.0 and 1.0, so you have to divide these numbers by 255 to scale them down to that range.
+</p>
+<p>➤ Call this new method from <code>application(_:didFinishLaunchingWithOptions:)</code>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">application</span><span class="hljs-params">(<span class="hljs-number">_</span> application: UIApplication, 
+     didFinishLaunchingWithOptions launchOptions: 
+     [UIApplication.LaunchOptionsKey: Any]?)</span></span> -&gt; <span class="hljs-type">Bool</span> {
+  customizeAppearance()  <span class="hljs-comment">// Add this line</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+}</pre>
+<p>➤ Run the app and notice the difference:
+</p><div class="image-30"><img src="graphics/img562.png"  alt="" title="The search bar in the new teal-colored theme" /></div>
+<p>The search bar is bluish-green, but still slightly translucent. The overall tint color is now a dark shade of green instead of the default blue — you can currently only see the tint color in the text field’s cursor but it will become more obvious later on.
+</p>
+<h4 class="segment-chapter">The role of App Delegate</h4>
+
+<p>The poor <code>AppDelegate</code> is often abused. People give it too many responsibilities. Really, there isn’t that much for the app delegate to do.
+</p>
+<p>It gets a number of callbacks about the state of the app — whether the app is about to be closed, for example — and handling those events should be its primary responsibility. The app delegate also owns the main window and the top-level view controller. Other than that, it shouldn’t do much.
+</p>
+<p>Some developers use the app delegate as their data model. That is just bad design. You should really have a separate class — or several — for that. Others make the app delegate their main control hub. Wrong again! Put that stuff in your top-level view controller.
+</p>
+<p>If you ever see the following type of thing in someone’s source code, it’s a pretty good indication that the application delegate is being used the wrong way:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> appDelegate = <span class="hljs-type">UIApplication</span>.shared.delegate <span class="hljs-keyword">as</span>! <span class="hljs-type">AppDelegate</span>
+appDelegate.someProperty = . . .</pre>
+<p>This happens when an object wants to get something from the app delegate. It works but it’s not good architecture.
+</p>
+<p>In my opinion, it’s better to design your code the other way around: the app delegate may do a certain amount of initialization, but then it gives any data model objects to the root view controller, and hands over control. The root view controller passes these data model objects to any other controller that needs them, and so on.
+</p>
+<p>This is also called <i>dependency injection</i>. I described this principle in Chapter 27 in the “Pass the context” section for the <i>MyLocations</i> app.
+</p>
+<h3 class="segment-chapter">Change the row selection color</h3>
+
+<p>Currently, tapping a row highlights it in gray. This doesn’t go so well with the teal-colored theme. So, you’ll give the row selection the same bluish-green tint.
+</p>
+<p>As you learnt with <i>MyLocations</i>, that’s very easy to do because all table view cells have a <code>selectedBackgroundView</code> property. The view from that property is placed on top of the cell’s background, but below the other content, when the cell is selected.
+</p>
+<p>➤ Add the following code to <code>awakeFromNib()</code> in <em>SearchResultCell.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">awakeFromNib</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">super</span>.awakeFromNib()
+  <span class="hljs-comment">// New code below</span>
+  <span class="hljs-keyword">let</span> selectedView = <span class="hljs-type">UIView</span>(frame: <span class="hljs-type">CGRect</span>.zero)
+  selectedView.backgroundColor = <span class="hljs-type">UIColor</span>(red: <span class="hljs-number">20</span>/<span class="hljs-number">255</span>, 
+      green: <span class="hljs-number">160</span>/<span class="hljs-number">255</span>, blue: <span class="hljs-number">160</span>/<span class="hljs-number">255</span>, alpha: <span class="hljs-number">0.5</span>)
+  selectedBackgroundView = selectedView
+}</pre>
+<p>The <code>awakeFromNib()</code> method is called after the cell object has been loaded from the nib but before the cell is added to the table view. You can use this method to do additional work to prepare the object for use. That’s perfect for creating the view with the selection color.
+</p>
+<p>Why don’t you do that in an init method, such as <code>init?(coder)</code>? To be fair, in this case you could. But it’s worth noting that <code>awakeFromNib()</code> is called some time after <code>init?(coder)</code> and also after the objects from the nib have been connected to their outlets.
+</p>
+<p>For example, in <code>init?(coder)</code> the <code>nameLabel</code> and <code>artistNameLabel</code> outlets will still be <code>nil</code> but in <code>awakeFromNib()</code> they will be properly hooked up to their <code>UILabel</code> objects. So, if you wanted to do something with those outlets in code, you’d need to do that in <code>awakeFromNib()</code>, not in <code>init?(coder)</code>.
+</p>
+<p>That’s why <code>awakeFromNib()</code> is the ideal place for this kind of thing — it’s similar to how you use <code>viewDidLoad()</code> in a view controller.
+</p>
+<p>Don’t forget to first call <code>super.awakeFromNib()</code> — it is required. If you forget, then the superclass <code>UITableViewCell</code> — or any of the other superclasses — may not get a chance to initialize themselves.
+</p>
+<div class="note">
+<p><em>Tip:</em> It’s always a good idea to call <code>super.methodName(…)</code> in methods that you’re overriding — such as <code>viewDidLoad()</code>, <code>viewWillAppear()</code>, <code>awakeFromNib()</code>, and so on — unless the documentation says otherwise.
+</p></div>
+
+<p>When you run the app, do a search and tap a row, it should look like this:
+</p><div class="image-30"><img src="graphics/img563.png"  alt="" title="The selection color is now green" /></div>
+<h3 class="segment-chapter">Add app icons</h3>
+
+<p>While you’re at it, you might as well give the app an icon.
+</p>
+<p>➤ Open the asset catalog (<em>Assets.xcassets</em>) and select the <em>AppIcon</em> group.
+</p>
+<p>➤ Drag the images from the <em>Icon</em> folder from the Resources folder into the matching slots.
+</p>
+<p>Keep in mind that for the 2x slots you need to use the image with twice the size in pixels. For example, you drag the <em>Icon-152.png</em> file into <em>iPad App 76pt</em>, 2x. For 3x you need to multiply the image size by 3.
+</p><div class="image-90"><img src="graphics/img564.png"  alt="" title="All the icons in the asset catalog" /></div>
+<p>➤ Run the app and notice that it now has a nice new icon:
+</p><div class="image-60"><img src="graphics/img565.png"  alt="" title="The app icon" /></div>
+<h3 class="segment-chapter">Show keyboard on app launch</h3>
+
+<p>One final user interface tweak I’d like to make is that the keyboard should be immediately visible when you start the app so the user can start typing right away.
+</p>
+<p>➤ Add the following line to <code>viewDidLoad()</code> in <em>SearchViewController.swift</em>:
+</p><pre class="code-block">searchBar.becomeFirstResponder()</pre>
+<p>As you are aware from the <i>Checklists</i> app, <code>becomeFirstResponder()</code> will give <code>searchBar</code> the &quot;focus&quot; and show the keyboard. Anything you type will end up in the search bar.
+</p>
+<p>➤ Try it out and commit your changes. You styled the search bar and added app icons.
+</p>
+<h2 class="segment-chapter">Tag commits</h2>
+
+<p>If you look through the various commits you’ve made so far, you’ll notice a bunch of strange numbers, such as “bb55701”:
+</p><div class="image-80"><img src="graphics/img566.png"  alt="" title="The commits listed in the history window have weird numbers" /></div>
+<p>Those are internal numbers — known as the <i>hash</i> — that Git uses to uniquely identify commits. Such numbers aren’t very memorable, or useful, for us humans, so Git also allows you to “tag” a certain commit with a more friendly label.
+</p>
+<p>➤ Tagging a commit in Xcode is as simple a selecting the commit in the Source Control navigator view, right-clicking to get the context menu and selecting the <em>Tag</em> option.
+</p><div class="image-80"><img src="graphics/img567.png"  alt="" title="Tagging a commit in Xcode" /></div>
+<p>➤ Enter &quot;v0.1&quot; as the <em>Tag</em>, and an optional message describing what this particular tag encompasses. Then click <em>Create</em> to create the tag.
+</p>
+<p>You can see the new tag in the Source Control navigator view:
+</p><div class="image-80"><img src="graphics/img568.png"  alt="" title="The new tag in Xcode" /></div>
+<p>Xcode works quite well with Git, but you might want more power to do complex Git operations. If you do, you’ll probably need to learn how to use the Terminal or get a tool such as SourceTree, which is available for free on the Mac App Store.
+</p>
+<h2 class="segment-chapter">The debugger</h2>
+
+<p>Xcode has a built-in debugger. Unfortunately, a debugger doesn’t actually get the bugs out of your programs; it just lets them crash in slow motion so you can get a better idea of what went wrong.
+</p>
+<p>Like a detective, the debugger lets you dig through the evidence after the damage has been done, in order to find the scoundrel who did it. Thanks to the debugger, you don’t have to stumble in the dark with no idea what just happened. Instead, you can use it to quickly pinpoint what went wrong and where. Once you know those two things, figuring out <i>why</i> it went wrong becomes a lot easier.
+</p>
+<h3 class="segment-chapter">Index out of range bug</h3>
+
+<p>Let’s introduce a bug into the app so that it crashes — knowing what to do when your app crashes is very important.
+</p>
+<p>➤ Change <em>SearchViewController.swift</em>’s <code>numberOfRowsInSection</code> method to:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+     numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">if</span> !hasSearched {
+    . . .
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> searchResults.<span class="hljs-built_in">count</span> == <span class="hljs-number">0</span> {
+    . . .
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">return</span> searchResults.<span class="hljs-built_in">count</span> + <span class="hljs-number">1</span>  <span class="hljs-comment">// This line changes</span>
+  }
+}</pre>
+<p>➤ Now run the app and search for something. The app crashes and the Xcode window changes to something like this:
+</p><div class="image-80"><img src="graphics/img569.png"  alt="" title="The Xcode debugger appears when the app crashes" /></div>
+<p>The crash is: <em>Thread 1: Fatal error: Index out of range</em>. Sounds nasty!
+</p>
+<p>According to the error message, the index that was used to access some array is larger than the number of items inside the array. In other words, the index is “out of range”. That is a common error with arrays and you’re likely to make this mistake more than once in your programming career.
+</p>
+<p>Now that you know what went wrong, the big question is: <i>where</i> did it go wrong? You may have many calls to <code>array[index]</code> in your app, and you don’t want to have to dig through the entire code to find the culprit.
+</p>
+<p>Thankfully, you have the debugger to help you out. In the source code editor it already points out the offending line:
+</p><div class="image-80"><img src="graphics/img570.png"  alt="" title="The debugger points at the line that crashed" /></div>
+<p><em>Important:</em> This line isn’t necessarily the <i>cause</i> of the crash — after all, you didn’t change anything in this method — but it is where the crash happens. From here you can trace backwards to the cause.
+</p>
+<p>The array is <code>searchResults</code> and the index is given by <code>indexPath.row</code>. It would be great to get some insight into the row number and there are several ways to do this.
+</p>
+<p>The one we&apos;ll look at here is to use the debugger’s command line interface, like a hacker whiz kid from the movies :]
+</p>
+<p>➤ In the Xcode Console, after the <em>(lldb)</em> prompt, type <em>p indexPath.row</em> and press enter:
+</p><div class="image-60"><img src="graphics/img571.png"  alt="" title="Printing the value of indexPath.row" /></div>
+<p>The output should be something like:
+</p><pre class="code-block">(Int) $R1 = 3</pre>
+<p>This means the value of <code>indexPath.row</code> is 3 and the type is <code>Int</code> — you can ignore the <code>$R1</code> bit.
+</p>
+<p>Let’s also find out how many items are in the array.
+</p>
+<p>➤ Type <em>p searchResults</em> and press enter. If you use the auto complete functionality, do note that both <code>searchResult</code> — without the &quot;s&quot; at the end — and <code>searchResults</code> are choices. Be sure to select the correct one.:
+</p><div class="image-60"><img src="graphics/img572.png"  alt="" title="Printing the searchResults array" /></div>
+<p>The output shows an array with three items.
+</p>
+<p>You can now reason about the problem: the table view is asking for a cell for the fourth row — i.e. the one at index 3 — but apparently there are only three rows in the data model — rows 0 through 2.
+</p>
+<p>The table view knows how many rows there are from the value that is returned from <code>numberOfRowsInSection</code>, so maybe that method is returning the wrong number of rows? That is indeed the cause, of course, as you intentionally introduced the bug in that method.
+</p>
+<p>I hope this illustrates how you should deal with crashes: first find out where the crash happens and what the actual error is, then reason your way backwards until you find the cause.
+</p>
+<h3 class="segment-chapter">Storyboard outlet bug</h3>
+
+<p>➤ Restore <code>numberOfRowsInSection</code> to its previous state and then add a new outlet property to <em>SearchViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> searchBar2: <span class="hljs-type">UISearchBar</span>!</pre>
+<p>➤ Open the storyboard and <em>Control-drag</em> from Search View Controller to the Search Bar. Select <em>searchBar2</em> from the popup.
+</p>
+<p>Now the search bar is also connected to this new <code>searchBar2</code> outlet — it’s perfectly fine for an object to be connected to more than one outlet at a time.
+</p>
+<p>➤ Delete the <code>searchBar2</code> outlet property from <em>SearchViewController.swift</em> in the source code, not the storyboard.
+</p>
+<p>This is a dirty trick on my part to create another crash. The storyboard contains a connection to a property that no longer exists. If you think this a convoluted example, then wait until you make this mistake in one of your own apps. It happens more often than you may think!
+</p>
+<p>➤ Run the app and it immediately crashes. The crash is “Thread 1: signal SIGABRT”.
+</p>
+<p>Scrolling up the Xcode Console output in the Debug pane you should come across:
+</p><pre class="code-block">*** Terminating app due to uncaught exception &apos;NSUnknownKeyException&apos;, reason: &apos;[&lt;StoreSearch.SearchViewController 0x7fb83ec09bf0&gt; setValue:forUndefinedKey:]: this class is not key value coding-compliant for the key searchBar2.&apos;
+*** First throw call stack:
+(
+    0   CoreFoundation         0x0000000111da1c7b __exceptionPreprocess + 171
+  . . . </pre>
+<p>The first part of this message is very important: it tells you that the app was terminated because of an “NSUnknownKeyException”. On some platforms, exceptions are a commonly used error handling mechanism, but on iOS this is always a fatal error and the app is forced to halt.
+</p>
+<p>The bit that should pique your interest is this:
+</p><pre class="code-block">this class is not key value coding-compliant for the key searchBar2</pre>
+<p>Hmm, that is a bit cryptic. It does mention <code>searchBar2</code> but what does “key value-coding compliant” mean? I’ve seen this error enough times to know what is wrong, but if you’re new to this game, a message like that isn’t very enlightening.
+</p>
+<p>So let’s see where Xcode thinks the crash happened:
+</p><div class="image-90"><img src="graphics/img573.png"  alt="" title="Crash in AppDelegate?" /></div>
+<p>That also isn’t very useful. Xcode says the app crashed in AppDelegate, but that’s not really true.
+</p>
+<p>Xcode goes through the <i>call stack</i> until it finds a method that it has source code for and that’s the one it shows. The call stack is the list of methods that have been called most recently. You can see it on the left of the Debugger window.
+</p>
+<p>➤ Click the left-most icon at the bottom of the Debug navigator to see more info.
+</p><div class="image-25"><img src="graphics/img574.png"  alt="" title="A more detailed call stack" /></div>
+<p>The method at the top, <code>__pthread_kill</code>, was the last method that was called — it’s actually a function, not a method. It got called from <code>pthread_kill</code>, which was called from <code>abort</code>, which was called from <code>abort_message</code>, and so on, all the way back to the <code>main</code> function, which is the entry point of the app and the very first function that was called when the app started.
+</p>
+<p>All of the methods and functions that are listed in this call stack are from system libraries, which is why they are grayed out. If you click on one, you’ll get a bunch of unintelligible assembly code:
+</p><div class="image-90"><img src="graphics/img575.png"  alt="" title="You cannot look inside the source code of system libraries" /></div>
+<p>Clearly, this approach is not getting you anywhere. However, there is another thing you can try — set an <em>Exception Breakpoint</em>.
+</p>
+<p>A <em>breakpoint</em> is a special marker in your code that will pause the app execution and launch the debugger.
+</p>
+<p>When your app hits a breakpoint, the app will pause at that exact spot. Then you can use the debugger to step line-by-line through your code in order to run it in slow motion. That can be a handy tool if you really cannot figure out why something crashes.
+</p>
+<p>You’re not going to step through code in this book, but you can read more about it in the Debugging section of Apple&apos;s developer support site: <a href="https://developer.apple.com/support/debugging">developer.apple.com/support/debugging</a>. Or, you can check the <em>Debug your app</em> topic under Xcode&apos;s <em>Help → Xcode Help</em> menu option.
+</p>
+<p>You are going to set a special breakpoint that is triggered whenever a fatal exception occurs. This will halt the program just as it is about to crash, which should give you more insight into what is going on.
+</p>
+<p>➤ Switch to the <em>Breakpoint navigator</em> and click the <em>+</em> button at the bottom to add an <em>Exception Breakpoint</em>:
+</p><div class="image-30"><img src="graphics/img576.png"  alt="" title="Adding an Exception Breakpoint" /></div>
+<p>This will add a new breakpoint:
+</p><div class="image-30"><img src="graphics/img577.png"  alt="" title="After adding the Exception Breakpoint" /></div>
+<p>➤ Now run the app again. It will still crash, but Xcode shows a lot more info:
+</p><div class="image-40"><img src="graphics/img578.png"  alt="" title="Xcode now halts the app at the point the exception occurs" /></div>
+<p>There are many more methods in the call stack now. Let’s see if we can find some clues as to what is going on.
+</p>
+<p>What catches my attention is the call to something called <code>[UIViewController _loadViewFromNibNamed:bundle:]</code>. That’s a pretty good hint that this error occurs when loading a nib file, or the storyboard in this case.
+</p>
+<p>Using these hints and clues, and the somewhat cryptic error message that you got without the Exception Breakpoint, you can usually figure out what is making your app crash.
+</p>
+<p>In this case, we’ve established that the app crashes when it’s loading the storyboard, and the error message mentioned “searchBar2”. Put two and two together and you’ve got your answer.
+</p>
+<p>A quick peek in the source code confirms that the <code>searchBar2</code> outlet no longer exists in the view controller but the storyboard still refers to it.
+</p>
+<p>➤ Open the storyboard and in the <em>Connections inspector</em> disconnect Search View Controller from <em>searchBar2</em> to fix the crash. That’s another bug squashed!
+</p>
+<div class="note">
+<p><em>Note:</em> Enabling the Exception Breakpoint means that you no longer get a useful error message in the Console if the app crashes — the breakpoint stops the app just before the exception happens. If sometime later during development your app crashes on another bug, you may want to disable this breakpoint to actually see the error message. You can do that from the Breakpoint navigator by simply selecting the breakpoint and clicking on the dark blue arrow. If the arrow goes from dark blue to a pale blue, it is disabled.
+</p></div>
+
+<p>To summarize:
+</p>
+<ul>
+<li>
+<p>If your app crashes while running in Xcode, the Xcode debugger will often show you an error message and where in the code the crash happened.
+</p></li>
+
+<li>
+<p>If Xcode thinks the crash happened on <em>AppDelegate</em> — not very useful! — add an Exception Breakpoint to get more info.
+</p></li>
+
+<li>
+<p>If the app crashes with a SIGABRT but there is no error message in the Console, disable any Exception Breakpoints you may have and make the app crash again. Alternatively, click the <em>Continue program execution</em> button from the debugger toolbar a few times. That will also show the error message… eventually.
+</p></li>
+
+<li>
+<p>An EXC_BAD_ACCESS error usually means something went wrong with your memory management. An object may have been “released” one time too many or not “retained” enough. With Swift these problems are mostly a thing of the past because the compiler will usually make sure to do the right thing. However, it’s still possible to mess up if you’re talking to Objective-C code or low-level APIs.
+</p></li>
+
+<li>
+<p>EXC_BREAKPOINT is not an error. The app has stopped on a breakpoint, the blue arrow points at the line where the app is paused. You set breakpoints to pause your app at specific places in the code, so you can examine the state of the app inside the debugger. The “Continue program execution” button resumes the app.
+</p></li>
+</ul>
+
+<p>This should help you get to the bottom of most of your crashes!
+</p>
+<h4 class="segment-chapter">The build log</h4>
+
+<p>If you’re wondering what Xcode actually does when it builds your app, then take a peek at the <em>Report navigator</em>. It’s the last tab in the navigator pane.
+</p><div class="image-90"><img src="graphics/img579.png"  alt="" title="" /></div>
+<p>The Report navigator keeps track of your builds and debug sessions so you can look back at what happened. It even remembers the debug output of previous runs of the app.
+</p>
+<p>Make sure <em>All Messages</em> is selected. To get more information about a particular log item, select the item and click the little detail icon that appears on the right. The line will expand and you’ll see exactly which commands Xcode executed and what the result was.
+</p>
+<p>Should you run into some weird compilation problem, then this is the place for troubleshooting. Besides, it’s interesting to see what Xcode is up to from time to time.
+</p>
+<p>You can find the project files for this chaper under <em>33 – Custom Table Cells</em> in the Source Code folder.
+</p></body></html>

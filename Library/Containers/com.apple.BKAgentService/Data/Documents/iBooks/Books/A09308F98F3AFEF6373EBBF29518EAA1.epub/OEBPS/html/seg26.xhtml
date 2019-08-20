@@ -1,0 +1,885 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 20: Local Notifications</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 20: Local Notifications</h1>
+
+<p>I hope you’re still with me! We have discussed view controllers, navigation controllers, storyboards, segues, table views and cells, and the data model in great detail. These are all essential topics to master if you want to build iOS apps because almost every app uses these building blocks.
+</p>
+<p>In this chapter you’re going to expand the app to add a new feature: <em>local notifications</em>, using the iOS User Notifications framework. A local notification allows the app to schedule a reminder to the user that will be displayed even when the app is not running.
+</p>
+<p>You will add a “due date” field to the <code>ChecklistItem</code> object and then remind the user about this deadline with a local notification.
+</p>
+<p>If this sounds like fun, then keep reading. :-)
+</p>
+<p>The steps for this chapter are as follows:
+</p>
+<ul>
+<li>
+<p><em>Try it out:</em> Try out a local notification just to see how it works.
+</p></li>
+
+<li>
+<p><em>Set a due date:</em> Allow the user to pick a due date for to-do items.
+</p></li>
+
+<li>
+<p><em>Due date UI:</em> Create a date picker control.
+</p></li>
+
+<li>
+<p><em>Schedule local notifications:</em> Schedule local notifications for the to-do items, and update them when the user changes the due date.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Try it out</h2>
+
+<p>Before you wonder about how to integrate local notifications with <i>Checklists</i>, let’s just schedule a local notification and see what happens.
+</p>
+<p>By the way, local notifications are different from <i>push</i> notifications (also known as <i>remote</i> notifications). Push notifications allow your app to receive messages about external events, such as your favorite team winning the World Series.
+</p>
+<p>Local notifications are more similar to an alarm clock: you set a specific time and then it “beeps”.
+</p>
+<h3 class="segment-chapter">Get permission to display local notifications</h3>
+
+<p>An app is only allowed to show local notifications after it has asked the user for permission. If the user denies permission, then any local notifications for your app simply won’t appear. You only need to ask for permission once, so let’s do that first.
+</p>
+<p>➤ Open <em>AppDelegate.swift</em> and add an new import to the top of the file:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> UserNotifications</pre>
+<p>This tells Xcode that we’re going to use the User Notifications framework.
+</p>
+<p>➤  Add the following to <code>application(_:didFinishLaunchingWithOptions:)</code>, just before the <code>return true</code> line:
+</p><pre class="code-block"><span class="hljs-comment">// Notification authorization</span>
+<span class="hljs-keyword">let</span> center = <span class="hljs-type">UNUserNotificationCenter</span>.current()
+center.requestAuthorization(options: [.alert, .sound]) { 
+  granted, error <span class="hljs-keyword">in</span>
+  <span class="hljs-keyword">if</span> granted {
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"We have permission"</span>)
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"Permission denied"</span>)
+  }
+}</pre>
+<p>Recall that <code>application(_:didFinishLaunchingWithOptions:)</code> is called when the app starts up. It is the <i>entry point</i> for the app, the first place in the code where you can do something after the app launches.
+</p>
+<p>Because you’re just playing with these local notifications now, this is a good place to ask for permission.
+</p>
+<p>You tell iOS that the app wishes to send notifications of type “alert” with a sound effect. Later you’ll put this code into a more appropriate place.
+</p>
+<h4 class="segment-chapter">Things that start with a dot</h4>
+
+<p>Throughout the app you’ve seen things like <code>.none</code>, <code>.checkmark</code>, and <code>.subtitle</code> — and now <code>.alert</code> and <code>.sound</code>. These are <i>enumeration</i> symbols.
+</p>
+<p>An enumeration, or enum for short, is a data type that consists of a list of possible symbols and their values.
+</p>
+<p>For example, the <code>UNAuthorizationOptions</code> enum contains the symbols (and a few others besides):
+</p><pre class="code-block">.badge
+.sound
+.alert
+.carPlay</pre>
+<p>You can combine these names in an array to define what sort of notifications the app will show to the user. Here you’ve chosen the combination of an alert and a sound effect by writing <code>[.alert, .sound]</code>.
+</p>
+<p>It’s easy to spot when an enum is being used because of the dot in front of the symbol name. This is actually shorthand notation; you could also have written it like this:
+</p><pre class="code-block">center.requestAuthorization(options: 
+  [<span class="hljs-type">UNAuthorizationOptions</span>.alert, <span class="hljs-type">UNAuthorizationOptions</span>.sound]) {
+  . . . </pre>
+<p>Fortunately, Swift is smart enough to realize that <code>.alert</code> and <code>.sound</code> are from the enum <code>UNAuthorizationOptions</code>, so you can save yourself some keystrokes.
+</p>
+<p>➤ Run the app. You should immediately get a popup asking for permission:
+</p><div class="image-35"><img src="graphics/img348.png"  alt="" title="The permission dialog" /></div>
+<p>Tap <em>Allow</em>. The next time you run the app you won’t be asked again; iOS remembers your choice.
+</p>
+<p>(If you tapped Don’t Allow — naughty! — then you can always reset the Simulator to get the permissions dialog again. You can also change the notification options via the <i>Settings</i> app.)
+</p>
+<h3 class="segment-chapter">Show a test local notification</h3>
+
+<p>➤ Stop the app and add the following code to the end of <code>didFinishLaunchingWithOptions</code> (but before the <code>return</code>):
+</p><pre class="code-block"><span class="hljs-keyword">let</span> content = <span class="hljs-type">UNMutableNotificationContent</span>()
+content.title = <span class="hljs-string">"Hello!"</span>
+content.body = <span class="hljs-string">"I am a local notification"</span>
+content.sound = <span class="hljs-type">UNNotificationSound</span>.<span class="hljs-keyword">default</span>
+
+<span class="hljs-keyword">let</span> trigger = <span class="hljs-type">UNTimeIntervalNotificationTrigger</span>(
+                                   timeInterval: <span class="hljs-number">10</span>, 
+                                        repeats: <span class="hljs-literal">false</span>)
+<span class="hljs-keyword">let</span> request = <span class="hljs-type">UNNotificationRequest</span>(
+                         identifier: <span class="hljs-string">"MyNotification"</span>, 
+                            content: content, 
+                            trigger: trigger)
+center.add(request)</pre>
+<p>This creates a new local notification. Because you wrote <code>timeInterval: 10</code>, it will fire exactly 10 seconds after the app has started.
+</p>
+<p>The <code>UNMutableNotificationContent</code> describes what the local notification will say. Here, you set an alert message to be shown when the notification fires. You also set a sound.
+</p>
+<p>Finally, you add the notification to the <code>UNUserNotificationCenter</code>. This object is responsible for keeping track of all the local notifications and displaying them when they are up.
+</p>
+<p>➤ Run the app. Immediately after it has started, exit to the home screen.
+</p>
+<p>Wait 10 seconds… I know, it seems like an eternity! After an agonizing 10 seconds a message should pop up:
+</p><div class="image-35"><img src="graphics/img349.png"  alt="" title="The local notification message" /></div>
+<p>➤ Tap the notification to go back to the app.
+</p>
+<p>And that’s a local notification. Pretty cool, huh?
+</p>
+<p>Why did I want you to exit to the home screen? iOS will only show a notification alert if the app is not currently active.
+</p>
+<p>➤ Stop the app and run it again. This time don’t press Home and just wait.
+</p>
+<p>Well, don’t wait too long — nothing will happen. The local notification does get fired, but it is not shown to the user. To handle this situation, we must listen somehow to interesting events that concern these notifications. How? Through a delegate, of course!
+</p>
+<h3 class="segment-chapter">Handle local notification events</h3>
+
+<p>➤ Add the notification delegate to <code>AppDelegate</code>’s <code>class</code> declaration:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AppDelegate</span>: <span class="hljs-title">UIResponder</span>, <span class="hljs-title">UIApplicationDelegate</span>, 
+                   <span class="hljs-title">UNUserNotificationCenterDelegate</span> </span>{</pre>
+<p>This makes <code>AppDelegate</code> the delegate for the <code>UNUserNotificationCenter</code>.
+</p>
+<p>➤ Also add the following method to <em>AppDelegate.swift</em>:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- User Notification Delegates</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">userNotificationCenter</span><span class="hljs-params">(
+                    <span class="hljs-number">_</span> center: UNUserNotificationCenter, 
+    willPresent notification: UNNotification, 
+    withCompletionHandler completionHandler: 
+    @escaping <span class="hljs-params">(UNNotificationPresentationOptions)</span></span></span> -&gt; <span class="hljs-type">Void</span>) {
+  <span class="hljs-built_in">print</span>(<span class="hljs-string">"Received local notification <span class="hljs-subst">\(notification)</span>"</span>)
+}</pre>
+<p>This method will be invoked when the local notification is posted and the app is still running. You won’t do anything here except log a message to the debug pane.
+</p>
+<p>When your app is active and in the foreground, it is supposed to handle any fired notifications in its own manner.  Depending on the type of app, it may make sense to react to the notification, for example to show a message to the user or to refresh the screen.
+</p>
+<p>➤ Finally, tell the <code>UNUserNotificationCenter</code> that <code>AppDelegate</code> is now its delegate. You do this in <code>application(_:didFinishLaunchingWithOptions:)</code> (add this after you ask for permission - perhaps when permission is granted?):
+</p><pre class="code-block">center.delegate = <span class="hljs-keyword">self</span></pre>
+<p>➤ Run the app again and just wait (don’t press Home).
+</p>
+<p>After 10 seconds you should see a message in the Xcode Console. It displays something like this:
+</p><pre class="code-block">Received local notification &lt;UNNotification: 0x7ff54af135e0; date: 
+2016-07-11 14:21:27 +0000, request: &lt;UNNotificationRequest: . . . 
+identifier: MyNotification, content: &lt;UNNotificationContent: . . . 
+title: Hello!, subtitle: (null), body: I am a local notification,
+. . .</pre>
+<p>All right, now you know that it works, you should remove the test code from <em>AppDelegate.swift</em> because you don’t really want to schedule a new notification every time the user starts the app.
+</p>
+<p>➤ Remove the the local notification code from <code>didFinishLaunchingWithOptions</code>, but keep these lines:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> center = <span class="hljs-type">UNUserNotificationCenter</span>.current()
+center.delegate = <span class="hljs-keyword">self</span></pre>
+<p>You can also keep the <code>userNotificationCenter(_:willPresent:withCompletionHandler:)</code> method, as it will come in handy when debugging the local notifications.
+</p>
+<h2 class="segment-chapter">Set a due date</h2>
+
+<p>Let’s think about how the app will handle these notifications. Each <code>ChecklistItem</code> will get a due date field (a <code>Date</code> object, which stores a date and time) and a <code>Bool</code> that says whether the user wants to be reminded of this item or not.
+</p>
+<p>Users might not want to be reminded of everything, so you shouldn’t schedule local notifications unless the user asks for it. Such a <code>Bool</code> variable is often called a <i>flag</i>. Let’s name it <code>shouldRemind</code>.
+</p>
+<h3 class="segment-chapter">When do you schedule a notification?</h3>
+
+<p>First, let’s figure out how and when to schedule the notifications. I can think of the following situations:
+</p>
+<ul>
+<li>
+<p>When the user adds a new <code>ChecklistItem</code> object that has the <code>shouldRemind</code> flag set, you must schedule a new notification.
+</p></li>
+
+<li>
+<p>When the user changes the due date on an existing <code>ChecklistItem</code>, the old notification (if there is one) should be cancelled and a new one scheduled in its place (if <code>shouldRemind</code> is still set).
+</p></li>
+
+<li>
+<p>When the user toggles the <code>shouldRemind</code> flag from on to off, the existing notification should be cancelled. The other way around, from off to on, should schedule a new notification.
+</p></li>
+
+<li>
+<p>When the user deletes a <code>ChecklistItem</code>, its notification, if it had one, should be cancelled.
+</p></li>
+</ul>
+
+<ul>
+<li>
+<p>When the user deletes an entire <code>Checklist</code>, all the notifications for those items, if there are any, should be cancelled.
+</p></li>
+</ul>
+
+<p>This makes it obvious that you don’t need just a way to schedule new notifications, but also a way to cancel them.
+</p>
+<p>You should probably also check that you don’t create notifications for to-do items whose due dates are in the past. I’m sure iOS is smart enough to ignore those notifications, but let’s be good citizens anyway.
+</p>
+<h3 class="segment-chapter">Associate to-do items with notifications</h3>
+
+<p>We need some way to associate <code>ChecklistItem</code> objects with their local notifications. This requires some changes to our data model.
+</p>
+<p>When you schedule a local notification, you create a <code>UNNotificationRequest</code> object. It is tempting to put the <code>UNNotificationRequest</code> object as an instance variable in <code>ChecklistItem</code>, so you always know what it is. However, this is not the correct approach.
+</p>
+<p>Instead, you’ll use an <i>identifier</i>. When you create a local notification, you need to give it an identifier, which is just a <code>String</code>. It doesn’t really matter what is in this string, as long as it is unique for each notification.
+</p>
+<p>To cancel a notification at a later point, you don’t use the <code>UNNotificationRequest</code> object but the identifier you gave it. The right approach is to store this identifier in the <code>ChecklistItem</code> object.
+</p>
+<p>Even though the identifier for the local notification is a <code>String</code>, you’ll give give each <code>ChecklistItem</code> an identifier that is simply a number. You’ll also save this item ID in the Checklists.plist file. When it’s time to schedule or cancel a local notification, you’ll turn that number into a string. Then, you can easily find the notification when you have the <code>ChecklistItem</code> object, or the <code>ChecklistItem</code> object when you have the notification object.
+</p>
+<p>Assigning numeric IDs to objects is a common approach when creating data models — it is very similar to giving records in a relational database a numeric primary key, if you’re familiar with that sort of thing.
+</p>
+<p>➤ Add these properties to <em>ChecklistItem.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> dueDate = <span class="hljs-type">Date</span>()
+<span class="hljs-keyword">var</span> shouldRemind = <span class="hljs-literal">false</span>
+<span class="hljs-keyword">var</span> itemID = -<span class="hljs-number">1</span></pre>
+<p>Note that you called the last variable <code>itemID</code> and not simply “id”. The reason is that <code>id</code> is a special keyword in Objective-C, and this could cause trouble if you ever wanted to mix your Swift code with Objective-C code.
+</p>
+<p>In the above code, you have initialized <code>itemID</code> with -1. However, what you really want is to have <code>itemID</code> set to a unique integer value when a new <code>ChecklistItem</code> instance is created. You can do this by adding a custom initailizer to <code>ChecklistItem</code>.
+</p>
+<p>But before you do that, you need to add a new method to <code>DataModel</code> to generate a unique item ID.
+</p>
+<p>➤ Hop on over to <em>DataModel.swift</em> and add a new method:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">func</span> <span class="hljs-title">nextChecklistItemID</span>() -&gt; <span class="hljs-title">Int</span> </span>{
+  <span class="hljs-keyword">let</span> userDefaults = <span class="hljs-type">UserDefaults</span>.standard
+  <span class="hljs-keyword">let</span> itemID = userDefaults.integer(forKey: <span class="hljs-string">"ChecklistItemID"</span>)
+  userDefaults.<span class="hljs-keyword">set</span>(itemID + <span class="hljs-number">1</span>, forKey: <span class="hljs-string">"ChecklistItemID"</span>)
+  userDefaults.synchronize()
+  <span class="hljs-keyword">return</span> itemID
+}</pre>
+<p>You’re using your old friend <code>UserDefaults</code> again.
+</p>
+<p>This method gets the current “ChecklistItemID” value from <code>UserDefaults</code>, adds 1 to it, and writes it back to <code>UserDefaults</code>. It returns the previous value to the caller.
+</p>
+<p>The method also does <code>userDefaults.synchronize()</code> to force <code>UserDefaults</code> to write these changes to disk immediately — that way, they won’t get lost if you kill the app from Xcode before it had a chance to save, or the app crashed for some reason.
+</p>
+<p>This is important because you never want two or more <code>ChecklistItems</code> to get the same ID.
+</p>
+<p>You could add a default value for “ChecklistItemID” to the <code>registerDefaults()</code> method so as to customize the start value for the item ID, but you really don&apos;t have to in this case :] Remember that if there is no existing value for  “ChecklistItemID”, you&apos;d get 0 back from a call to <code>UserDefaults</code> (if you didn&apos;t provide a defualt value via <code>registerDefaults()</code>). That is good enough for your use since your IDs would then start at 0 and count up.
+</p>
+<p>The first time <code>nextChecklistItemID()</code> is called, it will return the ID 0. The second time it is called, it will return the ID 1, the third time it will return the ID 2, and so on. The number is incremented by one each time. You can call this method a few billion times before you run out of unique IDs.
+</p>
+<h4 class="segment-chapter">Class methods vs. instance methods</h4>
+
+<p>If you are wondering why you wrote,
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">func</span> <span class="hljs-title">nextChecklistItemID</span>()</span></pre>
+<p>and not just:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">nextChecklistItemID</span><span class="hljs-params">()</span></span></pre>
+<p>then I’m glad you’re paying attention. :-)
+</p>
+<p>Adding the <code>class</code> keyword means that you can call this method without having a reference to an instance of the <code>DataModel</code> object.
+</p>
+<p>With a class method, you do:
+</p><pre class="code-block">itemID = <span class="hljs-type">DataModel</span>.nextChecklistItemID()</pre>
+<p>Instead of:
+</p><pre class="code-block">itemID = dataModel.nextChecklistItemID()</pre>
+<p>This is because <code>ChecklistItem</code> objects do not have a <code>dataModel</code> property with a reference to a <code>DataModel</code> object. You could certainly pass them such a reference, but I decided that using a <i>class method</i> was easier.
+</p>
+<p>The declaration of a class method begins with <code>class func</code>. This kind of method applies to the class as a whole.
+</p>
+<p>So far you’ve been using <i>instance methods</i>. They just have the word <code>func</code> — without <code>class</code> — and work only on a specific instance of that class.
+</p>
+<p>We haven’t discussed the difference between classes and instances before, and you’ll get into that in more detail later in the book. For now, just remember that a method starting with <code>class func</code> allows you to call methods on an object even when you don’t have a reference to that object.
+</p>
+<p>I had to make a trade-off: is it worth giving each <code>ChecklistItem</code> object a reference to the <code>DataModel</code> object, or can I get away with a simple class method? To keep things simple, I chose the latter. It’s certainly possible that, if you were to develop this app further, it would make more sense to give <code>ChecklistItem</code> a <code>dataModel</code> property instead. But that would be up to you :]
+</p>
+<p>➤ Now, switch back to <em>ChecklistItem.swift</em> and add an <code>init()</code> method to set up the unique ID:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-keyword">init</span>() {  
+  <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>()
+  itemID = <span class="hljs-type">DataModel</span>.nextChecklistItemID()
+}</pre>
+<p>This asks the <code>DataModel</code> object for a new item ID whenever the app creates a new <code>ChecklistItem</code> object and replaces the initial value of -1 with that unique ID.
+</p>
+<h3 class="segment-chapter">Display the new IDs</h3>
+
+<p>For a quick test to see if assigning these IDs works, you can add them to the text that&apos;s shown in the <code>ChecklistItem</code> cell label — this is just a temporary thing for testing purposes, as users couldn’t care less about the internal identifier of these objects.
+</p>
+<p>➤ In <em>ChecklistViewController.swift</em>, change the <code>configureText(for:with:)</code> method to:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">configureText</span><span class="hljs-params">(<span class="hljs-keyword">for</span> cell: UITableViewCell,
+                  with item: ChecklistItem)</span></span> {
+  <span class="hljs-keyword">let</span> label = cell.viewWithTag(<span class="hljs-number">1000</span>) <span class="hljs-keyword">as</span>! <span class="hljs-type">UILabel</span>
+  <span class="hljs-comment">//label.text = item.text</span>
+  label.text = <span class="hljs-string">"<span class="hljs-subst">\(item.itemID)</span>: <span class="hljs-subst">\(item.text)</span>"</span>  
+}</pre>
+<p>I have commented out the original line because you&apos;ll want to reuse it later. The new one uses <code>\( … )</code> to add the to-do item’s <code>itemID</code> property to the text.
+</p>
+<p>Before you run the app, do note that you have changed the format of the <code>ChecklistItem</code> (and thus, by extension the Checklists.plist file) and so your existing data will not display when you run the app.
+</p>
+<p>➤ Run the app and add some checklist items. Each new item should get a unique identifier. Exit to the home screen (to make sure everything is saved properly) and stop the app.
+</p>
+<p>Run the app again and add some new items; the IDs for these new items should start counting at where the numbering previously left off.
+</p><div class="image-30"><img src="graphics/img350.png"  alt="" title="The items with their IDs. Note that the item with ID 3 was deleted in this example." /></div>
+<p>OK, that takes care of the IDs. Now lets add the “due date” and “should remind” fields to the Add/Edit Item screen.
+</p>
+<p>(Keep <code>configureText(for:with:)</code> the way it is for the time being; that will come in handy with testing the notifications.)
+</p>
+<h2 class="segment-chapter">Due date UI</h2>
+
+<p>You will add settings for the two new fields to the Add/Edit Item screen and make it look like this:
+</p><div class="image-20"><img src="graphics/img351.png"  alt="" title="The Add/Edit Item screen now has Remind Me and Due Date fields" /></div>
+<p>The due date field will require some sort of date picker control. iOS comes with a cool date picker view that you’ll add to the table view.
+</p>
+<h3 class="segment-chapter">The UI changes</h3>
+
+<p>➤ Add the following outlets to <em>ItemDetailViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> shouldRemindSwitch: <span class="hljs-type">UISwitch</span>!
+<span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> dueDateLabel: <span class="hljs-type">UILabel</span>!</pre>
+<p>➤ Open the storyboard and select the Table View in the Add Item scene.
+</p>
+<p>➤ Add a new section to the table. The easiest way to do this is to increment the <em>Sections</em> field in the <em>Attributes inspector</em>. This duplicates the existing section and cell.
+</p>
+<p>➤ Remove the Text Field from the new cell. Select the new section in the Document Outline and then increment its <em>Rows</em> value to 2 in the <em>Attributes inspector</em>.
+</p>
+<p>You will now design the new cells to look as follows:
+</p><div class="image-40"><img src="graphics/img352.png"  alt="" title="The new design of the Add/Edit Item screen" /></div>
+<p>➤ Add a <em>Label</em> to the first cell and set its text to <em>Remind Me</em>. Set the font to <em>System</em>, size <em>17</em>.
+</p>
+<p>➤ Also drag a <em>Switch</em> control into the cell. Hook it up to the <code>shouldRemindSwitch</code> outlet on the view controller. In the Attributes inspector, set its <em>State</em> to <em>Off</em> so it is no longer green.
+</p>
+<p>➤ Pin the Switch to the <em>top</em>, <em>right</em>, and <em>bottom</em> edges of the table view cell. This makes sure the control will be visible regardless of the width of the device’s screen.
+</p>
+<p>➤ <em>Center</em> the Label with respect to the Switch, and then pin its <em>left</em> and <em>right</em> edges.
+</p>
+<p>➤ The third cell has two labels: Due Date on the left and the label that will hold the actual chosen date on the right. You don’t have to add these labels yourself: simply set the <em>Style</em> of the cell to <em>Right Detail</em> and rename Title to <em>Due Date</em>.
+</p>
+<p>➤ The label on the right should be hooked up to the <code>dueDateLabel</code> outlet.
+</p>
+<p>You may need to adjust the Auto Layout constraints for the Remind Me label and the switch to align them nicely with the labels from the “due date” cell. Tip: select the “Due Date” and “Detail” labels and look in the Size inspector what their margins are (should be 16 points from the edges).
+</p>
+<h3 class="segment-chapter">Display the due date</h3>
+
+<p>Let’s write the code for dispalying the due date.
+</p>
+<p>➤ Add a new <code>dueDate</code> instance variable to <em>ItemDetailViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> dueDate = <span class="hljs-type">Date</span>()</pre>
+<p>For a new <code>ChecklistItem</code> item, the due date is right now, i.e. <code>Date()</code>. That sounds reasonable, but by the time the user has filled in the rest of the fields and pressed Done, that due date will be in the past.
+</p>
+<p>But you do have to suggest something here. An alternative default value could be this time tomorrow, or ten minutes from now, but in most cases the user will have to pick their own due date anyway.
+</p>
+<p>➤ Add a new <code>updateDueDateLabel()</code> method to the file:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Helper Methods</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">updateDueDateLabel</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> formatter = <span class="hljs-type">DateFormatter</span>()
+  formatter.dateStyle = .medium
+  formatter.timeStyle = .short
+  dueDateLabel.text = formatter.string(from: dueDate)
+}</pre>
+<p>To convert the <code>Date</code> value to text, you use a <code>DateFormatter</code> object.
+</p>
+<p>The way it works is very straightforward: you give the date formatter a style for the date component and a separate style for the time component, and then ask it to format the <code>Date</code> object.
+</p>
+<p>You can play with different styles here, but space in the label is limited. So, you can’t fit in the full month name, for example.
+</p>
+<p>The cool thing about <code>DateFormatter</code> is that it takes the current locale into consideration — so, the time will look good to the user no matter where they are on the globe.
+</p>
+<p>➤ Change <code>viewDidLoad()</code> as follows:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  . . .
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> item = itemToEdit {                     
+    . . .
+    shouldRemindSwitch.isOn = item.shouldRemind  <span class="hljs-comment">// add this</span>
+    dueDate = item.dueDate                       <span class="hljs-comment">// add this</span>
+  }
+
+  updateDueDateLabel()                           <span class="hljs-comment">// add this</span>
+}</pre>
+<p>If there is an existing <code>ChecklistItem</code> object, you set the switch control to on or off, depending on the value of the object’s <code>shouldRemind</code> property. If the user is adding a new item, the switch is initially off (you did that in the storyboard).
+</p>
+<p>You also get the due date from the <code>ChecklistItem</code>.
+</p>
+<h3 class="segment-chapter">Update edited values</h3>
+
+<p>➤ The last thing to change in this file is the <code>done()</code> action. Replace the current code with:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">done</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> item = itemToEdit {
+    item.text = textField.text!
+    
+    item.shouldRemind = shouldRemindSwitch.isOn  <span class="hljs-comment">// add this</span>
+    item.dueDate = dueDate                       <span class="hljs-comment">// add this</span>
+    
+    delegate?.itemDetailViewController(<span class="hljs-keyword">self</span>, 
+                     didFinishEditing: item)
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">let</span> item = <span class="hljs-type">ChecklistItem</span>()
+    item.text = textField.text!
+    item.checked = <span class="hljs-literal">false</span>
+
+    item.shouldRemind = shouldRemindSwitch.isOn  <span class="hljs-comment">// add this</span>
+    item.dueDate = dueDate                       <span class="hljs-comment">// add this</span>
+    
+    delegate?.itemDetailViewController(<span class="hljs-keyword">self</span>, 
+                      didFinishAdding: item)
+  }
+}</pre>
+<p>Here you put the value of the switch control and the <code>dueDate</code> instance variable back into the <code>ChecklistItem</code> object when the user presses the Done button.
+</p>
+<p>➤ Run the app and change the position of the switch control. The app will remember this setting when you terminate it (but be sure to exit to the home screen first).
+</p>
+<p>The due date row doesn’t really do anything yet, however. In order to make that work, you first have to create a date picker.
+</p>
+<div class="note">
+<p><em>Note:</em> Maybe you’re wondering why you’re using an instance variable for the <code>dueDate</code> but not for <code>shouldRemind</code>.
+</p>
+<p>You don’t need one for <code>shouldRemind</code> because it’s easy to get the state of the switch control: you just look at its <code>isOn</code> property, which is either <code>true</code> or <code>false</code>.
+</p>
+<p>However, it is hard to read the chosen date back out of the <code>dueDateLabel</code> because the label stores text (a <code>String</code>), not a <code>Date</code>. So it’s easier to keep track of the chosen date separately in a <code>Date</code> instance variable.
+</p></div>
+
+<h3 class="segment-chapter">The date picker</h3>
+
+<p>You will not create a new view controller for the date picker. Instead, tapping the Due Date row will insert a new <code>UIDatePicker</code> component directly into the table view, just like what happens in the built-in Calendar app.
+</p><div class="image-30"><img src="graphics/img353.png"  alt="" title="The date picker in the Add Item screen" /></div>
+<p>➤ Add a new instance variable to <em>ItemDetailViewController.swift</em>, to keep track of whether the date picker is currently visible:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> datePickerVisible = <span class="hljs-literal">false</span></pre>
+<p>➤ Add the <code>showDatePicker()</code> method:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showDatePicker</span><span class="hljs-params">()</span></span> {
+  datePickerVisible = <span class="hljs-literal">true</span>
+  <span class="hljs-keyword">let</span> indexPathDatePicker = <span class="hljs-type">IndexPath</span>(row: <span class="hljs-number">2</span>, section: <span class="hljs-number">1</span>)
+  tableView.insertRows(at: [indexPathDatePicker], with: .fade)
+}</pre>
+<p>This sets the new instance variable to <code>true</code>, and tells the table view to insert a new row below the Due Date cell. This new row will contain the <code>UIDatePicker</code>.
+</p>
+<p>The question is: where does the cell for this new date picker row come from? You can’t put it into the table view as a static cell already because then it would always be visible. You only want to show it after the user taps the Due Date row.
+</p>
+<p>Xcode has a feature where you can add additional views to a scene that are not immediately visible. That’s a great solution to this problem!
+</p>
+<p>➤ Open the storyboard and go to the <em>Add Item</em> scene. From the Objects Library, pick <em>Table View Cell</em>. Don’t drag it on to the view controller itself, but instead, on to the scene dock at the top:
+</p><div class="image-60"><img src="graphics/img354.png"  alt="" title="Dragging a table view cell into the scene dock" /></div>
+<p>Now, the storyboard should look like this:
+</p><div class="image-50"><img src="graphics/img355.png"  alt="" title="The new table view cell sits in its own area" /></div>
+<p>The new Table View Cell object belongs to the scene but it is not (yet) part of the scene’s table view.
+</p>
+<p>The cell is a bit too small to fit a date picker, so first you’ll make it bigger.
+</p>
+<p>➤ Select the Table View Cell and in the <em>Size inspector</em> set the <em>Height</em> to 217 — the date picker is 216 points tall, plus one point for the separator line at the bottom of the cell.
+</p>
+<p>➤ In the <em>Attributes inspector</em>, set <em>Selection</em> to <em>None</em> so this cell won’t turn gray when you tap on it.
+</p>
+<p>➤ From the Objects Library, drag a <em>Date Picker</em> into the cell. It should fit exactly.
+</p>
+<p>➤ Use the <em>Add New Constraints menu</em> to glue the Date Picker to the four sides of the cell. Turn off <em>Constrain to margins</em> and then select the four I-beams to make them red (they all should be 0).
+</p>
+<p>When you’re done, the new cell looks like this:
+</p><div class="image-60"><img src="graphics/img356.png"  alt="" title="The finished date picker cell" /></div>
+<p>So how do you get this cell into the table view? First, make two new outlets and connect them to the cell and the date picker, respectively. That way you can refer to these views from code.
+</p>
+<p>➤ Add these lines to <em>ItemDetailViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> datePickerCell: <span class="hljs-type">UITableViewCell</span>!
+<span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> datePicker: <span class="hljs-type">UIDatePicker</span>!</pre>
+<p>➤ Switch back to the storyboard and simply Control-drag from the yellow circle icon for the view controller to the gray icon for the Table View Cell, and select the <em>datePickerCell</em> outlet.
+</p><div class="image-50"><img src="graphics/img357.png"  alt="" title="Control-drag between the icons in the scene dock" /></div>
+<p>➤ To connect the date picker, Control-drag from the yellow icon to the big Date Picker above it and select the <em>datePicker</em> outlet.
+</p>
+<h3 class="segment-chapter">Display the date picker</h3>
+
+<p>Great! Now that you have outlets for the cell and the date picker inside it, you can write the code to add them to the table view.
+</p>
+<p>Normally, you would implement the <code>tableView(_:cellForRowAt:)</code> method, but remember that this screen uses a table view with static cells. Such a table view does not normally use <code>cellForRowAt</code>.
+</p>
+<p>If you look in <em>ItemDetailViewController.swift</em> you won’t find that method anywhere. However, with a bit of trickery you can override the data source for a static table view and provide your own methods.
+</p>
+<p>➤ Add the <code>tableView(_:cellForRowAt:)</code> method to <em>ItemDetailViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+             cellForRowAt indexPath: IndexPath)</span></span> 
+             -&gt; <span class="hljs-type">UITableViewCell</span> {
+  <span class="hljs-keyword">if</span> indexPath.section == <span class="hljs-number">1</span> &amp;&amp; indexPath.row == <span class="hljs-number">2</span> {
+    <span class="hljs-keyword">return</span> datePickerCell
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">super</span>.tableView(tableView, cellForRowAt: indexPath)
+  }
+}</pre>
+<p><em>Danger:</em> You shouldn’t really mess around too much with this method when it’s being used by a static table view — it may interfere with the inner workings of those static cells. But if you’re careful you can get away with it.
+</p>
+<p>The <code>if</code> statement checks whether <code>cellForRowAt</code> is being called with the index-path for the date picker row. If so, it returns the new <code>datePickerCell</code> that you just designed. This is safe to do because the table view from the storyboard doesn’t know anything about row 2 in section 1, so you’re not interfering with an existing static cell.
+</p>
+<p>For any index-paths that are not the date picker cell, this method will call through to <code>super</code> (which is <code>UITableViewController</code>). This is the trick that makes sure the other static cells still work.
+</p>
+<p>➤ You also need to override <code>tableView(_:numberOfRowsInSection:)</code>:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+      numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">if</span> section == <span class="hljs-number">1</span> &amp;&amp; datePickerVisible {
+    <span class="hljs-keyword">return</span> <span class="hljs-number">3</span>
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">super</span>.tableView(tableView, 
+      numberOfRowsInSection: section)
+  }
+}</pre>
+<p>If the date picker is visible, then section 1 has three rows. If the date picker isn’t visible, you can simply pass through to the original data source.
+</p>
+<p>➤ Likewise, you also need to provide the <code>tableView(_:heightForRowAt:)</code> method:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+           heightForRowAt indexPath: IndexPath)</span></span> -&gt; <span class="hljs-type">CGFloat</span> {
+  <span class="hljs-keyword">if</span> indexPath.section == <span class="hljs-number">1</span> &amp;&amp; indexPath.row == <span class="hljs-number">2</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-number">217</span>
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">super</span>.tableView(tableView, heightForRowAt: indexPath)
+  }
+}</pre>
+<p>So far the cells in your table views all had the same automatic height, but this is not a hard requirement. By providing the <code>heightForRowAt</code> method you can give each cell its own height. The <code>UIDatePicker</code> component is 216 points tall, plus 1 point for the separator line, making for a total row height of 217 points.
+</p>
+<p>Also, while you might think that you can leave the cell sizing for the date picker cell to be worked out by automatic sizing as well, you might find that this doesn&apos;t work so in practice. Try leaving out this method override and see what happens — the app will crash. Unfortunately, trying to override the static table view cell behaviour can lead to all sorts of complications.
+</p>
+<p>The date picker is only made visible after the user taps the Due Date cell, which happens in <code>tableView(_:didSelectRowAt:)</code>.
+</p>
+<p>➤ Add that method:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+           didSelectRowAt indexPath: IndexPath)</span></span> {
+  tableView.deselectRow(at: indexPath, animated: <span class="hljs-literal">true</span>)
+  textField.resignFirstResponder()
+  <span class="hljs-keyword">if</span> indexPath.section == <span class="hljs-number">1</span> &amp;&amp; indexPath.row == <span class="hljs-number">1</span> {
+    showDatePicker()
+  }
+}</pre>
+<p>This calls <code>showDatePicker()</code> when the index-path indicates that the Due Date row was tapped. It also hides the on-screen keyboard if that was visible.
+</p>
+<h3 class="segment-chapter">Make the Due Date row tappable</h3>
+
+<p>At this point you have most of the pieces in place, but the Due Date row isn’t actually tappable yet. That’s because <em>ItemDetailViewController.swift</em> already has a <code>willSelectRowAt</code> method that always returns <code>nil</code>, causing taps on all rows to be ignored.
+</p>
+<p>➤ Change <code>tableView(_:willSelectRowAt:)</code> to:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+          willSelectRowAt indexPath: IndexPath)</span></span> -&gt; <span class="hljs-type">IndexPath</span>? {
+  <span class="hljs-keyword">if</span> indexPath.section == <span class="hljs-number">1</span> &amp;&amp; indexPath.row == <span class="hljs-number">1</span> {
+    <span class="hljs-keyword">return</span> indexPath
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+  }
+}</pre>
+<p>Now the Due Date row responds to taps, but the other rows don’t.
+</p>
+<p>➤ Run the app to try it out. Add a new checklist item and tap the Due Date row.
+</p>
+<p>Oop!. The app crashes. After some investigating, I found that when you override the data source for a static table view cell, you also need to provide the delegate method <code>tableView(_:indentationLevelForRowAt:)</code>.
+</p>
+<p>That’s not a method you’d typically use, but because you’re messing with the data source for a static table view, you do need to override it. I told you this was a little tricky.
+</p>
+<p>➤ Add the new delegate method:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+  indentationLevelForRowAt indexPath: IndexPath)</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">var</span> newIndexPath = indexPath
+  <span class="hljs-keyword">if</span> indexPath.section == <span class="hljs-number">1</span> &amp;&amp; indexPath.row == <span class="hljs-number">2</span> {
+    newIndexPath = <span class="hljs-type">IndexPath</span>(row: <span class="hljs-number">0</span>, section: indexPath.section)
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">super</span>.tableView(tableView, 
+          indentationLevelForRowAt: newIndexPath)
+}</pre>
+<p>The reason the app crashed on this method was that the standard data source doesn’t know anything about the cell at row 2 in section 1 (the one with the date picker), because that cell isn’t part of the table view’s design in the storyboard.
+</p>
+<p>So after inserting the new date picker cell, the data source gets confused and it crashes the app. To fix this, you have to trick the data source into believing there really are three rows in that section when the date picker is visible.
+</p>
+<p>➤ Run the app again. This time the date picker cell shows up where it should:
+</p><div class="image-20"><img src="graphics/img358.png"  alt="" title="The date picker appears in a new cell" /></div>
+<h3 class="segment-chapter">Listen for date picker events</h3>
+
+<p>Interacting with the date picker <i>should</i> change the date in the Due Date row, but currently this has no effect whatsover on the Due Date row (try it out: spin the wheels).
+</p>
+<p>You have to listen to the date picker’s “Value Changed” event. That event gets sent whenever the picker wheels settle on a new value. For that, you need to add a new action method.
+</p>
+<p>➤ Add the action method to <em>ItemDetailViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">dateChanged</span><span class="hljs-params">(<span class="hljs-number">_</span> datePicker: UIDatePicker)</span></span> {
+  dueDate = datePicker.date
+  updateDueDateLabel()
+}</pre>
+<p>This is pretty simple. It updates the <code>dueDate</code> instance variable with the new date and then updates the text on the Due Date label.
+</p>
+<p>➤ In the storyboard, Control-drag from the Date Picker to the view controller and select the <em>dateChanged:</em> action method. Now everything is properly hooked up. (You can verify that the action method is indeed connected to the date picker’s Value Changed event by looking at the Connections inspector.)
+</p>
+<p>➤ Run the app to try it out. When you turn the wheels on the date picker, the text in the Due Date row updates too. Cool.
+</p>
+<p>However, when you edit an existing to-do item, the date picker does not show the date from that item. It always starts on the current date and time.
+</p>
+<p>➤ Add the following line to the bottom of <code>showDatePicker()</code>:
+</p><pre class="code-block">datePicker.setDate(dueDate, animated: <span class="hljs-literal">false</span>)</pre>
+<p>This passes the proper date to the <code>UIDatePicker</code> component.
+</p>
+<p>➤ Verify that it works: click on the <em>ⓘ</em> button from an existing to-do item, preferably one you made a while ago, and confirm that the date picker shows the same date and time as the Due Date label. Excellent!
+</p>
+<h3 class="segment-chapter">Change the date label color when the date picker is active</h3>
+
+<p>Speaking of the label, it would be nice if this becomes highlighted when the date picker is active. You can use the tint color for this (that’s also what the Calendar app does).
+</p>
+<p>➤ Add the following line to the end of <code>showDatePicker()</code>:
+</p><pre class="code-block">dueDateLabel.textColor = dueDateLabel.tintColor</pre>
+<p>This sets the <code>textColor</code> of the <code>dueDateLabel</code> to the tint color.
+</p>
+<p>Of course, you can only change the colour of a control in a table view cell directly like this because we are dealing with static table view cells. If this were a table where the cells were dynamically generated, then you&apos;d have to first find the correct row, get a reference to the lable withn the cell and then set the text color — so, it would be a slighlty more complicated process.
+</p>
+<p>➤ Run the app. The date now appears in blue:
+</p><div class="image-25"><img src="graphics/img359.png"  alt="" title="The date label appears in the tint color while the date picker is visible" /></div>
+<h3 class="segment-chapter">Hide the date picker</h3>
+
+<p>When the user taps the Due Date row again, the date picker should disappear. If you try that right now the app will crash — what did you expect? This won’t win it many favorable reviews.
+</p>
+<p>➤ Add a new <code>hideDatePicker()</code> method:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">hideDatePicker</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">if</span> datePickerVisible {
+    datePickerVisible = <span class="hljs-literal">false</span>
+    <span class="hljs-keyword">let</span> indexPathDatePicker = <span class="hljs-type">IndexPath</span>(row: <span class="hljs-number">2</span>, section: <span class="hljs-number">1</span>)
+    tableView.deleteRows(at: [indexPathDatePicker], with: .fade)
+    dueDateLabel.textColor = <span class="hljs-type">UIColor</span>.black
+  }
+}</pre>
+<p>This does the opposite of <code>showDatePicker()</code>. It deletes the date picker cell from the table view and restores the color of the date label to the original color.
+</p>
+<p>➤ Change <code>tableView(_:didSelectRowAt:)</code> to toggle between the visible and hidden states.
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+           didSelectRowAt indexPath: IndexPath)</span></span> {
+  . . .
+  <span class="hljs-keyword">if</span> indexPath.section == <span class="hljs-number">1</span> &amp;&amp; indexPath.row == <span class="hljs-number">1</span> {
+    <span class="hljs-keyword">if</span> !datePickerVisible {
+      showDatePicker()
+    } <span class="hljs-keyword">else</span> {
+      hideDatePicker()
+    }
+  }
+}</pre>
+<p>There is another scenario where it’s a good idea to hide the date picker — when the user taps inside the text field. It won’t look very nice if the keyboard partially overlaps the date picker, so you might as well hide it. The view controller is already the delegate for the text field, making this easy.
+</p>
+<p>➤ Add the <code>textFieldDidBeginEditing(_:)</code> method:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">textFieldDidBeginEditing</span><span class="hljs-params">(<span class="hljs-number">_</span> textField: UITextField)</span></span> {
+  hideDatePicker()
+}</pre>
+<p>And with that you have a cool inline date picker!
+</p>
+<p>➤ Run the app and verify that hiding the date picker works for both scenarios.
+</p>
+<h2 class="segment-chapter">Schedule local notifications</h2>
+
+<p>One of the principles of object-oriented programming is that objects should do as much as possible themselves. Therefore, it makes sense that the <code>ChecklistItem</code> object should schedule its own notifications.
+</p>
+<h3 class="segment-chapter">Schedule notifications</h3>
+
+<p>➤ Add the following method to <em>ChecklistItem.swift</em>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">scheduleNotification</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">if</span> shouldRemind &amp;&amp; dueDate &gt; <span class="hljs-type">Date</span>() {
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"We should schedule a notification!"</span>)
+  }
+}</pre>
+<p>This compares the due date on the item with the current date — you can always get the current date (and time) by making a new <code>Date</code> object.
+</p>
+<p>The statement <code>dueDate &gt; Date()</code> compares the two dates and returns <code>true</code> if <code>dueDate</code> is in the future and <code>false</code> if it is in the past.
+</p>
+<p>If the due date is in the past, the <code>print()</code> will not be performed.
+</p>
+<p>Note the use of the &quot;and” (<code>&amp;&amp;</code>) operator. You only print the text when the Remind Me switch is set to “on” <i>and</i> the due date is in the future.
+</p>
+<p>You will call this method when the user presses the Done button after adding or editing a to-do item.
+</p>
+<p>➤ In the <code>done()</code> action in <em>ItemDetailViewController.swift</em>, add the following line just before the call to <code>didFinishEditing</code> and also before <code>didFinishaAdding</code>:
+</p><pre class="code-block">item.scheduleNotification()</pre>
+<p>➤ Run the app and try it out. Add a new item, set the switch to ON but don’t change the due date. Press Done.
+</p>
+<p>There should be no message in the Console because the due date has already passed (it is several seconds in the past by the time you press Done).
+</p>
+<p>➤ Add another item, set the switch to ON, and choose a due date in the future.
+</p>
+<p>When you press Done now, the text &quot;We should schedule a notification!&quot; should appear in the Console.
+</p>
+<p>Now that you’ve verified the method is called in the proper place, let’s actually schedule a new local notification object for the following three scenarios: adding a to-do item, editing a to-to item, deleting a to-do item.
+</p>
+<h3 class="segment-chapter">Add a to-do item</h3>
+
+<p>➤ In <em>ChecklistItem.swift</em>, change <code>scheduleNotification()</code> to:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">scheduleNotification</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">if</span> shouldRemind &amp;&amp; dueDate &gt; <span class="hljs-type">Date</span>() {
+    <span class="hljs-comment">// 1</span>
+    <span class="hljs-keyword">let</span> content = <span class="hljs-type">UNMutableNotificationContent</span>()
+    content.title = <span class="hljs-string">"Reminder:"</span>
+    content.body = text
+    content.sound = <span class="hljs-type">UNNotificationSound</span>.<span class="hljs-keyword">default</span>
+
+    <span class="hljs-comment">// 2</span>
+    <span class="hljs-keyword">let</span> calendar = <span class="hljs-type">Calendar</span>(identifier: .gregorian)
+    <span class="hljs-keyword">let</span> components = calendar.dateComponents(
+                          [.year, .month, .day, .hour, .minute], 
+                          from: dueDate)
+    <span class="hljs-comment">// 3</span>
+    <span class="hljs-keyword">let</span> trigger = <span class="hljs-type">UNCalendarNotificationTrigger</span>(
+                                    dateMatching: components, 
+                                         repeats: <span class="hljs-literal">false</span>)
+    <span class="hljs-comment">// 4</span>
+    <span class="hljs-keyword">let</span> request = <span class="hljs-type">UNNotificationRequest</span>(
+            identifier: <span class="hljs-string">"<span class="hljs-subst">\(itemID)</span>"</span>, content: content, 
+               trigger: trigger)
+    <span class="hljs-comment">// 5</span>
+    <span class="hljs-keyword">let</span> center = <span class="hljs-type">UNUserNotificationCenter</span>.current()
+    center.add(request)
+
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"Scheduled: <span class="hljs-subst">\(request)</span> for itemID: <span class="hljs-subst">\(itemID)</span>"</span>)
+  }
+}</pre>
+<p>You’ve seen this code before when you tried out local notifications for the first time, but there are a few differences.
+</p>
+<ol>
+<li>
+<p>Put the item’s <code>text</code> into the notification message.
+</p></li>
+
+<li>
+<p>Extract the year, month, day, hour, and minute from the <code>dueDate</code>. We don’t care about the number of seconds — the notification doesn’t need to be scheduled with millisecond precision, on the minute is precise enough.
+</p></li>
+
+<li>
+<p>To test local notifications you used a <code>UNTimeIntervalNotificationTrigger</code>, which scheduled the notification to appear after a number of seconds. Here, you’re using a <code>UNCalendarNotificationTrigger</code>, which shows the notification at the specified date.
+</p></li>
+
+<li>
+<p>Create the <code>UNNotificationRequest</code> object. Important here is that we convert the item’s numeric ID into a <code>String</code> and use it to identify the notification. That is how you’ll be able to find this notification later in case you need to cancel it.
+</p></li>
+
+<li>
+<p>Add the new notification to the <code>UNUserNotificationCenter</code>.
+</p></li>
+</ol>
+
+<p>Xcode is not so impressed with this new code and gives a bunch of error messages.
+</p>
+<p>What is wrong here? <code>UNUserNotificationCenter</code> and the other objects are provided by the User Notifications framework — you can tell by the “UN” prefix in their names.
+</p>
+<p>However, <code>ChecklistItem</code> hasn’t used any code from that framework until now. The only framework objects it has used, <code>NSObject</code> and <code>Codable</code>, came from another framework, Foundation.
+</p>
+<p>➤ To tell <code>ChecklistItem</code> about the User Notifications framework, you need to add the following line to the top of the file, below the other <code>import</code>:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> UserNotifications</pre>
+<p>Now the errors disappear like snow in the sun.
+</p>
+<p>There’s another small problem, though. If you’ve reset the Simulator recently, then the app no longer has permission to send local notifications.
+</p>
+<p>➤ Try it out. Run the app, add a new checklist item, set the due date a minute into the future, and press Done. You might not see a notification.
+</p>
+<p>Even if you do see a notification, since the authorization request code is no longer there, <i>Checklists</i> certainly won&apos;t have permission on your user devices.
+</p>
+<p>When you were just messing around at the beginning of this chapter, you placed the permission request code in the <code>AppDelegate</code> and ran it immediately upon launch. That’s not recommended.
+</p>
+<p>Don’t you just hate those apps that prompt you for ten different things before you’ve even had a chance to properly look at them? Let’s be a bit more user friendly with our own app!
+</p>
+<p>➤ Add the following method to <em>ItemDetailViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">shouldRemindToggled</span><span class="hljs-params">(<span class="hljs-number">_</span> switchControl: UISwitch)</span></span> {
+  textField.resignFirstResponder()
+
+  <span class="hljs-keyword">if</span> switchControl.isOn {
+    <span class="hljs-keyword">let</span> center = <span class="hljs-type">UNUserNotificationCenter</span>.current()
+    center.requestAuthorization(options: [.alert, .sound]) { 
+      granted, error <span class="hljs-keyword">in</span> 
+      <span class="hljs-comment">// do nothing</span>
+    }  
+  }
+}</pre>
+<p>When the switch is toggled to ON, this prompts the user for permission to send local notifications. Once the user has given permission, the app won’t put up a prompt again.
+</p>
+<p>➤ Also add an <code>import UserNotifications</code> or the above method won’t compile.
+</p>
+<p>➤ Open the storyboard and connect the <em>shouldRemindToggled:</em> action to the switch control.
+</p>
+<p>➤ Test it out. Run the app, add a new checklist item, set the due date a minute into the future, press Done and exit to the home screen.
+</p>
+<p>Wait one minute (patience…) and the notification should appear. Pretty cool!
+</p><div class="image-35"><img src="graphics/img360.png"  alt="" title="The local notification when the app is in the background" /></div>
+<p>That takes care of the adding a new item scenario. There are two others left.
+</p>
+<h3 class="segment-chapter">Edit an existing item</h3>
+
+<p>When the user edits an item, the following situations can occur with the Remind Me switch:
+</p>
+<ul>
+<li>
+<p>Remind Me was switched off and is now switched on. You have to schedule a new notification.
+</p></li>
+
+<li>
+<p>Remind Me was switched on and is now switched off. You have to cancel the existing notification.
+</p></li>
+
+<li>
+<p>Remind Me stays switched on but the due date changes. You have to cancel the existing notification and schedule a new one.
+</p></li>
+
+<li>
+<p>Remind Me stays switched on but the due date doesn’t change. You don’t have to do anything.
+</p></li>
+
+<li>
+<p>Remind Me stays switched off. Here you also don’t have to do anything.
+</p></li>
+</ul>
+
+<p>Of course, in all those situations you’ll only schedule the notification if the due date is in the future.
+</p>
+<p>Phew, that’s quite a list. It’s always a good idea to take stock of all possible scenarios before you start programming because this gives you a clear picture of everything you need to tackle.
+</p>
+<p>It may seem like you need to write a lot of logic here to deal with all these situations, but actually it turns out to be quite simple.
+</p>
+<p>First you’ll check if there is an existing notification for this to-do item. If there is, you simply cancel it. Then you determine whether the item should have a notification and if so, you schedule a new one.
+</p>
+<p>That should take care of all the above situations, even if sometimes you simply could have left the existing notification alone. The algorithm is crude, but effective.
+</p>
+<p>➤ Add the following method to <em>ChecklistItem.swift</em>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">removeNotification</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> center = <span class="hljs-type">UNUserNotificationCenter</span>.current()
+  center.removePendingNotificationRequests(
+                           withIdentifiers: [<span class="hljs-string">"<span class="hljs-subst">\(itemID)</span>"</span>])
+}</pre>
+<p>This removes the local notification for this <code>ChecklistItem</code>, if it exists. Note that <code>removePendingNotificationRequests()</code> requires an array of identifiers, so we first put our <code>itemID</code> into a string with <code>\(…)</code> and then into an array using <code>[]</code>.
+</p>
+<p>➤ Call this new method from to the top of <code>scheduleNotification()</code>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">scheduleNotification</span><span class="hljs-params">()</span></span> {
+  removeNotification()
+  . . .
+}</pre>
+<p>Let’s try it out.
+</p>
+<p>➤ Run the app and add a to-do item with a due date two minutes into the future. A new notification will be scheduled. Go to the home screen and wait until it shows up.
+</p>
+<p>➤ Edit the item and change the due date to three minutes into the future. The old notification will be removed and a new one scheduled for the new time.
+</p>
+<p>➤ Add a new to-do item with a due date two minutes into the future. Edit the to-do item but now set the switch to OFF. The old notification will be removed and no new notification will be scheduled.
+</p>
+<p>➤ Edit again and put the time a few minutes into the future but don’t change anything else; no new notification will be scheduled because the switch is still off.
+</p>
+<p>These tests should also work if you terminate the app in between.
+</p>
+<h3 class="segment-chapter">Delete a to-do item</h3>
+
+<p>There is one last case to handle: deletion of a <code>ChecklistItem</code>. This can happen in two ways:
+</p>
+<ol>
+<li>
+<p>The user can delete an individual item using swipe-to-delete.
+</p></li>
+
+<li>
+<p>The user can delete an entire checklist, in which case all its <code>ChecklistItem</code> objects are also deleted.
+</p></li>
+</ol>
+
+<p>An object is notified when it is about to be deleted using the <code>deinit</code> message. You can simply implement this method, check if there is a scheduled notification for this item, and then cancel it.
+</p>
+<p>➤ Add the following to <em>ChecklistItem.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">deinit</span> {
+  removeNotification()
+}</pre>
+<p>That’s all you have to do. The special <code>deinit</code> method will be invoked when you delete an individual <code>ChecklistItem</code> but also when you delete a whole <code>Checklist</code> — because all its <code>ChecklistItems</code> will be destroyed as well, as the array they are in is deallocated.
+</p>
+<p>➤ Run the app and try it out. First, schedule some notifications a minute or so into the future and then remove that to-do item or its entire checklist. Wait until the due date comes and you shouldn’t get a notification.
+</p>
+<p>Once you’re convinced everything works, you can remove the <code>print()</code> statements. They are only temporary for debugging purposes. You probably don’t want to leave them in the final app. The <code>print()</code> statements won’t hurt, but the end user can’t see those messages anyway.
+</p>
+<p>➤ Also remove the item ID from the label in the <code>ChecklistViewController</code> – that was only used for debugging.
+</p>
+<h2 class="segment-chapter">That’s a wrap!</h2>
+
+<p>Things should be starting to make sense by now. I’ve thrown you into the deep end by writing an entire app from scratch. We’ve touched on a number of advanced topics already, but hopefully you were able to follow along quite well with what we’ve been doing. Kudos for sticking with it until the end!
+</p>
+<p>It’s OK if you’re still a bit fuzzy on the details. Sleep on it for a bit and keep tinkering with the code. Programming requires its own way of thinking and you won’t learn that overnight. Don’t be afraid to do this app again from the start — it will make more sense the second time around!
+</p>
+<p>This section focused mainly on UIKit and its most important controls and patterns. In the next section we’ll take a few steps back to talk more about the Swift language itself. And of course, you’ll build another cool app.
+</p>
+<p>Here is the final storyboard for <i>Checklists</i>:
+</p><div class="image-95"><img src="graphics/img361.png"  alt="" title="The final storyboard" /></div>
+<p>Completing all of that is pretty impressive! Give yourself a well-deserved pat on the back :]
+</p>
+<p>Take a break, and when you’re ready, continue on to the next section, where you’ll make an app that knows its place! :-)
+</p>
+<p>Haven’t had enough yet? Here are some challenges to sink your teeth into:
+</p>
+<div class="note">
+<p><em>Exercise:</em> Display the due date in the table view cells, under the text of the to-do item.
+</p></div>
+
+<div class="note">
+<p><em>Exercise:</em> Sort the to-do items list based on the due date. This is similar to what you did with the list of <code>Checklist</code>s except that now you’re sorting <code>ChecklistItem</code> objects and you’ll be comparing <code>Date</code> objects instead of strings.
+</p></div>
+
+<p>You can find the final project files for the Checklists app under <em>20 - Local Notifications</em> in the Source Code folder.
+</p></body></html>

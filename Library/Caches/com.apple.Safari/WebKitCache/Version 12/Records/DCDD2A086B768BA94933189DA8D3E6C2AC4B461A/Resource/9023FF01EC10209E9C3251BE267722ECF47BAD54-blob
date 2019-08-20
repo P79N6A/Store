@@ -1,0 +1,538 @@
+WEBVTT
+
+00:00.570 --> 00:06.120
+Ora la prima cosa che faremo è aprire un terminale e all'interno del
+
+00:06.120 --> 00:08.000
+Terminale navigheremo sul nostro desktop.
+
+00:08.010 --> 00:13.650
+Quindi, se non hai familiarità con la riga di comando e non hai visto Marchal sulla
+
+00:13.980 --> 00:18.390
+riga di comando, ti consiglio di dare un'occhiata ora perché useremo molti
+
+00:18.390 --> 00:20.790
+comandi per creare directory e navigare intorno.
+
+00:20.790 --> 00:25.290
+Quindi se non ti è ancora familiare, allora è un buon momento per dare un'occhiata a questo.
+
+00:26.010 --> 00:33.600
+Quindi la prima cosa che farò è che andrò su CD nel mio desktop e
+
+00:33.600 --> 00:43.920
+qui creerò una nuova directory chiamata story, quindi andrò al cd in questa directory della storia e vice shoyu con ls.
+
+00:43.920 --> 00:45.870
+Puoi vedere che è completamente vuoto.
+
+00:45.990 --> 00:50.420
+E allo stesso modo all'interno del Finder posso mostrarti la stessa cosa.
+
+00:50.430 --> 00:54.600
+Quindi andiamo avanti e creare alcuni file di testo.
+
+00:54.660 --> 01:01.590
+Quindi userò il tocco per creare un file chiamato testo punto capitolo 1 e quindi
+
+01:01.590 --> 01:09.690
+aprirò il testo del capitolo 1 e puoi farlo semplicemente scrivendo apri e aprilo all'interno dell'applicazione predefinita che
+
+01:09.750 --> 01:11.880
+è testo su un Mac.
+
+01:12.120 --> 01:18.130
+In alternativa puoi usare un testo all'interno del terminale, ad esempio Vin.
+
+01:18.210 --> 01:21.770
+Ora questo è solo per le persone che hanno familiarità con questo.
+
+01:21.780 --> 01:24.050
+Quindi è totalmente a te decidere cosa usare.
+
+01:24.090 --> 01:30.180
+Ma se non si ha familiarità con l'uso di editor basati su terminali, è probabilmente una buona
+
+01:30.180 --> 01:33.920
+idea limitarsi a usare il comando open e usare textedit.
+
+01:33.930 --> 01:39.110
+Quindi andiamo avanti e apriamo il capitolo 1 e scriviamo qualcosa all'interno di Jawi
+
+01:42.990 --> 01:43.350
+OK.
+
+01:43.360 --> 01:45.270
+Questo è il mio capolavoro.
+
+01:45.390 --> 01:49.440
+Ho intenzione di andare avanti e premere Salva e ho intenzione di uscire da textedit.
+
+01:49.570 --> 01:53.190
+Questo è stato il nostro primo capitolo.
+
+01:53.380 --> 02:01.100
+Quindi ora creiamo un repository locale e iniziamo a monitorare alcune di queste modifiche ai file.
+
+02:01.450 --> 02:06.350
+Quindi, per inizializzare, scriviamo semplicemente entrarci.
+
+02:06.340 --> 02:12.490
+E come puoi vedere è inizializzato e vuoto recupera repository all'interno della directory story.
+
+02:12.490 --> 02:17.230
+Ora, se guardi dentro il mirino, in realtà non riesci a vedere bene questo punto.
+
+02:17.320 --> 02:18.900
+Ma come abbiamo imparato prima.
+
+02:18.970 --> 02:20.720
+Se usi LS A.
+
+02:20.920 --> 02:26.620
+Puoi vedere tutti i file nascosti e puoi vedere che Dogget è proprio lì e verrà utilizzato per
+
+02:26.710 --> 02:32.320
+tenere traccia di tutte le modifiche per confermare le modifiche e per eseguire il controllo della versione.
+
+02:32.320 --> 02:38.100
+Quindi siamo attualmente all'interno della directory story e puoi anche chiamarla directory di lavoro.
+
+02:38.110 --> 02:45.250
+Quindi, come ho detto prima di usarlo e di imparare a conoscere il controllo della versione, viene fornito con una sua
+
+02:45.340 --> 02:46.570
+terminologia e linguaggio propri.
+
+02:46.570 --> 02:51.370
+Quindi cercherò di sfatare e semplificare molti di questi termini che incontrerai solo in modo
+
+02:51.370 --> 02:55.440
+che tutti possiamo essere sulla stessa pagina e tutti capiamo cosa sta succedendo.
+
+02:55.720 --> 03:01.770
+Quindi attualmente siamo nella directory di lavoro che è la directory della storia.
+
+03:02.050 --> 03:07.750
+E qui per iniziare a monitorare i cambiamenti dei miei file.
+
+03:07.750 --> 03:15.350
+Ad esempio il testo del punto 1 del capitolo, quindi ho bisogno di aggiungere questo file alla cosiddetta area di staging.
+
+03:15.790 --> 03:23.230
+E questo è fondamentalmente un luogo intermedio in cui è possibile scegliere quali file all'interno della
+
+03:23.230 --> 03:26.270
+directory di lavoro che si desidera salvare.
+
+03:26.320 --> 03:33.220
+Quindi per vedere cosa c'è attualmente nella tua area di staging puoi usare il comando get status e ti mostra che
+
+03:33.220 --> 03:39.630
+ci sono file non tracciati che saranno mostrati in rosso e questo è qualcosa che si trova semplicemente all'interno di
+
+03:39.630 --> 03:41.080
+una directory di lavoro.
+
+03:41.080 --> 03:42.410
+Quindi qui dentro.
+
+03:42.550 --> 03:45.560
+Ma non è ancora nell'area di sosta.
+
+03:45.610 --> 03:52.570
+all'area di staging e iniziare a tracciare le modifiche al suo interno, dobbiamo usare il comando get.
+
+03:52.570 --> 03:53.940
+Quindi, per aggiungerlo
+
+03:54.020 --> 03:58.930
+Quindi digiteremo get e aggiungeremo il nome del file.
+
+03:58.930 --> 04:01.730
+Quindi in questo caso è il testo alternativo del Capitolo 1.
+
+04:01.960 --> 04:08.710
+Quindi vai avanti e premi invio, quindi se proviamo a utilizzare lo stato ottieni di nuovo, puoi vedere che quel file
+
+04:08.800 --> 04:11.820
+è stato aggiunto come nuovo file ed ora è verde.
+
+04:11.830 --> 04:16.380
+Quindi questo è ora nell'area di staging ed è pronto per essere commesso.
+
+04:16.390 --> 04:20.260
+Quindi questo è andare avanti e commetterlo sotto il controllo della versione.
+
+04:20.260 --> 04:28.480
+Quindi il comando è ottenere il commit e userò il trattino e il flag per aggiungere un messaggio di commit.
+
+04:28.480 --> 04:31.450
+Quindi il messaggio di commit è davvero molto importante.
+
+04:31.630 --> 04:38.140
+È qualcosa che ti aiuta a tenere traccia di quali modifiche hai apportato in ogni commit.
+
+04:38.140 --> 04:47.200
+Pertanto, quando si crea un nuovo punto di salvataggio, si desidera essere il più espliciti possibile su quali modifiche sono state apportate tra l'ultimo
+
+04:47.230 --> 04:50.380
+punto di salvataggio e questo punto di salvataggio corrente.
+
+04:50.380 --> 04:58.420
+Quindi per il nostro commit iniziale possiamo usare qualcosa di molto semplice come il commit iniziale e questo dimostra che questo è il
+
+04:58.420 --> 04:59.880
+nostro punto di partenza.
+
+05:00.100 --> 05:05.920
+In alternativa, se vuoi essere leggermente più specifico perché nel nostro caso abbiamo completato
+
+05:05.920 --> 05:07.090
+il capitolo 1.
+
+05:07.090 --> 05:11.180
+Quindi puoi scrivere il capitolo 1 completo.
+
+05:11.200 --> 05:16.540
+Ora la cosa che realizzerai è che di solito con i messaggi di commit sono scritti al
+
+05:16.540 --> 05:17.050
+tempo presente.
+
+05:17.260 --> 05:18.600
+E questa è la migliore pratica.
+
+05:18.610 --> 05:25.210
+Quindi, mentre probabilmente avrebbe più senso suppongo che almeno nella mia testa comunque di scrivere il primo
+
+05:25.270 --> 05:28.200
+capitolo completato come questo punto di salvataggio.
+
+05:28.240 --> 05:32.680
+In realtà, per convenzione, dovresti sempre usare il tempo presente.
+
+05:32.680 --> 05:36.910
+Quindi è come lo stai facendo ora stai inviando le tue modifiche ora.
+
+05:37.000 --> 05:44.200
+Quindi andiamo avanti e colpisci e svolgi per rendere il nostro primo commit e puoi vedere quali
+
+05:44.200 --> 05:47.290
+commit hai fatto usando il comando Get log.
+
+05:47.560 --> 05:53.320
+Quindi puoi vedere che questo impegno è stato fatto in questo momento da questa persona.
+
+05:53.540 --> 06:00.720
+E ha anche un hash e questo hash identifica univocamente questo particolare commit.
+
+06:00.910 --> 06:06.620
+E poi alla fine vedi questo messaggio di commit su cosa fosse questo save point.
+
+06:07.870 --> 06:12.310
+Quindi ora ho intenzione di andare avanti e creare altri due capitoli.
+
+06:12.340 --> 06:25.450
+Quindi creiamo solo il testo del punto due del capitolo e il testo del punto tre del capitolo e ora abbiamo tre capitoli e ho intenzione di entrare
+
+06:25.720 --> 06:29.640
+e modificare alcuni di questi file di testo.
+
+06:29.680 --> 06:31.030
+Quindi diciamo k,
+
+06:41.270 --> 06:43.710
+questo è il capitolo 2 fatto.
+
+06:43.960 --> 06:49.330
+E finalmente andiamo avanti e basta aprire il capitolo 3 e modificarlo.
+
+07:00.930 --> 07:01.420
+Tutto ok.
+
+07:01.450 --> 07:03.720
+Quindi tutti e tre i file sono stati modificati.
+
+07:03.760 --> 07:09.070
+E qui sopra in Finder puoi davvero dare una rapida occhiata a quali sono i contenuti
+
+07:09.070 --> 07:14.520
+che saranno davvero utili per essere in grado di dimostrarti cosa sta facendo dietro le quinte.
+
+07:14.800 --> 07:20.860
+Quindi ora andiamo avanti e leggiamo questi due nuovi file nelle nostre aree di sosta.
+
+07:20.860 --> 07:28.180
+Quindi, se usiamo lo status get, possiamo vedere che ci sono due file non tracciati che si trovano solo nella
+
+07:28.180 --> 07:31.970
+directory di lavoro e non ancora all'interno dell'area di staging.
+
+07:32.290 --> 07:38.630
+Quindi possiamo metterlo nell'area di staging semplicemente aggiungendo ognuno di loro come facevamo prima.
+
+07:38.650 --> 07:42.610
+Aggiungi e scrivi qualcosa come le etichette del secondo capitolo.
+
+07:42.630 --> 07:45.430
+E poi facendolo capitolo tre punti di testo.
+
+07:45.640 --> 07:51.940
+Ma come puoi immaginare se hai un bel numero di file, può diventare incredibilmente noioso doverlo
+
+07:51.940 --> 07:53.580
+fare uno per uno.
+
+07:53.590 --> 07:56.070
+Quindi, ovviamente, c'è un modo migliore.
+
+07:56.080 --> 08:01.870
+Quindi, invece di aggiungere questi file uno alla volta, possiamo semplicemente dire di ottenere ADD
+
+08:01.870 --> 08:07.050
+e quindi usare il punto per specificare tutto all'interno di questa directory corrente.
+
+08:07.060 --> 08:09.840
+Quindi tutto all'interno della directory della storia.
+
+08:10.090 --> 08:14.740
+Quindi ora se vado avanti e premo invio, allora questo è di nuovo per ottenere gli stater.
+
+08:14.920 --> 08:22.150
+Puoi vedere che i due nuovi file sono stati aggiunti all'area di staging e ora stiamo andando a trasferire questi
+
+08:22.270 --> 08:26.580
+due file su un nuovo commit su un nuovo punto di salvataggio.
+
+08:26.920 --> 08:30.110
+E sai cosa fare se stai seguendo con me.
+
+08:30.130 --> 08:35.570
+Vai avanti e provaci.
+
+08:35.570 --> 08:35.930
+Tutto ok.
+
+08:35.930 --> 08:43.430
+Quindi, come è che se sei un membro del comando è ottenere il commit
+
+08:43.430 --> 08:51.920
+e useremo il flag M per specificare un messaggio di commit e scriveremo un messaggio che
+
+08:51.920 --> 08:58.120
+è al tempo presente, quindi diciamo completare il capitolo due e tre.
+
+08:58.940 --> 09:05.590
+Quindi questo è tutto ciò che ho fatto tra il commento iniziale e questo commit.
+
+09:05.600 --> 09:10.230
+L'unica differenza è il fatto che ho completato ora il secondo capitolo nel capitolo tre.
+
+09:10.250 --> 09:13.170
+Quindi andiamo avanti e premi invio.
+
+09:13.550 --> 09:17.060
+Quindi di nuovo controlliamo usando il registro.
+
+09:17.120 --> 09:24.170
+Possiamo vedere che ora abbiamo due commit entrambi con diversi hash perché sono unici e
+
+09:24.170 --> 09:25.230
+sono diversi.
+
+09:25.280 --> 09:32.990
+Quindi quello iniziale era completo capitolo 1 ed è stato fatto in questo momento e poi più tardi circa cinque minuti
+
+09:32.990 --> 09:36.100
+dopo ho completato il secondo e il terzo capitolo.
+
+09:36.170 --> 09:38.110
+E quello era il secondo impegno.
+
+09:38.480 --> 09:41.230
+E questo è dove siamo adesso.
+
+09:41.270 --> 09:49.480
+Quindi puoi vedere per testa questo Woodhead Questa è la posizione o lo stato attuale in cui ci troviamo.
+
+09:49.490 --> 09:52.720
+Quindi voglio solo ricapitolare rapidamente quello che abbiamo appena fatto.
+
+09:52.970 --> 09:58.440
+Così abbiamo creato un file nella nostra directory di lavoro all'interno della nostra directory di storie.
+
+09:58.630 --> 10:05.990
+Quindi la directory di lavoro è la cartella o la directory in cui si inizializza il repository get.
+
+10:06.100 --> 10:10.390
+Quando abbiamo detto entrarci, l'abbiamo fatto all'interno della directory della storia.
+
+10:10.460 --> 10:12.540
+In modo che diventi una directory di lavoro.
+
+10:12.740 --> 10:18.890
+E da ora in poi cercherà di tenere traccia delle modifiche che vede tra la
+
+10:19.310 --> 10:22.090
+directory di lavoro e il repository locale.
+
+10:22.490 --> 10:31.040
+Quindi all'inizio abbiamo creato un file all'interno della nostra directory di lavoro all'interno della storia e poi l'abbiamo usato
+
+10:31.040 --> 10:34.310
+per aggiungerlo per spingerlo nell'area di staging.
+
+10:34.310 --> 10:39.740
+Ora il motivo per cui esiste questa area intermedia di staging perché ti potresti chiedere perché non
+
+10:39.740 --> 10:42.470
+andare dalla directory di lavoro direttamente al repository.
+
+10:42.500 --> 10:44.690
+Perché abbiamo bisogno di questo passo in più.
+
+10:44.840 --> 10:52.430
+A volte potresti non voler aggiungere tutti i tuoi file da tracciare o tutti i tuoi file
+
+10:52.430 --> 10:53.550
+da impegnare.
+
+10:53.600 --> 10:59.240
+Quindi l'area di sosta è un buon posto per cercare di capire quali sono le cose che vuoi ignorare.
+
+10:59.390 --> 11:01.970
+E una delle cose che vuoi monitorare.
+
+11:02.210 --> 11:09.200
+che stiamo per eseguire, il passo successivo è quello di procedere e commettere utilizzando il comando Ottieni commit.
+
+11:09.200 --> 11:17.160
+Quindi, una volta che lo abbiamo usato e abbiamo messo il file nell'area di staging e siamo contenti delle modifiche
+
+11:17.180 --> 11:25.730
+Così ora il nostro file si trova all'interno del nostro repository locale in modo tale che ottenga dot e a tale versione venga assegnato un nome
+
+11:25.730 --> 11:27.340
+tramite il messaggio di commit.
+
+11:27.350 --> 11:35.540
+Ciò significa che anche se abbiamo incasinato il nostro file, possiamo ancora usare l'ultima versione sotto controllo
+
+11:35.540 --> 11:43.820
+di versione e possiamo usare un comando speciale chiamato Get check out per tornare indietro o tornare all'ultima
+
+11:43.820 --> 11:46.200
+posizione nel nostro repository locale.
+
+11:46.370 --> 11:52.080
+Quindi lascia che ti mostri come appare nella riga di comando e come lo faremo nella pratica.
+
+11:52.100 --> 11:57.410
+ho tre capitoli ben scritti e ho la sensazione che il mio libro sarà un grande venditore.
+
+11:57.410 --> 11:58.430
+Quindi al momento
+
+11:58.450 --> 12:06.530
+Quindi ora diciamo che ho capito che ho lavorato al capitolo tre e ho completamente incasinato tutto e
+
+12:06.530 --> 12:13.910
+sai che mi sono addormentato sulla tastiera e mi è capitato di aver salvato il mio file.
+
+12:13.910 --> 12:20.140
+E ora se lo guardi ora è solo mumbojumbo e ho rovinato il mio capolavoro.
+
+12:20.360 --> 12:25.170
+Ma va bene perché abbiamo il controllo della versione e l'abbiamo abilitato.
+
+12:25.370 --> 12:28.270
+Quindi non abbiamo niente di cui preoccuparsi.
+
+12:28.610 --> 12:33.750
+In realtà posso ripristinare le modifiche che ho apportato localmente nella mia directory di lavoro.
+
+12:33.770 --> 12:39.290
+tre file di testo punti che non sono stati ancora commessi o aggiunti all'area di staging.
+
+12:39.280 --> 12:44.780
+Quindi a questo punto puoi usare get stators per vedere che abbiamo modifiche nel nostro capitolo
+
+12:44.840 --> 12:50.920
+Quindi, se lo volessimo, potremmo effettivamente riportarlo alla sua precedente gloria.
+
+12:51.230 --> 12:57.920
+Ma prima di farlo possiamo usare un buon comando per verificare una delle differenze tra la versione
+
+12:57.920 --> 13:03.100
+corrente del capitolo 3 e l'ultimo punto di salvataggio nel nostro repository get.
+
+13:03.230 --> 13:06.860
+Quindi per farlo puoi usare il comando get diff.
+
+13:06.950 --> 13:12.350
+Quindi questa differenza e gli daremo il nome del file del capitolo 3.
+
+13:12.650 --> 13:17.210
+E se premi Invio, puoi vedere che questa è la parte che è stata cancellata.
+
+13:17.210 --> 13:23.860
+Quindi la parte in rosso e poi questa è stata la parte che è stata aggiunta, che è il nostro gobbledygook.
+
+13:24.050 --> 13:29.600
+Quindi ora se ho guardato queste differenze potrebbe essere solo che sai che ci sono solo
+
+13:29.930 --> 13:36.480
+alcuni errori nella mia nuova versione del capitolo 3 e voglio semplicemente copiare alcune cose o dare un'occhiata
+
+13:36.480 --> 13:41.390
+a come ho fatto certe cose in precedenza e cambia il mio file corrente.
+
+13:41.700 --> 13:46.910
+Ma altre volte potrebbe darsi che tu sappia che vuoi solo bruciare il nuovo file.
+
+13:46.920 --> 13:49.120
+Semplicemente non vuoi avere niente a che fare con questo.
+
+13:49.140 --> 13:52.710
+E preferiresti piuttosto tornare alla versione precedente.
+
+13:52.980 --> 13:59.370
+Quindi se vuoi farlo allora c'è un comando chiamato Get check out che sarà davvero molto
+
+13:59.370 --> 14:00.510
+utile per te.
+
+14:00.810 --> 14:03.190
+Quindi dai un'occhiata.
+
+14:03.210 --> 14:07.920
+E poi specificheremo il nome del file che vogliamo controllare, che è
+
+14:07.920 --> 14:14.170
+il testo del punto 3 del Capitolo e, se guardi qui, che è l'anteprima della versione
+
+14:14.170 --> 14:23.070
+attuale del testo del punto tre del capitolo, una volta che premo invio questo comando che sostanzialmente chiede di ripristinare questo capitolo 3
+
+14:23.070 --> 14:26.550
+all'ultima versione che è stata commessa nel nostro repository locale.
+
+14:26.550 --> 14:33.900
+Quindi, se premo Invio, puoi vedere che quasi immediatamente il mio capitolo 3 è stato riportato al suo stato
+
+14:34.440 --> 14:41.610
+glorioso precedente e questa è la versione del capitolo 3 all'ultimo punto di controllo in cui l'ho commesso.
+
+14:41.640 --> 14:46.000
+Quindi questo è stato completato il capitolo 2 e 3.
+
+14:46.020 --> 14:51.770
+Quindi, mentre in questa lezione abbiamo esaminato principalmente le implementazioni locali dei bambini.
+
+14:51.840 --> 14:58.460
+Quindi, salvando queste versioni sul nostro computer localmente nella prossima lezione, parlerò di get hub
+
+14:58.830 --> 15:02.580
+e creazione di repository remoti, quindi vedrò il.

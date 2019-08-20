@@ -1,0 +1,241 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fswiss\fcharset0 Helvetica-Bold;\f2\fnil\fcharset178 GeezaPro;
+}
+{\colortbl;\red255\green255\blue255;\red251\green2\blue7;\red0\green0\blue0;\red0\green0\blue255;
+\red0\green0\blue0;\red255\green249\blue89;\red255\green255\blue51;\red33\green255\blue255;}
+{\*\expandedcolortbl;;\cssrgb\c100000\c14913\c0;\cssrgb\c0\c0\c0;\cssrgb\c1680\c19835\c100000;
+\csgray\c0\c0;\cssrgb\c100000\c96976\c42052;\cssrgb\c99946\c98636\c25320;\cssrgb\c0\c99144\c100000;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww14620\viewh11480\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs28 \cf0 Chapter 22:
+\fs36  
+\f1\b \cf2 Get Location Data\cf3  
+\f0\b0\fs24 \cf0 \
+\
+1- Most iOS devices have a way yo let you know exactly where you are on the globe either through (GPS, WI-FI, Cell tower)\
+	- the core location framework puts that power in your hand so when an app want\'92s to know	 the user location asks the the core. Location to get the latitude and longitude	\
+The steps to get your current location\
+\
+1- import coreloaction \'97> this is the frame work is used to get locations\
+\
+2- Add CLLocationManerDelegate to the view controller\'92s class line \
+\
+3- add new property \cf4 Let locationManger = CLLocationManger()\cf0 \
+	 - the CLLocationManger is the object that will give you GPS coordinates \
+         - but notice the CLLocationManger doesn\'92t give you GPS coordinates right way, you have To call its \cf4 startUpdatinLocation()\cf0 \
+	- so we are going to write the method as the following \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\qc\partightenfactor0
+\cf0 		\cf4  @IBAction func getLocation() \{\
+  locationManager.delegate = self\
+  locationManager.desiredAccuracy = \
+                  kCLLocationAccuracyNearestTenMeters\
+  locationManager.startUpdatingLocation()\
+\}\cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \
+	- after that CLLocationManer will send location updates to the view controller so we will use the delegate 1033\
+\
+\
+4- If you run the app there is nothing seems to happen \'97> that\'92s because you need to ask permissions before accessing \
+    -location information so we add the following lines to the top of getLocation() \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\qc\partightenfactor0
+\cf0 					\cf4 let authStatus = CLLocationManager.authorizationStatus()\
+if authStatus == .notDetermined \{\
+  locationManager.requestWhenInUseAuthorization()\
+  return\
+\}\cf0 \
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0  - just adding these lines of code is not enough , you also to have special key to the app\'92s Info.plist.  1036\
+	- after running the app \'97>. Core location will pop up alert , asking the user for permission , if you press don\'92t allow button\
+		the location manger delegate  telling you that the location manger wasn\'92t able to obtain a location , also it means the 		user did not allow the app to obtain location information \
+	- when you press the Get My location button , the app does not ask for permission anymore but immediately gives you the 		same error message , so it should encourage the user to enable location services \
+\
+5- Handle permission errors\
+\
+- after the user press on the don\'92t allow button the location	service was disabled then when the user run the app again and press on get location it does not give him any thing so we need a pop up to encourage user to enable location service\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\qc\partightenfactor0
+\cf4 func showLocationServicesDeniedAlert() \{\
+  let alert = UIAlertController(\
+    title: "Location Services Disabled",\
+    message: "Please enable location services for this app in Settings.",\
+    preferredStyle: .alert)\
+\
+  let okAction = UIAlertAction(title: "OK", style: .default, \
+                             handler: nil)\
+  alert.addAction(okAction)\
+\
+  present(alert, animated: true, completion: nil)\
+\}\cf0 \
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 6- Display coordinates \
+\
+- The \cf4 locationManger(_:didUpdateLocations:) \cf0 delegate method gives you an array of CLLocation objects that contain the current latitude and longitude coordinates of the user ,  you will take the last cLocation object from the array and display it in the labels that you added to the screen earlier\
+\
+	- Add a new variable var location: cllocation?\
+		-you will store the current location in this variable , it needs to be optional because it is possible to not have a location \
+		for example when you are stranded out in the desert and there are no cell towers or GPS satellites.\
+		- also it needs to be optional in case everting works as it should , the value of location will still be nil until core location \
+		  reports back with a valid location object \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\qc\partightenfactor0
+\cf0 				\cf4 func locationManager(_ manager: CLLocationManager, \
+  didUpdateLocations locations: [CLLocation]) \{\
+  let newLocation = locations.last!\
+  print("didUpdateLocations \\(newLocation)")\
+\
+  location = newLocation    // Add this\
+  updateLabels()            // Add this\
+\}\cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \
+	- then create update function method\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\qc\partightenfactor0
+\cf4 \
+func updateLabels() \{\
+  if let location = location \{\
+    latitudeLabel.text = String(format: "%.8f", \
+                                location.coordinate.latitude)\
+    longitudeLabel.text = String(format: "%.8f", \
+                                 location.coordinate.longitude)\
+    tagButton.isHidden = false\
+    messageLabel.text = ""\
+  \} else \{\
+    latitudeLabel.text = ""\
+    longitudeLabel.text = ""\
+    addressLabel.text = ""\
+    tagButton.isHidden = true\
+    messageLabel.text = "Tap 'Get My Location' to Start"\
+  \}\
+\}\cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs28 \cf0 \'93Chapter 23:
+\fs24  
+\f1\b\fs36 \cf2 Use Location Data
+\f0\b0\fs24 \cf0 \
+\
+
+\fs28 1-Handle GPS errors
+\fs24 \
+   - you may be somewhere where there is no clear line - such as inside or in an area with lots of tall buildings- blocking your GPS signal, and there not be many wi-fi routers around you \'97> in these cases you have to deal with all unexpected errors and bad readings so you should add some error handling code to the app to let the users know about problems getting those coordinates-\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \cb5 -
+\f1\b  \cb6 The error handling code\cb5  \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\qc\partightenfactor0
+
+\f0\b0 \cf0 \cb1 	\cf4 func locationManager(_ manager: CLLocationManager, \
+        didFailWithError error: Error) \{\
+  print("didFailWithError \\(error.localizedDescription)")\
+\
+  if (error as NSError).code == \
+      CLError.locationUnknown.rawValue \{\
+    return\
+  \}\
+  lastLocationError = error\
+  stopLocationManager()\
+  updateLabels()\
+\}\cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \
+\
+The location manager may report errors for a variety of scenarios. You can look at the code property of the Error object to find out what type of error you\'92re dealing with.\'94\
+\
+\'93The CLError.locationUnknown error means the location manager was unable to obtain a location right now, but that doesn\'92t mean all is lost. It might just need another second or so to get an uplink to the GPS satellite. In the mean time, it\'92s letting you know that, for now, it could not get any location information.\
+When you get this error, you will simply keep trying until you do find a location or receive a more serious error.\'94\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f1\b \cf0 \cb7 -Stop location update
+\f0\b0 \cb1 \
+If obtaining a location appears to be impossible for wherever there user currently is on the globe , then you need to tell the location manger to stop , to conserve the battery power \
+\
+1- add the stopLocationManger() method \cf8 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\qc\partightenfactor0
+\cf4    func stopLocationManager() \{\
+  if updatingLocation \{\
+    locationManager.stopUpdatingLocation()\
+    locationManager.delegate = nil\
+    updatingLocation = false\
+  \}\cf8 \
+\cf4 \}\cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \
+\
+2- put some extra code in update-labels() to show the error message\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\qc\partightenfactor0
+\cf4 \'93func updateLabels() \{\
+  if let location = location \{\
+\'85\'85.\
+    let statusMessage: String\
+    if let error = lastLocationError as NSError? \{\
+      if error.domain == kCLErrorDomain && \
+         error.code == CLError.denied.rawValue \{\
+        statusMessage = "Location Services Disabled"\
+      \} else \{\
+        statusMessage = "Error Getting Location\'94\cf0 \
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \
+ - this new code determines what to put in the messageLabel at the top of the screen. It uses a bunch of if statements to figure out what the current status of the app is\'94.  1065\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f1\b \cf0 \cb7 -Improve GPS results
+\f0\b0 \cb1 \
+\
+\'93here\'92s the thing: you saw in the Simulator that Core Location keeps giving you new location objects over and over, even though the coordinates may not have changed. That\'92s because the user could be on the move, in which case their GPS coordinates do change.\
+\
+However, you\'92re not building a navigation app. So, for MyLocations you just want to get a location that is accurate enough and then you can tell the location manager to stop sending updates. This important because getting location updates costs a lot of battery power\
+\
+\
+\
+\
+\
+\
+\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f2 \cf0 \
+
+\f0 \
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+\
+		}

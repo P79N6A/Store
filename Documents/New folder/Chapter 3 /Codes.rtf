@@ -1,0 +1,98 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 LucidaGrande;\f2\fnil\fcharset178 GeezaPro;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue255;\red33\green255\blue6;\red0\green0\blue0;
+}
+{\*\expandedcolortbl;;\cssrgb\c1680\c19835\c100000;\cssrgb\c0\c97680\c0;\cssrgb\c0\c0\c0;
+}
+\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Section  3\
+\
+Chapter 25 \
+\
+\cf2 override func viewWillAppear(_ animated: Bool) \{\
+  super.viewWillAppear(animated)\
+  navigationController?.isNavigationBarHidden = true\
+\}. \cf3 // \cf4 used to hide the navigation bar in the screen but there will be issue about the rest navigation screen Which all of them also will be hidden so we should fix it \'97> we ask the navigation controller to start sowing the navigation bar as soon as you exit the view where you hide the navigation bar \
+So we are going to add the following code\
+\
+\cf2 override func viewWillDisappear(_ animated: Bool) \{\
+  super.viewWillAppear(animated)\
+  navigationController?.isNavigationBarHidden = false\
+\} \cf4 // with this code you simply reverse what you did previously in viewWillAppear by asking the navigation controller to show the navigation Bar each time the current view is about disappear from view \
+\
+Chapter 26 \
+// this code used to Hide keyboard\
+\cf2 let gestureRecognizer = UITapGestureRecognizer(target: self, \
+                             action: #selector(hideKeyboard))\
+gestureRecognizer.cancelsTouchesInView = false\
+tableView.addGestureRecognizer(gestureRecognizer)\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf4 Then write the following code 1215 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf2 \
+\'93@objc func hideKeyboard(_ gestureRecognizer: \
+                        UIGestureRecognizer) \{\
+  let point = gestureRecognizer.location(in: tableView)\
+  let indexPath = tableView.indexPathForRow(at: point)\
+\
+  if indexPath != nil && indexPath!.section == 0 \
+                      && indexPath!.row == 0 \{\
+    return\
+  \}\
+  descriptionTextView.resignFirstResponder()\
+\}.  \
+\
+- 
+\f1 \cf4 this
+\f2  
+\f1 code
+\f2  
+\f1 represent
+\f2  
+\f1 a
+\f2  
+\f1 rectangle
+\f2 . 
+\f1 You
+\f2  
+\f1 use
+\f2  
+\f1 it
+\f2  
+\f1 to
+\f2  
+\f1 calculate
+\f2  
+\f1 the
+\f2  
+\f1 position for the HUD\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf2 let boxRect = CGRect(\
+  x: round((bounds.size.width - boxWidth) / 2),\
+  y: round((bounds.size.height - boxHeight) / 2),\
+  width: boxWidth,\
+  height: boxHeight)\
+\
+\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf4 -\'93UIBezierPath is a very handy object for drawing rectangles with rounded corners. You just tell it how large the rectangle is and how round the corners should be\'94\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf2 \
+let roundedRect = UIBezierPath(roundedRect: boxRect, cornerRadius: 10)\
+UIColor(white: 0.3, alpha: 0.8).setFill()\
+roundedRect.fill()\
+\
+\
+\'97\'97\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf4 \'93CLPlacemark class before. It contains the address information \'97 street name, city name, and so on\'94\cf2 \
+\
+\cf4 \'93CLLocationCoordinate2D is new. This contains the latitude and longitude from the CLLocation object that you received from the location manager\'94\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf2 \
+}

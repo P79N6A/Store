@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 4: Outlets</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 4: Outlets</h1>
+
+<p>You’ve built the user interface for <i>Bull&apos;s Eye</i> and you know how to find the current position of the slider. That already knocks quite a few items off the to-do list. This chapter takes care of a few other items from the to-do list and covers the following items:
+</p>
+<ul>
+<li>
+<p><em>Improve the slider:</em> Set the initial slider value (in code) to be whatever value was set in the storyboard instead of assuming an initial value.
+</p></li>
+
+<li>
+<p><em>Generate the random number:</em> Generate the random number to be used as the target by the game.
+</p></li>
+
+<li>
+<p><em>Add rounds to the game:</em> Add the ability to start a new round of the game.
+</p></li>
+
+<li>
+<p><em>Display the target value:</em> Display the generated target number on screen.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Improve the slider</h2>
+
+<p>You completed storing the value of the slider into a variable and showing it via an alert. That’s great, but you can still improve on it a little.
+</p>
+<p>What if you decide to set the initial value of the slider in the storyboard to something other than 50 — say, 1 or 100? Then <code>currentValue</code> would be wrong again because the app always assumes it will be 50 at the start. You’d have to remember to also fix the code to give <code>currentValue</code> a new initial value.
+</p>
+<p>Take it from me — that kind of thing is hard to remember, especially when the project becomes bigger and you have dozens of view controllers to worry about, or when you haven’t looked at the code for weeks.
+</p>
+<h3 class="segment-chapter">Get the initial slider value</h3>
+
+<p>To fix this issue once and for all, you’re going to do some work inside the <code>viewDidLoad()</code> method in <em>ViewController.swift</em>. That method currently looks like this:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">super</span>.viewDidLoad()
+  <span class="hljs-comment">// Do any additional setup after loading the view, typically from a nib.</span>
+}</pre>
+<p>When you created this project based on Xcode’s template, Xcode inserted the <code>viewDidLoad()</code> method into the source code. You will now add some code to it.
+</p>
+<p>The <code>viewDidLoad()</code> message is sent by UIKit immediately after the view controller loads its user interface from the storyboard file. At this point, the view controller isn’t visible yet, so this is a good place to set instance variables to their proper initial values.
+</p>
+<p>➤ Change <code>viewDidLoad()</code> to the following:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">super</span>.viewDidLoad()
+  currentValue = lroundf(slider.value)
+}</pre>
+<p>The idea is that you take whatever value is set on the slider in the storyboard (whether it is 50, 1, 100 or anything else) and use that as the initial value of <code>currentValue</code>.
+</p>
+<p>Recall that you need to round off the number, because <code>currentValue</code> is an <code>Int</code> and integers cannot take decimal (or fractional) numbers.
+</p>
+<p>Unfortunately, Xcode immediately complains about these changes even before you try to run the app.
+</p><div class="image-70"><img src="graphics/img64.png"  alt="" title="Xcode error message about missing identifier" /></div>
+<div class="note">
+<p><em>Note</em>: Xcode tries to be helpful and it analyzes the program for mistakes as you’re typing. Sometimes, you may see temporary warnings and error messages that will go away when you complete the changes that you’re making.
+</p>
+<p>Don’t be too intimidated by these messages; they are only short-lived while the code is in a state of flux.
+</p></div>
+
+<p>The above happens because <code>viewDidLoad()</code> does not know of anything named <code>slider</code>.
+</p>
+<p>Then why did this work earlier, in <code>sliderMoved()</code>? Let’s take a look at that method again:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">sliderMoved</span><span class="hljs-params">(<span class="hljs-number">_</span> slider: UISlider)</span></span> {
+  currentValue = lroundf(slider.value)
+}</pre>
+<p>Here, you do the exact same thing: You round off <code>slider.value</code> and put it into <code>currentValue</code>. So why does it work here but not in <code>viewDidLoad()</code>?
+</p>
+<p>The difference is that, in the code above, <code>slider</code> is a <i>parameter</i> of the <code>sliderMoved()</code> method. Parameters are the things inside the parentheses following a method’s name. In this case, there’s a single parameter named <code>slider</code>, which refers to the <code>UISlider</code> object that sent this action message.
+</p>
+<p>Action methods can have a parameter that refers to the UI control that triggered the method. This is convenient when you wish to refer to that object in the method, just as you did here (the object in question being the <code>UISlider</code>).
+</p>
+<p>When the user moves the slider, the <code>UISlider</code> object basically says, “Hey view controller! I’m a slider object and I just got moved. By the way, here’s my phone number so you can get in touch with me.”
+</p>
+<p>The <code>slider</code> parameter contains this “phone number,” but it is only valid for the duration of this particular method.
+</p>
+<p>In other words, <code>slider</code> is <i>local</i>; you cannot use it anywhere else.
+</p>
+<h4 class="segment-chapter">Locals</h4>
+
+<p>When I first introduced variables, I mentioned that each variable has a certain lifetime, known as its <i>scope</i>. The scope of a variable depends on where in your program you defined that variable.
+</p>
+<p>There are three possible scope levels in Swift:
+</p>
+<ol>
+<li>
+<p><em>Global scope</em>: These objects exist for the duration of the app and are accessible from anywhere.
+</p></li>
+
+<li>
+<p><em>Instance scope</em>: This is for variables such as <code>currentValue</code>. These objects are alive for as long as the object that owns them stays alive.
+</p></li>
+
+<li>
+<p><em>Local scope</em>: Objects with a local scope, such as the <code>slider</code> parameter of <code>sliderMoved()</code>, only exist for the duration of that method. As soon as the execution of the program leaves this method, the local objects are no longer accessible.
+</p></li>
+</ol>
+
+<p>Let’s look at the top part of <code>showAlert()</code>:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showAlert</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> message = <span class="hljs-string">"The value of the slider is: <span class="hljs-subst">\(currentValue)</span>"</span>
+
+  <span class="hljs-keyword">let</span> alert = <span class="hljs-type">UIAlertController</span>(title: <span class="hljs-string">"Hello, World"</span>,
+                              message: message, 
+                       preferredStyle: .alert)
+
+  <span class="hljs-keyword">let</span> action = <span class="hljs-type">UIAlertAction</span>(title: <span class="hljs-string">"OK"</span>, style: .<span class="hljs-keyword">default</span>,
+                           handler: <span class="hljs-literal">nil</span>)
+  . . .</pre>
+<p>Because the <code>message</code>, <code>alert</code>, and <code>action</code> objects are created inside the method, they have local scope. They only come into existence when the <code>showAlert()</code> action is performed and they cease to exist when the action is done.
+</p>
+<p>As soon as the <code>showAlert()</code> method completes, i.e., when there are no more statements for it to execute, the computer destroys the <code>message</code>, <code>alert</code>, and <code>action</code> objects and their storage space is cleared out.
+</p>
+<p>The <code>currentValue</code> variable, however, lives on forever... or at least for as long as the <code>ViewController</code> does, which is until the user terminates the app. This type of variable is named an <i>instance variable</i>, because its scope is the same as the scope of the object instance it belongs to.
+</p>
+<p>In other words, you use instance variables if you want to keep a certain value around, from one action event to the next.
+</p>
+<h3 class="segment-chapter">Setting up outlets</h3>
+
+<p>So, with this newly gained knowledge of variables and their scopes, how do you fix the error that you encountered?
+</p>
+<p>The solution is to store a reference to the slider as a new instance variable, just like you did for <code>currentValue</code>. Except that this time, the data type of the variable is not <code>Int</code>, but <code>UISlider</code>. And you’re not using a regular instance variable but a special one called an <i>outlet</i>.
+</p>
+<p>➤ Add the following line to <em>ViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> slider: <span class="hljs-type">UISlider</span>!</pre>
+<p>It doesn’t really matter where this line goes, just as long as it is somewhere inside the brackets for <code>class ViewController</code>. I usually put outlets with the other instance variables — at the top of the class implementation.
+</p>
+<p>This line tells Interface Builder that you now have a variable named <code>slider</code> that can be connected to a <code>UISlider</code> object. Just as Interface Builder likes to call methods <i>actions</i>, it calls these variables <i>outlets</i>. Interface Builder doesn’t see any of your other variables, only the ones marked with <code>@IBOutlet</code>.
+</p>
+<p>Don’t worry about <code>weak</code> or the exclamation point for now. Why these are necessary will be explained later on. For now, just remember that a variable for an outlet needs to be declared as <code>@IBOutlet weak var</code> and has an exclamation point at the end. (Sometimes you’ll see a question mark instead; all this hocus pocus will be explained in due time.)
+</p>
+<p>Once you add the <code>slider</code> variable, you&apos;ll notice that the Xcode error goes away. Does that mean that you can run your app now? Try it and see what happens.
+</p>
+<p>The app crashes on start with an error similar to the following:
+</p><div class="image-80"><img src="graphics/img65.png"  alt="" title="App crash when outlet is not connected" /></div>
+<p>So, what happened?
+</p>
+<p>Remember that an outlet has to be <i>connected</i> to something in the storyboard. You defined the variable, but you didn&apos;t actually set up the connection yet. So, when the app ran and <code>viewDidLoad()</code> was called, it tried to find the matching connection in the storyboard and could not — and crashed.
+</p>
+<p>Let&apos;s set up the connection in storyboard now.
+</p>
+<p>➤ Open the storyboard. Hold <em>Control</em> and click on the <em>slider</em>. Don’t drag anywhere, though — a menu should pop up that shows all the connections for this slider. (Instead of Control-clicking, you can also right-click once.)
+</p>
+<p>This popup menu works exactly the same as the Connections inspector. I just wanted to show you this alternative approach.
+</p>
+<p>➤ Click on the open circle next to <em>New Referencing Outlet</em> and drag to <em>View Controller</em>:
+</p><div class="image-80"><img src="graphics/img66.png"  alt="" title="Connecting the slider to the outlet" /></div>
+<p>➤ In the popup that appears, select <em>slider</em>.
+</p>
+<p>This is the outlet that you just added. You have successfully connected the slider object from the storyboard to the view controller’s <code>slider</code> outlet.
+</p>
+<p>Now that you have done all this set up work, you can refer to the slider object from anywhere inside the view controller using the <code>slider</code> variable.
+</p>
+<p>With these changes in place, it no longer matters what you choose for the initial value of the slider in Interface Builder. When the app starts, <code>currentValue</code> will always correspond to that setting.
+</p>
+<p>➤ Run the app and immediately press the Hit Me! button. It correctly says: “The value of the slider is: 50.” Stop the app, go into Interface Builder and change the initial value of the slider to something else — say, 25. Run the app again and press the button. The alert should read 25, now.
+</p>
+<div class="note">
+<p><em>Note</em>: When you change the slider value — or the value in any Interface Builder field — remember to tab out of field when you make a change. If you make the change but your cursor remains in the field, the change might not take effect. This is something which can trip you up often.
+</p></div>
+
+<p>Put the slider’s starting position back to 50 when you’re done playing.
+</p>
+<div class="note">
+<p><em>Exercise</em>: Give <code>currentValue</code> an initial value of 0 again. Its initial value is no longer important — it will be overwritten in <code>viewDidLoad()</code> anyway — but Swift demands that all variables always have some value and 0 is as good as any.
+</p></div>
+
+<h4 class="segment-chapter">Comments</h4>
+
+<p>You’ve probably noticed the green text that begins with <code>//</code> a few times now. As I explained earlier briefly, these are comments. You can write any text you want after the <code>//</code> symbol as the compiler will ignore such lines from  the <code>//</code> to the end of the line completely.
+</p><pre class="code-block"><span class="hljs-comment">// I am a comment! You can type anything here.</span></pre>
+<p>Anything between the <code>/*</code> and <code>*/</code> markers is considered a comment as well. The difference between <code>//</code> and <code>/* */</code> is that the former only works on a single line, while the latter can span multiple lines.
+</p><pre class="code-block"><span class="hljs-comment">/*
+   I am a comment as well!
+   I can span multiple lines.
+ */</span></pre>
+<p>The <code>/* */</code> comments are often used to temporarily disable whole sections of source code, usually when you’re trying to hunt down a pesky bug, a practice known as “commenting out”. You can use the <em>Cmd-/</em> keyboard shortcut to comment/uncomment the currently selected lines, or if you have nothing selected, the current line.
+</p>
+<p>The best use for comment lines is to explain how your code works. Well-written source code is self-explanatory, but sometimes additional clarification is useful. Explain to whom? To yourself, mostly.
+</p>
+<p>Unless you have the memory of an elephant, you’ll probably have forgotten exactly how your code works when you look at it six months later. Use comments to jog your memory.
+</p>
+<h2 class="segment-chapter">Generate the random number</h2>
+
+<p>You still have quite a ways to go before the game is playable. So, let’s get on with the next item on the list: generating a random number and displaying it on the screen.
+</p>
+<p>Random numbers come up a lot when you’re making games because games often need to have some element of unpredictability. You can’t really get a computer to generate numbers that are truly random and unpredictable, but you can employ a <i>pseudo-random generator</i> to spit out numbers that at least appear to be random.
+</p>
+<p>With previous versions of Swift, you had to use external methods such as  <code>arc4random_uniform()</code>, but as of Swift 4.2, Swift numeric types such as <code>Int</code> have the built-in ability to generate random numbers. How handy, right?
+</p>
+<p>Before you generate the random value though, you need a place to store it.
+</p>
+<p>➤ Add a new variable at the top of <em>ViewController.swift</em>, with the other variables:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> targetValue = <span class="hljs-number">0</span></pre>
+<p>You might wonder why we didn&apos;t specify the type of the <code>targetValue</code> variable, similar to what we&apos;d done earlier for <code>currentValue</code>. This is because Swift is able to <i>infer</i> the type of variables if it has enough information to work with. Here, for example, you initialize <code>targetValue</code> with 0 and, since 0 is an integer value, the compiler knows that <code>targetValue</code> will be of type <code>Int</code>.
+</p>
+<p>We&apos;ll discuss Swift type inference again later on but, for the time being, the important point is that <code>targetValue</code> is initialized to 0. That 0 is never used in the game; it will always be overwritten by the random value that you&apos;ll generate at the start of the game.
+</p>
+<p>I hope the reason is clear why you made <code>targetValue</code> an instance variable: You want to calculate the random number in one place – like in <code>viewDidLoad()</code> — and then remember it until the user taps the button in <code>showAlert()</code> when you have to check this value against the user selection.
+</p>
+<p>Next, you need to generate the random number. A good place to do this is when the game starts.
+</p>
+<p>➤ Add the following line to <code>viewDidLoad()</code> in <em>ViewController.swift</em>:
+</p><pre class="code-block">targetValue = <span class="hljs-type">Int</span>.random(<span class="hljs-keyword">in</span>: <span class="hljs-number">1</span>...<span class="hljs-number">100</span>)</pre>
+<p>The complete <code>viewDidLoad()</code> should now look like this:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">super</span>.viewDidLoad()
+  currentValue = lroundf(slider.value)
+  targetValue = <span class="hljs-type">Int</span>.random(<span class="hljs-keyword">in</span>: <span class="hljs-number">1</span>...<span class="hljs-number">100</span>)
+}</pre>
+<p>What are you doing here? You call the <code>random()</code> function built into <code>Int</code> to get an arbitrary integer (whole number) between 1 and 100. The <code>1...100</code> part is known as a <i>closed range</i> wherein you specify a starting value and an ending value to specify a range of numbers. The <code>...</code> part indicates that you want the range to include the closing value (100), but if you wanted a range without the final value, then you would specify the range as <code>1..&lt;100</code> and would get only values from 1 to 99.
+</p>
+<p>All clear? Onwards!
+</p>
+<h3 class="segment-chapter">Displaying the random number</h3>
+
+<p>➤ Change <code>showAlert()</code> to the following:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showAlert</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">let</span> message = <span class="hljs-string">"The value of the slider is: <span class="hljs-subst">\(currentValue)</span>"</span> +
+                <span class="hljs-string">"\nThe target value is: <span class="hljs-subst">\(targetValue)</span>"</span>
+
+  <span class="hljs-keyword">let</span> alert = . . .
+}</pre>
+<p><em>Tip</em>: Whenever you see <code>. . .</code> in a source code listing, I mean that as shorthand for: This part didn’t change. Don’t go replacing the existing code with actual ellipsis! :]
+</p>
+<p>You’ve simply added the random number, which is now stored in <code>targetValue</code>, to the message string. This should look familiar to you by now: The <code>\(targetValue)</code> placeholder is replaced by the actual random number.
+</p>
+<p>The <code>\n</code> character sequence is new. It means that you want to insert a special “new line” character at that point, which will break up the text into two lines so the message is a little easier to read. The <code>+</code> is also new but is simply used here to combine two strings. We could just as easily have written it as a single long string, but it might not have looked as good to the reader. :]
+</p>
+<p>➤ Run the app and try it out!
+</p><div class="image-50"><img src="graphics/img67.png"  alt="" title="The alert shows the target value on a new line" /></div>
+<div class="note">
+<p><em>Note</em>: Earlier, you used the <code>+</code> operator to add two numbers together (just like how it works in math) but, here, you’re also using <code>+</code> to glue different bits of text into one big string.
+</p>
+<p>Swift allows the use of the same operator for different tasks, depending on the data types involved. If you have two integers, <code>+</code> adds them up. But with two strings, <code>+</code> concatenates, or combines, them into a longer string.
+</p>
+<p>Programming languages often use the same symbols for different purposes, depending on the context. After all, there are only so many symbols to go around!
+</p></div>
+
+<h2 class="segment-chapter">Adding rounds to the game</h2>
+
+<p>If you press the Hit Me! button a few times, you’ll notice that the random number never changes. I’m afraid the game won’t be much fun that way.
+</p>
+<p>This happens because you generate the random number in <code>viewDidLoad()</code> and never again afterwards. The <code>viewDidLoad()</code> method is only called once when the view controller is created during app startup.
+</p>
+<p>The item on the to-do list actually said: “Generate a random number <i>at the start of each round</i>”. Let’s talk about what a round means in terms of this game.
+</p>
+<p>When the game starts, the player has a score of 0 and the round number is 1. You set the slider halfway (to value 50) and calculate a random number. Then you wait for the player to press the Hit Me! button. As soon as they do, the round ends.
+</p>
+<p>You calculate the points for this round and add them to the total score. Then you increment the round number and start the next round. You reset the slider to the halfway position again and calculate a new random number. Rinse, repeat.
+</p>
+<h3 class="segment-chapter">Starting a new round</h3>
+
+<p>Whenever you find yourself thinking something along the lines of, “At this point in the app we have to do such and such,” then it makes sense to create a new method for it. This method will nicely capture that functionality in a self-contained unit of its own.
+</p>
+<p>➤ With that in mind, add the following new method to <em>ViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">startNewRound</span><span class="hljs-params">()</span></span> {
+  targetValue = <span class="hljs-type">Int</span>.random(<span class="hljs-keyword">in</span>: <span class="hljs-number">1</span>...<span class="hljs-number">100</span>)
+  currentValue = <span class="hljs-number">50</span>
+  slider.value = <span class="hljs-type">Float</span>(currentValue)
+}</pre>
+<p>It doesn’t really matter where you put the code, as long as it is inside the <code>ViewController</code> implementation (within the class curly brackets), so that the compiler knows it belongs to the <code>ViewController</code> object.
+</p>
+<p>It’s not very different from what you did before, except that you moved the logic for setting up a new round into its own method, <code>startNewRound()</code>. The advantage of doing this is that you can execute this logic from more than one place in your code.
+</p>
+<h3 class="segment-chapter">Using the new method</h3>
+
+<p>First, you’ll call this new method from <code>viewDidLoad()</code> to set up everything for the very first round. Recall that <code>viewDidLoad()</code> happens just once when the app starts up, so this is a great place to begin the first round.
+</p>
+<p>➤ Change <code>viewDidLoad()</code> to:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">super</span>.viewDidLoad()
+  startNewRound()  <span class="hljs-comment">// Replace previous code with this</span>
+}</pre>
+<p>Note that you’ve removed some of the existing statements from <code>viewDidLoad()</code> and replaced them with just the call to <code>startNewRound()</code>.
+</p>
+<p>You will also call <code>startNewRound()</code> after the player pressed the Hit Me! button, from within <code>showAlert()</code>.
+</p>
+<p>➤ Make the following change to <code>showAlert()</code>:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showAlert</span><span class="hljs-params">()</span></span> {
+  . . .
+
+  startNewRound()
+}</pre>
+<p>The call to <code>startNewRound()</code> goes at the very end, right after <code>present(alert, …)</code>.
+</p>
+<p>Until now, the methods from the view controller have been invoked for you by UIKit when something happened: <code>viewDidLoad()</code> is performed when the app loads, <code>showAlert()</code> is performed when the player taps the button, <code>sliderMoved()</code> when the player drags the slider, and so on. This is the event-driven model we talked about earlier.
+</p>
+<p>It is also possible to call methods directly, which is what you’re doing here. You are sending a message from one method in the object to another method in that same object.
+</p>
+<p>In this case, the view controller sends the <code>startNewRound()</code> message to itself in order to set up the new round. Program execution will then switch to that method and execute its statements one-by-one. When there are no more statements in the method, it returns to the calling method and continues with that — either <code>viewDidLoad()</code>, if this is the first time, or <code>showAlert()</code> for every round after.
+</p>
+<h3 class="segment-chapter">Calling methods in different ways</h3>
+
+<p>Sometimes, you may see method calls written like this:
+</p><pre class="code-block"><span class="hljs-keyword">self</span>.startNewRound()</pre>
+<p>That does the exact same thing as <code>startNewRound()</code> without <code>self.</code> in front. Recall how I just said that the view controller sends the message to itself. Well, that’s exactly what <code>self</code> means.
+</p>
+<p>To call a method on an object, you’d normally write:
+</p><pre class="code-block">receiver.methodName(parameters)</pre>
+<p>The <code>receiver</code> is the object you’re sending the message to. If you’re sending the message to yourself, then the receiver is <code>self</code>. But because sending messages to <code>self</code> is very common, you can also leave this special keyword out for many cases.
+</p>
+<p>To be fair, this isn’t exactly the first time you’ve called methods. <code>addAction()</code> is a method on <code>UIAlertController</code> and <code>present()</code> is a method that all view controllers have, including yours.
+</p>
+<p>When you write Swift programs, a lot of what you do is calling methods on objects, because that is how the objects in your app communicate.
+</p>
+<h3 class="segment-chapter">The advantages of using methods</h3>
+
+<p>I hope you can see the advantage of putting the “new round” logic into its own method. If you didn’t, the code for <code>viewDidLoad()</code> and <code>showAlert()</code> would look like this:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">super</span>.viewDidLoad()
+
+  targetValue = <span class="hljs-type">Int</span>.random(<span class="hljs-keyword">in</span>: <span class="hljs-number">1</span>...<span class="hljs-number">100</span>)
+  currentValue = <span class="hljs-number">50</span>
+  slider.value = <span class="hljs-type">Float</span>(currentValue)
+}
+
+<span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showAlert</span><span class="hljs-params">()</span></span> {
+  . . .
+
+  targetValue = <span class="hljs-type">Int</span>.random(<span class="hljs-keyword">in</span>: <span class="hljs-number">1</span>...<span class="hljs-number">100</span>)
+  currentValue = <span class="hljs-number">50</span>
+  slider.value = <span class="hljs-type">Float</span>(currentValue)
+}</pre>
+<p>Can you see what is going on here? The same functionality is duplicated in two places. Sure, it is only three lines of code but, often, the code you duplicate could be much larger.
+</p>
+<p>And what if you decide to make a change to this logic (as you will shortly)? Then you will have to make the same change in two places.
+</p>
+<p>You might be able to remember to do so if you recently wrote this code and it is still fresh in memory, but, if you have to make that change a few weeks down the road, chances are that you’ll only update it in one place and forget about the other.
+</p>
+<p>Code duplication is a big source of bugs. So, if you need to do the same thing in two different places, consider making a new method for it instead of duplicating code.
+</p>
+<h3 class="segment-chapter">Naming methods</h3>
+
+<p>The name of the method also helps to make it clear as to what it is supposed to be doing. Can you tell at a glance what the following does?
+</p><pre class="code-block">targetValue = <span class="hljs-type">Int</span>.random(<span class="hljs-keyword">in</span>: <span class="hljs-number">1</span>...<span class="hljs-number">100</span>)
+currentValue = <span class="hljs-number">50</span>
+slider.value = <span class="hljs-type">Float</span>(currentValue)</pre>
+<p>You probably have to reason your way through it: “It is calculating a new random number and then resets the position of the slider, so I guess it must be the start of a new round.”
+</p>
+<p>Some programmers will use a comment to document what is going on (and you can do thatm too), but, in my opinion, the following is much clearer than the above block of code with an explanatory comment:
+</p><pre class="code-block">startNewRound()</pre>
+<p>This line practically spells out for you what it will do. And if you want to know the specifics of what goes on in a new round, you can always look up the <code>startNewRound()</code> method implementation.
+</p>
+<p>Well-written source code speaks for itself. I hope I have convinced you of the value of making new methods!
+</p>
+<p>➤ Run the app and verify that it calculates a new random number between 1 and 100 after each tap on the button.
+</p>
+<p>You should also have noticed that, after each round, the slider resets to the halfway position. That happens because <code>startNewRound()</code> sets <code>currentValue</code> to 50 and then tells the slider to go to that position. That is the opposite of what you did before (you used to read the slider’s position and put it into <code>currentValue</code>), but I thought it would work better in the game if you start from the same position in each round.
+</p>
+<div class="note">
+<p><em>Exercise</em>: Just for fun, modify the code so that the slider does not reset to the halfway position at the start of a new round.
+</p></div>
+
+<h3 class="segment-chapter">Type conversion</h3>
+
+<p>By the way, you may have been wondering what <code>Float(…)</code> does in this line:
+</p><pre class="code-block">slider.value = <span class="hljs-type">Float</span>(currentValue)</pre>
+<p>Swift is a <i>strongly typed</i> language, meaning that it is really picky about the shapes that you can put into the boxes. For example, if a variable is an <code>Int</code>, you cannot put a <code>Float</code>, or a non-whole number, into it, and vice versa.
+</p>
+<p>The value of a <code>UISlider</code> happens to be a <code>Float</code> — you’ve seen this when you printed out the value of the slider — but <code>currentValue</code> is an <code>Int</code>. So the following won’t work:
+</p><pre class="code-block">slider.value = currentValue</pre>
+<p>The compiler considers this an error. Some programming languages are happy to convert the <code>Int</code> into a <code>Float</code> for you, but Swift wants you to be explicit about such conversions.
+</p>
+<p>When you say <code>Float(currentValue)</code>, the compiler takes the integer number that’s stored in <code>currentValue</code> and converts it into a new <code>Float</code> value that it can pass on to the <code>UISlider</code>.
+</p>
+<p>Because Swift is stricter about this sort of thing than most other programming languages, it is often a source of confusion for newcomers to the language. Unfortunately, Swift’s error messages aren’t always very clear about what part of the code is wrong or why.
+</p>
+<p>Just remember, if you get an error message saying, “Cannot assign value of type &apos;something&apos; to type &apos;something else&apos;” then you’re probably trying to mix incompatible data types. The solution is to explicitly convert one type to the other — if conversion is allowed, of course — as you’ve done here.
+</p>
+<h2 class="segment-chapter">Displaying the target value</h2>
+
+<p>Great, you figured out how to calculate the random number and how to store it in an instance variable, <code>targetValue</code>, so that you can access it later.
+</p>
+<p>Now, you are going to show that target number on the screen. Without it, the player won’t know what to aim for and that would make the game impossible to win.
+</p>
+<h3 class="segment-chapter">Setting up the storyboard</h3>
+
+<p>When you set up the storyboard, you added a label for the target value (top-right corner). The trick is to put the value from the <code>targetValue</code> variable into this label. To do that, you need to accomplish two things:
+</p>
+<ol>
+<li>
+<p>Create an outlet for the label so you can send it messages.
+</p></li>
+
+<li>
+<p>Give the label new text to display.
+</p></li>
+</ol>
+
+<p>This will be very similar to what you did with the slider. Recall that you added an <code>@IBOutlet</code> variable so you could reference the slider anywhere from within the view controller. Using this outlet variable you could ask the slider for its value, through <code>slider.value</code>. You’ll do the same thing for the label.
+</p>
+<p>➤ In <em>ViewController.swift</em>, add the following line below the other outlet declaration:
+</p><pre class="code-block"><span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> targetLabel: <span class="hljs-type">UILabel</span>!</pre>
+<p>➤ In <em>Main.storyboard</em>, click to select the correct label — the one at the very top that says “100.”
+</p>
+<p>➤ Go to the <em>Connections inspector</em> and drag from <em>New Referencing Outlet</em> to the yellow circle at the top of your view controller in the central scene. You could also drag to the <em>View Controller</em> in the Document Outline — there are many ways to do the same thing in Interface Builder.
+</p><div class="image-100"><img src="graphics/img68.png"  alt="" title="Connecting the target value label to its outlet" /></div>
+<p>➤ Select <em>targetLabel</em> from the popup, and the connection is made.
+</p>
+<h3 class="segment-chapter">Displaying the target value via code</h3>
+
+<p>➤ On to the good stuff! Add the following method below <code>startNewRound()</code> in <em>ViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">updateLabels</span><span class="hljs-params">()</span></span> {
+  targetLabel.text = <span class="hljs-type">String</span>(targetValue)
+}</pre>
+<p>You’re putting this logic in a separate method because it’s something you might use from different places.
+</p>
+<p>The name of the method makes it clear what it does: It updates the contents of the labels. Currently it’s just setting the text of a single label, but later on you will add code to update the other labels as well (total score, round number).
+</p>
+<p>The code inside <code>updateLabels()</code> should have no surprises for you, although you may wonder why you cannot simply do:
+</p><pre class="code-block">targetLabel.text = targetValue</pre>
+<p>The answer again is that you cannot put a value of one data type into a variable of another type — the square peg just won&apos;t go in the round hole.
+</p>
+<p>The <code>targetLabel</code> outlet references a <code>UILabel</code> object. The <code>UILabel</code> object has a <code>text</code> property, which is a <code>String</code> object. So, you can only put <code>String</code> values into <code>text</code>, but  <code>targetValue</code> is an <code>Int</code>. A direct assignment won’t fly because an <code>Int</code> and a <code>String</code> are two very different kinds of things.
+</p>
+<p>So, you have to convert the <code>Int</code> into a <code>String</code>, and that is what <code>String(targetValue)</code> does. It’s similar to what you’ve done before with <code>Float(…)</code>.
+</p>
+<p>Just in case you were wondering, you could also convert <code>targetValue</code> to a <code>String</code> by using string interpolation, like you’ve done before:
+</p><pre class="code-block">targetLabel.text = <span class="hljs-string">"<span class="hljs-subst">\(targetValue)</span>"</span></pre>
+<p>Which approach you use is a matter of taste. Either approach will work fine.
+</p>
+<p>Notice that <code>updateLabels()</code> is a regular method — it is not attached to any UI controls as an action — so it won’t do anything until you actually call it. You can tell because it doesn’t say <code>@IBAction</code> before <code>func</code>.
+</p>
+<h4 class="segment-chapter">Action methods vs. normal methods</h4>
+
+<p>So what is the difference between an action method and a regular method?
+</p>
+<p>Answer: Nothing.
+</p>
+<p>An action method is really just the same as any other method. The only special thing is the <code>@IBAction</code> attribute, which allows Interface Builder to see the method so you can connect it to your buttons, sliders and so on.
+</p>
+<p>Other methods, such as <code>viewDidLoad()</code>, don’t have the <code>@IBAction</code> specifier. This is good because all kinds of mayhem would occur if you hooked these up to your buttons.
+</p>
+<p>This is the simple form of an action method:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">showAlert</span><span class="hljs-params">()</span></span></pre>
+<p>You can also ask for a reference to the object that triggered this action, via a parameter:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">sliderMoved</span><span class="hljs-params">(<span class="hljs-number">_</span> slider: UISlider)</span></span>
+<span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">buttonTapped</span><span class="hljs-params">(<span class="hljs-number">_</span> button: UIButton)</span></span></pre>
+<p>But the following method cannot be used as an action from Interface Builder:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">updateLabels</span><span class="hljs-params">()</span></span></pre>
+<p>That&apos;s because it is not marked as <code>@IBAction</code> and as a result, Interface Builder can’t see it. To use <code>updateLabels()</code>, you will have to call it yourself.
+</p>
+<h3 class="segment-chapter">Calling the method</h3>
+
+<p>The logical place to call <code>updateLabels()</code> would be after each call to <code>startNewRound()</code>, because that is where you calculate the new target value. So, you could always add a call to <code>updateLabels()</code> in  <code>viewDidLoad()</code> and <code>showAlert()</code>, but there&apos;s another way, too!
+</p>
+<p>What is this other way, you ask? Well, if <code>updateLabels()</code> is always (or at least in your current code) called after <code>startNewRound()</code>, why not call <code>updateLabels()</code> directly from <code>startNewRound()</code> itself? That way, instead of having two calls in two separate places, you can have a single call.
+</p>
+<p>➤ Change <code>startNewRound()</code> to:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">startNewRound</span><span class="hljs-params">()</span></span> {
+    targetValue = <span class="hljs-type">Int</span>.random(<span class="hljs-keyword">in</span>: <span class="hljs-number">1</span>...<span class="hljs-number">100</span>)
+    currentValue = <span class="hljs-number">50</span>
+    slider.value = <span class="hljs-type">Float</span>(currentValue)
+    updateLabels()  <span class="hljs-comment">// Add this line</span>
+}</pre>
+<p>You should be able to type just the first few letters of the method name, like <em>upd</em>, and Xcode will show you a list of suggestions matching what you typed. Press <em>Enter</em> (or <em>Tab</em>) to accept the suggestion (if you are on the right item — or scroll the list to find the right item and then press Enter):
+</p><div class="image-100"><img src="graphics/img69.png"  alt="" title="Xcode autocomplete offers suggestions" /></div>
+<p>Also worth noting is that you don&apos;t have to start typing the method (or property) name you&apos;re looking from the beginning — Xcode uses fuzzy search and typing &quot;dateL&quot; or &quot;label&quot; should help you find &quot;updateLabels&quot; just as easily.
+</p>
+<p>➤ Run the app and you’ll actually see the random value on the screen. That should make it a little easier to aim for.
+</p><div class="image-60"><img src="graphics/img70.png"  alt="" title="The label in the top-right corner now shows the random value" /></div>
+<p>You can find the project files for the app up to this point under <em>04 - Outlets</em> in the Source Code folder.
+</p></body></html>

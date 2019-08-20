@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 38: Polish the Pop-up</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 38: Polish the Pop-up</h1>
+
+<p>The Detail pop-up is working well — you can display information for the selected search result, show the image for the item, show pricing information, and allow the user to access the iTunes product page for the item. You are done with the Detail pop-up and can move on to the next item, right?
+</p>
+<p>Well, not quite … There are still a few things you can do to make the Detail pop-up more polished and user friendly.
+</p>
+<p>This chapter will cover the following:
+</p>
+<ul>
+<li>
+<p><em>Dynamic type:</em> Add support for dynamic type so that your text can dispaly at a size specified by the user.
+</p></li>
+
+<li>
+<p><em>Gradients in the background:</em> Add a gradient background to make the Detail pop-up background look more polished.
+</p></li>
+
+<li>
+<p><em>Animation</em><em>!</em><em>:</em> Add transition animations so that your pop-up enters, and exits, the screen with some flair!
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Dynamic Type</h2>
+
+<p>The iOS Settings app has an accessibility option — under <em>General ▸ Accessibility ▸ Larger Text</em> — that allows users to choose larger or smaller text. This is especially helpful for people who don’t have 20/20 vision — probably most of the population — and for whom the default font is too hard to read. Nobody likes squinting at their device!
+</p>
+<p>You can find this setting both in your device and in the Simulator:
+</p><div class="image-20"><img src="graphics/img642.png"  alt="" title="The Larger Text accessibility settings" /></div>
+<p>Apps have to opt-in to use this <em>Dynamic Type</em> feature. Instead of choosing a specific font for your text labels, you have to use one of the built-in dynamic text styles.
+</p>
+<h3 class="segment-chapter">Configure for Dynamic Type</h3>
+
+<p>To provide a better user experience for all users, whether their eyesight is good or bad, you’ll change the Detail pop-up to use Dynamic Type for its labels.
+</p>
+<p>➤ Open the storyboard and go to the <em>Detail</em> scene. Change the <em>Font</em> setting for the <em>Name</em> label to the <em>Headline</em> text style:
+</p><div class="image-40"><img src="graphics/img643.png"  alt="" title="Changing the font to the dynamic Headline style" /></div>
+<p>You can’t pick a font size when selecting text styles — the font size depends on the user and the Larger Text setting they use on their device.
+</p>
+<p>➤ Set the <em>Lines</em> attribute to 0. This allows the Name label to fit more than one line of text.
+</p>
+<h3 class="segment-chapter">Auto Layout for Dynamic Type</h3>
+
+<p>Of course, if you don’t know beforehand how large the label’s font will be, you also won’t know how large the label itself will end up being, especially if it sometimes may have more than one line of text. You won’t be surprised to hear that Auto Layout and Dynamic Type go hand-in-hand.
+</p>
+<p>You want to make the name label resizable so that it can hold any amount of text at any possible font size, but it cannot go outside the bounds of the pop-up, nor overlap the labels below.
+</p>
+<p>The trick is to capture these requirements in Auto Layout constraints.
+</p>
+<p>Previously you’ve used the Add New Constraints button to make constraints, but that may not always give you the constraints you want. With this menu, pins are expressed as the amount of “spacing to nearest neighbor”. But what exactly is the nearest neighbor?
+</p>
+<p>If you use the Add New Constraints button on the Name label, Interface Builder may decide to pin it to the bottom of the close button, which is weird. It makes more sense to pin the Name label to the image view instead. That’s why you’re going to use a different way to make constraints.
+</p>
+<p>➤ Select the <em>Name</em> label. Now <em>Control-drag</em> to the <em>Image View</em> and let go of the mouse button.
+</p><div class="image-35"><img src="graphics/img644.tiff"  alt="" title="Control-drag to make a new constraint between two views" /></div>
+<p>From the pop-up that appears, choose <em>Vertical Spacing</em>:
+</p><div class="image-15"><img src="graphics/img645.png"  alt="" title="The possible constraint types" /></div>
+<p>This puts a vertical spacing constraint between the label and the image view:
+</p><div class="image-35"><img src="graphics/img646.png"  alt="" title="The new vertical space constraint" /></div>
+<p>Of course, you’ll also get some red lines because the label still needs additional constraints.
+</p>
+<p>The vertical space you just added needs to be 8 points.
+</p>
+<p>➤ Select the constraint — by carefully clicking it with the mouse or by selecting it from the Document Outline — then go to the <em>Size inspector</em>; or the Attributes inspector, they both show the same settings for layout constraints, and make sure that <em>Constant</em> is set to <em>8</em>.
+</p><div class="image-25"><img src="graphics/img647.png"  alt="" title="Attributes for the vertical space constraint" /></div>
+<p>Note that the inspector clearly describes what sort of constraint this is: Name Label.Top is connected to Artwork Image View.Bottom with a distance (Constant) of 8 points.
+</p>
+<p>➤ Select the <em>Name</em> label again and <em>Control-drag</em> to the left and connect it to <em>Pop-up View</em>. Select <em>Leading Space to Container</em>:
+</p><div class="image-20"><img src="graphics/img648.png"  alt="" title="The pop-up shows different constraint types" /></div>
+<p>This adds a blue bar on the left. Notice how the pop-up offered different options this time? The constraints that you can set depend on the direction that you’re dragging in.
+</p>
+<p>➤ Repeat the step but this time Control-drag to the right. Now choose <em>Trailing Space to Container</em>.
+</p><div class="image-35"><img src="graphics/img649.png"  alt="" title="The constraints for the Name label" /></div>
+<p>The Name label is now connected to the left edge of the Pop-up View and to its right edge — enough to determine its X-position and width — and to the bottom of the image view, for its Y-position. There is no constraint for the label’s height, allowing it to grow as tall as it needs to using its intrinsic content size.
+</p>
+<p>Shouldn’t these constraints be enough to uniquely determine the label’s position and size? If so, why is there still a red box?
+</p>
+<p>Simple: the image view now has a constraint attached to it, and therefore no longer gets automatic constraints. You also have to add constraints that give the image view its position and size.
+</p>
+<p>➤ Select the <em>Image View</em>, <em>Control-drag</em> up to the Pop-up View, and choose <em>Top Space to Container</em>. That takes care of the Y-position.
+</p>
+<p>➤ Repeat but now Control-drag to the left (or right) and choose <em>Center Horizontally in Container</em>. That center-aligns the image view to take care of the X-position. If you don’t see this option, then make sure you’re not dragging outside the Pop-up View.
+</p>
+<p>➤ Control-drag diagonally this time, but let go of the mouse button while you’re <i>still inside the image view</i>. Hold down <em>Shift</em> and put checkmarks in front of both <em>Width</em> and <em>Height</em>, then press <em>return</em>. If you don’t see both options, make sure you Control-drag diagonally instead of straight up or sideways.
+</p><div class="image-20"><img src="graphics/img650.png"  alt="" title="Adding multiple constraints at once" /></div>
+<p>Now the image view and the Name label will have all blue bars.
+</p>
+<p>There’s one more thing you need to fix. Look again at that blue bar to the right of the Name label. This forces the label to be always about 45 points wide. That’s not what you want; instead, the label should be able to grow until it reaches the edge of the Pop-up View.
+</p>
+<p>➤ Click that blue bar to select it and go to the <em>Size inspector</em>. Change <em>Relation</em> to <em>Greater Than or Equal</em>, and <em>Constant</em> to <em>8</em>.
+</p><div class="image-60"><img src="graphics/img651.png"  alt="" title="Converting the constraint to Greater Than or Equal" /></div>
+<p>Now this constraint can resize to allow the label to grow, but it can never become smaller than 8 points. This ensures there is at least an 8 point margin between the label and the edge of the Detail pop-up.
+</p>
+<p>By the way, notice how this constraint is between Pop-up View.Trailing and Name Label.Trailing? In Auto Layout terminology, trailing means “on the right”, while leading means “on the left”.
+</p>
+<p>Why didn’t they just call this left and right? Well, not everyone writes in the same direction. With right-to-left languages such as Hebrew or Arabic, the meaning of trailing and leading is reversed. This allows your layouts to work without changes for those languages too.
+</p>
+<p>➤ Run the app and try it out:
+</p><div class="image-25"><img src="graphics/img652.png"  alt="" title="The text overlaps the other labels" /></div>
+<p>Well, the word-wrapping seems to work, but the text overlaps the labels below it. Let’s add some more constraints so that the other labels get pushed down instead.
+</p>
+<p><em>Tip</em>: In the next steps I’ll ask you to change the properties of the constraints using the Attributes inspector, but it can be quite tricky to select those constraints. The blue bars are often tiny, making them difficult to click. It’s often easier to find the constraint in the Document Outline, but it’s not always immediately obvious which one you need.
+</p>
+<p>A smarter way to find a constraint is to first select the view it belongs to, then go to the Size inspector and look in the Constraints section. Here is what it looks like for the Name label:
+</p><div class="image-35"><img src="graphics/img653.png"  alt="" title="The Name label’s constraints in the Size inspector" /></div>
+<p>To edit the constraint, double-click it or use the <em>Edit</em> button to the right of each constraint.
+</p>
+<p>OK, let’s make those changes...
+</p>
+<p>➤ Select the <em>Artist Name</em> label and set its <em>Font</em> to the <em>Subhead</em> text style.
+</p>
+<p>➤ Set the <em>Font</em> of the other four labels to the <em>Caption 1</em> text style. You can do this in a single go if you multiple-select these labels by holding down the <em>⌘</em> key.
+</p>
+<h3 class="segment-chapter">Auto Layout for Artist Name</h3>
+
+<p>Let’s pin the <em>Artist Name</em> label. Again you do this by Control-dragging.
+</p>
+<ul>
+<li>
+<p>Pin it to the left with a <em>Leading Space to Container</em>.
+</p></li>
+
+<li>
+<p>Pin it to the right with a <em>Trailing Space to Container</em>. Just like before, change this constraint’s <em>Relation</em> to <em>Greater Than or Equal</em> and <em>Constant</em> to <em>8</em>.
+</p></li>
+
+<li>
+<p>Pin it to the Name label with a <em>Vertical Spacing</em>. Change this to size <em>4</em>.
+</p></li>
+</ul>
+
+<h3 class="segment-chapter">Auto Layout for Type</h3>
+
+<p>For the <em>Type:</em> label:
+</p>
+<ul>
+<li>
+<p>Pin it to the left with a <em>Leading Space to Container</em>.
+</p></li>
+
+<li>
+<p>Pin it to the <em>Artist Name</em> label with a <em>Vertical Spacing</em>, size <em>8</em>.
+</p></li>
+</ul>
+
+<p>The <em>Kind Value</em> label is slightly different:
+</p>
+<ul>
+<li>
+<p>Pin it to the right with a <em>Trailing Space to Container</em>. Change this constraint’s <em>Relation</em> to <em>Greater Than or Equal</em> and <em>Constant</em> to <em>8</em>.
+</p></li>
+
+<li>
+<p>Control-drag from <em>Kind Value</em> to <em>Type</em> and choose <em>First Baseline</em>. This aligns the bottom of the text of both labels. This alignment constraint determines the Kind Value’s Y-position so you don’t have to make a separate constraint for that.
+</p></li>
+</ul>
+
+<h3 class="segment-chapter">Auto Layout for Genre</h3>
+
+<p>Two more labels to go. For the <em>Genre:</em> label:
+</p>
+<ul>
+<li>
+<p>Pin it to the left with a <em>Leading Space to Container</em>.
+</p></li>
+
+<li>
+<p>Pin it to the <em>Type:</em> label with a <em>Vertical Spacing</em>, size <em>4</em>.
+</p></li>
+
+<li>
+<p>On the right, pin it to the <em>Genre Value</em> label with a <em>Horizontal Spacing</em>. This should be a <em>8</em> point distance.
+</p></li>
+</ul>
+
+<p>And finally, the <em>Genre Value</em> label:
+</p>
+<ul>
+<li>
+<p>Pin it to the right with a <em>Trailing Space to Container</em>, <em>Greater Than or Equal</em> <em>8</em>.
+</p></li>
+
+<li>
+<p>Make a <em>First Baseline</em> alignment between <em>Genre Value</em> and <em>Genre:</em>.
+</p></li>
+
+<li>
+<p>Make a <em>Leading</em> alignment between <em>Genre Value</em> and <em>Kind Value</em>. This makes these two labels neatly align on the left.
+</p></li>
+
+<li>
+<p>Resolve any Auto Layout issues by selecting <em>Editor ▸ Resolve Auto Layout Issues ▸ Update Frames</em> from the Xcode menu. You may need to set the Constant of the alignment constraints to 0 if things don’t line up properly.
+</p></li>
+</ul>
+
+<p>That’s quite a few constraints, but using Control-drag to make them is quite fast. With some experience you’ll be able to whip together complex Auto Layout constraints in no time.
+</p>
+<h3 class="segment-chapter">Auto Layout for Price button</h3>
+
+<p>There is one more thing to do. The last row of labels needs to be pinned to the price button. That way there are constraints going all the way from the top of the Pop-up View to the bottom. The heights of the labels plus the sizes of the Vertical Spacing constraints between them will now determine the height of the Detail pop-up.
+</p><div class="image-30"><img src="graphics/img654.png"  alt="" title="The height of the pop-up view is determined by the constraints" /></div>
+<p>➤ Control-drag from the <em>$</em><em>9.99</em> button up to <em>Genre Value</em>. Choose <em>Vertical Spacing</em>. In the Size inspector, set <em>Constant</em> to <em>10</em>.
+</p>
+<p>While you might not notice this immediately, this introduces some Auto Layout constraint issues at this point — try clicking on the Genre: or Name labels and you&apos;ll see some constraints turn red.
+</p>
+<p>This is because the Pop-up View still has a Height constraint that forces it to be 240 points high. But the labels, image, and the vertical space constraints on these views don’t add up to 240.
+</p>
+<p>➤ You no longer need this Height constraint, so select it — the one called <em>height = 240</em> in the Document Outline — and press <em>delete</em> to get rid of it.
+</p>
+<p>➤ If necessary — if you have any views with orange rectangles around them — from the <em>Editor ▸ Resolve Auto Layout Issues</em> menu, choose <em>Update Frames</em> from the “All Views” section.
+</p>
+<p>Now all your constraints turn blue and everything fits snugly together.
+</p>
+<p>➤ Run the app to try it out.
+</p><div class="image-25"><img src="graphics/img655.png"  alt="" title="The text properly wraps without overlapping" /></div>
+<p>You now have an automatically resizing Detail pop-up that uses Dynamic Type for its labels!
+</p>
+<h3 class="segment-chapter">Test Dynamic Type</h3>
+
+<p>➤ Close the app and open the Settings app. Go to <em>General ▸ Accessibility ▸ Larger Text</em>. Toggle <em>Larger Accessibility Sizes</em> to on and drag the slider all the way to the right. That gives you the maximum font size — it’s huge!
+</p>
+<p>Now go back to StoreSearch and open a new pop-up. The text is a lot bigger:
+</p><div class="image-25"><img src="graphics/img656.png"  alt="" title="Changing the text size results in a bigger font" /></div>
+<p>For fun, change the font of the Name label to Body. Bazinga, that’s some big text!
+</p>
+<p>When you’re done playing, put the Name label font back to Headline, and turn off the Larger Text setting — the slider goes in the middle.
+</p>
+<p>Dynamic Type is an important feature to add to your apps. This was only a short introduction, but I hope the principle is clear: instead of a font with a fixed size, you use one of the available Text Styles: Body, Headline, Caption, and so on.
+</p>
+<p>Then you set up Auto Layout constraints to make your views resizable and looking good no matter how large or small the font.
+</p>
+<p>➤ This is a good time to commit the changes.
+</p>
+<div class="note">
+<p><em>Exercise.</em> Set up the cells from the table view for Dynamic Type. There’s a catch: when the user returns from changing the text size settings, the app should refresh the screen without needing an app restart. You can do this by reloading the table view when the app receives a <code>UIContentSizeCategoryDidChange</code> notification — see the previous app for a refresher on how to handle notifications.
+</p>
+<p>Also check out the property <code>adjustsFontForContentSizeCategory</code> on <code>UILabel</code>. If you set this to <code>true</code>, then the app will automatically update the label whenever the font size changes. Good luck! Check the forums at <a href="https://forums.raywenderlich.com">forums.raywenderlich.com</a> for solutions from other readers.
+</p></div>
+
+<h4 class="segment-chapter"><em>Stack Views</em></h4>
+
+<p>Setting up all those constraints was quite a bit of work, but it was good Auto Layout practice! If making constraints is not your cup of tea, then there’s good news: as of iOS 9, you can use a handy component, <code>UIStackView</code>, that takes a lot of the effort out of building such dynamic user interfaces.
+</p>
+<p>Using stack views is fairly straightforward: you drop a <em>Horizontal</em> or <em>Vertical Stack View</em> in your scene, and then you put your labels, image views, and buttons inside that stack view. Of course, a stack view can contain other stack views as well, allowing you to create very complex layouts quite easily.
+</p>
+<p>Give it a try! See if you can build the Detail pop-up with stack views. If you get stuck, we have a video tutorial series on the website that goes into great detail on <code>UIStackView</code>: <a href="https://www.raywenderlich.com/tag/stack-view">raywenderlich.com/tag/stack-view</a>
+</p>
+<h2 class="segment-chapter">Gradients in the background</h2>
+
+<p>As you can see in the previous screenshots, the table view in the background is dimmed by the view of the <code>DetailViewController</code>, which is 50% transparent black. That allows the pop-up to stand out more.
+</p>
+<p>It works well, but a plain black overlay is a bit dull. Let’s turn it into a circular gradient instead.
+</p>
+<p>You could use Photoshop to draw such a gradient and place an image view behind the pop-up, but why use an image when you can also draw using Core Graphics? Additionally, an image would increase the size of your app and might also create some issues when you need to support larger screen sizes.
+</p>
+<p>To pull this off, you will create your own <code>UIView</code> subclass.
+</p>
+<h3 class="segment-chapter">The GradientView class</h3>
+
+<p>➤ Add a new <em>Swift File</em> to the project. Name it <em>GradientView</em>.
+</p>
+<p>This will be a very simple view. It simply draws a black circular gradient that goes from mostly opaque in the corners to mostly transparent in the center. Placed on a white background, it looks something like this:
+</p><div class="image-25"><img src="graphics/img657.png"  alt="" title="What the GradientView looks like by itself" /></div>
+<p>➤ Replace the contents of <em>GradientView.swift</em> with:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> UIKit
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">GradientView</span>: <span class="hljs-title">UIView</span> </span>{
+  <span class="hljs-keyword">override</span> <span class="hljs-keyword">init</span>(frame: <span class="hljs-type">CGRect</span>) {
+    <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>(frame: frame)
+    backgroundColor = <span class="hljs-type">UIColor</span>.clear
+  }
+  
+  <span class="hljs-keyword">required</span> <span class="hljs-keyword">init</span>?(coder aDecoder: <span class="hljs-type">NSCoder</span>) {
+    <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>(coder: aDecoder)
+    backgroundColor = <span class="hljs-type">UIColor</span>.clear
+  }
+  
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">draw</span><span class="hljs-params">(<span class="hljs-number">_</span> rect: CGRect)</span></span> {
+    <span class="hljs-comment">// 1</span>
+    <span class="hljs-keyword">let</span> components: [<span class="hljs-type">CGFloat</span>] = [ <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0.7</span> ]
+    <span class="hljs-keyword">let</span> locations: [<span class="hljs-type">CGFloat</span>] = [ <span class="hljs-number">0</span>, <span class="hljs-number">1</span> ]
+    <span class="hljs-comment">// 2</span>
+    <span class="hljs-keyword">let</span> colorSpace = <span class="hljs-type">CGColorSpaceCreateDeviceRGB</span>()
+    <span class="hljs-keyword">let</span> gradient = <span class="hljs-type">CGGradient</span>(colorSpace: colorSpace, 
+                   colorComponents: components, 
+                   locations: locations, <span class="hljs-built_in">count</span>: <span class="hljs-number">2</span>)
+    <span class="hljs-comment">// 3</span>
+    <span class="hljs-keyword">let</span> x = bounds.midX
+    <span class="hljs-keyword">let</span> y = bounds.midY
+    <span class="hljs-keyword">let</span> centerPoint = <span class="hljs-type">CGPoint</span>(x: x, y : y)
+    <span class="hljs-keyword">let</span> radius = <span class="hljs-built_in">max</span>(x, y)
+    <span class="hljs-comment">// 4</span>
+    <span class="hljs-keyword">let</span> context = <span class="hljs-type">UIGraphicsGetCurrentContext</span>()
+    context?.drawRadialGradient(gradient!, 
+      startCenter: centerPoint, startRadius: <span class="hljs-number">0</span>, 
+      endCenter: centerPoint, endRadius: radius, 
+      options: .drawsAfterEndLocation)
+  }
+}</pre>
+<p>In the <code>init(frame:)</code> and <code>init?(coder:)</code> methods you simply set the background color to fully transparent — the “clear” color. Then in <code>draw()</code> you draw the gradient on top of that transparent background, so that it blends with whatever is below.
+</p>
+<p>The drawing code uses the Core Graphics framework. It may look a little scary but this is what it does:
+</p>
+<ol>
+<li>
+<p>First, you create two arrays that contain the “color stops” for the gradient. The first color (0, 0, 0, 0.3) is a black color that is mostly transparent. It sits at location 0 in the gradient, which represents the center of the screen because you’ll be drawing a circular gradient.
+</p>
+<p>The second color (0, 0, 0, 0.7) is also black but much less transparent and sits at location 1, which represents the circumference of the gradient’s circle. Remember that in UIKit, and also in Core Graphics, colors and opacity values don’t go from 0 to 255 but are fractional values between 0.0 and 1.0.
+</p>
+<p>The 0 and 1 from the <code>locations</code> array represent percentages: 0% and 100%, respectively. If you have more than two colors, you can specify the percentages of where in the gradient you want to place these colors.
+</p></li>
+</ol>
+
+<ol>
+<li>
+<p>With those color stops you can create the gradient. This gives you a new <code>CGGradient</code> object.
+</p></li>
+
+<li>
+<p>Now that you have the gradient object, you have to figure out how big you need to draw it. The <code>midX</code> and <code>midY</code> properties return the center point of a rectangle. That rectangle is given by <code>bounds</code>, a <code>CGRect</code> object that describes the dimensions of the view.
+</p>
+<p>If I can avoid it, I prefer not to hard-code any dimensions such as “320 by 568 points”. By using <code>bounds</code>, you can use this view anywhere you want to, no matter how big a space it should fill. You can use it without problems on any screen size from the smallest iPhone to the biggest iPad.
+</p>
+<p>The <code>centerPoint</code> constant contains the coordinates for the center point of the view and <code>radius</code> contains the larger of the <code>x</code> and <code>y</code> values; <code>max()</code> is a handy function that you can use to determine which of two values is the biggest.
+</p></li>
+</ol>
+
+<ol>
+<li>
+<p>With all those preliminaries done, you can finally draw the thing. Core Graphics drawing always takes places in what&apos;s known as a <i>graphics context</i>. We’re not going to worry about exactly what that is, just know that you need to obtain a reference to the current context and then you can do your drawing.
+</p>
+<p>And finally, the <code>drawRadialGradient()</code> function draws the gradient according to your specifications.
+</p></li>
+</ol>
+
+<p>Generally speaking, it isn’t optimal to create new objects inside your <code>draw()</code> method, such as gradients, especially if <code>draw()</code> is called often. In such cases it is better to create the objects the first time you need them and to reuse the same instance over and over — lazy loading for the win!
+</p>
+<p>However, you don’t really have to do that here because this <code>draw()</code> method will be called just once — when the <code>DetailViewController</code> gets loaded — so you can get away with being less than optimal.
+</p>
+<div class="note">
+<p><em>Note:</em> By the way, you’ll only be using <code>init(frame:)</code> to create the <code>GradientView</code> instance. The other init method, <code>init?(coder:)</code>, is never used in this app. However, <code>UIView</code> demands that all subclasses implement <code>init?(coder:)</code> — that is why it is marked as <code>required</code> — and if you remove this method, Xcode will complain with an error.
+</p></div>
+
+<h3 class="segment-chapter">Use GradientView</h3>
+
+<p>Putting this new <code>GradientView</code> class to work is pretty easy. You’ll add it to your own presentation controller object. That way, the <code>DetailViewController</code> doesn’t need to know anything about it. Dimming the background is really a side effect of doing a presentation, so it belongs in the presentation controller.
+</p>
+<p>➤ Open <em>DimmingPresentationController.swift</em> and add the following code to the class:
+</p><pre class="code-block"><span class="hljs-built_in">lazy</span> <span class="hljs-keyword">var</span> dimmingView = <span class="hljs-type">GradientView</span>(frame: <span class="hljs-type">CGRect</span>.zero)
+
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">presentationTransitionWillBegin</span><span class="hljs-params">()</span></span> {
+  dimmingView.frame = containerView!.bounds
+  containerView!.insertSubview(dimmingView, at: <span class="hljs-number">0</span>)
+}</pre>
+<p>The <code>presentationTransitionWillBegin()</code> method is invoked when the new view controller is about to be shown on the screen. Here you create the <code>GradientView</code> object, make it as big as the <code>containerView</code>, and insert it behind everything else in this “container view”.
+</p>
+<p>The container view is a new view that is placed on top of the <code>SearchViewController</code>, and it contains the views from the <code>DetailViewController</code>. So this piece of logic places the <code>GradientView</code> in between those two screens.
+</p>
+<p>There’s one more thing to do: because the <code>DetailViewController</code>’s background color is still 50% black, this color gets multiplied with the colors inside the gradient view, making the gradient look extra dark. It’s better to set the background color to 100% transparent, but if we do that in the storyboard, it makes it harder to see and edit the pop-up view. So let’s do this in code instead.
+</p>
+<p>➤ Add the following line to <code>viewDidLoad()</code> in <em>DetailViewController.swift</em>:
+</p><pre class="code-block">view.backgroundColor = <span class="hljs-type">UIColor</span>.clear</pre>
+<p>➤ Run the app and see what happens.
+</p><div class="image-20"><img src="graphics/img658.png"  alt="" title="The background behind the pop-up now has a gradient" /></div>
+<p>Nice! That looks a lot smarter.
+</p>
+<h2 class="segment-chapter">Animation!</h2>
+
+<p>The pop-up itself looks good already, but the way it enters the screen — Poof! It’s suddenly there — is a bit unsettling. iOS is supposed to be the king of animation, so let’s make good on that.
+</p>
+<p>You’ve used Core Animation and UIView animations before. This time you’ll use a <em>keyframe animation</em> to make the pop-up bounce into view.
+</p>
+<p>To animate the transition between two screens, you use an animation controller object. The purpose of this object is to animate a screen while it’s being presented or dismissed, nothing more.
+</p>
+<p>Now let’s add some liveliness to this pop-up!
+</p>
+<h3 class="segment-chapter">The animation controller class</h3>
+
+<p>➤ Add a new <em>Swift File</em> to the project, named <em>BounceAnimationController</em>.
+</p>
+<p>➤ Replace the contents of the new file with:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> UIKit
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BounceAnimationController</span>: <span class="hljs-title">NSObject</span>, 
+                         <span class="hljs-title">UIViewControllerAnimatedTransitioning</span> </span>{
+  
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">transitionDuration</span><span class="hljs-params">(using transitionContext: 
+       UIViewControllerContextTransitioning?)</span></span> -&gt; <span class="hljs-type">TimeInterval</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0.4</span>
+  }
+  
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">animateTransition</span><span class="hljs-params">(using transitionContext: 
+                         UIViewControllerContextTransitioning)</span></span> {
+      
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> toViewController = transitionContext.viewController(
+               forKey: <span class="hljs-type">UITransitionContextViewControllerKey</span>.to),
+       <span class="hljs-keyword">let</span> toView = transitionContext.view(
+                       forKey: <span class="hljs-type">UITransitionContextViewKey</span>.to) {
+
+      <span class="hljs-keyword">let</span> containerView = transitionContext.containerView     
+      toView.frame = transitionContext.finalFrame(<span class="hljs-keyword">for</span>: 
+                                               toViewController)
+      containerView.addSubview(toView)
+      toView.transform = <span class="hljs-type">CGAffineTransform</span>(scaleX: <span class="hljs-number">0.7</span>, y: <span class="hljs-number">0.7</span>)
+      
+      <span class="hljs-type">UIView</span>.animateKeyframes(withDuration: transitionDuration(
+        using: transitionContext), delay: <span class="hljs-number">0</span>, options: 
+        .calculationModeCubic, animations: {
+        <span class="hljs-type">UIView</span>.addKeyframe(withRelativeStartTime: <span class="hljs-number">0.0</span>, 
+             relativeDuration: <span class="hljs-number">0.334</span>, animations: {
+          toView.transform = <span class="hljs-type">CGAffineTransform</span>(scaleX: <span class="hljs-number">1.2</span>, 
+                                                    y: <span class="hljs-number">1.2</span>)
+        })
+        <span class="hljs-type">UIView</span>.addKeyframe(withRelativeStartTime: <span class="hljs-number">0.334</span>, 
+             relativeDuration: <span class="hljs-number">0.333</span>, animations: {
+          toView.transform = <span class="hljs-type">CGAffineTransform</span>(scaleX: <span class="hljs-number">0.9</span>, 
+                                                    y: <span class="hljs-number">0.9</span>)
+        })
+        <span class="hljs-type">UIView</span>.addKeyframe(withRelativeStartTime: <span class="hljs-number">0.666</span>, 
+             relativeDuration: <span class="hljs-number">0.333</span>, animations: {
+          toView.transform = <span class="hljs-type">CGAffineTransform</span>(scaleX: <span class="hljs-number">1.0</span>, 
+                                                    y: <span class="hljs-number">1.0</span>)
+        })
+      }, completion: { finished <span class="hljs-keyword">in</span>
+        transitionContext.completeTransition(finished)
+      })
+    }
+  }
+}</pre>
+<p>To become an animation controller, the object needs to extend <code>NSObject</code> and also implement the <code>UIViewControllerAnimatedTransitioning</code> protocol — quite a mouthful! The important methods from this protocol are:
+</p>
+<ul>
+<li>
+<p><code>transitionDuration(using:)</code> – This determines how long the animation is. You’re making the pop-in animation last for only 0.4 seconds, but that’s long enough. Animations are fun, but they shouldn’t keep the user waiting.
+</p></li>
+
+<li>
+<p><code>animateTransition(using:)</code> – This performs the actual animation.
+</p></li>
+</ul>
+
+<p>To find out what to animate, you look at the <code>transitionContext</code> parameter. This gives you a reference to a new view controller and lets you know how big it should be.
+</p>
+<p>The actual animation starts at the line <code>UIView.animateKeyframes(…)</code>. This works like all UIView-based animations: you set the initial state before the animation block, and UIKit will automatically animate any properties that get changed inside the closure. The difference from before is that a keyframe animation lets you animate the view in several distinct stages.
+</p>
+<p>The property you’re animating is the <code>transform</code>. If you’ve ever taken any matrix math you’ll be pleased — or terrified! — to hear that this is an affine transformation matrix. It allows you to do all sorts of funky stuff with the view, such as rotating it or shearing it. But the most common use of the transform is for scaling.
+</p>
+<p>The animation consists of several <em>keyframes</em>. It will smoothly proceed from one keyframe to the next over a certain amount of time. Because you’re animating the view’s scale, the different <code>toView.transform</code> values represent how much bigger or smaller the view will be over time.
+</p>
+<p>The animation starts with the view scaled down to 70% (scale 0.7). The next keyframe inflates it to 120% of its normal size. After that, it will scale the view down a bit again but not as much as before — only 90% of its original size. The final keyframe ends up with a scale of 1.0, which restores the view to an undistorted shape.
+</p>
+<p>By quickly changing the view size from small to big to small to normal, you create a bounce effect.
+</p>
+<p>You also specify the duration between the successive keyframes. In this case, each transition from one keyframe to the next takes 1/3rd of the total animation time. These times are not in seconds but in fractions of the animation’s total duration, which is 0.4 seconds.
+</p>
+<p>Feel free to mess around with the animation code. No doubt you can make it much more spectacular!
+</p>
+<h3 class="segment-chapter">Use the new animation controller</h3>
+
+<p>To use this animation in your app, you have to tell the app to use the new animation controller when presenting the Detail pop-up. That happens in the transitioning delegate inside <em>DetailViewController.swift</em>.
+</p>
+<p>➤ Add the following method to the <code>UIViewControllerTransitioningDelegate</code> extension:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">animationController</span><span class="hljs-params">(forPresented presented: 
+     UIViewController, presenting: UIViewController, 
+     source: UIViewController)</span></span> -&gt; 
+     <span class="hljs-type">UIViewControllerAnimatedTransitioning</span>? {
+  <span class="hljs-keyword">return</span> <span class="hljs-type">BounceAnimationController</span>()
+}</pre>
+<p>And that’s all you need to do.
+</p>
+<p>➤ Run the app and get ready for some bouncing action!
+</p><div class="image-70"><img src="graphics/img659.png"  alt="" title="The pop-up animates" /></div>
+<p>The pop-up looks a lot spiffier with the bounce animation, but there are two things that could be better: the <code>GradientView</code> still appears abruptly in the background, and the animation upon dismissal of the pop-up is very plain.
+</p>
+<h3 class="segment-chapter">Animate the background</h3>
+
+<p>There’s no reason why you cannot have two things animating at the same time. So, let’s make the <code>GradientView</code> fade in while the pop-up bounces into view. That is a job for the presentation controller, because that’s what provides the gradient view.
+</p>
+<p>➤ Go to <em>DimmingPresentationController.swift</em> and add the following to the end of <code>presentationTransitionWillBegin()</code>:
+</p><pre class="code-block"><span class="hljs-comment">// Animate background gradient view</span>
+dimmingView.alpha = <span class="hljs-number">0</span>
+<span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> coordinator = 
+   presentedViewController.transitionCoordinator {
+  coordinator.animate(alongsideTransition: { <span class="hljs-number">_</span> <span class="hljs-keyword">in</span>
+    <span class="hljs-keyword">self</span>.dimmingView.alpha = <span class="hljs-number">1</span>
+  }, completion: <span class="hljs-literal">nil</span>)
+}</pre>
+<p>You set the alpha value of the gradient view to 0 to make it completely transparent, and then animate it back to 1 — or 100% — and fully visible, resulting in a simple fade-in. That’s a bit more subtle than making the gradient appear so abruptly.
+</p>
+<p>The special thing here is the <code>transitionCoordinator</code> stuff. This is the UIKit traffic cop in charge of coordinating the presentation controller and animation controllers and everything else that happens when a new view controller is presented.
+</p>
+<p>The important thing to know about the <code>transitionCoordinator</code> is that all of your animations should be done in a closure passed to <code>animateAlongsideTransition</code> to keep the transition smooth. If your users wanted choppy animations, they wouldn&apos;t be using iPhones, would they?
+</p>
+<p>➤ Also add the method <code>dismissalTransitionWillBegin()</code>, which is used to animate the gradient view out of sight when the Detail pop-up is dismissed:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">dismissalTransitionWillBegin</span><span class="hljs-params">()</span></span>  {
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> coordinator = 
+     presentedViewController.transitionCoordinator {
+    coordinator.animate(alongsideTransition: { <span class="hljs-number">_</span> <span class="hljs-keyword">in</span>
+      <span class="hljs-keyword">self</span>.dimmingView.alpha = <span class="hljs-number">0</span>
+    }, completion: <span class="hljs-literal">nil</span>)
+  }
+}</pre>
+<p>This does the reverse: it animates the alpha value back to 0% to make the gradient view fade out.
+</p>
+<p>➤ Run the app. The dimming gradient now appears almost without you even noticing it. Slick!
+</p>
+<p>Let’s add one more quick animation because this stuff is just so much fun. :-)
+</p>
+<h3 class="segment-chapter">Animate the pop-up exit</h3>
+
+<p>After tapping the Close button, the pop-up slides off the screen, like modal screens always do. Let’s make this a bit more exciting and make it slide up instead of down. For that you need another animation controller.
+</p>
+<p>➤ Add a new <em>Swift File</em> to the project, named <em>SlideOutAnimationController</em>.
+</p>
+<p>➤ Replace the new file&apos;s contents with:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> UIKit
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SlideOutAnimationController</span>: <span class="hljs-title">NSObject</span>, 
+                         <span class="hljs-title">UIViewControllerAnimatedTransitioning</span> </span>{
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">transitionDuration</span><span class="hljs-params">(using transitionContext: 
+       UIViewControllerContextTransitioning?)</span></span> -&gt; <span class="hljs-type">TimeInterval</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0.3</span>
+  }
+  
+  <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">animateTransition</span><span class="hljs-params">(using transitionContext: 
+                         UIViewControllerContextTransitioning)</span></span> {
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> fromView = transitionContext.view(forKey: 
+                      <span class="hljs-type">UITransitionContextViewKey</span>.from) {
+      <span class="hljs-keyword">let</span> containerView = transitionContext.containerView
+      <span class="hljs-keyword">let</span> time = transitionDuration(using: transitionContext)
+      <span class="hljs-type">UIView</span>.animate(withDuration: time, animations: {
+        fromView.center.y -= containerView.bounds.size.height
+        fromView.transform = <span class="hljs-type">CGAffineTransform</span>(scaleX: <span class="hljs-number">0.5</span>, 
+                                                    y: <span class="hljs-number">0.5</span>)
+      }, completion: { finished <span class="hljs-keyword">in</span>
+        transitionContext.completeTransition(finished)
+      })
+    }
+  }
+}</pre>
+<p>This is pretty much the same as the other animation controller, except that the animation itself is different. Inside the animation block you subtract the height of the screen from the view’s center position while simultaneously zooming it out to 50% of its original size, making the Detail screen fly up-up-and-away.
+</p>
+<p>➤ In <em>DetailViewController.swift</em>, add the following method to the <code>UIViewControllerTransitioningDelegate</code> extension:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">animationController</span><span class="hljs-params">(forDismissed dismissed: 
+  UIViewController)</span></span> -&gt; <span class="hljs-type">UIViewControllerAnimatedTransitioning</span>? {
+  <span class="hljs-keyword">return</span> <span class="hljs-type">SlideOutAnimationController</span>()
+}</pre>
+<p>This simply overrides the animation controller to be used when a view controller is dismissed.
+</p>
+<p>➤ Run the app and try it out. That looks pretty sweet if you ask me!
+</p>
+<p>➤ If you’re happy with the way the animations look, then commit your changes.
+</p>
+<div class="note">
+<p><em>Exercise.</em> Create some exciting new animations. I’m sure you can improve on mine. Hint: use the <code>transform</code> matrix to add some rotation to the mix.
+</p></div>
+
+<p>You can find the project files for this chaper under <em>38 – Polish the Pop-up</em> in the Source Code folder.
+</p></body></html>

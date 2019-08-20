@@ -1,0 +1,6 @@
+version: "Apple Swift version 4.2 (swiftlang-1000.11.37.1 clang-1000.11.45.1)"
+options: "a8ff6fb8d8eafe1dbb24694c8728eefc"
+build_time: [1566298003, 160562000]
+inputs:
+  "/Users/ahmed/Desktop/iOS_Apprentice_v7.0/checklists/Source Code/09-Table Views/chapter-09-final/Checklists/ChecklistViewController.swift": [1529008686, 0]
+  "/Users/ahmed/Desktop/iOS_Apprentice_v7.0/checklists/Source Code/09-Table Views/chapter-09-final/Checklists/AppDelegate.swift": [1529008686, 0]

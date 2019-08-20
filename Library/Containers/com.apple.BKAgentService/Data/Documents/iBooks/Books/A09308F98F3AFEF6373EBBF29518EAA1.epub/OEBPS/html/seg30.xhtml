@@ -1,0 +1,880 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 23: Use Location Data</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 23: Use Location Data</h1>
+
+<p>You&apos;ve learnt how to get GPS coordinate information from the device and to display the information on screen.
+</p>
+<p>In this chapter, you will learn the following:
+</p>
+<ul>
+<li>
+<p><em>Handle GPS errors:</em> Receiving GPS information is an error-prone process. How do you handle the errors?
+</p></li>
+
+<li>
+<p><em>Improve GPS results:</em> How to improve the accuracy of the GPS results you receive.
+</p></li>
+
+<li>
+<p><em>Reverse geocoding:</em> Getting the address for a given set of GPS coordinates.
+</p></li>
+
+<li>
+<p><em>Testing on device:</em> Testing on device to ensure that your app handles real-world scenarios.
+</p></li>
+
+<li>
+<p><em>Support different screen sizes:</em> Setting up your UI to work on iOS devices with different screen sizes.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Handle GPS errors</h2>
+
+<p>Getting GPS coordinates is error-prone. You may be somewhere where there is no clear line-of-sight to the sky — such as inside or in an area with lots of tall buildings — blocking your GPS signal.
+</p>
+<p>There may not be many Wi-Fi routers around you, or they haven’t been catalogued yet, so the Wi-Fi radio isn’t much help getting a location fix either.
+</p>
+<p>And of course your cellular signal might be so weak that triangulating your position doesn’t offer particularly good results either.
+</p>
+<p>All of that is assuming your device actually has a GPS or cellular radio. I just went out with my iPod touch to capture coordinates and get some pictures for this app. In the city center it was unable to obtain a location fix. My iPhone did better, but it still wasn’t ideal.
+</p>
+<p>The moral of this story is that your location-aware apps had better know how to deal with errors and bad readings. There are no guarantees that you’ll be able to get a location fix, and if you do, then it might still take a few seconds.
+</p>
+<p>This is where software meets the real world. You should add some error handling code to the app to let users know about problems getting those coordinates.
+</p>
+<h3 class="segment-chapter">The error handling code</h3>
+
+<p>➤ Add these two instance variables to <em>CurrentLocationViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> updatingLocation = <span class="hljs-literal">false</span>
+<span class="hljs-keyword">var</span> lastLocationError: <span class="hljs-type">Error</span>?</pre>
+<p>➤ Change <code>locationManager(_:didFailWithError:)</code> to the following:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">locationManager</span><span class="hljs-params">(<span class="hljs-number">_</span> manager: CLLocationManager, 
+        didFailWithError error: Error)</span></span> {
+  <span class="hljs-built_in">print</span>(<span class="hljs-string">"didFailWithError <span class="hljs-subst">\(error.localizedDescription)</span>"</span>)
+
+  <span class="hljs-keyword">if</span> (error <span class="hljs-keyword">as</span> <span class="hljs-type">NSError</span>).code == 
+      <span class="hljs-type">CLError</span>.locationUnknown.rawValue {
+    <span class="hljs-keyword">return</span>
+  }
+  lastLocationError = error
+  stopLocationManager()
+  updateLabels()
+}</pre>
+<p>The location manager may report errors for a variety of scenarios. You can look at the <code>code</code> property of the <code>Error</code> object to find out what type of error you’re dealing with. (You do need to cast to <code>NSError</code> first since that is the subclass of <code>Error</code> that actually contains the <code>code</code> property.)
+</p>
+<p>Some of the possible Core Location errors:
+</p>
+<ul>
+<li>
+<p><code>CLError.locationUnknown</code> - the location is currently unknown, but Core Location will keep trying.
+</p></li>
+
+<li>
+<p><code>CLError.denied</code> - the user denied the app permission to use location services.
+</p></li>
+
+<li>
+<p><code>CLError.network</code> - there was a network-related error.
+</p></li>
+</ul>
+
+<p>There are more (having to do with the compass and geocoding), but you get the point. Lots of reasons for things to go wrong!
+</p>
+<div class="note">
+<p><em>Note:</em> These error codes are defined in the <code>CLError</code> enumeration. Recall that an enumeration, or <code>enum</code>, is a list of values and names for these values.
+</p>
+<p>The error codes used by Core Location have simple integer values. Rather than using the values 0, 1, 2 and so on in your program, Core Location has given them symbolic names using the <code>CLError</code> enum. That makes these codes easier to understand and you’re less likely to pick the wrong one.
+</p>
+<p>To convert these names back to an integer value you ask for the <code>rawValue</code>.
+</p></div>
+
+<p>In your updated <code>locationManager(_:didFailWithError:)</code>, you do:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> (error <span class="hljs-keyword">as</span> <span class="hljs-type">NSError</span>).code == <span class="hljs-type">CLError</span>.locationUnknown.rawValue {
+  <span class="hljs-keyword">return</span>
+}</pre>
+<p>The <code>CLError.locationUnknown</code> error means the location manager was unable to obtain a location right now, but that doesn’t mean all is lost. It might just need another second or so to get an uplink to the GPS satellite. In the mean time, it’s letting you know that, for now, it could not get any location information.
+</p>
+<p>When you get this error, you will simply keep trying until you do find a location or receive a more serious error.
+</p>
+<p>In the case of a more serious error, you store the error object into a new instance variable, <code>lastLocationError</code>:
+</p><pre class="code-block">lastLocationError = error</pre>
+<p>That way, you can look up later what kind of error you were dealing with. This comes in useful in <code>updateLabels()</code>. You’ll be modifying that method shortly to show the error to the user because you don’t want to leave them in the dark about such things.
+</p>
+<div class="note">
+<p><em>Exercise.</em> Can you explain why <code>lastLocationError</code> is an optional?
+</p></div>
+
+<p>Answer: When there is no error, <code>lastLocationError</code> will not have a value. In other words, it can be <code>nil</code>, and variables that can be <code>nil</code> must be optionals in Swift.
+</p>
+<p>Finally, the update to  <code>locationManager(_:didFailWithError:)</code> adds a new method call:
+</p><pre class="code-block">stopLocationManager()</pre>
+<h3 class="segment-chapter">Stop location updates</h3>
+
+<p>If obtaining a location appears to be impossible for wherever the user currently is on the globe, then you need to tell the location manager to stop. To conserve battery power, the app should power down the iPhone’s radios as soon as it doesn’t need them anymore.
+</p>
+<p>If this was a turn-by-turn navigation app, you’d keep the location manager running even in the case of a network error, because who knows, a couple of meters ahead you might get a valid location.
+</p>
+<p>For this app, the user will simply have to press the Get My Location button again if they want to try in another spot.
+</p>
+<p>➤ Add the <code>stopLocationManager()</code> method:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">stopLocationManager</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">if</span> updatingLocation {
+    locationManager.stopUpdatingLocation()
+    locationManager.delegate = <span class="hljs-literal">nil</span>
+    updatingLocation = <span class="hljs-literal">false</span>
+  }
+}</pre>
+<p>There’s an <code>if</code> statement that checks whether the boolean instance variable <code>updatingLocation</code> is <code>true</code> or <code>false</code>. If it is <code>false</code>, then the location manager isn’t currently active and there’s no need to stop it.
+</p>
+<p>The reason for having this <code>updatingLocation</code> variable is that you are going to change the appearance of the Get My Location button and the status message label when the app is trying to obtain a location fix, to let the user know the app is working on it.
+</p>
+<p>➤ Put some extra code in <code>updateLabels()</code> to show the error message:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">updateLabels</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> location = location {
+    . . .
+  } <span class="hljs-keyword">else</span> {
+    . . .
+    <span class="hljs-comment">// Remove the following line</span>
+    messageLabel.text = <span class="hljs-string">"Tap 'Get My Location' to Start"</span>
+    <span class="hljs-comment">// The new code starts here:</span>
+    <span class="hljs-keyword">let</span> statusMessage: <span class="hljs-type">String</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> error = lastLocationError <span class="hljs-keyword">as</span> <span class="hljs-type">NSError</span>? {
+      <span class="hljs-keyword">if</span> error.domain == kCLErrorDomain &amp;&amp; 
+         error.code == <span class="hljs-type">CLError</span>.denied.rawValue {
+        statusMessage = <span class="hljs-string">"Location Services Disabled"</span>
+      } <span class="hljs-keyword">else</span> {
+        statusMessage = <span class="hljs-string">"Error Getting Location"</span>
+      }
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> !<span class="hljs-type">CLLocationManager</span>.locationServicesEnabled() {
+      statusMessage = <span class="hljs-string">"Location Services Disabled"</span>
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> updatingLocation {
+      statusMessage = <span class="hljs-string">"Searching..."</span>
+    } <span class="hljs-keyword">else</span> {
+      statusMessage = <span class="hljs-string">"Tap 'Get My Location' to Start"</span>
+    }
+    messageLabel.text = statusMessage
+  }
+}</pre>
+<p>The new code determines what to put in the <code>messageLabel</code> at the top of the screen. It uses a bunch of <code>if</code> statements to figure out what the current status of the app is.
+</p>
+<p>If the location manager gave an error, the label will show an error message.
+</p>
+<p>The first error it checks for is <code>CLError.denied</code> in the error domain <code>kCLErrorDomain</code>, which means Core Location errors. In that case, the user has not given this app permission to use the location services. That sort of defeats the purpose of this app but it can happen, and you have to check for it anyway.
+</p>
+<p>If the error code is something else, then you simply say “Error Getting Location” as this usually means there was no way of obtaining a location fix.
+</p>
+<p>Even if there was no error, it might still be impossible to get location coordinates if the user disabled Location Services completely on their device (instead of just for this app). You check for that situation with the <code>locationServicesEnabled()</code> method of <code>CLLocationManager</code>.
+</p>
+<p>Suppose there were no errors and everything works fine, then the status label will say “Searching...” before the first location object has been received.
+</p>
+<p>If your device can obtain the location fix quickly, then this text will be visible only for a fraction of a second, but often, it might take a short while to get that first location fix. No one likes waiting, so it’s nice to let the user know that the app is actively looking up their location. That is what you’re using the <code>updatingLocation</code> boolean for.
+</p>
+<div class="note">
+<p><em>Note:</em> You put all this logic into a single method because that makes it easy to change the screen when something has changed. Received a location? Simply call <code>updateLabels()</code> to refresh the contents of the screen. Received an error? Let <code>updateLabels()</code> sort it out…
+</p></div>
+
+<h3 class="segment-chapter">Start location updates</h3>
+
+<p>➤ Also add a new <code>startLocationManager()</code> method — I suggest you put it right above <code>stopLocationManager()</code>, to keep related functionality together:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">startLocationManager</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">if</span> <span class="hljs-type">CLLocationManager</span>.locationServicesEnabled() {
+    locationManager.delegate = <span class="hljs-keyword">self</span>
+    locationManager.desiredAccuracy = 
+                    kCLLocationAccuracyNearestTenMeters
+    locationManager.startUpdatingLocation()
+    updatingLocation = <span class="hljs-literal">true</span>
+  }
+}</pre>
+<p>Starting the location manager used to happen in the <code>getLocation()</code> action method. However, because you now have a <code>stopLocationManager()</code> method, it makes sense to move the start code into a method of its own, <code>startLocationManager()</code>, just to keep things symmetrical.
+</p>
+<p>The only difference from before is that this checks whether the location services are enabled and you set the variable <code>updatingLocation</code> to <code>true</code> if you did indeed start location updates.
+</p>
+<p>➤ Change <code>getLocation()</code> to:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">getLocation</span><span class="hljs-params">()</span></span> {
+  . . .
+  <span class="hljs-keyword">if</span> authStatus == .denied || authStatus == .restricted {
+    . . .
+  }
+  <span class="hljs-comment">// New code below, replacing existing code after this point</span>
+  startLocationManager()
+  updateLabels()
+}</pre>
+<p>There is one more small change to make. Suppose there was an error and no location could be obtained, but then you walk around for a bit and a valid location comes in. In that case, it’s a good idea to remove the old error code.
+</p>
+<p>➤ At the bottom of <code>locationManager(_:didUpdateLocations:)</code>, add the following line just before calling <code>updateLabels()</code>:
+</p><pre class="code-block">lastLocationError = <span class="hljs-literal">nil</span></pre>
+<p>This clears out the old error state. After receiving a valid coordinate, any previous error you may have encountered is no longer applicable.
+</p>
+<p>➤ Run the app. While the app is waiting for incoming coordinates, the label at the top should say “Searching...” until it finds a valid coordinate or encounters a fatal error.
+</p><div class="image-30"><img src="graphics/img379.png"  alt="" title="The app is waiting to receive GPS coordinates" /></div>
+<p>Play around with the Simulator’s location settings for a while and see what happens when you choose different locations.
+</p>
+<p>Note that changing the Simulator’s location to None isn’t an error anymore. This still returns the <code>.locationUnknown</code> error code but you ignore that because it’s not a fatal error.
+</p>
+<p><em>Tip:</em> You can also simulate locations from within Xcode. If your app uses Core Location, the bar at the top of the debug area gets an arrow icon. Click on that icon to change the simulated location:
+</p><div class="image-70"><img src="graphics/img380.png"  alt="" title="Simulating locations from within the Xcode debugger" /></div>
+<p>Ideally, you should not just test in the Simulator but also on your device, as you’re more likely to encounter real errors that way.
+</p>
+<h2 class="segment-chapter">Improve GPS results</h2>
+
+<p>Cool, you know how to obtain a <code>CLLocation</code> object from Core Location and you’re able to handle errors. Now what?
+</p>
+<p>Well, here’s the thing: you saw in the Simulator that Core Location keeps giving you new location objects over and over, even though the coordinates may not have changed. That’s because the user could be on the move, in which case their GPS coordinates <i>do</i> change.
+</p>
+<p>However, you’re not building a navigation app. So, for <i>MyLocations</i> you just want to get a location that is accurate enough and then you can tell the location manager to stop sending updates.
+</p>
+<p>This is important because getting location updates costs a lot of battery power as the device needs to keep its GPS/Wi-Fi/cellular radios powered up for this. This app doesn’t need to ask for GPS coordinates all the time, so it should stop when the location is accurate enough.
+</p>
+<p>The problem is that you can’t always get the accuracy you want, so you have to detect this. When the last couple of coordinates you received aren’t increasing in accuracy then that is probably as good as it’s going to get, and you should let the radio power down.
+</p>
+<h3 class="segment-chapter">Get results for a specific accuracy level</h3>
+
+<p>➤ Change <code>locationManager(_:didUpdateLocations:)</code> to the following:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">locationManager</span><span class="hljs-params">(<span class="hljs-number">_</span> manager: CLLocationManager, 
+  didUpdateLocations locations: [CLLocation])</span></span> {
+  <span class="hljs-keyword">let</span> newLocation = locations.last!
+  <span class="hljs-built_in">print</span>(<span class="hljs-string">"didUpdateLocations <span class="hljs-subst">\(newLocation)</span>"</span>)
+
+  <span class="hljs-comment">// 1</span>
+  <span class="hljs-keyword">if</span> newLocation.timestamp.timeIntervalSinceNow &lt; -<span class="hljs-number">5</span> {
+    <span class="hljs-keyword">return</span>
+  }
+
+  <span class="hljs-comment">// 2</span>
+  <span class="hljs-keyword">if</span> newLocation.horizontalAccuracy &lt; <span class="hljs-number">0</span> {
+    <span class="hljs-keyword">return</span>
+  }
+
+  <span class="hljs-comment">// 3</span>
+  <span class="hljs-keyword">if</span> location == <span class="hljs-literal">nil</span> || location!.horizontalAccuracy &gt; 
+                        newLocation.horizontalAccuracy {
+
+    <span class="hljs-comment">// 4</span>
+    lastLocationError = <span class="hljs-literal">nil</span>
+    location = newLocation
+
+    <span class="hljs-comment">// 5</span>
+    <span class="hljs-keyword">if</span> newLocation.horizontalAccuracy &lt;= 
+       locationManager.desiredAccuracy {
+      <span class="hljs-built_in">print</span>(<span class="hljs-string">"*** We're done!"</span>)
+      stopLocationManager()
+    }
+    updateLabels()
+  }
+}</pre>
+<p>Let’s take these changes one-by-one:
+</p>
+<ol>
+<li>
+<p>If the time at which the given location object was determined is too long ago — 5 seconds in this case —, then this is a <i>cached</i> result.
+</p>
+<p>Instead of returning a new location fix, the location manager may initially give you the most recently found location under the assumption that you might not have moved much in the last few seconds — obviously, this does not take into consideration people with jet packs.
+</p>
+<p>You’ll simply ignore these cached locations if they are too old.
+</p></li>
+</ol>
+
+<ol>
+<li>
+<p>To determine whether new readings are more accurate than previous ones, you’ll use the <code>horizontalAccuracy</code> property of the location object. However, sometimes locations may have a <code>horizontalAccuracy</code> that is less than 0. In which case, these measurements are invalid and you should ignore them.
+</p></li>
+
+<li>
+<p>This is where you determine if the new reading is more useful than the previous one. Generally speaking, Core Location starts out with a fairly inaccurate reading and then gives you more and more accurate ones as time passes. However, there are no guarantees — so, you cannot assume that the next reading truly is always more accurate.
+</p>
+<p>Note that a larger accuracy value means <i>less</i> accurate — after all, accurate up to 100 meters is worse than accurate up to 10 meters. That’s why you check whether the previous reading, <code>location!.horizontalAccuracy</code>, is greater than the new reading, <code>newLocation.horizontalAccuracy</code>.
+</p>
+<p>You also check for <code>location == nil</code>. Recall that <code>location</code> is an optional instance variable that stores the <code>CLLocation</code> object that you obtained in a previous call to <code>didUpdateLocations</code>. If <code>location</code> is <code>nil</code>, then this is the very first location update you’re receiving and in that case you should continue.
+</p>
+<p>So, if this is the very first location reading (<code>location</code> is <code>nil</code>) or the new location is more accurate than the previous reading, you continue to step 4. Otherwise you ignore this location update.
+</p></li>
+</ol>
+
+<ol>
+<li>
+<p>You’ve seen this part before. It clears out any previous error and stores the new <code>CLLocation</code> object into the <code>location</code> variable.
+</p></li>
+
+<li>
+<p>If the new location’s accuracy is equal to or better than the desired accuracy, you can call it a day and stop asking the location manager for updates. When you started the location manager in <code>startLocationManager()</code>, you set the desired accuracy to 10 meters (<code>kCLLocationAccuracyNearestTenMeters</code>), which is good enough for this app.
+</p></li>
+</ol>
+
+<h4 class="segment-chapter">Short circuiting</h4>
+
+<p>Because <code>location</code> is an optional object, you cannot access its properties directly — you first need to unwrap it. You could do that with <code>if let</code>, but if you’re sure that the optional is not <code>nil</code> you can also <i>force unwrap</i> it with <code>!</code>.
+</p>
+<p>That’s what you are doing in this line:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> location == <span class="hljs-literal">nil</span> || location!.horizontalAccuracy &gt; 
+                      newLocation.horizontalAccuracy {</pre>
+<p>You wrote <code>location!.horizontalAccuracy</code> with an exclamation point instead of just <code>location.horizontalAccuracy</code>.
+</p>
+<p>But what if <code>location == nil</code>, won’t the force unwrapping fail then? Not in this case, because the force unwrap is never performed.
+</p>
+<p>The <code>||</code> operator (logical or) tests whether either of the two conditions is true. If the first one is true (<code>location</code> is <code>nil</code>), it will not evaluate the second condition. That’s called <i>short circuiting</i>. There is no need for the app to check the second condition if the first one is already true.
+</p>
+<p>So, the app will only look at <code>location!.horizontalAccuracy</code> when <code>location</code> is guaranteed to be non-<code>nil</code>. Blows your mind, eh?
+</p>
+<p>➤ Run the app. First set the Simulator’s location to None, then press Get My Location. The screen now says “Searching...”
+</p>
+<p>➤ Switch to location Apple (but don’t press Get My Location again). After a brief moment, the screen is updated with GPS coordinates as they come in.
+</p>
+<p>If you check the Xcode Console, you’ll get about 10 location updates before it says “*** We’re done!” and the location updates stop.
+</p>
+<div class="note">
+<p><em>Note:</em> It’s possible the above steps won’t work for you. If the screen does not say “Searching…” but shows an old set of coordinates instead, then the Simulator is holding on to old location data. This seems to happen when you pick a location from within Xcode (using the arrow in the debug area) instead of the Simulator’s Debug menu.
+</p>
+<p>The quickest way to fix this is to quit the Simulator and run the app again — this launches a new Simulator. If you can’t get it to work, no worries, it’s not that important. Just be aware that the Simulator can be finicky sometimes.
+</p></div>
+
+<p>You, as the developer, can tell from the Console when the location updates stop, but obviously, the user won’t see this.
+</p>
+<p>The Tag Location button becomes visible as soon as the first location is received so the user can start saving this location to their library right away, but at this point the location may not be accurate enough yet. So it’s nice to show the user when the app has found the most accurate location.
+</p>
+<h3 class="segment-chapter">Update the UI</h3>
+
+<p>To make this clearer, you are going to toggle the Get My Location button to say “Stop” when the location grabbing is active and switch it back to “Get My Location” when it’s done. That gives a nice visual clue to the user. Later on, you’ll also show an animated activity spinner that makes this even more obvious.
+</p>
+<p>To change the state of the button, you’ll add a <code>configureGetButton()</code> method.
+</p>
+<p>➤ Add the following method to <em>CurrentLocationViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">configureGetButton</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">if</span> updatingLocation {
+    getButton.setTitle(<span class="hljs-string">"Stop"</span>, <span class="hljs-keyword">for</span>: .normal)
+  } <span class="hljs-keyword">else</span> {
+    getButton.setTitle(<span class="hljs-string">"Get My Location"</span>, <span class="hljs-keyword">for</span>: .normal)
+  }
+}</pre>
+<p>It’s quite simple: if the app is currently updating the location, then the button’s title becomes Stop, otherwise it is Get My Location.
+</p>
+<p>You need to now call <code>configureGetButton()</code> from several different places in your code. If you look closely, you&apos;ll notice that wherever you call <code>updateLabels()</code>, you also need to call the new method. So might as well call the new method from within <code>updateLabels()</code>, right?
+</p>
+<p>➤ Add a call to <code>configureGetButton()</code> at the end of <code>updateLabels()</code>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">updateLabels</span><span class="hljs-params">()</span></span> {
+  . . .
+  configureGetButton()
+}</pre>
+<p>➤ Run the app again and perform the same test as before. The button changes to Stop when you press it. When there are no more location updates, it switches back.
+</p><div class="image-30"><img src="graphics/img381.png"  alt="" title="The stop button" /></div>
+<p>When a button says “Stop”, you naturally expect to be able to press it so you can interrupt the location updates. This is especially so when you’re not getting any coordinates at all. Eventually Core Location may give an error, but as a user, you may not want to wait for that.
+</p>
+<p>Currently, however, pressing Stop doesn’t stop anything. You have to change <code>getLocation()</code> for this, as any taps on the button call this method.
+</p>
+<p>➤ In <code>getLocation()</code>, replace the line with the call to <code>startLocationManager()</code> with the following:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> updatingLocation {
+  stopLocationManager()
+} <span class="hljs-keyword">else</span> {
+  location = <span class="hljs-literal">nil</span>
+  lastLocationError = <span class="hljs-literal">nil</span>
+  startLocationManager()
+}</pre>
+<p>Again, you’re using the <code>updatingLocation</code> flag to determine what state the app is in.
+</p>
+<p>If the button is pressed while the app is already doing the location fetching, you stop the location manager.
+</p>
+<p>Note that you also clear out the old location and error objects before you start looking for a new location.
+</p>
+<p>➤ Run the app. Now pressing the Stop button will put an end to the location updates. You should see no more updates in the Console after you press Stop.
+</p>
+<div class="note">
+<p><em>Note:</em> If the Stop button doesn’t appear long enough for you to click it, set the location back to None first, tap Get My Location a few times, and then select the Apple location again.
+</p></div>
+
+<h2 class="segment-chapter">Reverse geocoding</h2>
+
+<p>The GPS coordinates you’ve dealt with so far are just numbers. The coordinates 37.33240904, -122.03051218 don’t really mean that much, but the address 1 Infinite Loop in Cupertino, California does.
+</p>
+<p>Using a process known as <em>reverse geocoding</em>, you can turn a set of coordinates into a human-readable address. (Regular or “forward” geocoding does the opposite: it turns an address into GPS coordinates. You can do both with the iOS SDK, but for <i>MyLocations</i> you only do the reverse one.)
+</p>
+<p>You’ll use the <code>CLGeocoder</code> object to turn the location data into a human-readable address and then display that address on screen.
+</p>
+<p>It’s quite easy to do this but there are some rules. You’re not supposed to send out a ton of these reverse geocoding requests at the same time. The process of reverse geocoding takes place on a server hosted by Apple and it costs them bandwidth and processor time to handle these requests. If you flood their servers with requests, Apple won’t be happy.
+</p>
+<p><i>MyLocations</i> is only supposed to be used occasionally. So theoretically, its users won’t be spamming the Apple servers, but you should still limit the geocoding requests to one at a time, and once for every unique location. After all, it makes no sense to reverse geocode the same set of coordinates over and over.
+</p>
+<p>Reverse geocoding needs an active Internet connection and anything you can do to prevent unnecessary use of the iPhone’s radios is a good thing for your users.
+</p>
+<h3 class="segment-chapter">The implementation</h3>
+
+<p>➤ Add the following properties to <em>CurrentLocationViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> geocoder = <span class="hljs-type">CLGeocoder</span>()
+<span class="hljs-keyword">var</span> placemark: <span class="hljs-type">CLPlacemark</span>?
+<span class="hljs-keyword">var</span> performingReverseGeocoding = <span class="hljs-literal">false</span>
+<span class="hljs-keyword">var</span> lastGeocodingError: <span class="hljs-type">Error</span>?</pre>
+<p>These mirror what you did for the location manager. <code>CLGeocoder</code> is the object that will perform the geocoding and <code>CLPlacemark</code> is the object that contains the address results.
+</p>
+<p>The <code>placemark</code> variable needs to be an optional because it will have no value when there is no location yet, or when the location doesn’t correspond to a street address — I don’t think it will respond with “Sahara desert, Africa”, but to be fair, I haven’t had the chance to try.
+</p>
+<p>You set <code>performingReverseGeocoding</code> to <code>true</code> when a geocoding operation is taking place, and <code>lastGeocodingError</code> will contain an <code>Error</code> object if something went wrong, or, <code>nil</code> if there is no error.
+</p>
+<p>➤ You’ll put the geocoder to work in <code>locationManager(didUpdateLocations)</code>:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">locationManager</span><span class="hljs-params">(<span class="hljs-number">_</span> manager: CLLocationManager, 
+  didUpdateLocations locations: [CLLocation])</span></span> {
+  . . .
+  <span class="hljs-keyword">if</span> location == <span class="hljs-literal">nil</span> || location!.horizontalAccuracy &gt; 
+                        newLocation.horizontalAccuracy {
+    . . .
+    <span class="hljs-keyword">if</span> newLocation.horizontalAccuracy &lt;= 
+       locationManager.desiredAccuracy {
+       . . .
+    }
+    updateLabels()
+    <span class="hljs-comment">// The new code begins here:</span>
+    <span class="hljs-keyword">if</span> !performingReverseGeocoding {
+      <span class="hljs-built_in">print</span>(<span class="hljs-string">"*** Going to geocode"</span>)
+
+      performingReverseGeocoding = <span class="hljs-literal">true</span>
+
+      geocoder.reverseGeocodeLocation(newLocation, 
+                                      completionHandler: {
+        placemarks, error <span class="hljs-keyword">in</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> error = error {
+          <span class="hljs-built_in">print</span>(<span class="hljs-string">"*** Reverse Geocoding error: <span class="hljs-subst">\(error.localizedDescription)</span>"</span>)
+          <span class="hljs-keyword">return</span>
+        }
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> places = placemarks {
+          <span class="hljs-built_in">print</span>(<span class="hljs-string">"*** Found places: <span class="hljs-subst">\(places)</span>"</span>)
+        }
+      })
+    }
+    <span class="hljs-comment">// End of the new code</span>
+  }
+}</pre>
+<p>The app should only perform a single reverse geocoding request at a time. So, first you check whether it is busy by looking at the <code>performingReverseGeocoding</code> variable. Then you start the geocoder.
+</p>
+<p>The code looks straightforward enough, right? If you are wondering what the <code>completionHandler</code> bit is, harken back to chapter 6 when you used a similar construct to handle a <code>UIAlertController</code> action - it&apos;s a <i>closure</i>.
+</p>
+<h3 class="segment-chapter">Closures</h3>
+
+<p>Unlike the location manager, <code>CLGeocoder</code> does not use a delegate to return results from an operation. Instead, it uses a closure.  Closures are an important Swift feature and you can expect to see them all over the place — for Objective-C programmers, a closure is similar to a “block”.
+</p>
+<p>Closures can have parameters too and here, the parameters for the closure are <code>placemarks</code> and <code>error</code>, both of which are optionals because either one or the other can be <code>nil</code> depending on the situation.
+</p>
+<p>So, while all the code inside the closure does is print out either the list of places or the error, you do have to unwrap each optional before you do that to be sure that you have a value there.
+</p>
+<p>Unlike the rest of the code in <code>locationManager(_:didUpdateLocations:)</code>, the code in the closure is not performed right away. After all, you can only print the geocoding results once the geocoding completes, and that may be several seconds later.
+</p>
+<p>The closure is kept for later use by the <code>CLGeocoder</code> object and is only performed after <code>CLGeocoder</code> finds an address or encounters an error.
+</p>
+<p>So why does <code>CLGeocoder</code> use a closure instead of a delegate?
+</p>
+<p>The problem with using a delegate to provide feedback is that you need to write one or more separate methods. For example, for <code>CLLocationManager</code> there are the <code>locationManager(_:didUpdateLocations:)</code> and <code>locationManager(_:didFailWithError:)</code> methods.
+</p>
+<p>By creating separate methods, you move the code that deals with the response away from the code that makes the request. With closures, on the other hand, you can put that handling code in the same place. That makes the code more compact and easier to read. Some APIs do both, and you have a choice between using a closure or becoming a delegate.
+</p>
+<p>So when you write,
+</p><pre class="code-block">geocoder.reverseGeocodeLocation(newLocation, completionHandler:
+{ placemarks, error <span class="hljs-keyword">in</span>
+  <span class="hljs-comment">// put your statements here</span>
+}</pre>
+<p>you’re telling the <code>CLGeocoder</code> object that you want to reverse geocode the location, and that the code in the block following <code>completionHandler:</code> should be executed as soon as the geocoding is completed.
+</p>
+<p>The closure itself is:
+</p><pre class="code-block">{ placemarks, error <span class="hljs-keyword">in</span>
+    <span class="hljs-comment">// put your statements here</span>
+}</pre>
+<p>The items before the <code>in</code> keyword — <code>placemarks</code> and <code>error</code> — are the parameters for this closure and they work just like parameters for a method or a function.
+</p>
+<p>When the geocoder finds a result for the location object that you gave it, it invokes the closure and executes the statements within. The <code>placemarks</code> parameter will contain an array of <code>CLPlacemark</code> objects that describe the address information, and the <code>error</code> variable contains an error message in case something went wrong.
+</p>
+<p>Closures are basically the same principle as using delegate methods, except you’re not putting the code into a separate method but in a closure.
+</p>
+<p>It’s OK if closures have got you scratching your head right now. You’ll see them used many more times in the upcoming chapters.
+</p>
+<p>➤ Run the app and pick a location. As soon as the first location is found, you can see in the Console that the reverse geocoder has kicked in (give it a second or two):
+</p><pre class="code-block">didUpdateLocations &lt;+37.33233141,-122.03121860&gt; +/- 379.75m (speed -1.00 mps / course -1.00) @ 7/1/17, 10:31:15 AM India Standard Time
+*** Going to geocode
+*** Found places: [Apple Inc., Apple Inc., 1 Infinite Loop, Cupertino, CA  95014, United States @ &lt;+37.33233141,-122.03121860&gt; +/- 100.00m, region CLCircularRegion (identifier:&apos;&lt;+37.33233140,-122.03121860&gt; radius 141.73&apos;, center:&lt;+37.33233140,-122.03121860&gt;, radius:141.73m)]</pre>
+<p>If you choose the Apple location, you’ll see that some location readings are duplicates; the geocoder only does the first of those. Only when the accuracy of the reading improves does the app reverse geocode again. Nice!
+</p>
+<div class="note">
+<p><em>Note:</em> Several readers have reported that if you are in China and are trying to reverse geocode an address that is outside of China, you may get an error and <code>placemarks</code> will be <code>nil</code> — try a location inside China instead.
+</p></div>
+
+<h3 class="segment-chapter">Handle reverse geocoding errors</h3>
+
+<p>➤ Replace the contents of the geocoding closure with the following:
+</p><pre class="code-block"><span class="hljs-keyword">self</span>.lastGeocodingError = error
+<span class="hljs-keyword">if</span> error == <span class="hljs-literal">nil</span>, <span class="hljs-keyword">let</span> p = placemarks, !p.isEmpty {
+  <span class="hljs-keyword">self</span>.placemark = p.last!
+} <span class="hljs-keyword">else</span> {
+  <span class="hljs-keyword">self</span>.placemark = <span class="hljs-literal">nil</span>
+}
+
+<span class="hljs-keyword">self</span>.performingReverseGeocoding = <span class="hljs-literal">false</span>
+<span class="hljs-keyword">self</span>.updateLabels()</pre>
+<p>Just as with the location manager, you store the error object so you can refer to it later — you do use a different instance variable this time, <code>lastGeocodingError</code>.
+</p>
+<p>The next line does something you haven’t seen before:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> error == <span class="hljs-literal">nil</span>, <span class="hljs-keyword">let</span> p = placemarks, !p.isEmpty {</pre>
+<p>You know that <code>if let</code> is used to unwrap optionals. Here, <code>placemarks</code> is an optional, so it needs be unwrapped before you can use it or you risk crashing the app when <code>placemarks</code> is <code>nil</code>. The unwrapped <code>placemarks</code> array gets the temporary name <code>p</code>.
+</p>
+<p>The <code>!p.isEmpty</code> bit says that we should only enter this <code>if</code> statement if the array of placemark objects is not empty.
+</p>
+<p>You should read this line as:
+</p><pre class="code-block">if there’s no error and the unwrapped placemarks array is not empty {</pre>
+<p>Of course, Swift doesn’t speak English, so you have to express this in terms that Swift understands.
+</p>
+<p>You could also have written this as three different, nested <code>if</code> statements:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> error == <span class="hljs-literal">nil</span> {
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> p = placemarks {
+    <span class="hljs-keyword">if</span> !p.isEmpty {</pre>
+<p>But it’s just as easy to combine all of these conditions into a single <code>if</code>.
+</p>
+<p>You’re doing a bit of <em>defensive programming</em> here: you specifically check first whether the array has any objects in it. If there is no error, then it should have at least one object, but you’re not going to trust that it always will. Good developers are paranoid!
+</p>
+<p>If all three conditions are met — there is no error, the <code>placemarks</code> array is not <code>nil</code>, and there is at least one <code>CLPlacemark</code> inside this array — then you take the last of those <code>CLPlacemark</code> objects:
+</p><pre class="code-block">  <span class="hljs-keyword">self</span>.placemark = p.last!</pre>
+<p>The <code>last</code> property refers to the last item from an array. It’s an optional because there is no last item if the array is empty. As an alternative, you can also write <code>placemarks[placemarks.count - 1]</code> but that’s not as tidy.
+</p>
+<p>Usually there will be only one <code>CLPlacemark</code> object in the array, but there is the odd situation where one location coordinate may refer to more than one address. This app can only handle one address at a time. So, you’ll just pick the last one, which usually is the only one.
+</p>
+<p>If there was an error during geocoding, you set <code>self.placemark</code> to <code>nil</code>. Note that you did not do that for the locations. If there was an error there, you kept the previous location object because it may actually be correct (or good enough) and it’s better than nothing. But for the address that makes less sense.
+</p>
+<p>You don’t want to show an old address, only the address that corresponds to the current location or no address at all.
+</p>
+<p>In mobile development, nothing is guaranteed. You may get coordinates back or you may not, and if you do, they may not be very accurate. The reverse geocoding will probably succeed if there is some type of network connection available, but you also need to be prepared to handle the case where there is none.
+</p>
+<p>And remember, not all GPS coordinates correspond to actual street addresses — there is no corner of 52nd and Broadway in the Sahara desert.
+</p>
+<div class="note">
+<p><em>Note:</em> Did you notice that inside the <code>completionHandler</code> closure you used <code>self</code> to refer to the view controller’s properties and methods? This is a Swift requirement.
+</p>
+<p>Closures are said to <i>capture</i> all the variables they use and <code>self</code> is one of them. You can forget about that immediately, if you like; just know that Swift requires that all captured variables are explicitly mentioned.
+</p>
+<p>As you’ve seen, outside a closure, you can use <code>self</code> to refer to properties and methods, but it’s not a requirement. However, you do get a compiler error if you leave out <code>self</code> inside a closure.  So you don’t have much choice there.
+</p></div>
+
+<h3 class="segment-chapter">Display the address</h3>
+
+<p>Let’s show the address to the user.
+</p>
+<p>➤ Change <code>updateLabels()</code> to:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">updateLabels</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> location = location {
+    . . .
+    <span class="hljs-comment">// Add this block</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> placemark = placemark {
+      addressLabel.text = string(from: placemark)
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> performingReverseGeocoding {
+      addressLabel.text = <span class="hljs-string">"Searching for Address..."</span>
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> lastGeocodingError != <span class="hljs-literal">nil</span> {
+      addressLabel.text = <span class="hljs-string">"Error Finding Address"</span>
+    } <span class="hljs-keyword">else</span> {
+      addressLabel.text = <span class="hljs-string">"No Address Found"</span>
+    }
+    <span class="hljs-comment">// End new code</span>
+  } <span class="hljs-keyword">else</span> {
+    . . .
+  }
+}</pre>
+<p>Because you only do the address lookup once the app has a valid location, you just have to change the code inside the first <code>if</code> branch. If you’ve found an address, you show that to the user, otherwise you show a status message.
+</p>
+<p>The code to format the <code>CLPlacemark</code> object into a string is placed in its own method, just to keep the code readable.
+</p>
+<p>➤ Add the <code>string(from)</code> method:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">string</span><span class="hljs-params">(from placemark: CLPlacemark)</span></span> -&gt; <span class="hljs-type">String</span> {
+  <span class="hljs-comment">// 1</span>
+  <span class="hljs-keyword">var</span> line1 = <span class="hljs-string">""</span>
+
+  <span class="hljs-comment">// 2</span>
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> s = placemark.subThoroughfare {
+    line1 += s + <span class="hljs-string">" "</span>
+  }
+
+  <span class="hljs-comment">// 3</span>
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> s = placemark.thoroughfare {
+    line1 += s
+  }
+
+  <span class="hljs-comment">// 4</span>
+  <span class="hljs-keyword">var</span> line2 = <span class="hljs-string">""</span>
+
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> s = placemark.locality {
+    line2 += s + <span class="hljs-string">" "</span>
+  }
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> s = placemark.administrativeArea {
+    line2 += s + <span class="hljs-string">" "</span>
+  }
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> s = placemark.postalCode {
+    line2 += s
+  }
+  
+  <span class="hljs-comment">// 5</span>
+  <span class="hljs-keyword">return</span> line1 + <span class="hljs-string">"\n"</span> + line2
+}</pre>
+<p>Let’s look at this in detail:
+</p>
+<ol>
+<li>
+<p>The address will be two lines of text — create a new string variable for the first line of text.
+</p></li>
+
+<li>
+<p>If the placemark has a <code>subThoroughfare</code>, add it to the string. This is an optional property, so you unwrap it with <code>if let</code> first. Just so you know, <code>subThoroughfare</code> is a fancy name for house number.
+</p></li>
+
+<li>
+<p>Adding the <code>thoroughfare</code> (or street name) is done similarly. Note that you put a space between it and <code>subThoroughfare</code> so they don’t get glued together.
+</p></li>
+
+<li>
+<p>The same logic goes for the second line of text. This adds the locality (the city), administrative area (the state or province), and postal code (or zip code), with spaces between them where appropriate.
+</p></li>
+
+<li>
+<p>Finally, the two lines are concatenated (added together) with a newline character in between. The <code>\n</code> adds the line break (or newline) to the string.
+</p></li>
+</ol>
+
+<p>➤ In <code>getLocation()</code>, clear out the <code>placemark</code> and <code>lastGeocodingError</code> variables to start with a clean slate. Put this just above the call to <code>startLocationManager()</code>:
+</p><pre class="code-block">placemark = <span class="hljs-literal">nil</span>
+lastGeocodingError = <span class="hljs-literal">nil</span></pre>
+<p>➤ Run the app again. Seconds after a location is found, the address label should be filled in as well.
+</p><div class="image-30"><img src="graphics/img382.png"  alt="" title="Reverse geocoding finds the address for the GPS coordinates" /></div>
+<p>It’s fairly common that street numbers or other details are missing from the address. The <code>CLPlacemark</code> object may contain incomplete information, which is why its properties are all optionals. Geocoding is not an exact science!
+</p>
+<div class="note">
+<p><em>Exercise.</em> If you pick the City Bicycle Ride or City Run locations from the Simulator’s Debug menu, you should see in the Console that the app jumps through a whole bunch of different coordinates — it simulates someone moving from one place to another. However, the coordinates on the screen and the address label don’t change nearly as often. Why is that?
+</p></div>
+
+<p>Answer: The logic for <i>MyLocations</i> was designed to find the most accurate set of coordinates for a stationary position. You only update the <code>location</code> variable when a new set of coordinates comes in that is more accurate than previous readings. Any new readings with a higher — or the same — <code>horizontalAccuracy</code> value are simply ignored, regardless of what the actual coordinates are.
+</p>
+<p>With the City Bicycle Ride and City Run options, the app doesn’t receive the same coordinates with increasing accuracy but a series of completely different coordinates. That means this app doesn’t work very well when you’re on the move — unless you press Stop and try again —, but that’s also not what it was intended for.
+</p>
+<div class="note">
+<p><em>Note:</em> If you’re playing with different locations in the Simulator or from the Xcode debugger menu and you get stuck, then the quickest way to get unstuck is to reset the Simulator. Sometimes it just doesn’t want to move to a new location even if you tell it to, and then you have to show it who’s the boss!
+</p></div>
+
+<h2 class="segment-chapter">Testing on device</h2>
+
+<p>When I first wrote this code, I had only tested it on the Simulator. It worked fine there. Then, I put it on my iPod touch and guess what? Not so good.
+</p>
+<p>The problem with the iPod touch is that it doesn’t have GPS, so it relies only on Wi-Fi to determine the location. But Wi-Fi might not be able to give you accuracy up to ten meters; I got +/- 100 meters at best.
+</p>
+<p>Right now, you only stop the location updates when the accuracy of the reading falls within the <code>desiredAccuracy</code> setting — something that will never actually happen on my iPod touch.
+</p>
+<p>That goes to show that you can’t always rely on the Simulator to test your apps. You need to put them on your device and test them in the wild, especially when using device-dependent functionality like location-based APIs. If you have more than one device, then test on all of them!
+</p>
+<p>In order to deal with this situation, you will improve upon the <code>didUpdateLocations</code> delegate method.
+</p>
+<h3 class="segment-chapter">First fix</h3>
+
+<p>➤ Change <code>locationManager(_:didUpdateLocations:)</code> to:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">locationManager</span><span class="hljs-params">(<span class="hljs-number">_</span> manager: CLLocationManager, 
+  didUpdateLocations locations: [CLLocation])</span></span> {
+  . . .
+  
+  <span class="hljs-keyword">if</span> newLocation.horizontalAccuracy &lt; <span class="hljs-number">0</span> {
+    <span class="hljs-keyword">return</span>
+  }
+
+  <span class="hljs-comment">// New section #1</span>
+  <span class="hljs-keyword">var</span> <span class="hljs-built_in">distance</span> = <span class="hljs-type">CLLocationDistance</span>(
+      <span class="hljs-type">Double</span>.greatestFiniteMagnitude)
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> location = location {
+    <span class="hljs-built_in">distance</span> = newLocation.<span class="hljs-built_in">distance</span>(from: location)
+  }
+  <span class="hljs-comment">// End of new section #1</span>
+  <span class="hljs-keyword">if</span> location == <span class="hljs-literal">nil</span> || location!.horizontalAccuracy &gt; 
+                        newLocation.horizontalAccuracy {
+    . . .
+    <span class="hljs-keyword">if</span> newLocation.horizontalAccuracy &lt;= 
+       locationManager.desiredAccuracy {
+      . . .
+      <span class="hljs-comment">// New section #2</span>
+      <span class="hljs-keyword">if</span> <span class="hljs-built_in">distance</span> &gt; <span class="hljs-number">0</span> {
+        performingReverseGeocoding = <span class="hljs-literal">false</span>
+      }
+      <span class="hljs-comment">// End of new section #2</span>
+    }
+    updateLabels()
+    <span class="hljs-keyword">if</span> !performingReverseGeocoding {
+      . . .
+    }
+    
+  <span class="hljs-comment">// New section #3</span>
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> <span class="hljs-built_in">distance</span> &lt; <span class="hljs-number">1</span> {
+    <span class="hljs-keyword">let</span> timeInterval = newLocation.timestamp.timeIntervalSince(
+                                            location!.timestamp)
+    <span class="hljs-keyword">if</span> timeInterval &gt; <span class="hljs-number">10</span> {
+      <span class="hljs-built_in">print</span>(<span class="hljs-string">"*** Force done!"</span>)
+      stopLocationManager()
+      updateLabels()
+    }
+    <span class="hljs-comment">// End of new sectiton #3</span>
+  }
+}</pre>
+<p>It’s a pretty long method now, but only the three highlighted sections were added. This is the first one:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> <span class="hljs-built_in">distance</span> = <span class="hljs-type">CLLocationDistance</span>(
+    <span class="hljs-type">Double</span>.greatestFiniteMagnitude)
+<span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> location = location {
+  <span class="hljs-built_in">distance</span> = newLocation.<span class="hljs-built_in">distance</span>(from: location)
+}</pre>
+<p>This calculates the distance between the new reading and the previous reading, if there was one. We can use this <code>distance</code> to measure if our location updates are still improving.
+</p>
+<p>If there was no previous reading, then the distance is <code>Double.greatestFiniteMagnitude</code>. That is a built-in constant that represents the maximum value that a <code>Double</code> value can have. This little trick gives it a gigantic distance if this is the very first reading. You’re doing that so any of the following calculations still work even if you weren’t able to calculate a true distance yet.
+</p>
+<p>You also add an <code>if</code> statement later where you stop the location manager:
+</p><pre class="code-block"><span class="hljs-keyword">if</span> <span class="hljs-built_in">distance</span> &gt; <span class="hljs-number">0</span> {
+  performingReverseGeocoding = <span class="hljs-literal">false</span>
+}</pre>
+<p>This forces a reverse geocoding for the final location, even if the app is already currently performing another geocoding request.
+</p>
+<p>You absolutely want the address for that final location, as that is the most accurate location you’ve found. But if some previous location was still being reverse geocoded, this step would normally be skipped.
+</p>
+<p>Simply by setting <code>performingReverseGeocoding</code> to <code>false</code>, you always force the geocoding to be done for this final coordinate.
+</p>
+<p>(Of course, if <code>distance</code> is 0, then this location is the same as the location from a previous reading, and you don’t need to reverse geocode it anymore.)
+</p>
+<p>The real improvement is found in the final new section:
+</p><pre class="code-block">} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> <span class="hljs-built_in">distance</span> &lt; <span class="hljs-number">1</span> {
+  <span class="hljs-keyword">let</span> timeInterval = newLocation.timestamp.timeIntervalSince(
+                                          location!.timestamp)
+  <span class="hljs-keyword">if</span> timeInterval &gt; <span class="hljs-number">10</span> {
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">"*** Force done!"</span>)
+    stopLocationManager()
+    updateLabels()
+  }
+}</pre>
+<p>If the coordinate from this reading is not significantly different from the previous reading and it has been more than 10 seconds since you’ve received that original reading, then it’s a good point to hang up your hat and stop.
+</p>
+<p>It’s safe to assume you’re not going to get a better coordinate than this and you can stop fetching the location.
+</p>
+<p>This is the improvement that was necessary to make my iPod touch stop scanning after some time. It wouldn’t give me a location with better accuracy than +/- 100 meters, but it kept repeating the same one over and over.
+</p>
+<p>I picked a time limit of 10 seconds because that seemed to give good results.
+</p>
+<p>Note that you don’t just say:
+</p><pre class="code-block">} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> <span class="hljs-built_in">distance</span> == <span class="hljs-number">0</span> {</pre>
+<p>The distance between subsequent readings is never exactly 0. It may be something like 0.0017632. Rather than checking for equals to 0, it’s better to check for less than a certain distance, in this case one meter.
+</p>
+<p>(By the way, did you notice how you used <code>location!</code> to unwrap it before accessing the timestamp property? When the app gt inside this <code>else-if</code>, the value of <code>location</code> is guaranteed to be non-<code>nil</code>, so its safe to force unwrap the optional.)
+</p>
+<p>➤ Run the app and test that everything still works. It may be hard to recreate this situation on the Simulator, but try it on your device inside the house and see what output you see in the Console.
+</p>
+<p>There is another improvement you can make to increase the robustness of this logic, and that is to set a time-out on the whole thing. You can tell iOS to perform a method one minute from now. If by that time the app hasn’t found a location yet, you stop the location manager and show an error message.
+</p>
+<h3 class="segment-chapter">Second fix</h3>
+
+<p>➤ First add a new instance variable:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> timer: <span class="hljs-type">Timer</span>?</pre>
+<p>➤ Then change <code>startLocationManager()</code> to:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">startLocationManager</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">if</span> <span class="hljs-type">CLLocationManager</span>.locationServicesEnabled() {
+    . . .
+    timer = <span class="hljs-type">Timer</span>.scheduledTimer(timeInterval: <span class="hljs-number">60</span>, target: <span class="hljs-keyword">self</span>, 
+                 selector: #selector(didTimeOut), userInfo: <span class="hljs-literal">nil</span>, 
+                  repeats: <span class="hljs-literal">false</span>)
+  }
+}</pre>
+<p>The new lines set up a timer object that sends a <code>didTimeOut</code> message to <code>self</code> after 60 seconds; <code>didTimeOut</code> is the name of a method.
+</p>
+<p>A <i>selector</i> is the term that Objective-C uses to describe the name of a method, and the <code>#selector()</code> syntax is how you create a selector in Swift.
+</p>
+<p>➤ Change <code>stopLocationManager()</code> to:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">stopLocationManager</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">if</span> updatingLocation {
+    . . .
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> timer = timer {
+      timer.invalidate()
+    }
+  }
+}</pre>
+<p>You have to cancel the timer in case the location manager is stopped before the time-out fires. This happens when an accurate enough location is found within one minute after starting, or when the user taps the Stop button.
+</p>
+<p>➤ Finally, add the <code>didTimeOut()</code> method:
+</p><pre class="code-block"><span class="hljs-meta">@objc</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">didTimeOut</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-built_in">print</span>(<span class="hljs-string">"*** Time out"</span>)
+  <span class="hljs-keyword">if</span> location == <span class="hljs-literal">nil</span> {
+    stopLocationManager()
+    lastLocationError = <span class="hljs-type">NSError</span>(
+                        domain: <span class="hljs-string">"MyLocationsErrorDomain"</span>, 
+                          code: <span class="hljs-number">1</span>, userInfo: <span class="hljs-literal">nil</span>)
+    updateLabels()
+  }
+}</pre>
+<p>There&apos;s something new about this method — there&apos;s a new <code>@objc</code> attribute before <code>func</code> — whatever could it be?
+</p>
+<p>Remember how how <code>#selector</code> is an Objective-C concept? (How could you forget, it was just a few paragraphs ago, right?) So, when you use <code>#selector</code> to identify a method to call, that method has to be accessible not only from Swift, but from Objective-C as well. The <code>@objc</code> attribute allows you to identify a method (or class, or property, or even enumeration) as being accessible from Objective-C.
+</p>
+<p>So, that&apos;s what you&apos;ve done for <code>didTimeOut</code> — declared it as being accessible from Objective-C.
+</p>
+<p><code>didTimeOut()</code> is always called after one minute, whether you’ve obtained a valid location or not — unless <code>stopLocationManager()</code> cancels the timer first.
+</p>
+<p>If after that one minute there still is no valid location, you stop the location manager, create your own error code, and update the screen.
+</p>
+<p>By creating your own <code>NSError</code> object and putting it into the <code>lastLocationError</code> instance variable, you don’t have to change any of the logic in <code>updateLabels()</code>.
+</p>
+<p>However, you do have to make sure that the error’s domain is not <code>kCLErrorDomain</code> because this error object does not come from Core Location but from within your own app.
+</p>
+<p>An error domain is simply a string, so <code>MyLocationsErrorDomain</code> will do. For the code I picked 1. The value of the code doesn’t really matter at this point because you only have one custom error, but you can imagine that when an app becomes bigger, you might need multiple error codes.
+</p>
+<p>Note that you don’t always have to use an <code>NSError</code> object; there are other ways to let the rest of your code know that an error occurred. In this case <code>updateLabels()</code> was already using an <code>NSError</code> anyway, so having your own error object just made sense.
+</p>
+<p>➤ Run the app. Set the Simulator location to None and press <em>Get My Location</em>.
+</p>
+<p>After a minute, the debug area should say “*** Time out” and the Stop button reverts to Get My Location. There should also be an error message on the screen:
+</p><div class="image-30"><img src="graphics/img383.png"  alt="" title="The error after a time out" /></div>
+<p>Just getting a simple location from Core Location and finding the corresponding street address turned out to be a lot more hassle than it looked. There are many different situations to handle. Nothing is guaranteed, and everything can go wrong — iOS development sometimes requires nerves of steel!
+</p>
+<p>To recap, the app either:
+</p>
+<ul>
+<li>
+<p>Finds a location with the desired accuracy,
+</p></li>
+
+<li>
+<p>Finds a location that is not as accurate as you’d like and you don’t get any more accurate readings,
+</p></li>
+
+<li>
+<p>Doesn’t find a location at all,
+</p></li>
+
+<li>
+<p>Or, takes too long finding a location.
+</p></li>
+</ul>
+
+<p>The code now handles all these situations, but I’m sure it’s not perfect yet. No doubt the logic could be tweaked more, but it will do for the purposes of this book.
+</p>
+<p>I hope it’s clear that if you’re releasing a location-based app, you need to do a lot of field testing!
+</p>
+<h4 class="segment-chapter">Required device capabilities</h4>
+
+<p>The <em>Info.plist</em> file has a key, <em>Required device capabilities</em>, that lists the hardware that your app needs in order to run. This is the key that the App Store uses to determine whether a user can install your app on their device.
+</p>
+<p>The default value is <em>armv7</em>, which is the CPU architecture of the iPhone 3GS and later models. If your app requires additional features, such as Core Location to retrieve the user’s location, you should list them here.
+</p>
+<p>➤ Add a new item with the value <em>location-services</em> to <em>Info.plist</em>:
+</p><div class="image-90"><img src="graphics/img384.png"  alt="" title="Adding location-services to Info.plist" /></div>
+<p>You could also add the item <em>gps</em>, in which case the app requires a GPS receiver. But if you did, users won&apos;t be able to install the app on an iPod touch or on certain iPads.
+</p>
+<p>For the full list of possible device capabilities, see the <i>App Programming Guide for iOS</i> on the Apple Developer website.
+</p>
+<p><em>P.S.</em> You can now take the <code>print()</code> statements out of the app (or simply comment them out). Personally, I like to keep them in there as they’re handy for debugging. In an app that you plan to upload to the App Store, you’ll definitely want to remove the <code>print()</code> statements when development&apos;s complete.
+</p>
+<h4 class="segment-chapter">Attributes and properties</h4>
+
+<p>Most of the attributes in Interface Builder’s inspectors correspond directly to properties on the selected object. For example, a <code>UILabel</code> has the following attributes:
+</p><div class="image-30"><img src="graphics/img385.png"  alt="" title="" /></div>
+<p>These are directly related to the following properties:
+</p><div class="image-45"><img src="graphics/img386.png"  alt="" title="" /></div>
+<p>And so on… As you can see, the names may not always be exactly the same (“Lines” and <code>numberOfLines</code>) but you can easily figure out which property goes with which attribute.
+</p>
+<p>You can find these properties in the documentation for <code>UILabel</code>. From the Xcode <em>Help</em> menu, select <em>Developer Documentation</em>. Type “uilabel” into the search field to bring up the class reference for <code>UILabel</code>:
+</p><div class="image-70"><img src="graphics/img387.png"  alt="" title="" /></div>
+<p>The documentation for <code>UILabel</code> does not list properties for all of the attributes from the inspectors. For example, in the Attributes inspector there is a section named “View”. The attributes in this section come from <code>UIView</code>, which is the base class of <code>UILabel</code>. So if you can’t find a property in the <code>UILabel</code> class, you may need to check the documentation under the “Inherits From” section (which is under the <em>Relationships</em> section) of the documentation.
+</p>
+<p>You can find the project files for this chapter under <em>23 – Use Location Data</em> in the Source Code folder.
+</p></body></html>

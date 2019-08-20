@@ -1,0 +1,724 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 25: The Tag Location Screen</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 25: The Tag Location Screen</h1>
+
+<p>There is a big button on the main screen of the app that says <em>Tag Location</em>. It only becomes active when GPS coordinates have been captured, and you use it to add a description and a photo to that location.
+</p>
+<p>In this chapter, you’ll build the Tag Location screen, but you won’t save the location information anywhere yet, that’s a topic for another chapter :]
+</p>
+<p>This chapter covers the following:
+</p>
+<ul>
+<li>
+<p><em>The Screen:</em> What the finished screen looks like and what it will do.
+</p></li>
+
+<li>
+<p><em>The new view controller:</em> How to add the new view controller for the screen and set up the navigation flow.
+</p></li>
+
+<li>
+<p><em>Make the cells:</em> Create the table view cells for displaying information.
+</p></li>
+
+<li>
+<p><em>Display location info:</em> Display location info on screen via the new view.
+</p></li>
+
+<li>
+<p><em>The category picker:</em> Creating a new screen to allow the user to pick a category for the new location.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">The screen</h2>
+
+<p>The Tag Location screen is a regular table view controller with static cells. So, this is going to be very similar to what you did a few times already in <i>Checklists</i>.
+</p>
+<p>The finished Tag Location screen will look like this:
+</p><div class="image-25"><img src="graphics/img393.png"  alt="" title="The Tag Location screen" /></div>
+<p>The description cell (the empty area above the Category cell) at the top contains a <code>UITextView</code> for text. You’ve already used the <code>UITextField</code> control, which is for editing a single line of text; the <code>UITextView</code> is very similar, but for editing multiple lines.
+</p>
+<p>Tapping the Category cell opens a new screen that lets you pick a category from a list. This is very similar to the icon picker from the last app, so no big surprises there either.
+</p>
+<p>The Add Photo cell will let you pick a photo from your device’s photo library or take a new photo using the camera. You’ll skip this feature for now and build that later on. Let’s not get ahead of ourselves and try too much at once!
+</p>
+<p>The other cells are read-only and contain the latitude, longitude, the address information that you just captured, and the current date so you’ll know when it was that you tagged this location.
+</p>
+<div class="note">
+<p><em>Exercise.</em> Try to implement this screen by yourself using the description I just gave you. You don’t have to make the Category and Add Photo buttons work yet. Yikes, that seems like a big job! It sure is, but you should be able to pull this off. This screen doesn’t do anything you haven’t done previously. So if you feel brave, go ahead!
+</p></div>
+
+<h2 class="segment-chapter">The new view controller</h2>
+
+<p>➤ Add a new file to the project using the <em>Swift File</em> template. Name the file <em>LocationDetailsViewController</em>.
+</p>
+<p>You know what’s next: create outlets and connect them to the controls on the storyboard. In the interest of saving time, I’ll just give you the code that you’re going to end up with.
+</p>
+<p>➤ Replace the contents of <em>LocationDetailsViewController.swift</em> with the following:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> UIKit
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LocationDetailsViewController</span>: <span class="hljs-title">UITableViewController</span> </span>{
+  <span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> descriptionTextView: <span class="hljs-type">UITextView</span>!
+  <span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> categoryLabel: <span class="hljs-type">UILabel</span>!
+  <span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> latitudeLabel: <span class="hljs-type">UILabel</span>!
+  <span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> longitudeLabel: <span class="hljs-type">UILabel</span>!
+  <span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> addressLabel: <span class="hljs-type">UILabel</span>!
+  <span class="hljs-meta">@IBOutlet</span> <span class="hljs-keyword">weak</span> <span class="hljs-keyword">var</span> dateLabel: <span class="hljs-type">UILabel</span>!
+
+  <span class="hljs-comment">// MARK:- Actions</span>
+  <span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">done</span><span class="hljs-params">()</span></span> {
+    navigationController?.popViewController(animated: <span class="hljs-literal">true</span>)
+  }
+
+  <span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">cancel</span><span class="hljs-params">()</span></span> {
+    navigationController?.popViewController(animated: <span class="hljs-literal">true</span>)
+  }
+}</pre>
+<p>Nothing special here, just a bunch of outlet properties and two action methods that both go back to the previous view in the navigation stack.
+</p>
+<p>➤ In the storyboard, select the Current Location View Controller (the Tag Scene), and choose <em>Editor → Embed In → Navigation Controller</em> from Xcode’s menu bar to put it inside a new navigation controller. (This sets up all the views on that particular tab of the tab view controller to be part of a navigation stack.)
+</p>
+<p>➤ Drag a new <em>Table View Controller</em> on to the canvas and put it next to the Tag Scene.
+</p>
+<p>➤ In the <em>Identity inspector</em>, change the <em>Class</em> attribute of the table view controller to <em>LocationDetailsViewController</em> to link it with the source code file you just created.
+</p>
+<p>➤ <em>Control-drag</em> from the <em>Tag Location</em> button on the Tag Scene to the new view controller and create a <em>Show</em> segue. Give the segue the identifier <em>TagLocation</em>.
+</p>
+<p>➤ Add a Navigation Item to the Location Details View Controller, and change the title to <em>Tag Location</em>.
+</p>
+<p>➤ Switch the table content to <em>Static Cells</em> and its style to <em>Grouped</em>.
+</p>
+<p>The storyboard should now looks like this:
+</p><div class="image-80"><img src="graphics/img394.png"  alt="" title="The Tag Location screen in the storyboard" /></div>
+<h3 class="segment-chapter">Navigation bar hiding</h3>
+
+<p>You&apos;ll notice that the Tag Scene (the Current Location View Controller) now has an empty navigation bar area. This is because it is now embedded in a Navigation Controller. You can either set the title (and/or make it a large title), or, you can hide the navigation bar altogether for the first view.
+</p>
+<p>For this particular app design, I think having no titles would look the best. So, you now have to hide the navigation bar at runtime for only the Tag Scene. How do you do it?
+</p>
+<p>Simple enough. It&apos;s just a code change :]
+</p>
+<p>➤ Switch to <em>CurrentLocationViewController.swift</em> and add a new <code>viewWillAppear</code> implementation:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewWillAppear</span><span class="hljs-params">(<span class="hljs-number">_</span> animated: Bool)</span></span> {
+  <span class="hljs-keyword">super</span>.viewWillAppear(animated)
+  navigationController?.isNavigationBarHidden = <span class="hljs-literal">true</span>
+}</pre>
+<p>All you do is ask the navigation controller to hide the navigation bar when this particular view is about to appear. Simple as that :]
+</p>
+<p>➤ Run the app and make sure the Tag Location button works.
+</p>
+<p>Do you notice an issue when you switch to the Location Details View Controller via the Tag Location button?
+</p>
+<p>The navigation bar on the new screen is hidden as well! Can you guess why this is?
+</p>
+<p>Yep, it&apos;s because you hid the navigation controller&apos;s navigation bar in the previous screen :] That setting is not a per-screen setting. It affects the navigation bar for the navigation controller from that point onwards for all views dispalyed by the navigation controller.
+</p>
+<p>So how do you fix it? Simple enough, ask the navigation controller to start showing the navigation bar as soon as you exit the view where you hide the navigation bar. And there is a handy <code>viewWillDisappear</code> method that you can override in <code>UIViewController</code> that&apos;s just the place for this kind of code.
+</p>
+<p>➤ Add the following method to <em>CurrentLocationViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewWillDisappear</span><span class="hljs-params">(<span class="hljs-number">_</span> animated: Bool)</span></span> {
+  <span class="hljs-keyword">super</span>.viewWillAppear(animated)
+  navigationController?.isNavigationBarHidden = <span class="hljs-literal">false</span>
+}</pre>
+<p>You simply reverse what you did previously in <code>viewWillAppear</code> by asking the navigation controller to show the navigation bar each time the current view is about to disappear from view — usually, either because another view appeared on top of it, or because this view was dismissed in order to go back to a previous view.
+</p>
+<p>➤ Run the app again and make sure that the navigation flow (and the showing/hiding of the navigation bar) works correctly.
+</p>
+<h3 class="segment-chapter">Add navigation buttons</h3>
+
+<p>Of course, the new screen won’t do anything useful yet. Let’s add some buttons.
+</p>
+<p>➤ Drag a <em>Bar Button Item</em> on to the left slot (where the Back button currently is) of the navigation bar. Make it a <em>Cancel</em> button and connect it to the <em>cancel</em> action. (If you’re using the Connections inspector, the thing that you’re supposed to connect is the Bar Button Item’s “selector”, under Sent Actions.)
+</p>
+<div class="note">
+<p><em>Note:</em> A navigation bar usually has left and right navigation item positions where you can drag either bar button items or views on to. If you are unable to drag an item on to the left/right positions of a navigation bar and the scene has a navigation bar, it is possible that the scene is missing a Navigation Item. Then, you have to first drag a Navigation Item on to the scene.
+</p></div>
+
+<p>➤ Also drag a <em>Bar Button Item</em> on to the right slot. Set both the <em>Style</em> and <em>System Item</em> attributes to <em>Done</em>, and connect it to the <em>done</em> action.
+</p>
+<p>➤ Run the app again and make sure you can close the Tag Location screen from both buttons after you’ve opened it.
+</p>
+<h2 class="segment-chapter">Make the cells</h2>
+
+<p>There will be three sections in this table view:
+</p>
+<ol>
+<li>
+<p>The description text view and the category cell. These can be changed by the user.
+</p></li>
+
+<li>
+<p>The photo. Initially this cell says Add Photo but once the user has picked a photo, you’ll display the actual photo inside the cell. It’s good to have that in a section of its own.
+</p></li>
+
+<li>
+<p>The latitude, longitude, address, and date rows. These are read-only information.
+</p></li>
+</ol>
+
+<p>➤ Open the storyboard. Select the table view and go to the <em>Attributes inspector</em>. Change the <em>Sections</em> field from 1 to 3.
+</p>
+<p>When you do this, the contents of the first section are automatically copied to the new sections. That isn’t quite what you want. So, you’ll have to remove some rows here and there. The first section will have 2 rows, the middle section will have just 1 row, and the last section will have 4 rows.
+</p>
+<p>➤ Select one cell in the first section and delete it. If it won’t delete, make sure you selected the whole Table View Cell and not its Content View. The Document Outline can be very useful here.
+</p>
+<p>➤ Delete two cells from the middle section.
+</p>
+<p>➤ Select the last Table View Section object — use the Document Outline for easy selection — and in the <em>Attributes inspector</em> set its <em>Rows</em> to 4.
+</p><div class="image-80"><img src="graphics/img395.png"  alt="" title="Adding a row to a table view section" /></div>
+<p>Alternatively, you can drag a new Table View Cell from the Object Library on to the section.
+</p>
+<h3 class="segment-chapter">The right detail cells</h3>
+
+<p>The second row from the first section, and the first, second and fourth rows in the last section will all use a standard cell style.
+</p>
+<p>➤ Select these cells — you can select multiple items via the Document Outline by Command-clicking — and set their <em>Style</em> attribute to <em>Right Detail</em>.
+</p><div class="image-25"><img src="graphics/img396.png"  alt="" title="The cells with the Right Detail style" /></div>
+<p>The labels in these standard cell styles are regular <code>UILabel</code>s. So, you can select them and change their properties.
+</p>
+<p>➤ Change the titles for the labels on the left, from top to bottom to: <em>Category</em>, <em>Latitude</em>, <em>Longitude</em>, and <em>Date</em>.
+</p>
+<p>(If Xcode moves the label when you type into it or cuts off the text, then change the cell style to Left Detail and back again to Right Detail. That seems to fix it.)
+</p>
+<p>➤ Drag a new <em>Label</em> into the cell in the middle section (the one that’s still empty). You cannot use a standard cell style for this cell. So, you’ll design it yourself. Name this label <em>Add Photo</em>. (Later on you’ll also add an image view to this cell.)
+</p>
+<p>➤ Make sure the font of the label is <em>System</em>, size <em>17</em>, so it’s the same size as the labels from the Right Detail cell style. If necessary, use <em>Editor → Size to Fit Content</em> to resize the label to its optimal size.
+</p>
+<p>➤ Add a <em>left</em> Auto Layout Constraint — with a value of <em>0</em>, and have <em>Constrain to margins</em> checked —  and also add a constraint to center <em>Vertically in Container</em>.
+</p>
+<p>This will add some of the Auto Layout constraints you need to position the label, but not all of them. You will notice that you have a warning still at this point — this is due to the label not having a right constraint. Since we&apos;ll be adding an image to this cell later and that would require changes to the right constraint, we will live with the warning for the time being ...
+</p>
+<p>The table should now look like this:
+</p><div class="image-30"><img src="graphics/img397.png"  alt="" title="The labels in the Tag Location screen" /></div>
+<div class="note">
+<p><em>Note:</em> You’re going to make a bunch of changes that are the same for each cell. For some of these, it is easier if you select all the cells at once and then change the setting. That will save you some time.
+</p>
+<p>Unfortunately, some menu items and options are grayed out when you have a multiple selection, so you’ll still have to change some of the settings for each cell individually.
+</p></div>
+
+<h3 class="segment-chapter">Tappable cells</h3>
+
+<p>Only the Category and Add Photo cells should handle taps, so you have to set the cell selection color to None on the other cells.
+</p>
+<p>➤ Select all the cells except Category and Add Photo. In the <em>Attributes inspector</em>, set <em>Selection</em> to <em>None</em>.
+</p>
+<p>➤ Select the Category and Add Photo cells and set <em>Accessory</em> to <em>Disclosure Indicator</em>.
+</p><div class="image-30"><img src="graphics/img398.png"  alt="" title="Category and Add Photo now have a disclosure indicator" /></div>
+<h3 class="segment-chapter">The address cell</h3>
+
+<p>The empty cell in the last section is for the Address label. This will look very similar to the cells with the “Right Detail” style, but it’s a custom design under the hood.
+</p>
+<p>➤ Drag a new <em>Label</em> into that cell and set its title to <em>Address</em>.
+</p>
+<p>➤ Add a <em>left</em> Auto Layout constraint (of <em>0</em>) to the label and also center <em>Vertically in Container</em>.
+</p>
+<p>➤ Drag another <em>Label</em> into the same cell and title it <em>Detail</em>.
+</p>
+<p>➤ Add a <em>right</em> Auto Layout constraint (of <em>16</em>) to the label and again, center <em>Vertically in Container</em>.
+</p>
+<p>➤ Control-drag from the Address label to the Detail label and select <em>Horizontal Spacing</em> fom the pop up. This will set up  the current spacing between the two items as the default spacing. You don&apos;t want that since you want the Detail label to display an address and so it should have room to breath.
+</p>
+<p>➤ Select the Address label, switch to the Size inspector, selec the trailing space constraint and edit the constraint so that the <em>Constant</em> is <em>&gt;= 8</em> (instead of =). Note that you have to change the operator as well as the numeric constant value.
+</p>
+<p>➤ Make sure the font of both labels is <em>System</em>, size <em>17</em>.
+</p>
+<p>➤ Change the <em>Alignment</em> of the address detail label to right-aligned.
+</p>
+<p>The detail label is special. Most likely the street address will be too long to fit in that small space. So, you’ll configure this label to have a variable number of lines. This requires a bit of programming in the view controller to make it work, but you also have to set up this label’s attributes properly.
+</p>
+<p>➤ In the <em>Attributes inspector</em> for the address detail label, set <em>Lines</em> to <em>0</em> and <em>Line Break</em> to <em>Word Wrap</em>. When the number of lines is 0, the label will resize vertically to fit all the text that you put into it, which is exactly what you need.
+</p><div class="image-60"><img src="graphics/img399.png"  alt="" title="The address detail label can have multiple lines" /></div>
+<h3 class="segment-chapter">The description cell</h3>
+
+<p>So far, you’ve left the cell at the top empty. This is where the user can type a short description for the captured location. Currently, there is not much room to type anything. So first, you’ll make the cell larger.
+</p>
+<p>➤ Click on the top cell to select it, then go into the <em>Size inspector</em> and type <em>88</em> into the <em>Row Height</em> field.
+</p><div class="image-60"><img src="graphics/img400.png"  alt="" title="Changing the height of a row" /></div>
+<p>You can also drag the cell to this new height by the sizing handle at its bottom, but I prefer to simply type in the new value.
+</p>
+<p>The reason I chose 88 is that quite a few iOS screen elements have a size of 44 points. The navigation bar is 44 points high, regular table view cells are 44 points high, and so on. Choosing 44 or a multiple of it keeps the UI looking balanced.
+</p>
+<p>➤ Drag a <em>Text View</em> into the cell and add Auto Layout constraints for <em>left</em>: 16, <em>top</em>: 10,  <em>right</em>: 16, and <em>bottom</em>: 10, with <em>Constrain to margins</em> unchecked.
+</p>
+<p>➤ By default, Interface Builder puts a whole bunch of Latin placeholder text (Lorem ipsum dolor, etc) into the text view. Replace that text with <em>(Description goes here)</em>. The user will never see that text, but it’s handy to remind yourself what this view is for.
+</p>
+<p>➤ Set the font to <em>System</em>, size <em>17</em>.
+</p><div class="image-60"><img src="graphics/img401.png"  alt="" title="The attributes for the text view" /></div>
+<p>One more thing to do, and then the layout is complete. Because the top cell doesn’t have a label to describe what it does — and the text view will initially be empty as well — the user may not know what it is for.
+</p>
+<p>There really isn’t any room to add a label in front of the text view, as you’ve done for the other rows. So, let’s add a header to the section. Table view sections can have a header and footer, and these can either be text or complete views with controls of their own.
+</p>
+<p>➤ Select the top-most Table View Section and in its <em>Attributes inspector</em> type <em>Description</em> into the <em>Header</em> field:
+</p><div class="image-80"><img src="graphics/img402.png"  alt="" title="Giving the section a header" /></div>
+<p>That’s the layout done. The Tag Location screen should look like this in the storyboard:
+</p><div class="image-25"><img src="graphics/img403.png"  alt="" title="The finished design of the Tag Location screen" /></div>
+<p>Now you can actually make the screen do stuff.
+</p>
+<h3 class="segment-chapter">Connecting outlets</h3>
+
+<p>➤ Connect the Detail labels and the text view to their respective outlets. It should be obvious which one goes where. (Tip: Control-drag from the round yellow icon that represents the view controller to each of the labels. That’s the quickest way.)
+</p>
+<p>If you look at the <em>Connections inspector</em> for this view controller, you should see the following:
+</p><div class="image-25"><img src="graphics/img404.png"  alt="" title="The connections of the Location Details View Controller" /></div>
+<p>➤ Run the app to test whether everything works.
+</p>
+<p>Of course, the screen still says “Detail” in the labels instead of the location’s actual coordinates and address because you haven’t passed in any data yet. Time to fix that, you reckon?
+</p>
+<h2 class="segment-chapter">Display location info</h2>
+
+<p>➤ Add two new properties to <em>LocationDetailsViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> coordinate = <span class="hljs-type">CLLocationCoordinate2D</span>(latitude: <span class="hljs-number">0</span>, 
+                                       longitude: <span class="hljs-number">0</span>)
+<span class="hljs-keyword">var</span> placemark: <span class="hljs-type">CLPlacemark</span>?</pre>
+<p>You’ve seen the <code>CLPlacemark</code> class before. It contains the address information — street name, city name, and so on — that you’ve obtained through reverse geocoding. This is an optional because there is no guarantee that the geocoder finds an address for the given coordinates.
+</p>
+<p><code>CLLocationCoordinate2D</code> is new. This contains the latitude and longitude from the <code>CLLocation</code> object that you received from the location manager. You only need the latitude and longitude, so there’s no point in sending along the entire <code>CLLocation</code> object. The <code>coordinate</code> is not an optional, so you must give it an initial value.
+</p>
+<div class="note">
+<p><em>Exercise.</em> Why is coordinate not an optional?
+</p></div>
+
+<p>Answer: You cannot tap the Tag Location button unless GPS coordinates have been found. So, you’ll never open the <code>LocationDetailsViewController</code> without a valid set of coordinates.
+</p>
+<p>During the segue from the Current Location screen to the Tag Location screen you will fill in these two properties, and then the Tag Location screen can put these values into its labels.
+</p>
+<p>Xcode isn’t happy with the two lines you just added. It complains about “Use of unresolved identifier CLLocationCoordinate2D” and “CLPlacemark”. That means Xcode does not know anything about these types yet.
+</p>
+<p>That’s because they are part of the Core Location framework – and before you can use anything from a framework, you first need to import it.
+</p>
+<p>➤ Add the following import to the file:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> CoreLocation</pre>
+<p>Now Xcode’s error messages should disappear after a second or two. If they don’t, use <em>⌘+B</em> to build the app again.
+</p>
+<h4 class="segment-chapter">Structs</h4>
+
+<p>Unlike the objects you’ve seen before, <code>CLLocationCoordinate2D</code> is not a class, instead, it is a <em>struct</em> (short for structure).
+</p>
+<p>Structs are like classes, but a little less powerful. They can have properties and methods, but unlike classes, they cannot inherit from one another.
+</p>
+<p>The definition for <code>CLLocationCoordinate2D</code> is as follows:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">CLLocationCoordinate2D</span> </span>{
+  <span class="hljs-keyword">var</span> latitude: <span class="hljs-type">CLLocationDegrees</span>
+  <span class="hljs-keyword">var</span> longitude: <span class="hljs-type">CLLocationDegrees</span>
+}</pre>
+<p>This struct has two fields, <code>latitude</code> and <code>longitude</code>. Both these fields have the data type <code>CLLocationDegrees</code>, which is a synonym for <code>Double</code>:
+</p><pre class="code-block"><span class="hljs-keyword">typealias</span> <span class="hljs-type">CLLocationDegrees</span> = <span class="hljs-type">Double</span></pre>
+<p>As you probably remember from before, the <code>Double</code> type is one of the primitive types built into Swift. It’s like a <code>Float</code> but with higher precision.
+</p>
+<p>Don’t let these synonyms confuse you; <code>CLLocationCoordinate2D</code> is basically this:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">CLLocationCoordinate2D</span> </span>{
+  <span class="hljs-keyword">var</span> latitude: <span class="hljs-type">Double</span>
+  <span class="hljs-keyword">var</span> longitude: <span class="hljs-type">Double</span>
+}</pre>
+<p>The reason the designers of Core Location used <code>CLLocationDegrees</code> instead of <code>Double</code> is that “CL Location Degrees” tells you what this type is intended for: it stores the degrees of a location from the Core Location framework.
+</p>
+<p>Underneath the hood it’s a <code>Double</code>, but as a user of Core Location all you need to care about when you want to store latitude or longitude is that you can use the <code>CLLocationDegrees</code> type. The name of the type adds meaning.
+</p>
+<p>UIKit and other iOS frameworks also use structs regularly. Common examples are <code>CGPoint</code> and <code>CGRect</code>. In fact, <code>Array</code> and <code>Dictionary</code> are also structs.
+</p>
+<p>Structs are more lightweight than classes. If you just need to pass around a set of values it’s often easier to bundle them into a struct and pass that struct around, and that is exactly what Core Location does with coordinates.
+</p>
+<h3 class="segment-chapter">Pass data to the details view</h3>
+
+<p>Back to the new properties that you just added to <code>LocationDetailsViewController</code>. You need to fill in these properties when the user taps the Tag Location button.
+</p>
+<p>➤ Switch to <em>CurrentLocationViewController.swift</em> and add the following code:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Navigation</span>
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">prepare</span><span class="hljs-params">(<span class="hljs-keyword">for</span> segue: UIStoryboardSegue, 
+                         sender: Any?)</span></span> {
+  <span class="hljs-keyword">if</span> segue.identifier == <span class="hljs-string">"TagLocation"</span> {
+    <span class="hljs-keyword">let</span> controller = segue.destination 
+                     <span class="hljs-keyword">as</span>! <span class="hljs-type">LocationDetailsViewController</span>
+    controller.coordinate = location!.coordinate
+    controller.placemark = placemark
+  }
+}</pre>
+<p>You’ve seen how this works before. You use some casting magic to obtain the proper destination view controller and then set its properties. Now when the segue is performed, the coordinate and address are passed on to the Tag Location screen.
+</p>
+<p>Because <code>location</code> is an optional, you need to unwrap it before you can access its <code>coordinate</code> property. It’s perfectly safe to force unwrap at this point because the Tag Location button that triggers the segue won’t be visible unless a location is found. At this point, <code>location</code> will never be <code>nil</code>.
+</p>
+<p>The <code>placemark</code> variable is also an optional, but so is the <code>placemark</code> property on <code>LocationDetailsViewController</code>, so you don’t need to do anything special here. You can always assign the value of one optional to another optional without problems.
+</p>
+<p>Now that you have the values, you need to display them in the Tag Location screen.
+</p>
+<h3 class="segment-chapter">Display information on the Tag Location screen</h3>
+
+<p><code>viewDidLoad()</code> is a good place to display the passed in values on screen.
+</p>
+<p>➤ Add the following code to <em>LocationDetailsViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">super</span>.viewDidLoad()
+
+  descriptionTextView.text = <span class="hljs-string">""</span>
+  categoryLabel.text = <span class="hljs-string">""</span>
+
+  latitudeLabel.text = <span class="hljs-type">String</span>(format: <span class="hljs-string">"%.8f"</span>, 
+                              coordinate.latitude)
+  longitudeLabel.text = <span class="hljs-type">String</span>(format: <span class="hljs-string">"%.8f"</span>, 
+                               coordinate.longitude)
+
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> placemark = placemark {
+    addressLabel.text = string(from: placemark)
+  } <span class="hljs-keyword">else</span> {
+    addressLabel.text = <span class="hljs-string">"No Address Found"</span>
+  }
+
+  dateLabel.text = format(date: <span class="hljs-type">Date</span>())
+}</pre>
+<p>This simply sets a value for every label. It uses two helper methods that you haven’t defined yet: <code>string(from:)</code> to format the <code>CLPlacemark</code> object into a string, and <code>format(date:)</code> to do the same for a <code>Date</code> object.
+</p>
+<p>➤ Add the <code>string(from:)</code> method:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Helper Methods</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">string</span><span class="hljs-params">(from placemark: CLPlacemark)</span></span> -&gt; <span class="hljs-type">String</span> {
+  <span class="hljs-keyword">var</span> text = <span class="hljs-string">""</span>
+
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> s = placemark.subThoroughfare {
+    text += s + <span class="hljs-string">" "</span>
+  }
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> s = placemark.thoroughfare {
+    text += s + <span class="hljs-string">", "</span>
+  }
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> s = placemark.locality {
+    text += s + <span class="hljs-string">", "</span>
+  }
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> s = placemark.administrativeArea {
+    text += s + <span class="hljs-string">" "</span>
+  }
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> s = placemark.postalCode {
+    text += s + <span class="hljs-string">", "</span>
+  }
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> s = placemark.country {
+    text += s
+  }
+  <span class="hljs-keyword">return</span> text
+}</pre>
+<p>This is fairly straightforward. It is similar to how you formatted the placemark on the main screen, except that you also include the country here.
+</p>
+<div class="note">
+<p><em>Note:</em> You might have noticed the <code>// MARK</code> comments all over the previous sections of code in this chapter. You already know what the <code>// MARK</code> comment does. So, I&apos;m not going to explain that again.
+</p>
+<p>You can feel free to leave the comments out when you type in your own code, but personally, I like to organize my code into identifiables sections as I&apos;ve done here so that I can navigate my code easily. It&apos;s totally up to you whether you follow what I do, create an organization style of your own, or use no organization at all :]
+</p></div>
+
+<h3 class="segment-chapter">Date formatting</h3>
+
+<p>To format the date, you’ll use a <code>DateFormatter</code> object. You’ve seen this class at work in the previous app. It converts the date and time that are encapsulated by a <code>Date</code> object into a human-readable string, taking into account the user’s language and locale settings.
+</p>
+<p>For <i>Checklists</i> you created a new instance of <code>DateFormatter</code> every time you wanted to convert a <code>Date</code> to a string. Unfortunately, <code>DateFormatter</code> is a relatively expensive object to create. In other words, it takes a while to initialize this object. If you do that many times over, then it may slow down your app (and drain the phone’s battery faster).
+</p>
+<p>It is better to create <code>DateFormatter</code> just once and then re-use that same object over and over. The trick is that you won’t create the <code>DateFormatter</code> object until the app actually needs it. This principle is called <em>lazy loading</em> and it’s a very important pattern for iOS apps — the work that you don’t do won’t cost any battery power.
+</p>
+<p>In addition, you’ll only ever create one instance of <code>DateFormatter</code>. The next time you need to use <code>DateFormatter</code> you won’t make a new instance but re-use the existing one.
+</p>
+<p>To pull this off you’ll use a <i>private global</i> constant. That’s a constant that lives outside of the <code>LocationDetailsViewController</code> class (global) but it is only visible inside the <em>LocationDetailsViewController.swift</em> file (private).
+</p>
+<p>➤ Add the following to the top of <em>LocationDetailsViewController.swift</em>, in between the <code>import</code> and <code>class</code> lines:
+</p><pre class="code-block"><span class="hljs-keyword">private</span> <span class="hljs-keyword">let</span> dateFormatter: <span class="hljs-type">DateFormatter</span> = {
+  <span class="hljs-keyword">let</span> formatter = <span class="hljs-type">DateFormatter</span>()
+  formatter.dateStyle = .medium
+  formatter.timeStyle = .short
+  <span class="hljs-keyword">return</span> formatter
+}()</pre>
+<p>What is going on here? You’re creating a new constant named <code>dateFormatter</code> of type <code>DateFormatter</code>, that much should be obvious. This constant is <code>private</code> so it cannot be used outside of this Swift file. (Remember the discussion about <code>private</code> and <code>public</code> attributes in the previous chapter?)
+</p>
+<p>You’re also giving <code>dateFormatter</code> an initial value, but what follows the <code>=</code> is not an ordinary value — it looks like a bunch of source code in between <code>{ }</code> brackets. That looks like a clousre, doesn&apos;t it? That’s because it <i>is</i> a closure.
+</p>
+<p>Normally, you’d create a new object like this:
+</p><pre class="code-block"><span class="hljs-keyword">private</span> <span class="hljs-keyword">let</span> dateFormatter = <span class="hljs-type">DateFormatter</span>()</pre>
+<p>But to initialize the date formatter it’s not enough to just make an instance of <code>DateFormatter</code>, you also want to set the <code>dateStyle</code> and <code>timeStyle</code> properties of this instance.
+</p>
+<p>To create the object and set its properties in one go, you can use a closure:
+</p><pre class="code-block"><span class="hljs-keyword">private</span> <span class="hljs-keyword">let</span> dateFormatter: <span class="hljs-type">DateFormatter</span> = {
+  <span class="hljs-comment">// the code that sets up the DateFormatter object </span>
+  <span class="hljs-keyword">return</span> formatter
+}()</pre>
+<p>The closure contains the code that creates and initializes the new <code>DateFormatter</code> object, and then returns it. This returned value is what gets put into <code>dateFormatter</code>.
+</p>
+<p>The trick to making this work is the <code>()</code> at the end. Closures are like functions, and to perform the code inside the closure you call it just like you’d call a function.
+</p>
+<div class="note">
+<p><em>Note:</em> If you leave out the <code>()</code>, Swift thinks you’re assigning the closure itself to <code>dateFormatter</code> — in other words, <code>dateFormatter</code> will contain a block of code, not an actual <code>DateFormatter</code> object. That’s not what you want.
+</p>
+<p>Instead, you want to assign the <i>result</i> of that closure to <code>dateFormatter</code>. To make that happen, you use the <code>()</code> to perform or <em>evaluate</em> the closure — this runs the code inside the closure and returns a <code>DateFormatter</code> object.
+</p></div>
+
+<p>Using a closure to create and configure an object all at once is a nifty trick; you can expect to see this often in Swift programs.
+</p>
+<p>In Swift, globals are always created in a lazy fashion, which means the code that creates and sets up this <code>DateFormatter</code> object isn’t performed until the very first time the <code>dateFormatter</code> global is used in the app.
+</p>
+<p>That happens inside the new <code>format(date:)</code> method.
+</p>
+<p>➤ Add the new method — this code goes inside the <code>class</code> (and I would generally put it in the helper methods section created by my previous <code>// MARK</code> comment, for organizational purposes):
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">format</span><span class="hljs-params">(date: Date)</span></span> -&gt; <span class="hljs-type">String</span> {
+  <span class="hljs-keyword">return</span> dateFormatter.string(from: date)
+}</pre>
+<p>How simple is that? It just asks the <code>DateFormatter</code> to turn the <code>Date</code> into a <code>String</code> and returns that.
+</p>
+<div class="note">
+<p><em>Exercise.</em> How can you verify that the date formatter is really only created once?
+</p></div>
+
+<p>Answer: Add a <code>print()</code> just before the <code>return formatter</code> line in the closure. This <code>print()</code> text should appear only once in the Xcode Console.
+</p>
+<p>➤ Run the app. Choose the Apple location from the Simulator’s Debug menu. Wait until the street address is visible and then press the Tag Location button.
+</p>
+<p>The coordinates, address and date are all filled in:
+</p><div class="image-30"><img src="graphics/img405.png"  alt="" title="The Address label doesn&apos;t fit well" /></div>
+<p>The address seems to be having some trouble fitting in :]
+</p>
+<h3 class="segment-chapter">Content Compression Resistance</h3>
+
+<p>You earlier configured the label to fit multiple lines of text, but the problem is that the two labels in the addres row don&apos;t know how to get along with each other — the detail label is too full of itself and encroaches on the space of the Address label.
+</p>
+<p>The solution is simple enough — Content Compression Resistance. Quite a mouthful, and not very illuminating, right?
+</p>
+<p>Let me try to shed some light.
+</p>
+<p>➤ Select the <em>Address</em> label, switch to the <em>Size inspector</em> and scroll to the bottom. You should see a section named <em>Content Compression Resistance Priority</em>.
+</p>
+<p>This section determines how easily the selected control allows other controls to push it (and its content) out of the way to present their own content. The higher the priority, the less likely this control is to be pushed out of the way.
+</p>
+<p>All controls have a horizontal and vertical content compression resistance value set and this is by default set to 750. All we need to do is increase the Address label&apos;s vertical content resistance priority so that it doesn&apos;t get pushed around.
+</p>
+<p>➤ Change the <em>Horizontal</em> value to <em>751</em>.
+</p>
+<p>➤ Run the app. Now the reverse geocoded address should completely fit in the Address cell (even on larger screens). Try it out with a few different locations.
+</p><div class="image-30"><img src="graphics/img406.png"  alt="" title="The label is not cut off by the address" /></div>
+<h2 class="segment-chapter">The category picker</h2>
+
+<p>When the user taps the Category cell, the app should show a list of category names:
+</p><div class="image-25"><img src="graphics/img407.png"  alt="" title="The category picker" /></div>
+<h3 class="segment-chapter">The view controller class</h3>
+
+<p>This is a new screen, so you need a new view controller. The way this works is very similar to the icon picker from <i>Checklists</i>. I’m just going to give you the source code and tell you how to hook it up.
+</p>
+<p>➤ Add a new file to the project named <em>CategoryPickerViewController.swift</em>.
+</p>
+<p>➤ Replace the contents of <em>CategoryPickerViewController.swift</em> with:
+</p><pre class="code-block"><span class="hljs-keyword">import</span> UIKit
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CategoryPickerViewController</span>: <span class="hljs-title">UITableViewController</span> </span>{
+  <span class="hljs-keyword">var</span> selectedCategoryName = <span class="hljs-string">""</span>
+
+  <span class="hljs-keyword">let</span> categories = [
+    <span class="hljs-string">"No Category"</span>,
+    <span class="hljs-string">"Apple Store"</span>,
+    <span class="hljs-string">"Bar"</span>,
+    <span class="hljs-string">"Bookstore"</span>,
+    <span class="hljs-string">"Club"</span>,
+    <span class="hljs-string">"Grocery Store"</span>,
+    <span class="hljs-string">"Historic Building"</span>,
+    <span class="hljs-string">"House"</span>,
+    <span class="hljs-string">"Icecream Vendor"</span>,
+    <span class="hljs-string">"Landmark"</span>,
+    <span class="hljs-string">"Park"</span>]
+
+  <span class="hljs-keyword">var</span> selectedIndexPath = <span class="hljs-type">IndexPath</span>()
+
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+    <span class="hljs-keyword">super</span>.viewDidLoad()
+
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">0</span>..&lt;categories.<span class="hljs-built_in">count</span> {
+      <span class="hljs-keyword">if</span> categories[i] == selectedCategoryName {
+        selectedIndexPath = <span class="hljs-type">IndexPath</span>(row: i, section: <span class="hljs-number">0</span>)
+        <span class="hljs-keyword">break</span>
+      }
+    }
+  }
+
+  <span class="hljs-comment">// MARK:- Table View Delegates</span>
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+        numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+    <span class="hljs-keyword">return</span> categories.<span class="hljs-built_in">count</span>
+  }
+
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+               cellForRowAt indexPath: IndexPath)</span></span> -&gt; 
+               <span class="hljs-type">UITableViewCell</span> {
+    <span class="hljs-keyword">let</span> cell = tableView.dequeueReusableCell(
+                         withIdentifier: <span class="hljs-string">"Cell"</span>, 
+                                    <span class="hljs-keyword">for</span>: indexPath) 
+
+    <span class="hljs-keyword">let</span> categoryName = categories[indexPath.row]
+    cell.textLabel!.text = categoryName
+
+    <span class="hljs-keyword">if</span> categoryName == selectedCategoryName {
+      cell.accessoryType = .checkmark
+    } <span class="hljs-keyword">else</span> {
+      cell.accessoryType = .<span class="hljs-keyword">none</span>
+    }
+    <span class="hljs-keyword">return</span> cell
+  }
+
+  <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+             didSelectRowAt indexPath: IndexPath)</span></span> {
+    <span class="hljs-keyword">if</span> indexPath.row != selectedIndexPath.row {
+      <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> newCell = tableView.cellForRow(at: indexPath) {
+        newCell.accessoryType = .checkmark
+      }
+      <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> oldCell = tableView.cellForRow(
+                       at: selectedIndexPath) {
+        oldCell.accessoryType = .<span class="hljs-keyword">none</span>
+      }
+      selectedIndexPath = indexPath
+    }
+  }
+}</pre>
+<p>There’s nothing special going on here. This is a table view controller that shows a list of category names. The table gets its rows from the <code>categories</code> array.
+</p>
+<p>The only thing worth noting is the <code>selectedIndexPath</code> instance variable. When the screen opens, it shows a checkmark next to the currently selected category. This comes from the <code>selectedCategoryName</code> property, which is filled in when you segue to this screen.
+</p>
+<p>When the user taps a row, you want to remove the checkmark from the previously selected row and put it in the new row.
+</p>
+<p>In order to be able to do that, you need to know which row is the currently selected one. You can’t use <code>selectedCategoryName</code> for this because that is a string, not a row number. Therefore, you first need to find the row number — or index-path — for the selected category name.
+</p>
+<p>That happens in <code>viewDidLoad()</code>. You loop through the array of categories and compare the name of each category to <code>selectedCategoryName</code>. If they match, you create an index-path object and store it in the <code>selectedIndexPath</code> variable. Once a match is found, you can <code>break</code> out of the loop because there’s no point in looping through the rest of the categories.
+</p>
+<p>Now that you know the row number, you can remove the checkmark for this row in <code>tableView(_:didSelectRowAt:)</code> when another row gets tapped.
+</p>
+<p>It’s a bit of work for such a small feature, but in a good app it’s the details that matter.
+</p>
+<p>There are several different ways of looping through the contents of an array.
+</p>
+<p>You’ve already seen <code>for...in</code>, which is used as follows:
+</p><pre class="code-block"><span class="hljs-keyword">for</span> category <span class="hljs-keyword">in</span> categories {</pre>
+<p>This puts the name of each category into a temporary constant named <code>category</code>.
+</p>
+<p>However, in order to make the index-path object, you don’t want the name of the category but the index of that category in the array. So you’ll have to loop in a slightly different fashion:
+</p><pre class="code-block"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">0</span>..&lt;categories.<span class="hljs-built_in">count</span> {
+  <span class="hljs-keyword">let</span> category = categories[i]
+  . . . 
+}</pre>
+<p>Thanks to the half-open range operator <code>..&lt;</code>, <code>i</code> is a number that increments from 0 to <code>categories.count – 1</code>. This is a very common pattern for looping through an array if you want to have the index as well.
+</p>
+<p>Another way to do this is to use the <code>enumerated()</code> method, for which you’ll see an example when you get to the next app. As a quick preview, this is how you’d use it:
+</p><pre class="code-block"><span class="hljs-keyword">for</span> (i, category) <span class="hljs-keyword">in</span> categories.enumerated() {
+  . . . 
+}</pre>
+<h3 class="segment-chapter">The storyboard scene</h3>
+
+<p>➤ Open the storyboard and drag a new <em>Table View Controller</em> on to the canvas. Set its <em>Class</em> in the <em>Identity inspector</em> to <em>CategoryPickerViewController</em>.
+</p>
+<p>➤ Change the <em>Style</em> of the prototype cell to <em>Basic</em>, and give it the re-use identifier <em>Cell</em>.
+</p>
+<p>➤ <em>Control-drag</em> from the Category cell on the Location Details View Controller to this new view controller and choose <em>Selection Segue - Show</em>.
+</p>
+<p>➤ Give the segue the identifier <em>PickCategory</em>.
+</p>
+<p>The Category Picker View Controller now has a navigation bar at the top. You could change its title to “Choose Category”, but Apple recommends that you do not give view controllers a title if their purpose is obvious. This helps to keep the navigation bar uncluttered.
+</p><div class="image-60"><img src="graphics/img408.png"  alt="" title="The category picker in the storyboard" /></div>
+<p>That’s enough for the storyboard. Now all that remains is to handle the segue.
+</p>
+<h3 class="segment-chapter">The Segue</h3>
+
+<p>➤ Switch back to <em>LocationDetailsViewController.swift</em> and add a new instance variable to temporarily store the chosen category.
+</p><pre class="code-block"><span class="hljs-keyword">var</span> categoryName = <span class="hljs-string">"No Category"</span></pre>
+<p>Initially you set the category name to “No Category”, which is the category at the top of the list in the category picker.
+</p>
+<p>➤ Change <code>viewDidLoad()</code> to put <code>categoryName</code> into the label:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  . . .
+  categoryLabel.text = categoryName      <span class="hljs-comment">// change this line</span>
+  . . .</pre>
+<p>➤ Finally, add the segue handling code:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Navigation</span>
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">prepare</span><span class="hljs-params">(<span class="hljs-keyword">for</span> segue: UIStoryboardSegue, 
+                         sender: Any?)</span></span> {
+  <span class="hljs-keyword">if</span> segue.identifier == <span class="hljs-string">"PickCategory"</span> {
+    <span class="hljs-keyword">let</span> controller = segue.destination <span class="hljs-keyword">as</span>! 
+                     <span class="hljs-type">CategoryPickerViewController</span>
+    controller.selectedCategoryName = categoryName
+  }
+}</pre>
+<p>This simply sets the <code>selectedCategoryName</code> property of the category picker. And with that, the app has categories.
+</p>
+<p>➤ Run the app and play with the category picker.
+</p><div class="image-30"><img src="graphics/img409.png"  alt="" title="Selecting a new category" /></div>
+<p>Hmm, it doesn’t seem to work very well. You can choose a category, but the screen doesn’t close when you tap a row. When you press the back button, the category you picked isn’t shown on the parent screen.
+</p>
+<div class="note">
+<p><em>Exercise.</em> Which piece of the puzzle is missing?
+</p></div>
+
+<p>Answer: The <code>CategoryPickerViewController</code> currently does not have a way to communicate back to the <code>LocationDetailsViewController</code> about the user selection.
+</p>
+<p>I hope that at this point you’re thinking, “Of course, dummy! You forgot to give the category picker a delegate protocol. That’s why it cannot send any messages to the other view controller.” (If so, awesome! You’re getting the hang of this.)
+</p>
+<p>A delegate protocol is a fine solution indeed, but I want to show you a handy storyboarding feature that can accomplish the same thing with less work: <em>unwind segues</em>.
+</p>
+<h3 class="segment-chapter">The unwind segue</h3>
+
+<p>In case you were wondering what the orange “Exit” icons in the storyboard are for, you now have your answer: unwind segues.
+</p><div class="image-10"><img src="graphics/img410.png"  alt="" title="The Exit icon" /></div>
+<p>Where a regular segue is used to open a new screen, an unwind segue closes the active screen. Sounds simple enough. However, making unwind segues is not very intuitive.
+</p>
+<p>The orange Exit icons don’t appear to do anything. Try Control-dragging from the prototype cell to the Exit icon, for example. It won’t let you make a connection.
+</p>
+<p>First, you have to add a special type of action method to the <i>destination</i> of the unwind segue.
+</p>
+<p>➤ In <em>LocationDetailsViewController.swift</em>, add the following method:
+</p><pre class="code-block"><span class="hljs-meta">@IBAction</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">categoryPickerDidPickCategory</span><span class="hljs-params">(
+                  <span class="hljs-number">_</span> segue: UIStoryboardSegue)</span></span> {
+  <span class="hljs-keyword">let</span> controller = segue.source <span class="hljs-keyword">as</span>! <span class="hljs-type">CategoryPickerViewController</span>
+  categoryName = controller.selectedCategoryName
+  categoryLabel.text = categoryName
+}</pre>
+<p>You can see that this is an action method because it has the <code>@IBAction</code> annotation. What’s different from a regular action method is the parameter, a <code>UIStoryboardSegue</code> object.
+</p>
+<p>Normally, if an action method has a parameter, it points to the control that triggered the action, such as a button or slider. But in order to make an unwind segue, you need to define an action method that takes a <code>UIStoryboardSegue</code> parameter.
+</p>
+<p>What happens inside the method is pretty straightforward. You look at the view controller that sent the segue (the <code>source</code>), which of course is the <code>CategoryPickerViewController</code>, and then read the value of its <code>selectedCategoryName</code> property. That property contains the category that the user picked.
+</p>
+<p>Now, to use this new method in the storyboard ...
+</p>
+<p>➤ Open the storyboard. <em>Control-drag</em> from the prototype cell in the Category Picker scene to the Exit button. This time it allows you to make a connection:
+</p><div class="image-30"><img src="graphics/img411.png"  alt="" title="Control-dragging to the Exit icon to make an unwind segue" /></div>
+<p>From the popup choose <em>Selection Segue - categoryPickerDidPickCategory:</em>, the name of the unwind action method you just added.
+</p><div class="image-25"><img src="graphics/img412.png"  alt="" title="The popup lists the unwind action methods" /></div>
+<p>(If Interface Builder doesn’t let you make a connection, then make sure you’re really Control-dragging from the Cell, not from its Content View or the label.)
+</p>
+<p>Now when you tap a cell in the category picker, the screen closes and this new method is called.
+</p>
+<p>➤ Run the app to try it out.
+</p>
+<p>That was easy! Well, not quite. Unfortunately, the chosen category is ignored…
+</p>
+<p>That’s because <code>categoryPickerDidPickCategory()</code> looks at the <code>selectedCategoryName</code> property, but that property isn’t set anywhere in your code yet.
+</p>
+<p>You need some kind of mechanism that is invoked when the unwind segue is triggered, at which point you can fill in the <code>selectedCategoryName</code> based on the row that was tapped.
+</p>
+<p>What might such a mechanism be called? <code>prepare(for:sender:)</code>, of course! This works for segues in both directions.
+</p>
+<p>➤ Add the following method to <em>CategoryPickerViewController.swift</em>:
+</p><pre class="code-block"><span class="hljs-comment">// MARK:- Navigation</span>
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">prepare</span><span class="hljs-params">(<span class="hljs-keyword">for</span> segue: UIStoryboardSegue, 
+                         sender: Any?)</span></span> {
+  <span class="hljs-keyword">if</span> segue.identifier == <span class="hljs-string">"PickedCategory"</span> {
+    <span class="hljs-keyword">let</span> cell = sender <span class="hljs-keyword">as</span>! <span class="hljs-type">UITableViewCell</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> indexPath = tableView.indexPath(<span class="hljs-keyword">for</span>: cell) {
+      selectedCategoryName = categories[indexPath.row]
+    }
+  }
+}</pre>
+<p>This looks at the selected index-path and puts the corresponding category name into the <code>selectedCategoryName</code> property.
+</p>
+<p>This logic assumes the unwind segue is named “PickedCategory”, so you still have to set an identifier on the unwind segue.
+</p>
+<p>Unfortunately, there is no visual representation of that unwind segue in the storyboard. There is no nice, big arrow that you can click on. To select the unwind segue you have to locate it in the Document Outline:
+</p><div class="image-30"><img src="graphics/img413.png"  alt="" title="You can find unwind segues in the Document Outline" /></div>
+<p>➤ Select the unwind segue and go to the <em>Attributes inspector</em>. Give it the identifier <em>PickedCategory</em>.
+</p>
+<p>➤ Run the app. Now the category picker should work properly. As soon as you tap the name of a category, the screen closes and the new category name is displayed.
+</p>
+<p>Unwind segues are pretty cool and are often easier than using a delegate protocol, especially for simple picker screens such as this one.
+</p>
+<p>You can find the project files for this chapter under <em>25 – Tag Location Screen</em> in the Source Code folder.
+</p></body></html>

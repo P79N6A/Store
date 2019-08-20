@@ -1,0 +1,538 @@
+WEBVTT
+
+00:00.570 --> 00:06.120
+Şimdi yapacağımız ilk şey, bir terminalin açılması ve Terminal'in
+
+00:06.120 --> 00:08.000
+içinde masaüstüne gideceğiz.
+
+00:08.010 --> 00:13.650
+Komut satırına aşina değilseniz ve komut satırında Marchal'ı izlemediyseniz, şimdi ona bir
+
+00:13.980 --> 00:18.390
+göz atmanızı tavsiye ederim çünkü şimdi dizinleri oluşturmak için
+
+00:18.390 --> 00:20.790
+birçok komut kullanacağız. ve gezin.
+
+00:20.790 --> 00:25.290
+Dolayısıyla henüz tanıdık değilseniz, o zaman bir göz atmanız için iyi bir zaman.
+
+00:26.010 --> 00:33.600
+Yapacağım ilk şey, masaüstümde CD'ye gideceğim ve burada hikaye adlı yeni
+
+00:33.600 --> 00:43.920
+bir dizin oluşturacağım, o zaman bu hikaye dizinine CD ve ls ile yardımcı olacak.
+
+00:43.920 --> 00:45.870
+Tamamen boş olduğunu görebilirsiniz.
+
+00:45.990 --> 00:50.420
+Ve benzer şekilde bulucu içinde sana aynı şeyi gösterebilirim.
+
+00:50.430 --> 00:54.600
+Bu yüzden devam edelim ve bazı metin dosyaları oluşturalım.
+
+00:54.660 --> 01:01.590
+Bu yüzden, Bölüm 1 nokta metni adlı bir dosya oluşturmak için dokunma yöntemini kullanacağım
+
+01:01.590 --> 01:09.690
+ve sonra bölüm 1 metni açacağım ve bunu yalnızca açık yazıp bunu metin olan varsayılan uygulamada
+
+01:09.750 --> 01:11.880
+açmak suretiyle yapabileceğim Mac'te.
+
+01:12.120 --> 01:18.130
+Alternatif olarak terminalin içinde Vin gibi bir metin kullanabilirsiniz.
+
+01:18.210 --> 01:21.770
+Şimdi sadece bu konuyla gerçekten aşina olan insanlar içindir.
+
+01:21.780 --> 01:24.050
+Dolayısıyla, kullanmaya karar verdiğiniz tamamen size kalmış.
+
+01:24.090 --> 01:30.180
+Ancak terminal tabanlı editörleri kullanmaya alışkın değilseniz, muhtemelen açık komuta bağlı
+
+01:30.180 --> 01:33.920
+kalın ve textedit'i kullanmak iyi bir fikirdir.
+
+01:33.930 --> 01:39.110
+Öyleyse devam edin ve 1. bölüme geçelim ve Jawi OK'de bir şeyler
+
+01:42.990 --> 01:43.350
+yazalım.
+
+01:43.360 --> 01:45.270
+Bu benim başyapıtım bitti.
+
+01:45.390 --> 01:49.440
+Ben devam edip tasarruf etmeye gidiyorum ve textedit'i bırakacağım.
+
+01:49.570 --> 01:53.190
+Bu yüzden ilk bölümümüz bitti.
+
+01:53.380 --> 02:01.100
+Şimdi yerel bir depo oluşturalım ve bu dosya değişikliklerinin bazılarını izlemeye başlayalım.
+
+02:01.450 --> 02:06.350
+Dolayısıyla, başlatmayı başlatmak için sadece içinde get yazıyoruz.
+
+02:06.340 --> 02:12.490
+Ve gördüğünüz gibi başlatıldı ve boş hikaye dizini içinde depo olsun.
+
+02:12.490 --> 02:17.230
+Bulucu içinde bir göz varsa, aslında bu cümleyi iyi göremiyorsun.
+
+02:17.320 --> 02:18.900
+Ama daha önce öğrendiğimiz gibi.
+
+02:18.970 --> 02:20.720
+LS A. kullanırsanız
+
+02:20.920 --> 02:26.620
+Tüm gizli dosyaları görebilir ve Dogget'ın orada olduğunu görebilir ve değişikliklerinizi
+
+02:26.710 --> 02:32.320
+tamamlamak ve sürüm denetimi yapmak için tüm değişiklikleri izlemek için kullanılacaktır.
+
+02:32.320 --> 02:38.100
+Şu anda hikaye dizini içindeyiz ve bunu da çalışma dizini olarak da adlandırabilirsiniz.
+
+02:38.110 --> 02:45.250
+Dolayısıyla, onu kullanmadan önce bahsettiğim gibi ve sürüm denetimi hakkında bilgi edinmek, kendi terminolojisinin ve dilinin
+
+02:45.340 --> 02:46.570
+bazılarıyla birlikte gelir.
+
+02:46.570 --> 02:51.370
+Dolayısıyla karşılaşacağınız bir sürü terimi basitleştirip deneyeceğim ve böylece
+
+02:51.370 --> 02:55.440
+hepimiz aynı sayfada olabileceğiz ve neler olduğunu anlıyorum.
+
+02:55.720 --> 03:01.770
+Şu anda şu anda hikaye dizini olan çalışma dizini içerisindeyiz.
+
+03:02.050 --> 03:07.750
+Ve sırayla dosyalarımdaki değişiklikleri izlemeye başlayın.
+
+03:07.750 --> 03:15.350
+Örneğin bölüm 1 nokta metni için, bu dosyayı bir hazırlama alanı adı verilen bölüme eklemek zorundayım.
+
+03:15.790 --> 03:23.230
+Ve bu temel olarak, çalışma dizininizin içinde taahhüt etmek istediğiniz dosyaları
+
+03:23.230 --> 03:26.270
+seçip seçebileceğiniz ara bir yerdir.
+
+03:26.320 --> 03:33.220
+Şu anda sahne alanınızdaki neyi görmek için durum al komutunu kullanabilirsiniz ve size kırmızı
+
+03:33.220 --> 03:39.630
+renkte gösterilecek izlenmemiş dosyalar olduğunu ve bunun sadece bir çalışma dizininin içindeki bir
+
+03:39.630 --> 03:41.080
+şey olduğunu gösterir.
+
+03:41.080 --> 03:42.410
+İçeride.
+
+03:42.550 --> 03:45.560
+Ancak henüz evreleme alanında değil.
+
+03:45.610 --> 03:52.570
+alanına eklemek ve içindeki değişiklikleri izlemeye başlamak için get komutu kullanılmalıdır.
+
+03:52.570 --> 03:53.940
+Dolayısıyla, hazırlama
+
+03:54.020 --> 03:58.930
+Ve böylece get add yazacağız ve dosya adını yazacağız.
+
+03:58.930 --> 04:01.730
+Bu durumda bu Bölüm 1 alt metni.
+
+04:01.960 --> 04:08.710
+Bu yüzden devam edin ve enter tuşuna basın ve daha sonra get statüsünü tekrar denersek dosyanın yeni bir
+
+04:08.800 --> 04:11.820
+dosya olarak eklendiğini görebilirsiniz ve artık yeşil renktedir.
+
+04:11.830 --> 04:16.380
+Dolayısıyla şu an hazırlık aşamasındadır ve işlenmeye hazırdır.
+
+04:16.390 --> 04:20.260
+Yani devam edin ve bunu sürüm denetimi altında taahhüt edin.
+
+04:20.260 --> 04:28.480
+Yani komut komutu alıyor ve bir komisyon mesajı eklemek için çizgi ve bayrağı kullanacağım.
+
+04:28.480 --> 04:31.450
+Yani taahhüt mesaj gerçekten çok önemli.
+
+04:31.630 --> 04:38.140
+Her bir taahhütte yaptığınız değişiklikleri takip etmenize yardımcı olan bir şey.
+
+04:38.140 --> 04:47.200
+Dolayısıyla, yeni bir kayıt noktası oluşturduğunuzda, son kaydetme noktası ile bu geçerli kaydetme noktası arasında ne gibi değişiklikler
+
+04:47.230 --> 04:50.380
+yapıldığından mümkün olduğunca açık olmak istersiniz.
+
+04:50.380 --> 04:58.420
+İlk taahhütte başlangıç ​​taahhüdü gibi çok basit bir şeyler kullanabiliriz ve bu bunun başlangıç
+
+04:58.420 --> 04:59.880
+​​noktamız olduğunu gösterir.
+
+05:00.100 --> 05:05.920
+Alternatif olarak, biraz daha spesifik olmak istiyorsanız, çünkü bizim durumumuzda 1.
+
+05:05.920 --> 05:07.090
+bölümünü tamamladık.
+
+05:07.090 --> 05:11.180
+Böylece bütün bölüm 1 yazabilirsiniz.
+
+05:11.200 --> 05:16.540
+Şimdi öğreneceğiniz şey, genellikle şu andaki gerginlikle yazılmış olan taahhüt
+
+05:16.540 --> 05:17.050
+mesajlarıdır.
+
+05:17.260 --> 05:18.600
+Ve bu en iyi uygulamadır.
+
+05:18.610 --> 05:25.210
+Dolayısıyla büyük olasılıkla daha mantıklı gelse de, en azından kafamda tamamlanmış birinci bölümün
+
+05:25.270 --> 05:28.200
+bu kaydetme noktası olarak yazıldığını sanırım.
+
+05:28.240 --> 05:32.680
+Aslında sözleşmeye göre şu andaki gerginliği kullanmalısınız.
+
+05:32.680 --> 05:36.910
+Artık yaptığınız gibi, şimdi yaptığınız değişiklikleri gönderiyorsunuz.
+
+05:37.000 --> 05:44.200
+Bu durumda, devam edelim ve ilk islemi yapmak için isabet edelim ve Get günlük
+
+05:44.200 --> 05:47.290
+komutunu kullanarak hangi işlemleri yaptiinizi görebilirsiniz.
+
+05:47.560 --> 05:53.320
+Bu işin şu anda bu kişi tarafından yapıldığını görebilirsiniz.
+
+05:53.540 --> 06:00.720
+Ve aynı zamanda bir karma içerir ve bu karma benzersiz bir şekilde bu belirli taahhüdü tanımlar.
+
+06:00.910 --> 06:06.620
+Sonunda, bu kaydetme noktasının ne olduğu hakkında bu taahhüt mesajını görürsünüz.
+
+06:07.870 --> 06:12.310
+Şimdi ben ilerleyip iki bölüm daha oluşturacağım.
+
+06:12.340 --> 06:25.450
+Şimdi sadece Bölüm İki Nokta Metin ve Üçüncü Nokta Metin oluşturalım; şimdi üç bölüm var ve ben de
+
+06:25.720 --> 06:29.640
+bu metin dosyalarının bazılarını değiştireceğim.
+
+06:29.680 --> 06:31.030
+Diyelim ki k,
+
+06:41.270 --> 06:43.710
+bu Bölüm 2 yapılır diyelim.
+
+06:43.960 --> 06:49.330
+Ve nihayet devam edelim ve sadece bölüm 3'ü açıp bunları da düzenleyelim.
+
+07:00.930 --> 07:01.420
+Tamam.
+
+07:01.450 --> 07:03.720
+Böylece üç dosya da değiştirildi.
+
+07:03.760 --> 07:09.070
+Ve burada Finder'da içeriğin ne olduğunu arka planın ardında ne
+
+07:09.070 --> 07:14.520
+yaptığını size gösterebilmek için gerçekten yararlı olacağına hızlıca göz atabilirsiniz.
+
+07:14.800 --> 07:20.860
+Şimdi devam edin ve bu iki yeni dosyayı hazırlama alanlarına okuyun.
+
+07:20.860 --> 07:28.180
+Bu yüzden tekrar get statüsünü kullanırsak izlenmeyen, yalnızca çalışma dizininde olan ve henüz sahne
+
+07:28.180 --> 07:31.970
+alanı içerisinde olmayan iki dosya olduğunu görebilirsiniz.
+
+07:32.290 --> 07:38.630
+Dolayısıyla, daha önce yaptıklarımız gibi basitçe her birini ekleyerek onu evreleme alanına yerleştirebiliriz.
+
+07:38.650 --> 07:42.610
+Bölüm İki köpek etiketleri gibi bir şeyler ekleyin ve yazın.
+
+07:42.630 --> 07:45.430
+Ve sonra bunu bölüm üç nokta metni yapıyor.
+
+07:45.640 --> 07:51.940
+Ancak, epeyce dosyanız varsa hayal edebileceğiniz gibi, bunu tek tek yapmak zorunda kalmanız
+
+07:51.940 --> 07:53.580
+inanılmaz derecede sıkıcı olabilir.
+
+07:53.590 --> 07:56.070
+Elbette daha iyi bir yol var.
+
+07:56.080 --> 08:01.870
+Dolayısıyla, bu dosyaları birer birer eklemezken, aslında yalnızca ADD almanın ardından bu
+
+08:01.870 --> 08:07.050
+geçerli dizininin içindeki her şeyi belirtmek için nokta kullanmayı söyleyebiliriz.
+
+08:07.060 --> 08:09.840
+Öyleyse hikaye dizininin içindeki her şey.
+
+08:10.090 --> 08:14.740
+Öyleyse, şimdi gidip girişe basarsam, o zaman statorları tekrar kazanırım.
+
+08:14.920 --> 08:22.150
+Hazırlama alanına eklenen iki yeni dosyayı görebilirsiniz ve şimdi bu iki dosyayı yeni
+
+08:22.270 --> 08:26.580
+bir kaydetme noktasına yeni bir taahhütte bulunacağız.
+
+08:26.920 --> 08:30.110
+Ve benimle birlikte devam edersen ne yapacağını biliyorsun.
+
+08:30.130 --> 08:35.570
+Devam edin ve bırakın.
+
+08:35.570 --> 08:35.930
+Tamam.
+
+08:35.930 --> 08:43.430
+Öyleyse, komuta üye iseniz, işinize başlayın ve bir komisyon
+
+08:43.430 --> 08:51.920
+mesajı belirtmek için M bayrağını kullanacağız ve şu andaki gergin bir
+
+08:51.920 --> 08:58.120
+mesaj yazacağız deriz Bölüm 2 ve 3'ü tamamlayın.
+
+08:58.940 --> 09:05.590
+İlk yorum ve bu taahhüt arasında yaptığım her şey budur.
+
+09:05.600 --> 09:10.230
+Tek fark, şimdi üçüncü bölümde ikinci bölüm tamamladığım gerçeğidir.
+
+09:10.250 --> 09:13.170
+Öyleyse devam edelim ve içeri girelim.
+
+09:13.550 --> 09:17.060
+Böylece, get log kullanarak kontrol edelim.
+
+09:17.120 --> 09:24.170
+Görüyorsunuz ki, artık benzersiz oldukları ve farklı oldukları için iki karmaşayla birlikte iki
+
+09:24.170 --> 09:25.230
+taahhüdümüz var.
+
+09:25.280 --> 09:32.990
+İlk bölüm komple bölüm 1 idi ve o anda yapıldı ve daha sonra yaklaşık beş dakika
+
+09:32.990 --> 09:36.100
+sonra ikinci ve üçüncü bölüm tamamlandım.
+
+09:36.170 --> 09:38.110
+Ve ikinci taahhüt de buydu.
+
+09:38.480 --> 09:41.230
+İşte buradayız.
+
+09:41.270 --> 09:49.480
+Bu Woodhead başkanına göre görebilirsiniz Burada bulunduğumuz konum veya mevcut durum.
+
+09:49.490 --> 09:52.720
+Bu yüzden sadece yaptıklarımızı hızla özetlemek istiyorum.
+
+09:52.970 --> 09:58.440
+Bu yüzden hikayemizin dizininde çalışma dizininde bir dosya yarattık.
+
+09:58.630 --> 10:05.990
+Dolayısıyla çalışma dizini, get deposunu başlattığınız klasör veya dizindir.
+
+10:06.100 --> 10:10.390
+İçeri girdiğimiz zaman bunu hikaye dizininin içinden yapmıştık.
+
+10:10.460 --> 10:12.540
+Yani bu bir çalışma dizini haline gelir.
+
+10:12.740 --> 10:18.890
+Ve bundan sonra çalışma dizini ile yerel depo arasında
+
+10:19.310 --> 10:22.090
+görülen değişiklikleri izlemeye çalışacağız.
+
+10:22.490 --> 10:31.040
+Bu yüzden başlangıçta hikayenin içinde çalışma dizininizde bir dosya yarattık ve onu
+
+10:31.040 --> 10:34.310
+aşamalı alana itmek için ekledik.
+
+10:34.310 --> 10:39.740
+Şimdi bu ara aşamalı alanın nedeni, neden sadece çalışma dizininden doğrudan deposuna gitmemek gibi
+
+10:39.740 --> 10:42.470
+bir şey olduğunu merak ediyor olmanızın nedeni.
+
+10:42.500 --> 10:44.690
+Neden bu ekstra adıma ihtiyacımız var.
+
+10:44.840 --> 10:52.430
+Bazen, izlenecek tüm dosyalarınızı veya tüm dosyalarınızı işlenecek şekilde eklemek
+
+10:52.430 --> 10:53.550
+istemeyebilirsiniz.
+
+10:53.600 --> 10:59.240
+Bu nedenle evreleme alanı denemek ve görmezden gelmek istediğiniz şeyleri bulmak için iyi bir yerdir.
+
+10:59.390 --> 11:01.970
+Ve takip edilmek istediğin şeylerden biri.
+
+11:02.210 --> 11:09.200
+memnunuz, sonra bir sonraki adım Get commit komutunu kullanarak devam etmeyi taahhüt etti.
+
+11:09.200 --> 11:17.160
+Bu yüzden bir kere kullandık ve dosyayı hazırlama alanına attık ve taahhüt edeceğimiz değişikliklerden
+
+11:17.180 --> 11:25.730
+Bu yüzden dosyamız yerel depomuzun içindedir, böylece nokta elde edilir ve bu sürüme taahhüt mesajıyla
+
+11:25.730 --> 11:27.340
+bir isim verilir.
+
+11:27.350 --> 11:35.540
+Dolayısıyla, dosyamızı berbat etsek bile sürüm denetimi altındaki son sürümü kullanmaya devam edebiliriz
+
+11:35.540 --> 11:43.820
+ve yerel depoda son konumuna geri dönmek veya geri almak için Kontrol et
+
+11:43.820 --> 11:46.200
+alma özel komutunu kullanabilirsiniz.
+
+11:46.370 --> 11:52.080
+Öyleyse sana komut satırındaki neye benzediğini ve bunu pratikte nasıl yapacağımızı göstereceğim.
+
+11:52.100 --> 11:57.410
+güzel bir şekilde yazılmış üç bölüm var ve kitabım büyük bir satıcı olacak gibi geliyor.
+
+11:57.410 --> 11:58.430
+Dolayısıyla şu anda
+
+11:58.450 --> 12:06.530
+Şimdi şunu diyelim ki, siz üçüncü bölüm üzerinde çalıştığımı biliyorsunuz ve her
+
+12:06.530 --> 12:13.910
+şeyi berbat ettim ve sadece biliyorsunuz klavyemde uyudu ve dosyamı kaydettim.
+
+12:13.910 --> 12:20.140
+Ve ţimdi bir göz atýnca ţimdi sadece mumbojumbo ve ustalarýmý mahvettim.
+
+12:20.360 --> 12:25.170
+Fakat sürümü kontrol ettiğimiz için etkinleştirdik.
+
+12:25.370 --> 12:28.270
+Bu yüzden endişelenmemiz gereken bir şey yok.
+
+12:28.610 --> 12:33.750
+Aslında yaptığım değişiklikleri yerel olarak çalışma dizimime geri döndürebilirim.
+
+12:33.770 --> 12:39.290
+veya aşamalı alana eklenmemiştir değişikliklerimiz olduğunu görmek için statorları kullanabiliriz.
+
+12:39.280 --> 12:44.780
+Bu noktada, bölümümüzdeki üç nokta metin dosyasında, henüz taahhüt edilmemiş
+
+12:44.840 --> 12:50.920
+İstersek aslında bunu eski şanına geri döndürebiliriz.
+
+12:51.230 --> 12:57.920
+Ancak bunu yapmadan önce, bölüm 3'ün geçerli sürümü ile get deposumuzdaki son kaydetme noktası
+
+12:57.920 --> 13:03.100
+arasındaki farklardan birini kontrol etmek için iyi bir komut kullanabiliriz.
+
+13:03.230 --> 13:06.860
+Bunu yapmak için, get diff komutunu kullanabilirsiniz.
+
+13:06.950 --> 13:12.350
+Bu fark ve böylece bölüm 3 dosya adı vereceğiz.
+
+13:12.650 --> 13:17.210
+Girişe basarsanız bunun silinen bölüm olduğunu görebilirsiniz.
+
+13:17.210 --> 13:23.860
+Böylece bölüm kırmızıydı ve daha sonra bu eklenmiş kısımydı, bu da bizim gobbledygook'umuzdu.
+
+13:24.050 --> 13:29.600
+Şimdi, bu farklılıklara baktığım takdirde, sadece bölüm 3'ün yeni sürümünde
+
+13:29.930 --> 13:36.480
+birkaç hata olduğunu biliyorsunuzdur ve belki bazı şeyleri kopyalamak veya daha önce
+
+13:36.480 --> 13:41.390
+bazı şeyleri nasıl yaptığımı incelemek istiyorum. geçerli dosyamı değiştir
+
+13:41.700 --> 13:46.910
+Ancak, başka zamanlarda bunun sadece yeni dosyayı meşale etmek istediğinizi bildiğiniz olabilir.
+
+13:46.920 --> 13:49.120
+Sadece onunla bir şey yapmak istemiyorsun.
+
+13:49.140 --> 13:52.710
+Ve çok daha önceki sürüme geri dönmek istiyorsunuz.
+
+13:52.980 --> 13:59.370
+Yani bunu yapmak istiyorsanız, Get check isimli bir komut var, bu gerçekten sizin için
+
+13:59.370 --> 14:00.510
+gerçekten faydalı olacaktır.
+
+14:00.810 --> 14:03.190
+O halde kontrol et.
+
+14:03.210 --> 14:07.920
+Ve sonra, Bölüm 3 nokta metnini kontrol etmek
+
+14:07.920 --> 14:14.170
+istediğimiz dosyanın adını belirtmek için gidiyoruz ve eğer buraya tıkladığınızda, Bölüm
+
+14:14.170 --> 14:23.070
+3 nokta metninin geçerli sürümünün önizlemesini izleyebilirsiniz temel olarak bu bölüm 3'ü yerel depomuzda taahhüt edilen
+
+14:23.070 --> 14:26.550
+son sürüme geri sarmamızı isteyen bu komut.
+
+14:26.550 --> 14:33.900
+Bu yüzden, enter'a basarsam, bölüm 3'ün önceki görkemli durumuna geri döndüğünü
+
+14:34.440 --> 14:41.610
+hemen hemen görebilir ve bu, 3. bölümün son kontrol noktasındaki versiyonudur.
+
+14:41.640 --> 14:46.000
+Böylece bölüm 2 ve 3'ü tamamlayan bu oldu.
+
+14:46.020 --> 14:51.770
+Öyleyse bu derste çoğunlukla çocukların yerel uygulamalarına baktık.
+
+14:51.840 --> 14:58.460
+Bu yüzden, bu sürümleri bilgisayarımızda bir sonraki derste yerel olarak kaydedeceğim, merkezi kurmak
+
+14:58.830 --> 15:02.580
+ve uzak depoları oluşturmak hakkında konuşacağım, böylece göreceğim.

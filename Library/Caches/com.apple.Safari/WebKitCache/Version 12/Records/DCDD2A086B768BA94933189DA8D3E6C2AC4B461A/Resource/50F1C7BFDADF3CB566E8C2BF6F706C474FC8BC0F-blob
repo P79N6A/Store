@@ -1,0 +1,538 @@
+WEBVTT
+
+00:00.570 --> 00:06.120
+Sekarang hal pertama yang akan kita lakukan adalah membuka terminal dan di dalam Terminal kita
+
+00:06.120 --> 00:08.000
+akan menavigasi ke desktop kita.
+
+00:08.010 --> 00:13.650
+Jadi jika Anda tidak terbiasa dengan baris perintah dan Anda belum melihat Marchal pada baris perintah
+
+00:13.980 --> 00:18.390
+maka saya sarankan Anda untuk melihatnya sekarang karena kita akan menggunakan banyak perintah
+
+00:18.390 --> 00:20.790
+untuk membuat direktori dan navigasi sekitar.
+
+00:20.790 --> 00:25.290
+Jadi, jika Anda belum terbiasa maka ini waktu yang tepat untuk melihatnya.
+
+00:26.010 --> 00:33.600
+Jadi hal pertama yang akan saya lakukan adalah saya akan CD ke desktop saya dan
+
+00:33.600 --> 00:43.920
+di sini saya akan membuat direktori baru bernama story maka saya akan CD ke direktori cerita ini dan sebaliknya shoyu dengan ls.
+
+00:43.920 --> 00:45.870
+Anda dapat melihat bahwa itu benar-benar kosong.
+
+00:45.990 --> 00:50.420
+Dan juga di dalam finder saya bisa menunjukkan hal yang sama kepada Anda.
+
+00:50.430 --> 00:54.600
+Jadi mari kita lanjutkan dan membuat beberapa file teks.
+
+00:54.660 --> 01:01.590
+Jadi saya akan menggunakan sentuhan untuk membuat file yang disebut Bab 1 teks dot dan kemudian saya
+
+01:01.590 --> 01:09.690
+akan membuka teks bab 1 dan Anda bisa melakukan ini dengan hanya menulis terbuka dan membukanya di dalam aplikasi default
+
+01:09.750 --> 01:11.880
+yaitu teks pada Mac.
+
+01:12.120 --> 01:18.130
+Atau Anda dapat menggunakan teks di dalam terminal misalnya Vin.
+
+01:18.210 --> 01:21.770
+Sekarang ini hanya untuk orang yang benar-benar akrab dengan ini.
+
+01:21.780 --> 01:24.050
+Jadi sepenuhnya terserah Anda apa yang Anda putuskan untuk digunakan.
+
+01:24.090 --> 01:30.180
+Tetapi jika Anda tidak terbiasa menggunakan editor berbasis terminal maka mungkin ide yang baik
+
+01:30.180 --> 01:33.920
+untuk tetap dengan perintah terbuka dan menggunakan textedit.
+
+01:33.930 --> 01:39.110
+Jadi mari kita lanjutkan dan buka bab 1 dan mari kita menulis sesuatu di dalam Jawi
+
+01:42.990 --> 01:43.350
+OK.
+
+01:43.360 --> 01:45.270
+Jadi itu maha karya saya selesai.
+
+01:45.390 --> 01:49.440
+Saya akan pergi ke depan dan menekan save dan saya akan berhenti dari textedit.
+
+01:49.570 --> 01:53.190
+Jadi itu bab pertama kami selesai.
+
+01:53.380 --> 02:01.100
+Jadi sekarang mari kita membuat repositori lokal get dan mulai melacak beberapa perubahan file ini.
+
+02:01.450 --> 02:06.350
+Jadi untuk menginisialisasi, kita cukup menulis get in it.
+
+02:06.340 --> 02:12.490
+Dan seperti yang Anda lihat itu diinisialisasi dan kosong mendapatkan repositori di dalam direktori cerita.
+
+02:12.490 --> 02:17.230
+Sekarang jika Anda melihat ke dalam finder, Anda sebenarnya tidak dapat melihat titik ini sama sekali.
+
+02:17.320 --> 02:18.900
+Tapi seperti yang kita pelajari sebelumnya.
+
+02:18.970 --> 02:20.720
+Jika Anda menggunakan LS A.
+
+02:20.920 --> 02:26.620
+Anda dapat melihat semua file tersembunyi dan Anda dapat melihat bahwa Dogget ada di sana dan itu
+
+02:26.710 --> 02:32.320
+akan digunakan untuk melacak semua perubahan Anda untuk melakukan perubahan Anda dan untuk melakukan kontrol versi.
+
+02:32.320 --> 02:38.100
+Jadi kami saat ini berada di dalam direktori cerita dan Anda juga dapat menyebutnya direktori kerja.
+
+02:38.110 --> 02:45.250
+Jadi seperti yang saya sebutkan sebelumnya menggunakannya dan belajar tentang kontrol versi, ia datang dengan beberapa terminologi dan
+
+02:45.340 --> 02:46.570
+bahasa sendiri.
+
+02:46.570 --> 02:51.370
+Jadi saya akan mencoba dan menghilangkan prasangka dan menyederhanakan banyak istilah yang akan Anda temui agar kita semua
+
+02:51.370 --> 02:55.440
+dapat berada di halaman yang sama dan kita semua mengerti apa yang sedang terjadi.
+
+02:55.720 --> 03:01.770
+Jadi saat ini kita berada di dalam direktori kerja yang merupakan direktori cerita.
+
+03:02.050 --> 03:07.750
+Dan di sini agar mulai melacak perubahan file saya.
+
+03:07.750 --> 03:15.350
+Misalnya bab 1 dot teks maka saya perlu menambahkan file ini ke apa yang disebut area pementasan.
+
+03:15.790 --> 03:23.230
+Dan itu pada dasarnya adalah tempat perantara di mana Anda dapat memilih dan memilih file mana di dalam
+
+03:23.230 --> 03:26.270
+direktori kerja Anda yang ingin Anda komit.
+
+03:26.320 --> 03:33.220
+Jadi untuk melihat apa yang saat ini ada di dalam area pementasan Anda, Anda dapat menggunakan perintah get status dan ini menunjukkan
+
+03:33.220 --> 03:39.630
+kepada Anda bahwa ada file-file yang tidak terlacak yang akan ditampilkan dalam warna merah dan ini adalah sesuatu yang cukup di
+
+03:39.630 --> 03:41.080
+dalam direktori yang berfungsi.
+
+03:41.080 --> 03:42.410
+Jadi di dalam sini.
+
+03:42.550 --> 03:45.560
+Tapi itu belum di area pementasan.
+
+03:45.610 --> 03:52.570
+Jadi untuk menambahkannya ke area pementasan dan untuk mulai melacak perubahan di dalamnya maka kita harus
+
+03:52.570 --> 03:53.940
+menggunakan perintah get.
+
+03:54.020 --> 03:58.930
+Dan jadi kita akan mengetik bisa ditambahkan dan kita akan mengetikkan nama file.
+
+03:58.930 --> 04:01.730
+Jadi dalam hal ini adalah Bab 1 teks alternatif.
+
+04:01.960 --> 04:08.710
+Jadi lanjutkan dan tekan enter dan kemudian jika kami mencoba menggunakan get status lagi Anda dapat melihat bahwa file itu telah
+
+04:08.800 --> 04:11.820
+ditambahkan sebagai file baru dan sekarang berwarna hijau.
+
+04:11.830 --> 04:16.380
+Jadi ini sekarang di area pementasan dan siap untuk dilakukan.
+
+04:16.390 --> 04:20.260
+Jadi, lanjutkan dan lakukan ini di bawah kontrol versi.
+
+04:20.260 --> 04:28.480
+Jadi perintahnya adalah mendapatkan komit dan saya akan menggunakan tanda hubung dan bendera untuk menambahkan pesan komit.
+
+04:28.480 --> 04:31.450
+Jadi pesan komit sangat penting.
+
+04:31.630 --> 04:38.140
+Ini adalah sesuatu yang membantu Anda melacak perubahan apa yang telah Anda lakukan di setiap komit.
+
+04:38.140 --> 04:47.200
+Jadi saat Anda membuat titik penyimpanan baru, Anda ingin sejelas mungkin tentang perubahan apa yang dibuat antara titik penyimpanan
+
+04:47.230 --> 04:50.380
+terakhir dan titik penyimpanan saat ini.
+
+04:50.380 --> 04:58.420
+Jadi untuk komit awal kita, kita dapat menggunakan sesuatu yang sangat sederhana seperti komit awal dan ini menunjukkan bahwa ini adalah
+
+04:58.420 --> 04:59.880
+titik awal kita.
+
+05:00.100 --> 05:05.920
+Atau jika Anda ingin sedikit lebih spesifik karena dalam kasus kami, kami telah menyelesaikan
+
+05:05.920 --> 05:07.090
+bab 1.
+
+05:07.090 --> 05:11.180
+Jadi Anda bisa menulis bab lengkap 1.
+
+05:11.200 --> 05:16.540
+Sekarang hal yang akan Anda sadari adalah bahwa biasanya dengan pesan komit mereka ditulis dalam present
+
+05:16.540 --> 05:17.050
+tense.
+
+05:17.260 --> 05:18.600
+Dan ini adalah praktik terbaik.
+
+05:18.610 --> 05:25.210
+Jadi sementara itu mungkin akan lebih masuk akal saya kira setidaknya di kepala saya untuk menulis
+
+05:25.270 --> 05:28.200
+bab lengkap sebagai titik penyimpanan ini.
+
+05:28.240 --> 05:32.680
+Ini sebenarnya dengan konvensi bahwa Anda harus selalu menggunakan present tense.
+
+05:32.680 --> 05:36.910
+Jadi sepertinya Anda melakukannya sekarang Anda mengirimkan perubahan sekarang.
+
+05:37.000 --> 05:44.200
+Jadi mari kita lanjutkan dan tekan dan berbalik untuk membuat komit pertama kami dan Anda dapat melihat apa yang
+
+05:44.200 --> 05:47.290
+telah Anda buat dengan menggunakan perintah Dapatkan log.
+
+05:47.560 --> 05:53.320
+Jadi Anda dapat melihat bahwa komit ini dibuat saat ini oleh orang ini.
+
+05:53.540 --> 06:00.720
+Dan itu juga memiliki hash dan hash ini secara unik mengidentifikasi komitmen khusus ini.
+
+06:00.910 --> 06:06.620
+Dan tepat di akhir Anda melihat pesan komit ini tentang apa maksud dari penyelamatan ini.
+
+06:07.870 --> 06:12.310
+Jadi sekarang saya akan melanjutkan dan membuat dua bab lagi.
+
+06:12.340 --> 06:25.450
+Jadi mari kita buat Bab Dua teks titik dan bab tiga teks titik dan sekarang kita memiliki tiga bab dan saya akan masuk
+
+06:25.720 --> 06:29.640
+dan mengubah beberapa file teks ini.
+
+06:29.680 --> 06:31.030
+Jadi katakanlah
+
+06:41.270 --> 06:43.710
+k begitu Bab 2 selesai.
+
+06:43.960 --> 06:49.330
+Dan akhirnya mari kita lanjutkan dan buka bab 3 dan edit juga.
+
+07:00.930 --> 07:01.420
+Baiklah.
+
+07:01.450 --> 07:03.720
+Jadi ketiga file telah diubah.
+
+07:03.760 --> 07:09.070
+Dan di sini, di Finder Anda benar-benar bisa mengintip apa isinya yang akan sangat
+
+07:09.070 --> 07:14.520
+berguna bagi saya untuk dapat menunjukkan kepada Anda apa yang dilakukannya di balik latar belakang.
+
+07:14.800 --> 07:20.860
+Jadi sekarang mari kita lanjutkan dan membaca dua file baru ini ke area pementasan kita.
+
+07:20.860 --> 07:28.180
+Jadi sekali lagi jika kita menggunakan get status, Anda dapat melihat bahwa ada dua file yang tidak terlacak yang hanya
+
+07:28.180 --> 07:31.970
+ada di direktori kerja dan belum di dalam area pementasan.
+
+07:32.290 --> 07:38.630
+Jadi kita bisa memasukkannya ke area pementasan dengan hanya menambahkan masing-masing seperti yang kita lakukan sebelumnya.
+
+07:38.650 --> 07:42.610
+Dapatkan menambah dan menulis sesuatu seperti tag anjing Bab Dua.
+
+07:42.630 --> 07:45.430
+Dan kemudian melakukannya bab tiga teks dot.
+
+07:45.640 --> 07:51.940
+Tetapi seperti yang dapat Anda bayangkan jika Anda memiliki beberapa file maka itu bisa sangat membosankan harus melakukan
+
+07:51.940 --> 07:53.580
+ini satu per satu.
+
+07:53.590 --> 07:56.070
+Jadi tentu saja ada cara yang lebih baik.
+
+07:56.080 --> 08:01.870
+Jadi, alih-alih menambahkan file-file ini satu per satu, sebenarnya kita cukup mengatakan get ADD dan
+
+08:01.870 --> 08:07.050
+kemudian gunakan dot untuk menentukan semua yang ada di dalam direktori saat ini.
+
+08:07.060 --> 08:09.840
+Jadi semuanya di dalam direktori cerita.
+
+08:10.090 --> 08:14.740
+Jadi sekarang jika saya pergi ke depan dan tekan enter dan kemudian pergi untuk mendapatkan status lagi.
+
+08:14.920 --> 08:22.150
+Anda dapat melihat bahwa dua file baru yang telah ditambahkan ke area pementasan dan sekarang kita akan
+
+08:22.270 --> 08:26.580
+mengkomit dua file ke komit baru ke titik penyimpanan baru.
+
+08:26.920 --> 08:30.110
+Dan Anda tahu apa yang harus dilakukan jika Anda mengikuti saya.
+
+08:30.130 --> 08:35.570
+Silakan dan coba saja.
+
+08:35.570 --> 08:35.930
+Baiklah.
+
+08:35.930 --> 08:43.430
+Jadi bagaimana jika Anda adalah anggota dari perintah dapat melakukan dan kita akan
+
+08:43.430 --> 08:51.920
+menggunakan bendera M untuk menentukan pesan komit dan kita akan menulis pesan yang ada dalam
+
+08:51.920 --> 08:58.120
+present tense jadi katakanlah lengkapi bab dua dan tiga.
+
+08:58.940 --> 09:05.590
+Jadi itu semua yang saya lakukan antara komentar awal dan komit ini.
+
+09:05.600 --> 09:10.230
+Satu-satunya perbedaan adalah kenyataan bahwa saya telah menyelesaikan bab dua di bab tiga.
+
+09:10.250 --> 09:13.170
+Jadi mari kita pergi ke depan dan tekan enter.
+
+09:13.550 --> 09:17.060
+Jadi sekali lagi mari kita periksa menggunakan get log.
+
+09:17.120 --> 09:24.170
+Kita dapat melihat bahwa kita sekarang memiliki dua commit keduanya dengan hash yang berbeda karena mereka unik
+
+09:24.170 --> 09:25.230
+dan berbeda.
+
+09:25.280 --> 09:32.990
+Jadi yang pertama selesai bab 1 dan selesai saat ini dan kemudian sekitar lima menit kemudian
+
+09:32.990 --> 09:36.100
+saya menyelesaikan bab dua dan tiga.
+
+09:36.170 --> 09:38.110
+Dan itu adalah komitmen kedua.
+
+09:38.480 --> 09:41.230
+Dan di sinilah kita berada sekarang.
+
+09:41.270 --> 09:49.480
+Jadi, Anda dapat melihat dari kepala oleh Woodhead ini. Ini adalah posisi atau keadaan saat ini.
+
+09:49.490 --> 09:52.720
+Jadi saya hanya ingin dengan cepat merangkum apa yang baru saja kami lakukan.
+
+09:52.970 --> 09:58.440
+Jadi kami membuat file di direktori kerja kami di dalam direktori cerita kami.
+
+09:58.630 --> 10:05.990
+Jadi direktori yang berfungsi adalah folder atau direktori tempat Anda menginisialisasi repositori Anda.
+
+10:06.100 --> 10:10.390
+Ketika kami mengatakan masuk, kami melakukannya di dalam direktori cerita.
+
+10:10.460 --> 10:12.540
+Sehingga menjadi direktori yang berfungsi.
+
+10:12.740 --> 10:18.890
+Dan mulai sekarang akan mencoba dan melacak perubahan yang dilihatnya antara direktori
+
+10:19.310 --> 10:22.090
+kerja dan gudang lokal.
+
+10:22.490 --> 10:31.040
+Jadi pada awalnya kami membuat file di dalam direktori kerja kami di dalam cerita dan kemudian kami menggunakannya untuk
+
+10:31.040 --> 10:34.310
+menambahkan untuk mendorongnya ke area pementasan.
+
+10:34.310 --> 10:39.740
+Sekarang alasan mengapa ada area pementasan menengah ini karena Anda mungkin bertanya-tanya mengapa tidak
+
+10:39.740 --> 10:42.470
+pergi dari direktori kerja langsung ke repositori.
+
+10:42.500 --> 10:44.690
+Mengapa kita perlu langkah ekstra ini.
+
+10:44.840 --> 10:52.430
+Yah kadang-kadang Anda mungkin tidak ingin menambahkan semua file Anda untuk dilacak atau semua file Anda
+
+10:52.430 --> 10:53.550
+untuk dikomit.
+
+10:53.600 --> 10:59.240
+Jadi area pementasan adalah tempat yang baik untuk mencoba dan mencari tahu hal-hal apa yang ingin Anda abaikan.
+
+10:59.390 --> 11:01.970
+Dan salah satu hal yang ingin Anda lacak.
+
+11:02.210 --> 11:09.200
+Jadi setelah kami menggunakannya dan kami telah menunda file ke area stage dan kami senang
+
+11:09.200 --> 11:17.160
+dengan perubahan yang akan kami komit maka langkah selanjutnya adalah pergi ke depan dan berkomitmen menggunakan perintah Get commit.
+
+11:17.180 --> 11:25.730
+Jadi sekarang file kita ada di dalam repositori lokal kita sehingga dot dapat dan versi itu diberi nama
+
+11:25.730 --> 11:27.340
+melalui pesan commit.
+
+11:27.350 --> 11:35.540
+Jadi itu berarti bahwa bahkan jika kita telah mengacaukan file kita, kita masih dapat menggunakan versi terakhir yang di bawah
+
+11:35.540 --> 11:43.820
+kontrol versi dan kita dapat menggunakan perintah khusus yang disebut Dapatkan cek untuk mengembalikan kembali atau memutar kembali ke posisi
+
+11:43.820 --> 11:46.200
+terakhir di repositori lokal kami.
+
+11:46.370 --> 11:52.080
+Jadi saya akan tunjukkan seperti apa di baris perintah dan bagaimana kita akan melakukannya dalam praktek.
+
+11:52.100 --> 11:57.410
+Jadi saat ini saya punya tiga bab yang ditulis dengan baik dan saya merasa buku saya akan
+
+11:57.410 --> 11:58.430
+menjadi penjual besar.
+
+11:58.450 --> 12:06.530
+Jadi sekarang katakanlah saya tahu Anda telah mengerjakan bab tiga dan saya benar-benar mengacaukan semuanya dan
+
+12:06.530 --> 12:13.910
+Anda tahu Anda tertidur di keyboard saya dan saya telah menyimpan file saya.
+
+12:13.910 --> 12:20.140
+Dan sekarang jika Anda melihatnya sekarang hanya mumbojumbo dan saya telah menghancurkan karya saya.
+
+12:20.360 --> 12:25.170
+Tapi tetap aktif karena kami memiliki kontrol versi dan kami telah mengaktifkannya.
+
+12:25.370 --> 12:28.270
+Jadi kita tidak perlu khawatir.
+
+12:28.610 --> 12:33.750
+Saya benar-benar dapat mengembalikan perubahan yang telah saya buat secara lokal di direktori kerja saya.
+
+12:33.770 --> 12:39.290
+Jadi pada titik ini Anda dapat menggunakan get stators untuk melihat bahwa kami memiliki modifikasi dalam
+
+12:39.280 --> 12:44.780
+file teks tiga titik bab kami yang belum dilakukan atau ditambahkan ke area pementasan.
+
+12:44.840 --> 12:50.920
+Jadi jika kita mau, kita benar-benar dapat mengembalikan ini kembali ke kejayaan sebelumnya.
+
+12:51.230 --> 12:57.920
+Tetapi sebelum kita melakukannya kita dapat menggunakan perintah yang baik untuk memeriksa salah satu perbedaan antara versi
+
+12:57.920 --> 13:03.100
+saat ini dari bab 3 dan titik penyimpanan terakhir di repositori get kita.
+
+13:03.230 --> 13:06.860
+Jadi untuk melakukan itu Anda bisa menggunakan perintah get diff.
+
+13:06.950 --> 13:12.350
+Jadi perbedaan itu dan kami akan memberikannya nama file bab 3.
+
+13:12.650 --> 13:17.210
+Dan jika Anda menekan enter, Anda dapat melihat bahwa ini adalah bagian yang dihapus.
+
+13:17.210 --> 13:23.860
+Jadi bagian merah dan kemudian ini adalah bagian yang ditambahkan yang merupakan gobbledygook kami.
+
+13:24.050 --> 13:29.600
+Jadi sekarang jika saya telah melihat perbedaan-perbedaan ini, mungkin saja Anda tahu hanya ada
+
+13:29.930 --> 13:36.480
+beberapa kesalahan dalam versi baru bab 3 dan saya hanya ingin menyalin beberapa hal atau melihat bagaimana
+
+13:36.480 --> 13:41.390
+saya melakukan hal-hal tertentu sebelumnya dan ubah file saya saat ini.
+
+13:41.700 --> 13:46.910
+Tapi di lain waktu mungkin Anda tahu itu hanya Anda ingin membakar file baru.
+
+13:46.920 --> 13:49.120
+Anda hanya tidak ingin ada hubungannya dengan itu.
+
+13:49.140 --> 13:52.710
+Dan Anda lebih suka memutar kembali ke versi sebelumnya.
+
+13:52.980 --> 13:59.370
+Jadi jika Anda ingin melakukan itu maka ada perintah bernama Get check out yang akan sangat berguna
+
+13:59.370 --> 14:00.510
+bagi Anda.
+
+14:00.810 --> 14:03.190
+Jadi, periksa.
+
+14:03.210 --> 14:07.920
+Dan kemudian kita akan menentukan nama file yang ingin kita periksa yang
+
+14:07.920 --> 14:14.170
+merupakan Bab 3 titik teks dan jika Anda hanya menonton di sini yang merupakan pratinjau versi saat
+
+14:14.170 --> 14:23.070
+ini dari Bab tiga titik teks setelah saya menekan enter pada perintah ini yang pada dasarnya meminta untuk mengembalikan bab 3 ini ke
+
+14:23.070 --> 14:26.550
+versi terakhir yang dilakukan di repositori lokal kami.
+
+14:26.550 --> 14:33.900
+Jadi, jika saya menekan enter, Anda dapat melihat bahwa segera bab 3 saya telah dikembalikan ke keadaan
+
+14:34.440 --> 14:41.610
+semula sebelumnya dan ini adalah versi bab 3 pada pos pemeriksaan terakhir tempat saya melakukannya.
+
+14:41.640 --> 14:46.000
+Jadi itu yang ini selesai bab 2 dan 3.
+
+14:46.020 --> 14:51.770
+Jadi, sementara dalam pelajaran ini kita sebagian besar melihat implementasi lokal anak-anak.
+
+14:51.840 --> 14:58.460
+Jadi menyimpan versi ini di komputer kita secara lokal di pelajaran berikutnya saya akan berbicara tentang mendapatkan hub
+
+14:58.830 --> 15:02.580
+dan membuat repositori jarak jauh jadi saya akan melihat

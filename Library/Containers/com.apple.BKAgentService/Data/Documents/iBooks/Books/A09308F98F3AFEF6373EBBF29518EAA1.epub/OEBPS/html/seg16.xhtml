@@ -1,0 +1,798 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="ia.css"/>
+  <title>Chapter 10: The Data Model</title>
+</head>
+<body class="segment-chapter">
+
+
+<h1 class="segment-chapter">Chapter 10: The Data Model</h1>
+
+<p>In the previous chapter, you created a table view for <i>Checklists</i>, got it to display rows of items, and added the ability to mark items as completed (or not completed). However, this was all done using hardcoded, fake data. This would not do for a real to-do app since your users want to store their own custom to-do items.
+</p>
+<p>In order to store, manage, and display to-do information efficiently, you need a data model that allows you to store (and access) to-do information easily. And that&apos;s what you&apos;re going to do in this chapter.
+</p>
+<p>This chapter covers the following:
+</p>
+<ul>
+<li>
+<p><em>Model-View-Controller:</em> A quick explanation of the MVC fundamentals which are central to iOS programming.
+</p></li>
+
+<li>
+<p><em>The data model:</em> Creating a data model to hold the data for <i>Checklists</i>.
+</p></li>
+
+<li>
+<p><em>Clean up the code:</em> Simplify your code so that it is easier to understand and maintain.
+</p></li>
+</ul>
+
+<h2 class="segment-chapter">Model-View-Controller</h2>
+
+<p>First, a tiny detour into programming-concept-land so that you understand some of the principles behind using a data model. No book on programming for iOS can escape an explanation of <em>Model-View-Controller</em>, or MVC for short.
+</p>
+<p>MVC is one of the three fundamental design patterns of iOS. You’ve already seen the other two: <i>delegation</i>, making one object do something on behalf of another; and <i>target-action</i>, connecting events such as button taps to action methods.
+</p>
+<p>The Model-View-Controller pattern states that the objects in your app can be split into three groups:
+</p>
+<ul>
+<li>
+<p><em>Model objects.</em> These objects contain your data and any operations on the data. For example, if you were writing a cookbook app, the model would consist of the recipes. In a game, it would be the design of the levels, the player score, and the positions of the monsters.
+</p>
+<p>The operations that the data model objects perform are sometimes called the <i>business rules</i> or the <i>domain logic</i>. For <i>Checklists</i>, the checklists and their to-do items form the data model.
+</p></li>
+</ul>
+
+<ul>
+<li>
+<p><em>View objects.</em> These make up the visual part of the app: images, buttons, labels, text fields, table view cells, and so on. In a game, the views form the visual representation of the game world, such as the monster animations and a frag counter.
+</p>
+<p>A view can draw itself and responds to user input, but it typically does not handle any application logic. Many views, such as <code>UITableView</code>, can be re-used in many different apps because they are not tied to a specific data model.
+</p></li>
+</ul>
+
+<ul>
+<li>
+<p><em>Controller objects.</em> The controller is the object that connects your data model objects to the views. It listens to taps on the views, makes the data model objects do some calculations in response, and updates the views to reflect the new state of your model. The controller is in charge. On iOS, the controller is called the “view controller”.
+</p></li>
+</ul>
+
+<p>Conceptually, this is how these three building blocks fit together:
+</p><div class="image-65"><img src="graphics/img204.png"  alt="" title="How Model-View-Controller works" /></div>
+<p>The view controller has one main view, accessible through its <code>view</code> property, that contains a bunch of subviews. It is not uncommon for a screen to have dozens of views all at once. The top-level view usually fills the whole screen. You design the layout of the view controller’s screen in the storyboard.
+</p>
+<p>In <i>Checklists</i>, the main view is the <code>UITableView</code> and its subviews are the table view cells. Each cell also has several subviews of its own, namely the text label and the accessory.
+</p>
+<p>Generally, a view controller handles one screen of the app. If your app has more than one screen, each of these is handled by its own view controller and has its own views. Your app flows from one view controller to another.
+</p>
+<p>You will often need to create your own view controllers, but iOS also comes with ready-to-use view controllers, such as the image picker controller for photos, the mail compose controller that lets you write email, and of course, the table view controller for displaying lists of items.
+</p>
+<div class="note">
+<p><em>Views vs. view controllers</em>
+</p>
+<p>Remember that a view and a view controller are two different things.
+</p>
+<p>A view is an object that draws something on the screen, such as a button or a label. The view is what you see.
+</p>
+<p>The view controller is what does the work behind the scenes. It is the bridge that sits between your data model and the views.
+</p>
+<p>A lot of beginners give their view controllers names such as <code>FirstView</code> or <code>MainView</code>. That is very confusing! If something is a view controller, its name should end with “ViewController”, not “View”.
+</p>
+<p>I sometimes wish Apple had left the word “view” out of “view controller” and just called it “controller” as that is a lot less misleading.
+</p></div>
+
+<h2 class="segment-chapter">The data model</h2>
+
+<p>So far, you’ve put a bunch of fake data into the table view. The data consists of a text string and a checkmark that can be on or off.
+</p>
+<p>As you saw in the previous chapter, you cannot use the cells to remember the data as cells get re-used all the time and their old contents get overwritten.
+</p>
+<p>Table view cells are part of the view. Their purpose is to display the app’s data, but that data actually comes from somewhere else: the data model.
+</p>
+<p>Remember this well: the rows are the data, the cells are the views. The table view controller is the thing that ties them together through the act of implementing the table view’s data source and delegate methods.
+</p><div class="image-70"><img src="graphics/img205.png"  alt="" title="The table view controller (data source) gets the data from the model and puts it into the cells" /></div>
+<p>The data model for this app will be a list of to-do items. Each of these items will get its own row in the table.
+</p>
+<p>For each to-do item you need to store two pieces of information: the text (“Walk the dog”, “Brush my teeth”, “Eat ice cream”) and whether the checkmark is set or not.
+</p>
+<p>That is two pieces of information per row, so you need two variables for each row.
+</p>
+<h3 class="segment-chapter">The first iteration</h3>
+
+<p>First, I’ll show you the cumbersome way to program this. It will work but it isn’t very smart. Even though this is not the best approach, I’d still like you to follow along and copy-paste the code into Xcode and run the app so that you understand how this approach works.
+</p>
+<p>Understanding why this approach is problematic will help you appreciate the proper solution better.
+</p>
+<p>➤ In <em>ChecklistViewController.swift</em>, add the following constants right after the <code>class ChecklistViewController</code> line.
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ChecklistViewController</span>: <span class="hljs-title">UITableViewController</span> </span>{
+  <span class="hljs-keyword">let</span> row0text = <span class="hljs-string">"Walk the dog"</span>
+  <span class="hljs-keyword">let</span> row1text = <span class="hljs-string">"Brush teeth"</span>
+  <span class="hljs-keyword">let</span> row2text = <span class="hljs-string">"Learn iOS development"</span>
+  <span class="hljs-keyword">let</span> row3text = <span class="hljs-string">"Soccer practice"</span>
+  <span class="hljs-keyword">let</span> row4text = <span class="hljs-string">"Eat ice cream"</span>
+  . . .</pre>
+<p>These constants are defined outside of any method (they are not “local”), so they can be used by all of the methods in <code>ChecklistViewController</code>.
+</p>
+<p>➤ Change the data source methods to:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+      numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">return</span> <span class="hljs-number">5</span>
+}
+
+<span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+             cellForRowAt indexPath: IndexPath)</span></span> 
+             -&gt; <span class="hljs-type">UITableViewCell</span> {
+  <span class="hljs-keyword">let</span> cell = tableView.dequeueReusableCell(
+                       withIdentifier: <span class="hljs-string">"ChecklistItem"</span>, 
+                                  <span class="hljs-keyword">for</span>: indexPath)
+  <span class="hljs-keyword">let</span> label = cell.viewWithTag(<span class="hljs-number">1000</span>) <span class="hljs-keyword">as</span>! <span class="hljs-type">UILabel</span>
+
+  <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">0</span> {
+    label.text = row0text
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">1</span> {
+    label.text = row1text
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">2</span> {
+    label.text = row2text
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">3</span> {
+    label.text = row3text
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">4</span> {
+    label.text = row4text
+  }
+  <span class="hljs-keyword">return</span> cell
+}</pre>
+<p>➤ Run the app. It still shows the same five rows as originally.
+</p>
+<p>What have you done here? For every row, you have added a constant with the text for that row. Together, those five constants are your data model. (You could have used variables instead of constants, but since the values won&apos;t change for this particular example, it&apos;s better to use constants.)
+</p>
+<p>In <code>tableView(_:cellForRowAt:)</code> you look at <code>indexPath.row</code> to figure out which row to display, and put the text from the corresponding constant into the cell.
+</p>
+<h3 class="segment-chapter">Handle checkmarks</h3>
+
+<p>Now, let’s fix the checkmark toggling logic. You no longer want to toggle the checkmark on the cell but at the row (or data) level. To do this, you add five new instance variables to keep track of the “checked” state of each of the rows. (This time the values have to be variables instead of constants since you will be changing the checked/unchecked state for each row.) These new variables are also part of your data model.
+</p>
+<p>➤ Add the following instance variables:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> row0checked = <span class="hljs-literal">false</span>
+<span class="hljs-keyword">var</span> row1checked = <span class="hljs-literal">false</span>
+<span class="hljs-keyword">var</span> row2checked = <span class="hljs-literal">false</span>
+<span class="hljs-keyword">var</span> row3checked = <span class="hljs-literal">false</span>
+<span class="hljs-keyword">var</span> row4checked = <span class="hljs-literal">false</span></pre>
+<p>These variables have the data type <code>Bool</code>. You’ve seen the data types <code>Int</code> (whole numbers), <code>Float</code> (decimal/fractional numbers), and <code>String</code> (text) before. A <code>Bool</code> variable can hold only two possible values: <code>true</code> or <code>false</code>.
+</p>
+<p><code>Bool</code> is short for “boolean”, after Englishman George Boole who long ago invented a kind of logic that forms the basis of all modern computing. The fact that computers talk in ones and zeros is largely due to him.
+</p>
+<p>You use <code>Bool</code> variables to remember whether something is true (1) or not (0). As a convention, the names of boolean variables often start with the verb “is” or “has”, as in <code>isHungry</code> or <code>hasIceCream</code>.
+</p>
+<p>The instance variable <code>row0checked</code> is <code>true</code> if the first row has its checkmark set and <code>false</code> if it doesn&apos;t. Likewise, <code>row1checked</code> reflects whether the second row has a checkmark or not, and so on.
+</p>
+<div class="note">
+<p><em>Note:</em> How does the compiler know that the type of these variables is <code>Bool</code>? You never specified that anywhere.
+</p>
+<p>Remember <i>type inference</i> from your code in <i>Bulls&apos;s Eye</i>? Because you said <code>var row0checked = false</code>, the compiler infers that you intended to make this a <code>Bool</code>, as <code>false</code> is valid only for <code>Bool</code> values.
+</p></div>
+
+<p>The delegate method that handles taps on table cells will now use these new instance variables to determine whether the checkmark for a row needs to be toggled on or off.
+</p>
+<p>The code in <code>tableView(_:didSelectRowAt:)</code> should be something like the following. <i>Don’t make these changes just yet</i><i>!</i> Just try to understand what happens first.
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+           didSelectRowAt indexPath: IndexPath)</span></span> {
+
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> cell = tableView.cellForRow(at: indexPath) {
+    <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">0</span> {
+      row0checked = !row0checked
+      <span class="hljs-keyword">if</span> row0checked {
+        cell.accessoryType = .checkmark
+      } <span class="hljs-keyword">else</span> {
+        cell.accessoryType = .<span class="hljs-keyword">none</span>
+      }
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">1</span> {
+      row1checked = !row1checked
+      <span class="hljs-keyword">if</span> row1checked {
+        cell.accessoryType = .checkmark
+      } <span class="hljs-keyword">else</span> {
+        cell.accessoryType = .<span class="hljs-keyword">none</span>
+      }
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">2</span> {
+      row2checked = !row2checked
+      <span class="hljs-keyword">if</span> row2checked {
+        cell.accessoryType = .checkmark
+      } <span class="hljs-keyword">else</span> {
+        cell.accessoryType = .<span class="hljs-keyword">none</span>
+      }
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">3</span> {
+      row3checked = !row3checked
+      <span class="hljs-keyword">if</span> row2checked {
+        cell.accessoryType = .checkmark
+      } <span class="hljs-keyword">else</span> {
+        cell.accessoryType = .<span class="hljs-keyword">none</span>
+      }
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">4</span> {
+      row4checked = !row4checked
+      <span class="hljs-keyword">if</span> row4checked {
+        cell.accessoryType = .checkmark
+      } <span class="hljs-keyword">else</span> {
+        cell.accessoryType = .<span class="hljs-keyword">none</span>
+      }
+    }
+  }
+  tableView.deselectRow(at: indexPath, animated: <span class="hljs-literal">true</span>)
+}</pre>
+<p>It should be clear that the code looks at <code>indexPath.row</code> to find the row that was tapped, and then performs some logic with the corresponding “row checked” instance variable. But there’s also some new stuff you may not have seen before.
+</p>
+<p>Let’s look at the first <code>if indexPath.row</code> statement in detail:
+</p><pre class="code-block">    <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">0</span> {
+      row0checked = !row0checked
+      <span class="hljs-keyword">if</span> row0checked {
+        cell.accessoryType = .checkmark
+      } <span class="hljs-keyword">else</span> {
+        cell.accessoryType = .<span class="hljs-keyword">none</span>
+      }
+    } . . .</pre>
+<p>If <code>indexPath.row</code> is 0, the user tapped on the very first row and the corresponding instance variable is <code>row0checked</code>.
+</p>
+<p>You do the following to flip that boolean value around:
+</p><pre class="code-block">      row0checked = !row0checked</pre>
+<p>The <code>!</code> symbol is the <em>logical not</em> operator. There are a few other logical operators that work on <code>Bool</code> values, such as <em>and</em> and <em>or</em>, which you’ll encounter soon enough.
+</p>
+<p>What <code>!</code> does is simple: it reverses the meaning of the value. If <code>row0checked</code> is <code>true</code>, then <code>!</code> makes it <code>false</code>. Conversely, <code>!false</code> is <code>true</code>.
+</p>
+<p>Think of <code>!</code> as “not”: not yes is no and not no is yes. Yes?
+</p>
+<p>Once you have the new value of <code>row0checked</code>, you can use it to show or hide the checkmark:
+</p><pre class="code-block">      <span class="hljs-keyword">if</span> row0checked {
+        cell.accessoryType = .checkmark
+      } <span class="hljs-keyword">else</span> {
+        cell.accessoryType = .<span class="hljs-keyword">none</span>
+      }</pre>
+<p>The same logic is used for the other four rows.
+</p>
+<p>In fact, the other rows use the <i>exact</i> same logic. The only thing that is different between each of these code blocks is the name of the “row checked” instance variable.
+</p>
+<p>Because the code looks so familiar from one <code>if</code> statement to the next, we can improve upon it.
+</p>
+<p>➤ Replace the current <code>tableView(_:didSelectRowAt:)</code> implementation with the following:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+           didSelectRowAt indexPath: IndexPath)</span></span> {
+
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> cell = tableView.cellForRow(at: indexPath) {
+    <span class="hljs-keyword">var</span> isChecked = <span class="hljs-literal">false</span>
+
+    <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">0</span> {
+      row0checked = !row0checked
+      isChecked = row0checked
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">1</span> {
+      row1checked = !row1checked
+      isChecked = row1checked
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">2</span> {
+      row2checked = !row2checked
+      isChecked = row2checked
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">3</span> {
+      row3checked = !row3checked
+      isChecked = row3checked
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">4</span> {
+      row4checked = !row4checked
+      isChecked = row4checked
+    }
+
+    <span class="hljs-keyword">if</span> isChecked {
+      cell.accessoryType = .checkmark
+    } <span class="hljs-keyword">else</span> {
+      cell.accessoryType = .<span class="hljs-keyword">none</span>
+    }
+  }
+  tableView.deselectRow(at: indexPath, animated: <span class="hljs-literal">true</span>)
+}</pre>
+<p>Now isn&apos;t that a lot shorter than the previous iteration (that you weren&apos;t supposed to type in)?
+</p>
+<p>Notice how the logic that sets the checkmark on the cell has moved to the bottom of the method. There is now only one place where this happens.
+</p>
+<p>To make this possible, you store the value of the “row checked” instance variable into the <code>isChecked</code> local variable. This temporary variable is just used to remember whether the selected row needs a checkmark or not.
+</p>
+<p>By using a local variable you were able to remove a lot of duplicated code, which is a good thing. You’ve taken the logic that all rows had in common and moved it out of the <code>if</code> statements into a single place.
+</p>
+<div class="note">
+<p><em>Note:</em> Code duplication makes programs a lot harder to read. Worse, it invites subtle mistakes that cause hard-to-find bugs. Always be on the lookout for opportunities to remove duplicate code!
+</p></div>
+
+<div class="note">
+<p><em>Exercise:</em> There was actually a bug in the previous, longer version of this method – did you spot it? That’s what happens when you use copy-paste to create duplicate code, like I did when I wrote that method.
+</p></div>
+
+<p>➤ Run the app and observe… that it still doesn’t work very well. Initially, you have to tap a couple of times on a row to actually make the checkmark go away.
+</p>
+<p>What’s wrong here? Simple: when you declared the <code>rowXchecked</code> variables you set their values to <code>false</code>.
+</p>
+<p>So <code>row0checked</code> and the others indicate that there is no checkmark on their row, but the table draws one anyway. That’s because you enabled the checkmark accessory on the prototype cell.
+</p>
+<p>In other words: the data model (the “row checked” variables) and the views (the checkmarks inside the cells) are out-of-sync.
+</p>
+<p>There are a few ways you could try to fix this: you could set the <code>Bool</code> variables to <code>true</code> to begin with, or you could remove the checkmark from the prototype cell in the storyboard.
+</p>
+<p>Neither is a foolproof solution. What goes wrong here isn’t so much that you initialized the “row checked” values wrong or designed the prototype cell wrong, but that you didn’t set the cell’s <code>accessoryType</code> property to the right value in <code>tableView(_:cellForRowAt:)</code>.
+</p>
+<p>When you are asked for a new cell, you always should configure all of its properties. The call to <code>tableView.dequeueReusableCell(withIdentifier:)</code> could return a cell that was previously used for a row with a checkmark. If the new row shouldn’t have a checkmark, then you have to remove it from the cell at this point (and vice versa).
+</p>
+<p>Let’s fix that.
+</p>
+<p>➤ Add the following method to <em>ChecklistViewController.swift</em>. (If you&apos;re wondering where to add the code, probably best to add it either before or after the marked sections for the table view delegates. Not that the position matters, but purely from an organizational perspective.):
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">configureCheckmark</span><span class="hljs-params">(<span class="hljs-keyword">for</span> cell: UITableViewCell, 
+                    at indexPath: IndexPath)</span></span> {
+  <span class="hljs-keyword">var</span> isChecked = <span class="hljs-literal">false</span>
+
+  <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">0</span> {
+    isChecked = row0checked
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">1</span> {
+    isChecked = row1checked
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">2</span> {
+    isChecked = row2checked
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">3</span> {
+    isChecked = row3checked
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">4</span> {
+    isChecked = row4checked
+  }
+
+  <span class="hljs-keyword">if</span> isChecked {
+    cell.accessoryType = .checkmark
+  } <span class="hljs-keyword">else</span> {
+    cell.accessoryType = .<span class="hljs-keyword">none</span>
+  }
+}</pre>
+<p>This new method looks at the cell for a certain row, specified as usual by <code>indexPath</code>, and makes the checkmark visible if the corresponding “row checked” variable is <code>true</code>, or hides the checkmark if the variable is <code>false</code>.
+</p>
+<p>This logic should look very familiar! The only difference with before is that here you don’t toggle the state of the “row checked” variable. You only read it and then set the cell’s accessory.
+</p>
+<p>You’ll call this method from <code>tableView(_:cellForRowAt:)</code>, just before you return the cell.
+</p>
+<p>➤ Change <code>tableView(_:cellForRowAt:)</code> to the following (recall that <code>. . .</code> means that the existing code at that spot doesn’t change):
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+             cellForRowAt indexPath: IndexPath)</span></span> 
+             -&gt; <span class="hljs-type">UITableViewCell</span> {
+  . . . 
+  
+  configureCheckmark(<span class="hljs-keyword">for</span>: cell, at: indexPath)
+  <span class="hljs-keyword">return</span> cell
+}</pre>
+<p>➤ Run the app again.
+</p>
+<p>Now the app works just fine. Initially all the rows are unchecked. Tapping a row checks it, tapping it again unchecks it. The rows and cells are now always in sync. This code guarantees that each cell always has the value that corresponds to its underlying data row.
+</p>
+<h4 class="segment-chapter">External and internal parameter names</h4>
+
+<p>The new <code>configureCheckmark</code> method has two parameters, <code>for</code> and <code>at</code>. Its full name is therefore <code>configureCheckmark(for:at:)</code>.
+</p>
+<p><code>for</code> and <code>at</code> are the <i>external</i> names of these parameters.
+</p>
+<p>Adding short prepositions such as “at”, “with”, or “for” is very common in Swift. It makes the name of the method sound like a proper English phrase: “configure checkmark for this cell at that index-path”. Doesn’t it just roll off your tongue?
+</p>
+<p>When you call the method, you always have to include those external parameter names:
+</p><pre class="code-block">configureCheckmark(<span class="hljs-keyword">for</span>: someCell, at: someIndexPath)</pre>
+<p>Here, <code>someCell</code> is a variable that refers to a <code>UITableViewCell</code> object. Likewise, <code>someIndexPath</code> is a variable of type <code>IndexPath</code>.
+</p>
+<p>You can’t write the following:
+</p><pre class="code-block">configureCheckmark(someCell, someIndexPath)</pre>
+<p>This won’t compile. The app doesn’t have a <code>configureCheckmark</code> method that doesn&apos;t take parameter names, only <code>configureCheckmark(for:at:)</code>. The <code>for</code> and <code>at</code> are an integral part of the method name!
+</p>
+<p>Inside the method you use the <i>internal</i> labels <code>cell</code> and <code>indexPath</code> to refer to the parameters.
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">configureCheckmark</span><span class="hljs-params">(<span class="hljs-keyword">for</span> cell: UITableViewCell, 
+                    at indexPath: IndexPath)</span></span> {
+  <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">0</span> {
+    . . . 
+  } 
+
+  cell.accessoryType = .checkmark
+  . . . 
+}</pre>
+<p>You can’t write <code>if at.row == 0</code> or <code>for.accessoryType = .checkmark</code>. That also sounds a little odd, doesn’t it?
+</p>
+<p>This split between external and internal labels is unique to Swift and Objective-C and takes some getting used to if you’re familiar with other languages.
+</p>
+<p>This naming convention primarily exists so that Swift can talk to older Objective-C code, and this is a good thing since most of the iOS frameworks are still written in Objective-C.
+</p>
+<h3 class="segment-chapter">Simplify the code</h3>
+
+<p>Why was  <code>configureCheckmark(for:at:)</code> set up as a method of its own anyway? Well, because you can use it to simplify <code>tableView(_:didSelectRowAt:)</code>.
+</p>
+<p>Notice how similar these two methods currently are. That’s another case of code duplication that you can get rid of!
+</p>
+<p>You can simplify <code>didSelectRowAt</code> by letting <code>configureCheckmark(for:at:)</code> do some of the work.
+</p>
+<p>➤ Replace <code>tableView(_:didSelectRowAt:)</code> with the following:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView, 
+           didSelectRowAt indexPath: IndexPath)</span></span> {
+
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> cell = tableView.cellForRow(at: indexPath) {
+    <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">0</span> {
+      row0checked = !row0checked
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">1</span> {
+      row1checked = !row1checked
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">2</span> {
+      row2checked = !row2checked
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">3</span> {
+      row3checked = !row3checked
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">4</span> {
+      row4checked = !row4checked
+    }
+
+    configureCheckmark(<span class="hljs-keyword">for</span>: cell, at: indexPath)
+  }
+  tableView.deselectRow(at: indexPath, animated: <span class="hljs-literal">true</span>)
+}</pre>
+<p>This method no longer sets or clears the checkmark from the cell, but only toggles the “checked” state in the data model and then calls <code>configureCheckmark(for:at:)</code> to update the view.
+</p>
+<p>➤ Run the app again and it should still work.
+</p>
+<p>➤ Change the declarations of the instance variables to the following and run the app again:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> row0checked = <span class="hljs-literal">false</span>
+<span class="hljs-keyword">var</span> row1checked = <span class="hljs-literal">true</span>
+<span class="hljs-keyword">var</span> row2checked = <span class="hljs-literal">true</span>
+<span class="hljs-keyword">var</span> row3checked = <span class="hljs-literal">false</span>
+<span class="hljs-keyword">var</span> row4checked = <span class="hljs-literal">true</span></pre>
+<p>Now rows 1, 2 and 4 (the second, third and fifth rows) initially have a checkmark while the others don’t.
+</p><div class="image-30"><img src="graphics/img206.png"  alt="" title="The data model and the table view cells are now always in-sync" /></div>
+<p>The approach that we’ve taken here to remember which rows are checked or not works just fine… when there&apos;s five rows of data.
+</p>
+<p>But what if you have 100 rows and they all need to be unique? Should you add another 95 “row text” and “row checked” variables to the view controller, as well as that many additional <code>if</code> statements? I hope not!
+</p>
+<p>There is a better way: arrays.
+</p>
+<h3 class="segment-chapter">Arrays</h3>
+
+<p>An <em>array</em> is an ordered list of objects. If you think of a variable as a container of one value (or one object) then an array is a container for multiple objects.
+</p><div class="image-60"><img src="graphics/img207.png"  alt="" title="Arrays are ordered lists containing multiple objects" /></div>
+<p>Of course, the array itself is also an object (named <code>Array</code>) that you can put into a variable. And because arrays are objects, arrays can contain other arrays.
+</p><div class="image-60"><img src="graphics/img208.png"  alt="" title="Arrays can also include other arrays" /></div>
+<p>The objects inside an array are indexed by numbers, starting at 0 as usual. To ask the array for the first object, you write <code>array[0]</code>. The second object is at <code>array[1]</code>, and so on.
+</p>
+<p>The array is <i>ordered</i>, meaning that the order of the objects it contains matters. The object at index 0 always comes before the object at index 1.
+</p>
+<div class="note">
+<p><em>Note:</em> An array is a <i>collection</i> object. There are several other collection objects and they all organize their objects in a different fashion. <code>Dictionary</code>, for example, contains <i>key-value pairs</i>, just like a real dictionary contains a list of words and a description for each of those words. You’ll use some of these other collection types in later chapters.
+</p></div>
+
+<p>The organization of an array is very similar to the rows for a table – they are both lists of objects in a particular order – so it makes sense to put your data model’s rows into an array.
+</p>
+<p>Arrays store one object per index, but your rows currently consist of two separate pieces of data: the text and the checked state. It would be easier if you made a single object for each row, because then the row number from the table simply becomes the index in the array.
+</p>
+<h3 class="segment-chapter">The second iteration</h3>
+
+<p>Let’s combine the text and checkmark state into a new object of your own!
+</p>
+<h4 class="segment-chapter">The object</h4>
+
+<p>➤ Select the <em>Checklists</em> group in the project navigator and right click. Choose <em>New File…</em> from the popup menu:
+</p><div class="image-40"><img src="graphics/img209.png"  alt="" title="Adding a new file to the project" /></div>
+<p>Under the <em>Source</em> section choose <em>Swift File</em>:
+</p><div class="image-50"><img src="graphics/img210.png"  alt="" title="Choosing the Swift File class template" /></div>
+<p>Click <em>Next</em> to continue. Save the new file as <em>ChecklistItem</em> (you don&apos;t really need to add the <em>.</em><em>swift</em> file extension since it will be automatically added for you).
+</p><div class="image-40"><img src="graphics/img211.png"  alt="" title="Saving the new Swift file" /></div>
+<p>Press <em>Create</em> to add the new file to the project.
+</p>
+<p>➤ Add the following to the new <em>ChecklistItem.swift</em> file, below the <code>import</code> line:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ChecklistItem</span> </span>{
+  <span class="hljs-keyword">var</span> text = <span class="hljs-string">""</span>
+  <span class="hljs-keyword">var</span> checked = <span class="hljs-literal">false</span>
+}</pre>
+<p>What you see here is the absolute minimum amount of code you need in order to make a new object. The <code>class</code> keyword names the object and the two lines with <code>var</code> add data items (instance variables) to it.
+</p>
+<p>The <code>text</code> property will store the description of the checklist item (the text that will appear in the table view cell’s label) and the <code>checked</code> property determines whether the cell gets a checkmark or not.
+</p>
+<div class="note">
+<p><em>Note:</em> You may be wondering what the difference is between the terms <i>property</i> and <i>instance variable</i> – we’ve used both to refer to an object’s data items. You’ll be glad to hear that these two terms are interchangeable.
+</p>
+<p>In Swift terminology, a property is a variable or constant that is used in the context of an object. That’s exactly what an instance variable is.
+</p>
+<p>(In Objective-C, properties and instance variables are closely related but not quite the same thing. In Swift they are the same.)
+</p></div>
+
+<p>That’s all for <em>ChecklistItem.swift</em> for now. The <code>ChecklistItem</code> object currently only serves to combine the <code>text</code> and the <code>checked</code> variables into one object. Later you’ll do more with it.
+</p>
+<h4 class="segment-chapter">Using the object</h4>
+
+<p>Before you try using an array, replace the <code>String</code> and <code>Bool</code> instance variables in the view controller with these new <code>ChecklistItem</code> objects to see how that approach would work.
+</p>
+<p>➤ In <em>ChecklistViewController.swift</em>, remove the old properties (both the <code>let</code> and <code>var</code> values) and replace them with <code>ChecklistItem</code> objects:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ChecklistViewController</span>: <span class="hljs-title">UITableViewController</span> </span>{
+  <span class="hljs-keyword">var</span> row0item = <span class="hljs-type">ChecklistItem</span>()
+  <span class="hljs-keyword">var</span> row1item = <span class="hljs-type">ChecklistItem</span>()
+  <span class="hljs-keyword">var</span> row2item = <span class="hljs-type">ChecklistItem</span>()
+  <span class="hljs-keyword">var</span> row3item = <span class="hljs-type">ChecklistItem</span>()
+  <span class="hljs-keyword">var</span> row4item = <span class="hljs-type">ChecklistItem</span>()</pre>
+<p>These replace the <code>row0text</code>, <code>row0checked</code>, etc. instance variables.
+</p>
+<p>Wait a minute though ... We&apos;ve had variable declarations with a type, or with explicity values like an empty string or a number, but what are these? These variables are being assigned with what looks like a method!
+</p>
+<p>And you are right about the method - it&apos;s a special method that all classes have called an <i>initializer</i> method. An initializer method creates a new instance of the given object, in this case <code>ChecklistItem</code> . This creates an empty instance of <code>ChecklistItem</code> with the the default values you defined when you added the class implementation — an empty string (&quot;&quot;) for <code>text</code> and <code>false</code> for <code>checked</code>.
+</p>
+<p>Instead of the above, you could have used what&apos;s known as a <i>type annotation</i> to simply indicate the type of  <code>row0Item</code> like this:
+</p><pre class="code-block"><span class="hljs-keyword">var</span> row0item: <span class="hljs-type">ChecklistItem</span></pre>
+<p>If you did that, <code>row0item</code> won’t have a value yet, it would just be an empty container for a <code>ChecklistItem</code> object. And you&apos;d still have to create the <code>ChecklistItem</code> instance later in your code (for example, in <code>viewDidLoad</code>).
+</p>
+<p>The way we&apos;ve done the code now, we initialize the variables above immediately with an empty instance of <code>ChecklistItem</code> and let Swift&apos;s type inference do the work in letting the compiler figure out the type of the variables. Handy, right?
+</p>
+<p>Just to clarify the above a bit more, the data type is like the brand name of a car. Just saying the words “Porsche 911” out loud doesn’t magically get you a new car – you actually have to go to the dealer to buy one.
+</p>
+<p>The parentheses <code>()</code> behind the type name are like going to the object dealership to buy an object of that type. The parentheses tell Swift’s object factory, “Build me an object of the type <code>ChecklistItem</code>.”
+</p>
+<p>It is important to remember that just declaring that you have a variable does not automatically make the corresponding object for you. The variable is just the container for the object. You still have to instantiate the object and put it into the container. The variable is the box and the object is the thing inside the box.
+</p>
+<p>So until you order an actual <code>ChecklistItem</code> object from the factory and put that into <code>row0item</code>, the variable is empty. And empty variables are a big no-no in Swift.
+</p>
+<h4 class="segment-chapter">Fixing existing code</h4>
+
+<p>Because some methods in the view controller still refer to the old variables, Xcode will throw up multiple errors at this point. Before you can run the app again, you need to fix these errors. So, let’s do that now.
+</p>
+<div class="note">
+<p><em>Note:</em> I generally encourage you to type in the code from this book by hand (instead of copy-pasting), because that gives you a better feel for what you’re doing, but in the following instances it’s easier to just copy-paste from the PDF.
+</p>
+<p>Unfortunately, copying from the PDF sometimes adds strange or invisible characters that confuse Xcode. It’s best to first paste the copied text into a plain text editor such as TextMate and then copy/paste from the text editor into Xcode.
+</p>
+<p>Of course, if you’re reading the print edition of this book, copying &amp; pasting from the book isn’t going to work, but you can still use copy-paste to save yourself some effort. Make the changes on one line and then copy that line to create the other lines. Copy-paste is a programmer’s best friend, but don’t forget to update the lines you pasted to use the correct variable names!
+</p></div>
+
+<p>➤ In <code>tableView(_:cellForRowAt:)</code>, replace the <code>if</code> statements with the following:
+</p><pre class="code-block">  <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">0</span> {
+    label.text = row0item.text
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">1</span> {
+    label.text = row1item.text
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">2</span> {
+    label.text = row2item.text
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">3</span> {
+    label.text = row3item.text
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">4</span> {
+    label.text = row4item.text
+  }</pre>
+<p>➤ In <code>tableView(_:didSelectRowAt:)</code>,  again change the <code>if</code> statement block to:
+</p><pre class="code-block">    <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">0</span> {
+      row0item.checked = !row0item.checked
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">1</span> {
+      row1item.checked = !row1item.checked
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">2</span> {
+      row2item.checked = !row2item.checked
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">3</span> {
+      row3item.checked = !row3item.checked
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">4</span> {
+      row4item.checked = !row4item.checked
+    }</pre>
+<p>➤ And finally, in <code>configureCheckmark(for:at:)</code>, change the <code>if</code> block to:
+</p><pre class="code-block">  <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">0</span> {
+    isChecked = row0item.checked
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">1</span> {
+    isChecked = row1item.checked
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">2</span> {
+    isChecked = row2item.checked
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">3</span> {
+    isChecked = row3item.checked
+  } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> indexPath.row == <span class="hljs-number">4</span> {
+    isChecked = row4item.checked
+  }</pre>
+<p>Basically, all of the above changes do one thing - instead of using the separate <code>row0text</code> and <code>row0checked</code> variables, you now use <code>row0item.text</code> and <code>row0item.checked</code>.
+</p>
+<p>That takes care of all of the errors and you can even build and run the app. But if you do, you&apos;ll notice that you get an empty table. Try clicking on the first five rows. You&apos;ll notice that you get checkmarks toggling on and off for the first five rows. Curiouser, and curiouser ...
+</p>
+<p>So what went wrong?
+</p>
+<h4 class="segment-chapter">Set up the objects</h4>
+
+<p>Remember how I said that the new <code>row0item</code> etc. variables are initialized with empty instances of <code>ChecklistItem</code>? That means that the text for each variable is empty. You still need to set up the values for these new variables!
+</p>
+<p>➤ Modify <code>viewDidLoad</code> in <em>ChecklistViewController.swift</em> as follows:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">super</span>.viewDidLoad()
+  
+  <span class="hljs-comment">// Add the following lines</span>
+  row0item.text = <span class="hljs-string">"Walk the dog"</span>
+  
+  row1item.text = <span class="hljs-string">"Brush my teeth"</span>
+  row1item.checked = <span class="hljs-literal">true</span>
+  
+  row2item.text = <span class="hljs-string">"Learn iOS development"</span>
+  row2item.checked = <span class="hljs-literal">true</span>
+  
+  row3item.text = <span class="hljs-string">"Soccer practice"</span>
+  
+  row4item.text = <span class="hljs-string">"Eat ice cream"</span>
+  row4item.checked = <span class="hljs-literal">true</span>
+}</pre>
+<p>This code simply sets up each of the new <code>ChecklistItem</code> variables that you created. If you&apos;re wondering why some variables have a line to set the <code>checked</code> property and some don&apos;t, remember that you initialize <code>checked</code> to <code>false</code> in the <code>ChecklistItem</code> class implementation. That default value is applied to the new object when you instantiate it. So, while you could still add a line to set <code>checked</code> to <code>false</code>, it isn&apos;t necessary since the <code>checked</code> property is already set to <code>false</code>.
+</p>
+<p>The above code is essentially doing the same thing as before, except that this time the <code>text</code> and <code>checked</code> variables are not separate instance variables of the view controller, but instead are properties of a <code>ChecklistItem</code> object.
+</p>
+<p>➤ Run the app just to make sure that everything works now.
+</p>
+<p>Putting the <code>text</code> and <code>checked</code> properties into their own <code>ChecklistItem</code> object already improved the code, but it is still a bit unwieldy.
+</p>
+<h4 class="segment-chapter">Using Arrays</h4>
+
+<p>With the current approach, you need to keep around a <code>ChecklistItem</code> instance variable for each row. That’s not ideal, especially if you want more than just a handful of rows.
+</p>
+<p>Time to bring that array into play!
+</p>
+<p>➤ In <em>ChecklistViewController.swift</em>, remove all the instance variables and replace them with a single array variable named <code>items</code>:
+</p><pre class="code-block"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ChecklistViewController</span>: <span class="hljs-title">UITableViewController</span> </span>{
+  <span class="hljs-keyword">var</span> items = [<span class="hljs-type">ChecklistItem</span>]()</pre>
+<p>Instead of five different instance variables, one for each row, you now have just one variable for the array.
+</p>
+<p>This looks similar to how you declared the previous variables but this time there are square brackets around <code>ChecklistItem</code>. Those square brackets indicate that the variable is going to be an array containing <code>ChecklistItem</code> objects. And the brackets at the end <code>()</code> simply indicate that you are creating an instance of this array — it will create an empty array with no items in the array.
+</p>
+<p>➤ Modify <code>viewDidLoad</code> as follows:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">viewDidLoad</span><span class="hljs-params">()</span></span> {
+  <span class="hljs-keyword">super</span>.viewDidLoad()
+  
+  <span class="hljs-comment">// Replace previous code with the following</span>
+  <span class="hljs-keyword">let</span> item1 = <span class="hljs-type">ChecklistItem</span>()
+  item1.text = <span class="hljs-string">"Walk the dog"</span>
+  items.append(item1)
+  
+  <span class="hljs-keyword">let</span> item2 = <span class="hljs-type">ChecklistItem</span>()
+  item2.text = <span class="hljs-string">"Brush my teeth"</span>
+  item2.checked = <span class="hljs-literal">true</span>
+  items.append(item2)
+  
+  <span class="hljs-keyword">let</span> item3 = <span class="hljs-type">ChecklistItem</span>()
+  item3.text = <span class="hljs-string">"Learn iOS development"</span>
+  item3.checked = <span class="hljs-literal">true</span>
+  items.append(item3)
+  
+  <span class="hljs-keyword">let</span> item4 = <span class="hljs-type">ChecklistItem</span>()
+  item4.text = <span class="hljs-string">"Soccer practice"</span>
+  items.append(item4)
+  
+  <span class="hljs-keyword">let</span> item5 = <span class="hljs-type">ChecklistItem</span>()
+  item5.text = <span class="hljs-string">"Eat ice cream"</span>
+  items.append(item5)
+}</pre>
+<p>This is not that different from before, except that you now have to first create – or <i>instantiate</i> – each <code>ChecklistItem</code> object and add each instance to the array. Once the above code completes, the <code>items</code> array contains five <code>ChecklistItem</code> objects. This is your new data model.
+</p>
+<h3 class="segment-chapter">Simplify the code - again</h3>
+
+<p>Now that you have all your rows in the <code>items</code> array, you can simplify the table view data source and delegate methods once again.
+</p>
+<p>➤ Change these methods:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+             cellForRowAt indexPath: IndexPath)</span></span> 
+             -&gt; <span class="hljs-type">UITableViewCell</span> {
+  <span class="hljs-keyword">let</span> cell = tableView.dequeueReusableCell(
+                        withIdentifier: <span class="hljs-string">"ChecklistItem"</span>, 
+                                   <span class="hljs-keyword">for</span>: indexPath)
+                 
+  <span class="hljs-keyword">let</span> item = items[indexPath.row]       <span class="hljs-comment">// Add this</span>
+  
+  <span class="hljs-keyword">let</span> label = cell.viewWithTag(<span class="hljs-number">1000</span>) <span class="hljs-keyword">as</span>! <span class="hljs-type">UILabel</span>
+  <span class="hljs-comment">// Replace everything after the above line with the following</span>
+  label.text = item.text
+  configureCheckmark(<span class="hljs-keyword">for</span>: cell, at: indexPath)
+  <span class="hljs-keyword">return</span> cell
+}</pre><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+           didSelectRowAt indexPath: IndexPath)</span></span> {
+  
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> cell = tableView.cellForRow(at: indexPath) {
+    <span class="hljs-comment">// Replace everything inside this `if` condition </span>
+    <span class="hljs-comment">// with the following</span>
+    <span class="hljs-keyword">let</span> item = items[indexPath.row]
+    item.checked = !item.checked
+    
+    configureCheckmark(<span class="hljs-keyword">for</span>: cell, at: indexPath)
+  }
+  tableView.deselectRow(at: indexPath, animated: <span class="hljs-literal">true</span>)
+}</pre><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">configureCheckmark</span><span class="hljs-params">(<span class="hljs-keyword">for</span> cell: UITableViewCell, 
+                    at indexPath: IndexPath)</span></span> {
+  <span class="hljs-comment">// Replace full method implementation</span>
+  <span class="hljs-keyword">let</span> item = items[indexPath.row]
+
+  <span class="hljs-keyword">if</span> item.checked {
+    cell.accessoryType = .checkmark
+  } <span class="hljs-keyword">else</span> {
+    cell.accessoryType = .<span class="hljs-keyword">none</span>
+  }
+}</pre>
+<p>That’s a lot simpler than what you had before! Each method is now only a handful of lines long.
+</p>
+<p>In each method, you do:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> item = items[indexPath.row]</pre>
+<p>This asks the array for the <code>ChecklistItem</code> object at the index that corresponds to the row number. Once you have that object, you can simply look at its <code>text</code> and <code>checked</code> properties and do whatever you need to do.
+</p>
+<p>If the user were to add 100 to-do items to this list, none of this code would need to change. It works equally well with five items as with a hundred (or a thousand).
+</p>
+<p>Speaking of the number of items, you can now change <code>numberOfRowsInSection</code> to return the actual number of items in the array, instead of a hard-coded number.
+</p>
+<p>➤ Change the <code>tableView(_:numberOfRowsInSection:)</code> method to:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+      numberOfRowsInSection section: Int)</span></span> -&gt; <span class="hljs-type">Int</span> {
+  <span class="hljs-keyword">return</span> items.<span class="hljs-built_in">count</span>
+}</pre>
+<p>Not only is the code a lot shorter and easier to read, it can now also handle an arbitrary number of rows. That is the power of arrays!
+</p>
+<p>➤ Run the app and see for yourself. It should still work exactly the same as before, but the internal structure of the code is way better.
+</p>
+<div class="note">
+<p><em>Exercise:</em> Add a few more rows to the table. You should only have to change <code>viewDidLoad</code> for this to work.
+</p></div>
+
+<h2 class="segment-chapter">Clean up the code</h2>
+
+<p>There are a few more things you can do to improve the source code.
+</p>
+<p>➤ Replace <code>configureCheckmark(for:at:)</code> with this one:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">configureCheckmark</span><span class="hljs-params">(<span class="hljs-keyword">for</span> cell: UITableViewCell, 
+                       with item: ChecklistItem)</span></span> {
+  <span class="hljs-keyword">if</span> item.checked {
+    cell.accessoryType = .checkmark
+  } <span class="hljs-keyword">else</span> {
+    cell.accessoryType = .<span class="hljs-keyword">none</span>
+  }
+}</pre>
+<p>Instead of an index-path, you now directly pass the <code>ChecklistItem</code> object to the method.
+</p>
+<p>Note that now the full name of the method becomes <code>configureCheckmark(for:with:)</code> and that’s how you will call it from other places in the app.
+</p>
+<p>Why did you change this method? Previously it received an index-path and then did the following to find the corresponding <code>ChecklistItem</code>:
+</p><pre class="code-block"><span class="hljs-keyword">let</span> item = items[indexPath.row]</pre>
+<p>But in both <code>cellForRowAt</code> and <code>didSelectRowAt</code> you already do that. So, it&apos;s simpler to pass that <code>ChecklistItem</code> object directly to <code>configureCheckmark</code> instead of making it do the same work twice. Anything that simplifies the code is good.
+</p>
+<p>➤ Also add this new method:
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">configureText</span><span class="hljs-params">(<span class="hljs-keyword">for</span> cell: UITableViewCell, 
+                  with item: ChecklistItem)</span></span> {
+  <span class="hljs-keyword">let</span> label = cell.viewWithTag(<span class="hljs-number">1000</span>) <span class="hljs-keyword">as</span>! <span class="hljs-type">UILabel</span>
+  label.text = item.text
+}</pre>
+<p>This sets the checklist item’s text on the cell’s label. Previously you did that in <code>cellForRowAt</code> but it’s clearer to put that in its own method.
+</p>
+<p>➤ Update <code>tableView(_:cellForRowAt:)</code> so that it calls these new methods:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+             cellForRowAt indexPath: IndexPath)</span></span> 
+             -&gt; <span class="hljs-type">UITableViewCell</span> {
+  <span class="hljs-keyword">let</span> cell = tableView.dequeueReusableCell(
+                        withIdentifier: <span class="hljs-string">"ChecklistItem"</span>, 
+                                   <span class="hljs-keyword">for</span>: indexPath)
+  
+  <span class="hljs-keyword">let</span> item = items[indexPath.row]
+
+  configureText(<span class="hljs-keyword">for</span>: cell, with: item)
+  configureCheckmark(<span class="hljs-keyword">for</span>: cell, with: item)
+  <span class="hljs-keyword">return</span> cell
+}</pre>
+<p>➤ Also update <code>tableView(_:didSelectRowAt:)</code>:
+</p><pre class="code-block"><span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tableView</span><span class="hljs-params">(<span class="hljs-number">_</span> tableView: UITableView,
+                        didSelectRowAt indexPath: IndexPath)</span></span> {
+  
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> cell = tableView.cellForRow(at: indexPath) {
+    <span class="hljs-keyword">let</span> item = items[indexPath.row]
+    item.toggleChecked()
+    configureCheckmark(<span class="hljs-keyword">for</span>: cell, with: item)
+  }
+  tableView.deselectRow(at: indexPath, animated: <span class="hljs-literal">true</span>)
+}</pre>
+<p>The above calls a new method named <code>toggleChecked()</code> on the item object instead of modifying the <code>ChecklistItem</code>’s <code>checked</code> property directly.
+</p>
+<p>You will need to add this new method to the <code>ChecklistItem</code> object since Xcode should already be complaining about the method not being there.
+</p>
+<p>➤ Open <em>ChecklistItem.swift</em> and add the following method (just below the property declarations and before the closing curly bracket):
+</p><pre class="code-block"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">toggleChecked</span><span class="hljs-params">()</span></span> {
+  checked = !checked
+}</pre>
+<p>Naturally, your own objects can also have methods. As you can see, this method does exactly what <code>didSelectRowAt</code> used to do, except that you’ve added this bit of functionality to <code>ChecklistItem</code> instead.
+</p>
+<p>A good object-oriented design principle is that you should let objects change their own state as much as possible. Previously, the view controller implemented this toggling behavior but now <code>ChecklistItem</code> knows how to toggle itself on or off.
+</p>
+<p>➤ Run the app. It should still work exactly the same as before, but the code is a lot better. You can now have lists with thousands of to-do items, for those especially industrious users.
+</p>
+<div class="note">
+<p><em>Clean up that mess</em><em>!</em>
+</p>
+<p>So what’s the point of making all of these changes if the app still works exactly the same? For one, the code is much cleaner and that helps with avoiding bugs. By using an array you’ve also made the code more flexible. The table view can now handle any number of rows.
+</p>
+<p>You’ll find that when you program you are constantly restructuring your code to make it better. It’s impossible to do the whole thing 100% perfect from the get go.
+</p>
+<p>So you write code until it becomes messy and then you clean it up. After a little while it becomes a big mess again and you clean it up again. The process for cleaning up code is called <i>refactoring</i> and it’s a cycle that never ends.
+</p>
+<p>There are a lot of programmers who never refactor their code. The result is what we call “spaghetti code” and it’s a horrible mess to maintain.
+</p>
+<p>If you haven’t looked at your code for several months but need to add a new feature or fix a bug, you may need some time to read it through to understand again how everything fits together. This task becomes that much harder when you have spaghetti code.
+</p>
+<p>So, it’s in your own best interest to write code that is as clean as possible.
+</p></div>
+
+<p>If you want to check your work, you can find the project files for the current version of the app in the folder <em>10-The Data Model</em> in the Source Code folder.
+</p></body></html>
